@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faero Liquid Metal</title>
+  <script async src="https://unpkg.com/es-module-shims@1.8.0/dist/es-module-shims.js"></script>
+  <script
+    type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/","lil-gui":"https://unpkg.com/lil-gui@0.19.1/dist/lil-gui.esm.min.js"}}</script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      overflow: hidden;
+      font-family: sans-serif;
+      background: transparent;
+    }
+
+    #fileInput {
+      display: none;
+    }
+
+    #bg-img {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background: url('https://i.redd.it/puzkje595kf81.jpg') center/cover no-repeat;
+    }
+
+    #shadow-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    #three-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+    }
+
+    #stroke-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    #vignette-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    .lil-gui {
+      --width: 280px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="bg-img" style="display:none;"></div>
+  <canvas id="shadow-canvas" style="display:none;"></canvas>
+  <canvas id="stroke-canvas" style="display:none;"></canvas>
+  <canvas id="vignette-canvas" style="display:none;"></canvas>
+  <input type="file" id="fileInput" accept=".svg">
+
+  <script>
+    /* ─── OVERLAY SYSTEM ─── */
+    const shadowCv = document.getElementById('shadow-canvas'), shadowCtx = shadowCv.getContext('2d');
+    const strokeCv = document.getElementById('stroke-canvas'), strokeCtx = strokeCv.getContext('2d');
+    const vignCv = document.getElementById('vignette-canvas'), vignCtx = vignCv.getContext('2d');
+    let overlayShapes = [];
+
+    const dropShadowCfg = { enabled: false, color: '#96a348', opacity: 0.84, blur: 120, offsetX: -20, offsetY: -6, spread: 53 };
+    const strokeCfg = { enabled: false, color: '#206be2', opacity: 1, thickness: 20, dash: 0, dashGap: 15 };
+    const vignCfg = { enabled: false, color: '#000000', opacity: 0.0, thickness: 72, feather: 1.28 };
+
+    function hexToRgb(h) { return { r: parseInt(h.slice(1, 3), 16), g: parseInt(h.slice(3, 5), 16), b: parseInt(h.slice(5, 7), 16) }; }
+
+    function resizeOverlays() {
+      [shadowCv, strokeCv, vignCv].forEach(c => { c.width = innerWidth; c.height = innerHeight; });
+      drawVignette(); redrawOverlays();
+    }
+    window.addEventListener('resize', resizeOverlays);
+
+    function drawVignette() {
+      const w = vignCv.width, h = vignCv.height; vignCtx.clearRect(0, 0, w, h);
+      if (!vignCfg.enabled) return;
+      const { r, g, b } = hexToRgb(vignCfg.color); const a = vignCfg.opacity; const t = vignCfg.thickness;
+      const gr = vignCtx.createRadialGradient(w / 2, h / 2, Math.min(w, h) * 0.2, w / 2, h / 2, Math.max(w, h) * vignCfg.feather);
+      gr.addColorStop(0, `rgba(${r},${g},${b},0)`); gr.addColorStop(1, `rgba(${r},${g},${b},${a})`);
+      vignCtx.fillStyle = gr; vignCtx.fillRect(0, 0, w, h);
+      [[0, 0, t, 0, 0, 0, w, t], [0, h - t, 0, h, 0, h - t, w, t], [0, 0, 0, t, 0, 0, t, h], [w - t, 0, w, 0, w - t, 0, t, h]].forEach(([x0, y0, x1, y1, rx, ry, rw, rh]) => {
+        const g2 = vignCtx.createLinearGradient(x0, y0, x1, y1);
+        g2.addColorStop(0, `rgba(${r},${g},${b},${a})`); g2.addColorStop(1, `rgba(${r},${g},${b},0)`);
+        vignCtx.fillStyle = g2; vignCtx.fillRect(rx, ry, rw, rh);
+      });
+    }
+
+    function buildCanvasPath(ctx, shape) {
+      ctx.beginPath();
+      const pts = shape.points; if (!pts || !pts.length) return;
+      ctx.moveTo(pts[0].x, pts[0].y); for (let i = 1; i < pts.length; i++)ctx.lineTo(pts[i].x, pts[i].y); ctx.closePath();
+      (shape.holes || []).forEach(hole => { if (!hole.length) return; ctx.moveTo(hole[0].x, hole[0].y); for (let i = 1; i < hole.length; i++)ctx.lineTo(hole[i].x, hole[i].y); ctx.closePath(); });
+    }
+
+    function drawDropShadow() {
+      const w = shadowCv.width, h = shadowCv.height; shadowCtx.clearRect(0, 0, w, h);
+      if (!dropShadowCfg.enabled || !overlayShapes.length) return;
+      const { r, g, b } = hexToRgb(dropShadowCfg.color);
+      for (let i = 5; i >= 1; i--) {
+        const f = i / 5;
+        shadowCtx.save();
+        shadowCtx.shadowColor = `rgba(${r},${g},${b},${dropShadowCfg.opacity * (1 - f * 0.4)})`;
+        shadowCtx.shadowBlur = dropShadowCfg.blur * f;
+        shadowCtx.shadowOffsetX = dropShadowCfg.offsetX + dropShadowCfg.spread * f;
+        shadowCtx.shadowOffsetY = dropShadowCfg.offsetY + dropShadowCfg.spread * f;
+        shadowCtx.fillStyle = `rgba(${r},${g},${b},1)`;
+        overlayShapes.forEach(s => { shadowCtx.beginPath(); buildCanvasPath(shadowCtx, s); shadowCtx.fill('evenodd'); });
+        shadowCtx.restore();
+      }
+    }
+
+    function drawStroke() {
+      const w = strokeCv.width, h = strokeCv.height; strokeCtx.clearRect(0, 0, w, h);
+      if (!strokeCfg.enabled || !overlayShapes.length) return;
+      const { r, g, b } = hexToRgb(strokeCfg.color);
+      strokeCtx.strokeStyle = `rgba(${r},${g},${b},${strokeCfg.opacity})`;
+      strokeCtx.lineWidth = strokeCfg.thickness;
+      strokeCtx.setLineDash(strokeCfg.dash > 0 ? [strokeCfg.dash, strokeCfg.dashGap || strokeCfg.dash] : []);
+      overlayShapes.forEach(s => { strokeCtx.beginPath(); buildCanvasPath(strokeCtx, s); strokeCtx.stroke(); });
+    }
+
+    function redrawOverlays() { drawDropShadow(); drawStroke(); }
+    resizeOverlays();
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
+    import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+    import GUI from 'lil-gui';
+
+    /* ─── SIMPLEX NOISE ─── */
+    const simplex3D = `
+vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x,289.0);}
+vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-0.85373472095314*r;}
+float snoise(vec3 v){
+  const vec2 C=vec2(1.0/6.0,1.0/3.0);const vec4 D=vec4(0.0,0.5,1.0,2.0);
+  vec3 i=floor(v+dot(v,C.yyy));vec3 x0=v-i+dot(i,C.xxx);
+  vec3 g=step(x0.yzx,x0.xyz);vec3 l=1.0-g;
+  vec3 i1=min(g.xyz,l.zxy);vec3 i2=max(g.xyz,l.zxy);
+  vec3 x1=x0-i1+C.xxx;vec3 x2=x0-i2+C.yyy*2.0;vec3 x3=x0-1.0+3.0*C.xxx;
+  i=mod(i,289.0);
+  vec4 p=permute(permute(permute(i.z+vec4(0.0,i1.z,i2.z,1.0))+i.y+vec4(0.0,i1.y,i2.y,1.0))+i.x+vec4(0.0,i1.x,i2.x,1.0));
+  float n_=1.0/7.0;vec3 ns=n_*D.wyz-D.xzx;
+  vec4 j=p-49.0*floor(p*ns.z*ns.z);vec4 x_=floor(j*ns.z);vec4 y_=floor(j-7.0*x_);
+  vec4 x=x_*ns.x+ns.yyyy;vec4 y=y_*ns.x+ns.yyyy;vec4 h=1.0-abs(x)-abs(y);
+  vec4 b0=vec4(x.xy,y.xy);vec4 b1=vec4(x.zw,y.zw);
+  vec4 s0=floor(b0)*2.0+1.0;vec4 s1=floor(b1)*2.0+1.0;vec4 sh=-step(h,vec4(0.0));
+  vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy;vec4 a1=b1.xzyw+s1.xzyw*sh.zzww;
+  vec3 p0=vec3(a0.xy,h.x);vec3 p1=vec3(a0.zw,h.y);vec3 p2=vec3(a1.xy,h.z);vec3 p3=vec3(a1.zw,h.w);
+  vec4 norm=taylorInvSqrt(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));
+  p0*=norm.x;p1*=norm.y;p2*=norm.z;p3*=norm.w;
+  vec4 m=max(0.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.0);
+  m=m*m;return 42.0*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
+}`;
+
+    /* ─── SCENE ─── */
+    const scene = new THREE.Scene(); scene.background = null;
+    const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 2000);
+    camera.position.set(0, 0, 55);
+
+    const threeCanvas = document.createElement('canvas');
+    threeCanvas.id = 'three-canvas'; document.body.appendChild(threeCanvas);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, canvas: threeCanvas });
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 2.2;
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true; controls.dampingFactor = 0.05;
+    controls.autoRotate = true; controls.autoRotateSpeed = 3.02;
+
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    scene.environment = pmrem.fromScene(new RoomEnvironment()).texture;
+
+    /* ─── BG REFLECTION LIGHTS ─── */
+    const bgReflectionCfg = { enabled: true, influence: 2.35 };
+    const bgLights = [];
+    [[0, 1, 0.3], [0, -1, 0.3], [-1, 0, 0.3], [1, 0, 0.3], [0, 0, 1], [0, 0, -1]].forEach(dir => {
+      const l = new THREE.DirectionalLight(0x6688cc, bgReflectionCfg.influence);
+      l.position.set(...dir).multiplyScalar(60); scene.add(l); bgLights.push(l);
+    });
+
+    // Sample bg image for colored reflections
+    const bgSampleCv = document.createElement('canvas'); bgSampleCv.width = bgSampleCv.height = 8;
+    const bgSampleCtx = bgSampleCv.getContext('2d');
+    const bgImg = new Image(); bgImg.crossOrigin = 'anonymous';
+    bgImg.onload = () => { bgSampleCtx.drawImage(bgImg, 0, 0, 8, 8); sampleBgColors(); };
+    bgImg.src = 'https://i.redd.it/puzkje595kf81.jpg';
+    function sampleBgColors() {
+      if (!bgReflectionCfg.enabled) return;
+      try {
+        const d = bgSampleCtx.getImageData(0, 0, 8, 8).data;
+        [{ sx: 2, sy: 0 }, { sx: 2, sy: 6 }, { sx: 0, sy: 3 }, { sx: 6, sy: 3 }, { sx: 3, sy: 3 }, { sx: 3, sy: 3 }].forEach(({ sx, sy }, i) => {
+          const px = (sy * 8 + sx) * 4;
+          bgLights[i].color.setRGB(d[px] / 255, d[px + 1] / 255, d[px + 2] / 255);
+          bgLights[i].intensity = bgReflectionCfg.influence;
+        });
+      } catch (e) { }
+    }
+
+    /* ─── BASE LIGHTS ─── */
+    [[0xffffff, 10, [12, 22, 18]], [0x88ddff, 5, [-18, -10, 12]], [0xff88ee, 4, [0, -25, -8]], [0xffdd88, 3, [20, 5, 5]]]
+      .forEach(([c, i, p]) => { const l = new THREE.DirectionalLight(c, i); l.position.set(...p); scene.add(l); });
+    const pointLight = new THREE.PointLight(0xffffff, 8, 120); scene.add(pointLight);
+
+    /* ─── CHROME ─── */
+    const chromeCfg = { hue: 0, saturation: 0, lightness: 1 };
+    function updateChromeColor() {
+      const sat = chromeCfg.hue === 0 && chromeCfg.saturation < 0.05 ? 0 : chromeCfg.saturation;
+      liquidMaterial.color.setHSL(chromeCfg.hue / 360, sat, chromeCfg.lightness);
+    }
+
+    /* ─── MATERIAL ─── */
+    const dummyTex = new THREE.DataTexture(new Uint8Array([255, 255, 255, 255]), 1, 1); dummyTex.needsUpdate = true;
+
+    const liquidMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0xffffff, metalness: 1.0, roughness: 0.0,
+      clearcoat: 1.0, clearcoatRoughness: 0.0,
+      iridescence: 0.68, iridescenceIOR: 3.0,
+      iridescenceThicknessRange: [0, 1500],
+      iridescenceThicknessMap: dummyTex,
+      envMapIntensity: 7.9, dithering: true, ior: 1.6095, transmission: 0
+    });
+
+    liquidMaterial.userData = {
+      uTime: { value: 0 }, uSpeed: { value: 0.0 }, uScale: { value: 0.00139 },
+      uDistortion: { value: 0.945 }, uEdgeProtection: { value: 0.803 }, uShapeReactivity: { value: 2.355 },
+      uShapeMask: { value: dummyTex }, uShapeBounds: { value: new THREE.Vector4(0, 0, 1, 1) }
+    };
+
+    liquidMaterial.onBeforeCompile = shader => {
+      Object.entries(liquidMaterial.userData).forEach(([k, v]) => shader.uniforms[k] = v);
+      shader.vertexShader = `varying vec3 vWorldPos;varying vec3 vLocalPos;varying vec3 vOriginalNormal;\n` + shader.vertexShader;
+      shader.vertexShader = shader.vertexShader.replace('#include <worldpos_vertex>',
+        `#include <worldpos_vertex>
+     vWorldPos=(modelMatrix*vec4(transformed,1.0)).xyz;
+     vLocalPos=position; vOriginalNormal=normal;`);
+      shader.fragmentShader = `
+    uniform float uTime,uSpeed,uScale,uDistortion,uEdgeProtection,uShapeReactivity;
+    uniform sampler2D uShapeMask; uniform vec4 uShapeBounds;
+    varying vec3 vWorldPos,vLocalPos,vOriginalNormal; float vFluidNoise;
+    ${simplex3D}\n` + shader.fragmentShader;
+      shader.fragmentShader = shader.fragmentShader.replace('#include <normal_fragment_begin>',
+        `#include <normal_fragment_begin>
+    vec2 shapeUV=(vLocalPos.xy-uShapeBounds.xy)/uShapeBounds.zw;
+    vec2 te=vec2(4.0/1024.0);
+    float mC=texture2D(uShapeMask,shapeUV).r,mR=texture2D(uShapeMask,shapeUV+vec2(te.x,0.0)).r,mL=texture2D(uShapeMask,shapeUV-vec2(te.x,0.0)).r,mT=texture2D(uShapeMask,shapeUV+vec2(0.0,te.y)).r,mB=texture2D(uShapeMask,shapeUV-vec2(0.0,te.y)).r;
+    float smoothDist=(mC+mR+mL+mT+mB)*0.2;
+    vec2 maskGrad=vec2(mR-mL,mT-mB)/(2.0*te.x);
+    vec3 p=vLocalPos*uScale; p.z+=smoothDist*uShapeReactivity*150.0*uScale;
+    p.xy+=vec2(-maskGrad.y,maskGrad.x)*(uTime*uSpeed*0.5); p.y-=uTime*uSpeed*0.1;
+    vec3 warp; warp.x=snoise(p+vec3(0,0,uTime*0.1)); warp.y=snoise(p+vec3(114.5,22.1,uTime*0.1)); warp.z=snoise(p+vec3(233.2,51.5,uTime*0.1));
+    vec3 wp=p+warp*1.5; float eps=0.03;
+    float n0=snoise(wp),nx=snoise(wp+vec3(eps,0,0)),ny=snoise(wp+vec3(0,eps,0)),nz=snoise(wp+vec3(0,0,eps));
+    vFluidNoise=n0+smoothDist*uShapeReactivity*2.0;
+    vec3 nn=normalize(vec3(nx-n0,ny-n0,nz-n0));
+    vec3 vnn=normalize((viewMatrix*vec4(nn,0.0)).xyz);
+    float flatFace=smoothstep(0.1,0.9,abs(vOriginalNormal.z));
+    normal=normalize(normal+vnn*uDistortion*mix(1.0,flatFace,uEdgeProtection));`);
+      shader.fragmentShader = shader.fragmentShader.replace(
+        /texture2D\(\s*iridescenceThicknessMap\s*,\s*vIridescenceThicknessMapUv\s*\)/g,
+        'vec4(vFluidNoise*0.5+0.5)');
+    };
+
+    /* ─── SHAPE MASK ─── */
+    function generateShapeMaskTexture(shapes) {
+      const b = new THREE.Box2();
+      shapes.forEach(s => s.getPoints().forEach(p => b.expandByPoint(p)));
+      const w = b.max.x - b.min.x, h = b.max.y - b.min.y;
+      const pad = Math.max(w, h) * 0.25; const pX = b.min.x - pad, pY = b.min.y - pad, pW = w + pad * 2, pH = h + pad * 2;
+      const cv = document.createElement('canvas'); cv.width = cv.height = 1024;
+      const ctx = cv.getContext('2d');
+      ctx.fillStyle = 'black'; ctx.fillRect(0, 0, 1024, 1024);
+      ctx.save(); ctx.filter = 'blur(45px)'; ctx.fillStyle = 'white';
+      ctx.scale(1024 / pW, 1024 / pH); ctx.translate(-pX, -pY); ctx.beginPath();
+      shapes.forEach(shape => {
+        const pts = shape.getPoints(100); if (!pts.length) return;
+        ctx.moveTo(pts[0].x, pts[0].y); for (let i = 1; i < pts.length; i++)ctx.lineTo(pts[i].x, pts[i].y);
+        shape.holes.forEach(hole => {
+          const hp = hole.getPoints(100); if (!hp.length) return;
+          ctx.moveTo(hp[0].x, hp[0].y); for (let i = 1; i < hp.length; i++)ctx.lineTo(hp[i].x, hp[i].y);
+        });
+      });
+      ctx.fill('evenodd'); ctx.restore();
+      const tex = new THREE.CanvasTexture(cv); tex.flipY = false;
+      liquidMaterial.userData.uShapeMask.value = tex;
+      liquidMaterial.userData.uShapeBounds.value.set(pX, pY, pW, pH);
+    }
+
+    /* ─── OVERLAY PROJECTION ─── */
+    function projectShapesToScreen(rawShapes) {
+      svgGroup.updateMatrixWorld(true);
+      const mat = svgGroup.matrixWorld;
+      const w = renderer.domElement.width / devicePixelRatio;
+      const h = renderer.domElement.height / devicePixelRatio;
+      overlayShapes = rawShapes.map(shape => {
+        function proj(pts) {
+          return pts.map(p => {
+            const v = new THREE.Vector3(p.x, p.y, 0).applyMatrix4(mat).project(camera);
+            return { x: (v.x * 0.5 + 0.5) * w, y: (1 - (v.y * 0.5 + 0.5)) * h };
+          });
+        }
+        return { points: proj(shape.getPoints(80)), holes: shape.holes.map(ho => proj(ho.getPoints(80))) };
+      });
+      redrawOverlays();
+    }
+    let allRawShapes = [];
+
+    /* ─── SVG BUILD ─── */
+    const svgGroup = new THREE.Group(); scene.add(svgGroup);
+    const svgLoader = new SVGLoader();
+    const shapeSettings = { depth: 103.8, bevelSize: 3.5 };
+
+    function buildSVGFromData(svgData) {
+      svgGroup.position.set(0, 0, 0); svgGroup.scale.set(1, 1, 1); svgGroup.rotation.set(0, 0, 0);
+      svgGroup.updateMatrixWorld();
+      while (svgGroup.children.length) { const c = svgGroup.children[0]; svgGroup.remove(c); if (c.geometry) c.geometry.dispose(); }
+      const ext = { depth: shapeSettings.depth, bevelEnabled: true, bevelSegments: 96, steps: 2, bevelSize: shapeSettings.bevelSize, bevelThickness: shapeSettings.bevelSize };
+      allRawShapes = [];
+      svgData.paths.forEach(path => {
+        SVGLoader.createShapes(path).forEach(shape => {
+          allRawShapes.push(shape);
+          svgGroup.add(new THREE.Mesh(new THREE.ExtrudeGeometry(shape, ext), liquidMaterial));
+        });
+      });
+      if (allRawShapes.length) generateShapeMaskTexture(allRawShapes);
+      const box = new THREE.Box3().setFromObject(svgGroup);
+      const size = box.getSize(new THREE.Vector3()); const maxDim = Math.max(size.x, size.y, size.z);
+      if (maxDim > 0) { const s = 28 / maxDim; svgGroup.scale.set(s, -s, s); }
+      svgGroup.updateMatrixWorld();
+      svgGroup.position.sub(new THREE.Box3().setFromObject(svgGroup).getCenter(new THREE.Vector3()));
+      requestAnimationFrame(() => projectShapesToScreen(allRawShapes));
+    }
+
+    let lastSVGData = null;
+    function loadSVGFromString(svgText) {
+      const fixed = svgText.replace(/fill\s*=\s*["']#000(000)?["']/gi, 'fill="white"').replace(/fill\s*=\s*["']black["']/gi, 'fill="white"').replace(/fill\s*:\s*#000(000)?/gi, 'fill:white').replace(/fill\s*:\s*black/gi, 'fill:white');
+      lastSVGData = svgLoader.parse(fixed); buildSVGFromData(lastSVGData);
+    }
+    function rebuildWithCurrentSettings() { if (lastSVGData) buildSVGFromData(lastSVGData); }
+    function loadSVGFromURL(url) {
+      if (!url || !url.trim()) { loadSVGFromString(faeroSVG); return; }
+      svgLoader.load(url, d => { lastSVGData = d; buildSVGFromData(d); }, undefined, () => loadSVGFromString(faeroSVG));
+    }
+
+    const faeroSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1008 1048">
+<path fill="white" d="M 497.34 83.23 C 532.98 80.69 569.25 96.53 591.65 124.35 C 605.90 141.74 614.71 163.49 616.59 185.89 C 619.60 218.94 606.98 253.02 583.03 276.03 C 556.52 302.36 516.32 313.73 479.93 305.28 C 453.19 299.41 428.88 283.30 413.02 260.99 C 398.33 240.58 390.84 215.14 392.14 190.03 C 393.40 162.41 405.29 135.41 424.97 115.97 C 444.01 96.70 470.31 84.88 497.34 83.23 Z"/>
+<path fill="white" d="M 98.71 360.65 C 110.26 343.88 129.93 333.56 150.03 331.80 C 156.51 331.77 163.01 331.47 169.48 332.01 C 187.02 334.35 202.79 343.74 216.25 354.83 C 225.96 362.37 233.75 371.94 242.67 380.33 C 250.32 388.33 258.59 395.68 266.67 403.23 C 278.45 413.49 291.61 422.22 306.10 428.17 C 317.88 434.06 330.83 437.14 343.88 438.52 C 362.10 440.97 380.95 438.25 397.77 430.84 C 412.95 424.41 426.63 414.85 438.87 403.89 C 448.78 394.36 459.42 385.24 471.75 378.98 C 479.97 375.22 488.79 371.71 498.00 372.22 C 504.33 372.31 510.66 372.19 516.99 372.25 C 521.85 372.30 526.46 374.11 530.95 375.81 C 539.93 379.13 547.27 385.48 554.97 390.98 C 563.36 397.20 570.68 404.65 578.88 411.10 C 595.37 424.34 614.84 434.60 635.96 437.68 C 654.59 440.94 674.06 439.21 691.87 432.85 C 705.73 428.17 719.01 421.65 730.62 412.69 C 738.40 408.00 744.50 401.22 751.44 395.46 C 765.75 382.12 778.53 367.16 793.50 354.50 C 800.85 347.88 809.37 342.64 818.38 338.60 C 829.07 333.33 841.14 331.13 853.02 331.72 C 867.78 331.12 882.05 336.75 894.29 344.62 C 902.74 350.05 909.02 358.09 914.73 366.21 C 922.12 379.79 926.55 395.46 925.10 410.99 C 924.52 431.13 914.46 450.27 900.01 464.00 C 895.51 467.86 890.99 472.04 885.28 474.02 C 880.86 475.64 876.62 477.77 872.05 478.98 C 864.77 481.38 857.16 482.50 849.79 484.55 C 840.76 487.24 831.26 485.99 822.00 486.24 C 811.35 485.42 800.66 485.86 790.00 485.73 C 784.54 485.52 779.36 487.57 773.96 487.76 C 767.99 488.13 762.36 490.29 756.59 491.66 C 746.55 493.83 737.41 498.67 727.80 502.12 C 722.11 503.97 717.59 508.10 712.15 510.48 C 697.90 518.21 687.70 531.12 676.09 542.09 C 668.03 549.58 663.62 559.85 658.77 569.49 C 656.36 574.39 654.90 579.67 653.28 584.86 C 651.83 589.84 650.15 594.81 649.69 600.01 C 649.44 604.40 647.38 608.52 647.70 612.97 C 648.04 620.05 646.79 627.36 649.22 634.20 C 650.00 638.96 649.55 643.90 651.25 648.53 C 653.33 662.28 659.18 675.15 665.84 687.25 C 669.76 694.67 675.23 701.07 680.13 707.84 C 689.66 719.97 701.66 729.90 713.92 739.15 C 727.35 748.24 741.32 756.49 755.32 764.67 C 761.22 768.27 766.58 772.66 772.05 776.87 C 790.26 790.48 803.45 811.25 806.19 833.99 C 807.34 849.20 806.92 865.44 798.89 878.93 C 789.02 899.58 768.93 914.66 746.67 919.41 C 739.79 919.86 732.85 920.59 725.96 919.77 C 698.78 917.14 674.66 898.88 662.18 874.99 C 659.11 868.72 655.61 862.61 653.42 855.95 C 648.79 842.57 646.30 828.50 640.83 815.40 C 635.27 794.46 625.01 775.05 612.83 757.24 C 605.50 748.56 597.39 740.55 589.02 732.88 C 573.67 720.48 555.76 711.18 536.67 706.09 C 532.33 704.89 527.91 704.01 523.54 702.92 C 519.08 701.73 514.44 702.48 509.90 702.50 C 501.96 701.78 491.90 701.51 487.62 703.79 C 480.10 704.02 473.12 706.88 465.93 708.77 C 462.07 710.11 458.32 711.74 454.52 713.23 C 446.70 716.35 439.88 721.37 432.56 725.45 C 424.97 729.62 419.55 736.50 413.38 742.39 C 408.81 747.16 403.79 751.51 399.52 756.58 C 393.82 764.54 388.47 772.79 384.48 781.76 C 377.36 794.25 374.17 808.36 369.35 821.79 C 364.33 835.39 361.71 849.80 355.83 863.10 C 350.77 872.94 346.52 883.58 338.42 891.42 C 334.13 895.42 330.27 899.88 325.82 903.73 C 316.45 911.12 305.36 916.20 293.84 919.18 C 288.26 919.93 282.61 919.70 277.00 919.76 C 263.36 920.45 249.66 916.12 238.35 908.58 C 232.12 904.63 227.91 898.40 222.38 893.62 C 217.31 889.23 213.42 883.60 211.03 877.33 C 207.09 867.71 203.06 857.59 203.73 847.00 C 203.77 843.64 203.68 840.29 203.73 836.94 C 203.75 832.50 205.47 828.33 206.10 823.98 C 207.24 816.48 210.72 809.65 214.24 803.03 C 221.50 789.89 232.76 779.49 245.14 771.21 C 256.26 763.07 268.64 756.88 280.06 749.18 C 288.18 744.93 295.33 739.19 302.65 733.72 C 315.99 724.22 327.65 712.32 336.80 698.73 C 342.14 691.76 347.00 684.36 350.50 676.28 C 355.89 663.34 361.04 650.05 362.53 636.01 C 364.40 629.15 363.60 622.01 363.77 614.99 C 364.06 608.77 362.02 602.80 361.49 596.65 C 358.82 585.02 355.31 573.35 348.93 563.16 C 345.03 557.06 341.93 550.39 337.07 544.95 C 331.56 538.79 326.16 532.49 319.93 527.04 C 312.72 520.30 304.27 515.16 296.04 509.80 C 288.07 504.47 278.93 501.35 270.14 497.68 C 253.36 490.46 235.10 487.46 217.00 486.23 C 200.99 486.14 184.99 486.27 168.98 486.27 C 163.88 486.38 159.04 484.57 154.01 484.04 C 135.47 481.64 117.70 472.75 104.86 459.14 C 94.77 448.32 88.42 434.34 85.90 419.84 C 85.48 412.57 85.91 405.27 85.71 397.99 C 85.31 391.23 87.36 384.63 89.64 378.35 C 92.47 372.35 94.53 365.89 98.71 360.65 Z"/>
+</svg>`;
+
+    loadSVGFromString(faeroSVG);
+
+    /* ─── GUI ─── */
+    const gui = new GUI({ title: '✦ Liquid Metal' });
+    gui.domElement.style.display = 'none';
+
+    const chf = gui.addFolder('Chrome');
+    chf.add(chromeCfg, 'hue', 0, 360, 1).name('Hue').onChange(updateChromeColor);
+    chf.add(chromeCfg, 'saturation', 0, 1, 0.01).name('Saturation').onChange(updateChromeColor);
+    chf.add(chromeCfg, 'lightness', 0, 1, 0.01).name('Lightness').onChange(updateChromeColor);
+    chf.add(liquidMaterial, 'envMapIntensity', 0, 15, 0.1).name('Env Intensity');
+
+    const brf = gui.addFolder('BG Reflection');
+    brf.add(bgReflectionCfg, 'enabled').name('Enable').onChange(v => bgLights.forEach(l => l.intensity = v ? bgReflectionCfg.influence : 0));
+    brf.add(bgReflectionCfg, 'influence', 0, 6, 0.05).name('Influence').onChange(v => { if (bgReflectionCfg.enabled) bgLights.forEach(l => l.intensity = v); });
+
+    const ef = gui.addFolder('Fluid Dynamics');
+    ef.add(liquidMaterial.userData.uScale, 'value', 0.00005, 0.015).name('Ripple Scale');
+    ef.add(liquidMaterial.userData.uSpeed, 'value', 0, 2).name('Flow Speed');
+    ef.add(liquidMaterial.userData.uShapeReactivity, 'value', 0, 5).name('Shape Reactivity');
+    ef.add(liquidMaterial.userData.uDistortion, 'value', 0, 5).name('Distortion');
+    ef.add(liquidMaterial.userData.uEdgeProtection, 'value', 0, 1).name('Edge Sharpness');
+
+    const ir = gui.addFolder('Iridescence');
+    ir.add(liquidMaterial, 'iridescence', 0, 1).name('Intensity');
+    ir.add(liquidMaterial, 'iridescenceIOR', 1, 3).name('IOR');
+    const th = { min: 0, max: 1500 };
+    ir.add(th, 'min', 0, 1500).name('Thickness Min').onChange(v => liquidMaterial.iridescenceThicknessRange[0] = v);
+    ir.add(th, 'max', 0, 1500).name('Thickness Max').onChange(v => liquidMaterial.iridescenceThicknessRange[1] = v);
+
+    const mf = gui.addFolder('Material');
+    mf.add(liquidMaterial, 'roughness', 0, 1).name('Roughness');
+    mf.add(liquidMaterial, 'metalness', 0, 1).name('Metalness');
+    mf.add(liquidMaterial, 'clearcoat', 0, 1).name('Clearcoat');
+    mf.add(liquidMaterial, 'clearcoatRoughness', 0, 1).name('Clearcoat Rough');
+    mf.add(liquidMaterial, 'transmission', 0, 1).name('Transmission');
+    mf.add(liquidMaterial, 'ior', 1, 2.5).name('IOR (glass)');
+    mf.add(controls, 'autoRotate').name('Auto Rotate');
+    mf.add(controls, 'autoRotateSpeed', -10, 10).name('Rotate Speed');
+    mf.add(renderer, 'toneMappingExposure', 0.1, 5, 0.01).name('Exposure');
+
+    const sf = gui.addFolder('Shape');
+    sf.add(shapeSettings, 'depth', 0.1, 150, 0.1).name('Extrude Depth').onChange(rebuildWithCurrentSettings);
+    sf.add(shapeSettings, 'bevelSize', 0, 20, 0.1).name('Bevel Size').onChange(rebuildWithCurrentSettings);
+
+    const dsf = gui.addFolder('Drop Shadow');
+    dsf.add(dropShadowCfg, 'enabled').name('Enable').onChange(redrawOverlays);
+    dsf.addColor(dropShadowCfg, 'color').name('Color').onChange(redrawOverlays);
+    dsf.add(dropShadowCfg, 'opacity', 0, 1, 0.01).name('Opacity').onChange(redrawOverlays);
+    dsf.add(dropShadowCfg, 'blur', 0, 200, 1).name('Blur').onChange(redrawOverlays);
+    dsf.add(dropShadowCfg, 'offsetX', -80, 80, 1).name('Offset X').onChange(redrawOverlays);
+    dsf.add(dropShadowCfg, 'offsetY', -80, 80, 1).name('Offset Y').onChange(redrawOverlays);
+    dsf.add(dropShadowCfg, 'spread', 0, 100, 1).name('Spread').onChange(redrawOverlays);
+
+    const stf = gui.addFolder('Stroke');
+    stf.add(strokeCfg, 'enabled').name('Enable').onChange(redrawOverlays);
+    stf.addColor(strokeCfg, 'color').name('Color').onChange(redrawOverlays);
+    stf.add(strokeCfg, 'opacity', 0, 1, 0.01).name('Opacity').onChange(redrawOverlays);
+    stf.add(strokeCfg, 'thickness', 0.5, 30, 0.5).name('Thickness').onChange(redrawOverlays);
+    stf.add(strokeCfg, 'dash', 0, 80, 1).name('Dash Length').onChange(redrawOverlays);
+    stf.add(strokeCfg, 'dashGap', 0, 80, 1).name('Dash Gap').onChange(redrawOverlays);
+
+    const vf = gui.addFolder('Vignette');
+    vf.add(vignCfg, 'enabled').name('Enable').onChange(() => drawVignette());
+    vf.addColor(vignCfg, 'color').name('Color').onChange(() => drawVignette());
+    vf.add(vignCfg, 'opacity', 0, 1, 0.01).name('Opacity').onChange(() => drawVignette());
+    vf.add(vignCfg, 'thickness', 0, 600, 1).name('Edge Thickness').onChange(() => drawVignette());
+    vf.add(vignCfg, 'feather', 0.5, 2, 0.01).name('Feather').onChange(() => drawVignette());
+
+    const fi = document.getElementById('fileInput');
+    const fs = { svgUrl: '', loadUrl: () => loadSVGFromURL(fs.svgUrl), uploadSVG: () => fi.click(), resetDefault: () => { fs.svgUrl = ''; loadSVGFromString(faeroSVG); } };
+    const ff = gui.addFolder('File Management');
+    ff.add(fs, 'svgUrl').name('SVG URL');
+    ff.add(fs, 'loadUrl').name('Load from URL');
+    ff.add(fs, 'uploadSVG').name('Upload SVG');
+    ff.add(fs, 'resetDefault').name('Reset Logo');
+    fi.addEventListener('change', e => { const f = e.target.files[0]; if (f) { const r = new FileReader(); r.onload = ev => loadSVGFromString(ev.target.result); r.readAsText(f); } e.target.value = ''; });
+
+    /* ─── ANIMATE ─── */
+    const clock = new THREE.Clock(); let fc = 0;
+    function animate() {
+      requestAnimationFrame(animate); controls.update();
+      const t = clock.getElapsedTime();
+      liquidMaterial.userData.uTime.value = t;
+      pointLight.position.set(Math.sin(t * 0.35) * 30, Math.cos(t * 0.28) * 22, 28 + Math.sin(t * 0.5) * 8);
+      renderer.render(scene, camera);
+      if (++fc % 2 === 0 && allRawShapes.length) projectShapesToScreen(allRawShapes);
+    }
+    window.addEventListener('resize', () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+    animate();
+  </script>
+</body>
+
+</html>

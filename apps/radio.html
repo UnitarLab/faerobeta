@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>faeroRadio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --accent: #1a88d4;
+            --bg: #0a0b1e;
+            --panel: rgba(255, 255, 255, 0.1);
+            --border: rgba(255, 255, 255, 0.2);
+            --text: #fff;
+            --text2: #aaa;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .toolbar {
+            background: rgba(0, 0, 0, 0.4);
+            border-bottom: 1px solid var(--border);
+            padding: 0 16px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .toolbar-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .layout {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.05);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .search-box {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .inp {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+        }
+
+        .list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .list::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 2px;
+        }
+
+        .item {
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.1s;
+        }
+
+        .item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .item.active {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .main {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            gap: 20px;
+            overflow-y: auto;
+        }
+
+        .player-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .station-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            border: 1px solid var(--border);
+            object-fit: contain;
+        }
+
+        .station-name {
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .station-meta {
+            font-size: 13px;
+            color: var(--text2);
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .play-btn {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.15s;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.1);
+            filter: brightness(1.1);
+        }
+
+        .play-btn:active {
+            transform: scale(0.9);
+        }
+
+        .visualizer {
+            height: 40px;
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+        }
+
+        .v-bar {
+            width: 6px;
+            background: var(--accent);
+            border-radius: 3px 3px 0 0;
+            animation: v-bounce 0.8s ease-in-out infinite alternate;
+        }
+
+        @keyframes v-bounce {
+            from {
+                height: 4px;
+            }
+
+            to {
+                height: 32px;
+            }
+        }
+
+        .station-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 12px;
+        }
+
+        .grid-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.15s;
+        }
+
+        .grid-item:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-3px);
+        }
+
+        .grid-item img {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .grid-item div {
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="toolbar">
+        <span style="font-size:24px">&#128251;</span>
+        <div class="toolbar-title">faeroRadio</div>
+        <span style="flex:1"></span>
+        <div id="status" style="font-size:11px;color:var(--text2)">Connected to Global Radio API</div>
+    </div>
+    <div class="layout">
+        <div class="sidebar">
+            <div class="search-box">
+                <input type="text" class="inp" placeholder="Search countries..." id="countrySearch">
+            </div>
+            <div class="list" id="countryList">
+                <div style="padding:20px;text-align:center;color:var(--text2)">Loading countries...</div>
+            </div>
+        </div>
+        <div class="main">
+            <div class="player-card" id="playerCard" style="display:none">
+                <img src="" class="station-logo" id="activeLogo"
+                    onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23666%22><rect width=%2224%22 height=%2224%22 rx=%224%22/></svg>'">
+                <div>
+                    <div class="station-name" id="activeName">Radio Station</div>
+                    <div class="station-meta" id="activeMeta">Country · Genre</div>
+                </div>
+                <div class="visualizer" id="vis" style="display:none">
+                    <div class="v-bar" style="animation-delay:-0.1s"></div>
+                    <div class="v-bar" style="animation-delay:-0.3s"></div>
+                    <div class="v-bar" style="animation-delay:-0.5s"></div>
+                    <div class="v-bar" style="animation-delay:-0.2s"></div>
+                    <div class="v-bar" style="animation-delay:-0.4s"></div>
+                </div>
+                <button class="play-btn" id="playBtn">&#9654;</button>
+            </div>
+            <div class="sidebar-head" id="gridTitle">World Stations</div>
+            <div class="station-grid" id="stationGrid">
+                <div style="grid-column:1/-1;padding:40px;text-align:center;color:var(--text2)">Select a country to
+                    explore stations</div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="audio"></audio>
+
+    <script>
+        const MIRRORS = [
+            'at1.api.radio-browser.info',
+            'de1.api.radio-browser.info',
+            'fr1.api.radio-browser.info',
+            'nl1.api.radio-browser.info'
+        ];
+        const LOCAL_FALLBACK = [
+            { name: "Aero FM (Local)", url: "https://stream.zeno.fm/f37n1cr6308uv", country: "Global", favicon: "https://api.dicebear.com/7.x/identicon/svg?seed=AeroFM" },
+            { name: "Chillout Lounge", url: "https://icecast.unitedradio.it/Chillout.mp3", country: "Italy", favicon: "https://api.dicebear.com/7.x/identicon/svg?seed=Chill" },
+            { name: "Lofi Hip Hop", url: "https://stream.zeno.fm/f37n1cr6308uv", country: "Global", favicon: "https://api.dicebear.com/7.x/identicon/svg?seed=Lofi" }
+        ];
+
+        let currentMirror = MIRRORS[0];
+        let apiBase = `https://${currentMirror}/json`;
+        let countries = [];
+        let activeAudio = document.getElementById('audio');
+
+        async function findWorkingMirror() {
+            // Very compatible way to check mirrors
+            for (let i = 0; i < MIRRORS.length; i++) {
+                const mirror = MIRRORS[i];
+                try {
+                    // Use a simple fetch, if it fails it will throw
+                    // We try them in sequence but very quickly
+                    const res = await fetch(`https://${mirror}/json/stats`);
+                    if (res.ok) {
+                        currentMirror = mirror;
+                        apiBase = `https://${mirror}/json`;
+                        return true;
+                    }
+                } catch (e) {
+                    console.warn("Mirror failed:", mirror);
+                }
+            }
+            return false;
+        }
+
+        // Fetch countries
+        async function fetchCountries() {
+            const list = document.getElementById('countryList');
+            try {
+                list.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text2)">Connecting...</div>';
+
+                const ok = await findWorkingMirror();
+                if (!ok) {
+                    useLocalFallback();
+                    return;
+                }
+
+                const res = await fetch(`${apiBase}/countries?nocache=${Date.now()}`);
+                countries = await res.json();
+                renderCountries();
+                document.getElementById('status').textContent = `Connected to ${currentMirror}`;
+            } catch (e) {
+                console.error(e);
+                useLocalFallback("Connection Error");
+            }
+        }
+
+        function useLocalFallback(msg = "Offline Mode") {
+            document.getElementById('status').textContent = msg;
+            countries = [{ name: "Local Stations", stationcount: 3 }];
+            renderCountries();
+            renderStations(LOCAL_FALLBACK);
+            document.getElementById('gridTitle').textContent = "Featured Local Stations";
+        }
+
+        function renderCountries(filter = '') {
+            const list = document.getElementById('countryList');
+            list.innerHTML = '';
+            const filtered = countries.filter(c => c.name.toLowerCase().includes(filter.toLowerCase())).sort((a, b) => b.stationcount - a.stationcount);
+            filtered.slice(0, 50).forEach(c => {
+                const el = document.createElement('div');
+                el.className = 'item';
+                el.innerHTML = `<span>&#127757;</span> <span>${c.name}</span> <span style="font-size:10px;color:var(--text2)">(${c.stationcount})</span>`;
+                el.onclick = () => {
+                    document.querySelectorAll('.item').forEach(i => i.classList.remove('active'));
+                    el.classList.add('active');
+                    fetchStations(c.name);
+                };
+                list.appendChild(el);
+            });
+        }
+
+        let currentOffset = 0;
+        let currentCountry = '';
+        let isLoadingMore = false;
+
+        async function fetchStations(country, isMore = false) {
+            currentCountry = country;
+            if (!isMore) {
+                currentOffset = 0;
+                document.getElementById('gridTitle').textContent = `Stations in ${country}`;
+                document.getElementById('stationGrid').innerHTML = '<div style="grid-column:1/-1;padding:40px;text-align:center;color:var(--text2)">Tuning in...</div>';
+            } else {
+                isLoadingMore = true;
+                const loadBtn = document.getElementById('loadMoreBtn');
+                if (loadBtn) loadBtn.innerText = "Loading more...";
+            }
+
+            try {
+                const res = await fetch(`${apiBase}/stations/bycountry/${encodeURIComponent(country)}?limit=40&offset=${currentOffset}&order=clickcount&reverse=true&nocache=${Date.now()}`);
+                const data = await res.json();
+
+                if (data.length > 0) {
+                    currentOffset += data.length;
+                    renderStations(data, isMore);
+                } else if (isMore) {
+                    const loadBtn = document.getElementById('loadMoreBtn');
+                    if (loadBtn) loadBtn.style.display = 'none';
+                    parent.postMessage({ type: 'TOAST', text: "No more stations found", icon: '&#128251;' }, '*');
+                }
+            } catch (e) {
+                console.error(e);
+            } finally {
+                isLoadingMore = false;
+            }
+        }
+
+        function renderStations(data, isMore = false) {
+            const grid = document.getElementById('stationGrid');
+            if (!isMore) grid.innerHTML = '';
+
+            // Remove existing load more btn if any
+            const existingBtn = document.getElementById('loadMoreBtnContainer');
+            if (existingBtn) existingBtn.remove();
+
+            data.forEach(s => {
+                const el = document.createElement('div');
+                el.className = 'grid-item';
+                el.innerHTML = `
+                    <img src="${s.favicon}" onerror="this.src='https://api.dicebear.com/7.x/identicon/svg?seed=${encodeURIComponent(s.name)}'">
+                    <div>${s.name}</div>
+                `;
+                el.onclick = () => playStation(s);
+                grid.appendChild(el);
+            });
+
+            // Add new Load More button at the end
+            if (data.length >= 40) {
+                const btnContainer = document.createElement('div');
+                btnContainer.id = 'loadMoreBtnContainer';
+                btnContainer.style = 'grid-column:1/-1; padding:20px; text-align:center;';
+                btnContainer.innerHTML = `<button id="loadMoreBtn" class="tb-btn" style="padding:10px 30px; font-size:13px;">Load More Stations</button>`;
+                btnContainer.onclick = () => fetchStations(currentCountry, true);
+                grid.appendChild(btnContainer);
+            }
+        }
+
+        function playStation(s) {
+            document.getElementById('playerCard').style.display = 'flex';
+            document.getElementById('activeName').textContent = s.name;
+            document.getElementById('activeMeta').textContent = `${s.country} · ${s.tags.split(',')[0] || ''}`;
+            document.getElementById('activeLogo').src = s.favicon;
+
+            activeAudio.src = s.url_resolved || s.url;
+            activeAudio.play().then(() => {
+                isPlaying = true;
+                updatePlayBtn();
+                document.getElementById('vis').style.display = 'flex';
+            }).catch(err => {
+                alert("Station error: " + err.message);
+                document.getElementById('vis').style.display = 'none';
+            });
+        }
+
+        let isPlaying = false;
+        const playBtn = document.getElementById('playBtn');
+        function updatePlayBtn() {
+            playBtn.innerHTML = isPlaying ? '&#10074;&#10074;' : '&#9654;';
+        }
+
+        playBtn.onclick = () => {
+            if (activeAudio.paused) {
+                activeAudio.play();
+                isPlaying = true;
+                document.getElementById('vis').style.display = 'flex';
+            } else {
+                activeAudio.pause();
+                isPlaying = false;
+                document.getElementById('vis').style.display = 'none';
+            }
+            updatePlayBtn();
+        };
+
+        document.getElementById('countrySearch').addEventListener('input', e => renderCountries(e.target.value));
+
+        fetchCountries();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flappy — Aero Edition</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: radial-gradient(ellipse at 50% 20%, #0a2040 0%, #050f20 50%, #020810 100%);
+    min-height:100vh; display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    font-family:'Exo 2',sans-serif; overflow:hidden;
+  }
+  body::before {
+    content:''; position:fixed; inset:0;
+    background:
+      radial-gradient(circle at 20% 60%, rgba(0,150,255,0.07) 0%, transparent 45%),
+      radial-gradient(circle at 80% 30%, rgba(100,200,255,0.05) 0%, transparent 40%),
+      radial-gradient(circle at 60% 85%, rgba(50,100,200,0.06) 0%, transparent 35%);
+    pointer-events:none;
+  }
+  .orb { position:fixed; border-radius:50%; filter:blur(65px); opacity:0.22; pointer-events:none; animation:drift 11s ease-in-out infinite alternate; }
+  .orb1 { width:380px; height:380px; background:radial-gradient(circle,#0066ff,transparent); top:-100px; right:-80px; }
+  .orb2 { width:260px; height:260px; background:radial-gradient(circle,#00aaff,transparent); bottom:-80px; left:-60px; animation-delay:-6s; }
+  @keyframes drift { from{transform:translateY(0);} to{transform:translateY(28px);} }
+
+  h1 {
+    font-family:'Orbitron',sans-serif; font-size:2rem; font-weight:900; color:transparent;
+    background:linear-gradient(180deg,#ffffff 0%,#88ddff 50%,#0099ff 100%);
+    -webkit-background-clip:text; background-clip:text; letter-spacing:0.3em;
+    filter:drop-shadow(0 0 20px rgba(0,150,255,0.6)); margin-bottom:1rem;
+  }
+
+  .hud-bar {
+    display:flex; gap:2rem; margin-bottom:0.8rem;
+  }
+  .hud-panel {
+    background:linear-gradient(145deg,rgba(255,255,255,0.1),rgba(255,255,255,0.03));
+    border:1px solid rgba(80,180,255,0.25); border-radius:14px; padding:0.5rem 1.5rem;
+    text-align:center; backdrop-filter:blur(12px);
+    box-shadow:0 4px 20px rgba(0,100,200,0.2),inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+  .hud-label { font-size:0.6rem; letter-spacing:0.2em; color:rgba(100,200,255,0.6); text-transform:uppercase; }
+  .hud-value { font-family:'Orbitron',sans-serif; font-size:2rem; font-weight:700; color:#fff; text-shadow:0 0 15px rgba(0,180,255,0.8); }
+
+  .canvas-wrapper {
+    position:relative; border-radius:20px; padding:3px;
+    background:linear-gradient(135deg,rgba(80,180,255,0.35),rgba(0,60,150,0.2),rgba(80,180,255,0.25));
+    box-shadow:0 0 0 1px rgba(0,150,255,0.2),0 20px 60px rgba(0,80,200,0.4);
+  }
+  .canvas-wrapper::before {
+    content:''; position:absolute; top:3px; left:3px; right:3px; height:40%;
+    background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,transparent 100%);
+    border-radius:17px 17px 50% 50%; pointer-events:none; z-index:2;
+  }
+  canvas { display:block; border-radius:17px; }
+  .hint { font-size:0.7rem; color:rgba(100,190,255,0.45); letter-spacing:0.1em; text-align:center; margin-top:0.8rem; }
+
+  .overlay {
+    position:absolute; inset:0; border-radius:17px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    background:rgba(2,8,20,0.8); backdrop-filter:blur(6px); z-index:10; gap:1rem;
+  }
+  .overlay-title { font-family:'Orbitron',sans-serif; font-size:1.8rem; font-weight:900; color:#fff; text-shadow:0 0 30px rgba(0,180,255,0.9); letter-spacing:0.15em; }
+  .overlay-sub { font-size:0.85rem; color:rgba(120,210,255,0.8); letter-spacing:0.1em; }
+  .btn {
+    font-family:'Exo 2',sans-serif; font-size:0.8rem; font-weight:600;
+    letter-spacing:0.15em; text-transform:uppercase; padding:0.6rem 2rem;
+    border:none; border-radius:50px; cursor:pointer; position:relative; overflow:hidden; transition:all 0.2s;
+    background:linear-gradient(145deg,rgba(0,150,255,0.75),rgba(0,70,180,0.55));
+    color:#fff; border:1px solid rgba(80,200,255,0.45);
+    box-shadow:0 4px 15px rgba(0,100,200,0.35),inset 0 1px 0 rgba(255,255,255,0.2);
+  }
+  .btn::before { content:''; position:absolute; top:0; left:0; right:0; height:50%; background:linear-gradient(180deg,rgba(255,255,255,0.15),transparent); border-radius:50px; pointer-events:none; }
+  .btn:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(0,150,255,0.5); }
+</style>
+</head>
+<body>
+<div class="orb orb1"></div><div class="orb orb2"></div>
+<h1>FLAPPY</h1>
+<div class="hud-bar">
+  <div class="hud-panel"><div class="hud-label">Score</div><div class="hud-value" id="score">0</div></div>
+  <div class="hud-panel"><div class="hud-label">Best</div><div class="hud-value" id="best">0</div></div>
+</div>
+<div class="canvas-wrapper">
+  <canvas id="c" width="400" height="550"></canvas>
+  <div class="overlay" id="overlay">
+    <div class="overlay-title">FLAPPY</div>
+    <div class="overlay-sub">Tap, Click, or Space to flap</div>
+    <button class="btn" onclick="startGame()">START GAME</button>
+  </div>
+</div>
+<div class="hint">CLICK / SPACE / TAP — Flap</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const W = canvas.width, H = canvas.height;
+
+// Sky gradient bg
+function drawSky() {
+  const grd = ctx.createLinearGradient(0,0,0,H);
+  grd.addColorStop(0,'#0a2040');
+  grd.addColorStop(0.5,'#0d3060');
+  grd.addColorStop(1,'#051525');
+  ctx.fillStyle=grd; ctx.fillRect(0,0,W,H);
+  // stars
+  ctx.fillStyle='rgba(200,230,255,0.6)';
+  for (const s of stars) {
+    ctx.globalAlpha=s.bright*(0.5+0.5*Math.sin(Date.now()/1000*s.twinkle));
+    ctx.fillRect(s.x,s.y,s.size,s.size);
+  }
+  ctx.globalAlpha=1;
+  // cloud wisps
+  for (const cl of clouds) {
+    ctx.fillStyle=`rgba(80,160,255,${cl.alpha})`;
+    ctx.beginPath(); ctx.ellipse(cl.x,cl.y,cl.rx,cl.ry,0,0,Math.PI*2); ctx.fill();
+  }
+}
+
+let stars=[], clouds=[];
+for (let i=0;i<60;i++) stars.push({x:Math.random()*W,y:Math.random()*H*0.7,size:1+Math.random()*1.5,bright:Math.random(),twinkle:0.5+Math.random()*2});
+for (let i=0;i<5;i++) clouds.push({x:Math.random()*W,y:60+Math.random()*120,rx:60+Math.random()*80,ry:15+Math.random()*20,alpha:0.06+Math.random()*0.06,speed:0.2+Math.random()*0.3});
+
+const GRAVITY = 0.38, FLAP = -7.5;
+const PIPE_W = 54, GAP = 170, PIPE_SPEED = 2.8;
+let bird, pipes, score, best=0, running, animId, particles=[];
+let cloudOff=0;
+
+function startGame() {
+  document.getElementById('overlay').style.display='none';
+  bird = {x:80,y:H/2,vy:0,angle:0,flapAnim:0};
+  pipes=[]; score=0; running=true;
+  updateHUD();
+  if(animId) cancelAnimationFrame(animId);
+  loop();
+}
+
+function flap() { if(running) { bird.vy=FLAP; bird.flapAnim=1; } }
+canvas.addEventListener('click',flap);
+window.addEventListener('keydown',e=>{ if(e.code==='Space'){flap();e.preventDefault();} });
+canvas.addEventListener('touchstart',e=>{flap();e.preventDefault();});
+
+function updateHUD() {
+  document.getElementById('score').textContent=score;
+  document.getElementById('best').textContent=best;
+}
+
+function spawnPipe() {
+  const minH=80, maxH=H-GAP-80;
+  const topH=minH+Math.random()*(maxH-minH);
+  pipes.push({x:W+10,topH,passed:false});
+}
+
+function drawBird() {
+  ctx.save();
+  ctx.translate(bird.x,bird.y);
+  bird.angle=Math.max(-0.5,Math.min(Math.PI*0.4,bird.angle+bird.vy*0.03));
+  ctx.rotate(bird.angle);
+
+  // body
+  const brd = ctx.createRadialGradient(-4,-4,2,0,0,16);
+  brd.addColorStop(0,'#ffffff');
+  brd.addColorStop(0.3,'#88ddff');
+  brd.addColorStop(1,'#0077cc');
+  ctx.shadowColor='#44bbff'; ctx.shadowBlur=18;
+  ctx.beginPath(); ctx.ellipse(0,0,15,12,0,0,Math.PI*2); ctx.fillStyle=brd; ctx.fill();
+  ctx.shadowBlur=0;
+
+  // wing
+  const wingY = -5+Math.sin(Date.now()/80)*5*(bird.flapAnim);
+  bird.flapAnim*=0.85;
+  ctx.fillStyle='rgba(80,200,255,0.75)';
+  ctx.beginPath(); ctx.ellipse(-3,wingY,10,5,0.3,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='rgba(180,240,255,0.4)';
+  ctx.beginPath(); ctx.ellipse(-3,wingY-1,8,3,0.3,0,Math.PI*2); ctx.fill();
+
+  // eye
+  ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(8,-4,4,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#003366'; ctx.beginPath(); ctx.arc(9,-4,2.5,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,0.8)'; ctx.beginPath(); ctx.arc(9.5,-5,1,0,Math.PI*2); ctx.fill();
+
+  // beak
+  ctx.fillStyle='#ffcc00';
+  ctx.beginPath(); ctx.moveTo(14,-2); ctx.lineTo(20,0); ctx.lineTo(14,2); ctx.closePath(); ctx.fill();
+
+  // gloss
+  ctx.fillStyle='rgba(255,255,255,0.2)';
+  ctx.beginPath(); ctx.ellipse(-2,-5,9,4,0,0,Math.PI*2); ctx.fill();
+
+  ctx.restore();
+}
+
+function drawPipe(p) {
+  const drawHalf = (x,y,h,isTop) => {
+    const grd = ctx.createLinearGradient(x,0,x+PIPE_W,0);
+    grd.addColorStop(0,'rgba(0,160,80,0.85)');
+    grd.addColorStop(0.35,'rgba(80,230,140,0.95)');
+    grd.addColorStop(0.65,'rgba(0,200,100,0.95)');
+    grd.addColorStop(1,'rgba(0,100,50,0.8)');
+    ctx.shadowColor='#00ee77'; ctx.shadowBlur=14;
+    ctx.fillStyle=grd; ctx.beginPath(); ctx.roundRect(x,y,PIPE_W,h,isTop?[0,0,6,6]:[6,6,0,0]); ctx.fill();
+    ctx.shadowBlur=0;
+    // gloss stripe
+    ctx.fillStyle='rgba(255,255,255,0.12)';
+    ctx.fillRect(x+8,y,12,h);
+    // cap
+    const capH=18, capX=x-5, capW=PIPE_W+10;
+    const capY=isTop?y+h-capH:y;
+    const capGrd=ctx.createLinearGradient(capX,0,capX+capW,0);
+    capGrd.addColorStop(0,'rgba(0,180,90,0.9)');
+    capGrd.addColorStop(0.4,'rgba(120,255,160,0.95)');
+    capGrd.addColorStop(1,'rgba(0,120,60,0.85)');
+    ctx.shadowColor='#00ff88'; ctx.shadowBlur=10;
+    ctx.fillStyle=capGrd; ctx.beginPath(); ctx.roundRect(capX,capY,capW,capH,isTop?[0,0,7,7]:[7,7,0,0]); ctx.fill();
+    ctx.shadowBlur=0;
+    ctx.fillStyle='rgba(255,255,255,0.15)'; ctx.fillRect(capX+6,capY,15,capH);
+  };
+  drawHalf(p.x,0,p.topH,true);
+  drawHalf(p.x,p.topH+GAP,H-p.topH-GAP,false);
+}
+
+function spawnParticles(x,y) {
+  for(let i=0;i<10;i++) {
+    const a=Math.random()*Math.PI*2,s=2+Math.random()*4;
+    particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,color:`hsl(${180+Math.random()*40},100%,${60+Math.random()*30}%)`,size:2+Math.random()*3});
+  }
+}
+
+let frameCount=0;
+function loop() {
+  cloudOff+=0.3;
+  for(const cl of clouds) { cl.x-=cl.speed; if(cl.x+cl.rx<0) cl.x=W+cl.rx; }
+  drawSky();
+
+  // Grid overlay
+  ctx.strokeStyle='rgba(0,80,160,0.05)'; ctx.lineWidth=1;
+  for(let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+  frameCount++;
+  if(frameCount%90===0) spawnPipe();
+
+  // Move pipes
+  for(const p of pipes) {
+    p.x-=PIPE_SPEED;
+    if(!p.passed && p.x+PIPE_W<bird.x){p.passed=true;score++;if(score>best)best=score;updateHUD();spawnParticles(bird.x,bird.y);}
+  }
+  pipes=pipes.filter(p=>p.x+PIPE_W>0);
+  pipes.forEach(drawPipe);
+
+  // Bird physics
+  bird.vy+=GRAVITY;
+  bird.y+=bird.vy;
+
+  // Ground
+  const grdGrd=ctx.createLinearGradient(0,H-30,0,H);
+  grdGrd.addColorStop(0,'rgba(0,80,40,0.9)'); grdGrd.addColorStop(1,'rgba(0,40,20,0.95)');
+  ctx.fillStyle=grdGrd; ctx.fillRect(0,H-28,W,28);
+  ctx.fillStyle='rgba(0,180,80,0.4)'; ctx.fillRect(0,H-30,W,4);
+
+  // Collision
+  const birdBox={x:bird.x-12,y:bird.y-10,w:26,h:20};
+  let dead=false;
+  if(bird.y+12>=H-28||bird.y-12<0) dead=true;
+  for(const p of pipes) {
+    if(birdBox.x+birdBox.w>p.x+6 && birdBox.x<p.x+PIPE_W-6 &&
+       (birdBox.y<p.topH-6||birdBox.y+birdBox.h>p.topH+GAP+6)) { dead=true; break; }
+  }
+
+  // Particles
+  particles=particles.filter(p=>p.life>0);
+  for(const p of particles){
+    ctx.globalAlpha=p.life; ctx.fillStyle=p.color; ctx.shadowColor=p.color; ctx.shadowBlur=6;
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2); ctx.fill();
+    p.x+=p.vx; p.y+=p.vy; p.vx*=0.9; p.vy*=0.9; p.life-=0.05;
+  }
+  ctx.globalAlpha=1; ctx.shadowBlur=0;
+
+  drawBird();
+
+  if(dead) { gameOver(); return; }
+  animId=requestAnimationFrame(loop);
+}
+
+function gameOver() {
+  running=false; cancelAnimationFrame(animId);
+  const ov=document.getElementById('overlay');
+  ov.innerHTML=`<div class="overlay-title">OOPS!</div><div class="overlay-sub">Score: ${score} &nbsp;|&nbsp; Best: ${best}</div><button class="btn" onclick="startGame()">TRY AGAIN</button>`;
+  ov.style.display='flex';
+}
+</script>
+</body>
+</html>

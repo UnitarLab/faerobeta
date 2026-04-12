@@ -1,0 +1,87 @@
+/* AeroNet OS — Shared Cursors */
+
+[data-cursor-set="frutiger-aero"],
+[data-cursor-set="frutiger-aero"] * {
+    cursor: url('/assets/mouse/FrutigerAero_Default.cur'), auto !important;
+}
+
+[data-cursor-set="frutiger-aero"] [data-cursor-type="default"],
+[data-cursor-set="frutiger-aero"] [data-cursor-type="default"] *,
+[data-cursor-set="frutiger-aero"] a,
+[data-cursor-set="frutiger-aero"] button,
+[data-cursor-set="frutiger-aero"] .clickable,
+[data-cursor-set="frutiger-aero"] [role="button"],
+[data-cursor-set="frutiger-aero"] .win-btn,
+[data-cursor-set="frutiger-aero"] .btn,
+[data-cursor-set="frutiger-aero"] .btn-outline,
+[data-cursor-set="frutiger-aero"] .nav-btn,
+[data-cursor-set="frutiger-aero"] .item {
+    cursor: url('/assets/mouse/FrutigerAero_Default.cur'), auto !important;
+}
+
+[data-cursor-set="frutiger-aero"] [data-cursor-type="pointer"],
+[data-cursor-set="frutiger-aero"] [data-cursor-type="pointer"] *,
+[data-cursor-set="frutiger-aero"] a:hover,
+[data-cursor-set="frutiger-aero"] button:hover {
+    cursor: url('/assets/mouse/FrutigerAero_Hover.cur'), pointer !important;
+}
+
+[data-cursor-set="frutiger-aero"] [data-cursor-type="help"],
+[data-cursor-set="frutiger-aero"] [data-cursor-type="help"] * {
+    cursor: url('/assets/mouse/FrutigerAero_Help_Select.cur'), help !important;
+}
+
+[data-cursor-set="frutiger-aero"] [data-cursor-type="text"],
+[data-cursor-set="frutiger-aero"] [data-cursor-type="text"] *,
+[data-cursor-set="frutiger-aero"] input[type="text"],
+[data-cursor-set="frutiger-aero"] input[type="search"],
+[data-cursor-set="frutiger-aero"] textarea,
+[data-cursor-set="frutiger-aero"] .editor {
+    cursor: url('/assets/mouse/FrutigerAero_Text_Select.cur'), text !important;
+}
+
+[data-cursor-set="frutiger-aero"] [data-cursor-type="move"],
+[data-cursor-set="frutiger-aero"] [data-cursor-type="move"] *,
+[data-cursor-set="frutiger-aero"] .win-titlebar {
+    cursor: url('/assets/mouse/FrutigerAero_Move.cur'), move !important;
+}
+
+[data-cursor-set="frutiger-aero"] [data-cursor-type="crosshair"],
+[data-cursor-set="frutiger-aero"] [data-cursor-type="crosshair"] * {
+    cursor: url('/assets/mouse/FrutigerAero_Cross.cur'), crosshair !important;
+}
+
+[data-cursor-set="frutiger-aero"] [data-cursor-type="alias"],
+[data-cursor-set="frutiger-aero"] [data-cursor-type="alias"] * {
+    cursor: url('/assets/mouse/FrutigerAero_Alt_Select.cur'), alias !important;
+}
+
+[data-cursor-set="frutiger-aero"] [data-cursor-type="not-allowed"],
+[data-cursor-set="frutiger-aero"] [data-cursor-type="not-allowed"] * {
+    cursor: url('/assets/mouse/FrutigerAero_Unavailable.cur'), not-allowed !important;
+}
+
+[data-cursor-set="frutiger-aero"] [data-cursor-type="ns-resize"],
+[data-cursor-set="frutiger-aero"] [data-cursor-type="ns-resize"] * {
+    cursor: url('/assets/mouse/FrutigerAero_Vertical.cur'), ns-resize !important;
+}
+
+[data-cursor-set="frutiger-aero"] [data-cursor-type="ew-resize"],
+[data-cursor-set="frutiger-aero"] [data-cursor-type="ew-resize"] * {
+    cursor: url('/assets/mouse/FrutigerAero_Horizontal.cur'), ew-resize !important;
+}
+
+[data-cursor-set="frutiger-aero"] [data-cursor-type="nwse-resize"],
+[data-cursor-set="frutiger-aero"] [data-cursor-type="nwse-resize"] * {
+    cursor: url('/assets/mouse/FrutigerAero_Diagonal_1.cur'), nwse-resize !important;
+}
+
+[data-cursor-set="frutiger-aero"] [data-cursor-type="nesw-resize"],
+[data-cursor-set="frutiger-aero"] [data-cursor-type="nesw-resize"] * {
+    cursor: url('/assets/mouse/FrutigerAero_Diagonal_2.cur'), nesw-resize !important;
+}
+
+[data-cursor-set="frutiger-aero"] [data-cursor-type="cell"],
+[data-cursor-set="frutiger-aero"] [data-cursor-type="cell"] * {
+    cursor: url('/assets/mouse/FrutigerAero_Pencil.cur'), cell !important;
+}

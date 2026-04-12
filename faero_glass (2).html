@@ -1,0 +1,3947 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="frutiger-aero">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>faero OS</title>
+  <link rel="icon" type="image/webp" href="favicon.webp">
+  <meta name="description" content="faero â€” A retro-internet social OS. Your desktop, your world.">
+  <style>
+    /* ============================================================
+   AERONET OS â€” THEME TOKENS
+   All themes defined as CSS custom properties on [data-theme]
+   ============================================================ */
+
+    /* â”€â”€ DEFAULT / FRUTIGER AERO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    :root,
+    [data-theme="frutiger-aero"] {
+      --theme-name: "Frutiger Aero";
+
+      /* Desktop */
+      --desk-bg: linear-gradient(160deg, #8ecae6 0%, #b8def0 30%, #cceeff 60%, #a8d8ea 100%);
+      --desk-wallpaper: url('../assets/wallpapers/aero.svg');
+
+      /* Taskbar */
+      --taskbar-bg: linear-gradient(180deg, rgba(120, 200, 255, 0.85) 0%, rgba(60, 140, 220, 0.92) 100%);
+      --taskbar-border: rgba(255, 255, 255, 0.6);
+      --taskbar-text: #fff;
+      --taskbar-btn-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.1) 100%);
+      --taskbar-btn-hover: rgba(255, 255, 255, 0.25);
+      --taskbar-height: 42px;
+
+      /* Window chrome */
+      --win-titlebar: linear-gradient(180deg, rgba(160, 220, 255, 0.95) 0%, rgba(80, 160, 230, 0.9) 100%);
+      --win-titlebar-border: rgba(255, 255, 255, 0.8);
+      --win-titlebar-text: #fff;
+      --win-body-bg: rgba(255, 255, 255, 0.82);
+      --win-border: rgba(255, 255, 255, 0.9);
+      --win-shadow: 0 12px 40px rgba(30, 100, 200, 0.25), 0 2px 8px rgba(30, 100, 200, 0.15);
+      --win-radius: 10px;
+      --win-titlebar-h: 32px;
+
+      /* Glass cards */
+      --glass-bg: linear-gradient(160deg, rgba(255, 255, 255, 0.82) 0%, rgba(220, 242, 255, 0.78) 100%);
+      --glass-border: rgba(255, 255, 255, 0.9);
+      --glass-shadow: 0 6px 24px rgba(80, 160, 220, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+
+      /* Accent / buttons */
+      --accent: #1a88d4;
+      --accent-grad: linear-gradient(180deg, #4ab8f4 0%, #1a88d4 100%);
+      --accent-text: #fff;
+      --accent-glow: rgba(26, 136, 212, 0.4);
+
+      /* Text */
+      --text-primary: #0a2a4a;
+      --text-secondary: #5a9ac0;
+      --text-muted: #7ab0d0;
+
+      /* Icons */
+      --icon-shadow: 0 4px 12px rgba(30, 100, 200, 0.3);
+
+      /* Start button */
+      --start-bg: linear-gradient(180deg, #54c4f0 0%, #1a78c4 100%);
+      --start-text: #fff;
+
+      /* Scrollbar */
+      --scroll-track: rgba(200, 230, 255, 0.4);
+      --scroll-thumb: linear-gradient(180deg, #80c8f4, #1a88d4);
+
+      /* App-specific orbs */
+      --orb1: rgba(120, 200, 255, 0.35);
+      --orb2: rgba(160, 220, 255, 0.3);
+    }
+
+    /* â”€â”€ WINDOWS XP LUNA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    [data-theme="xp-luna"] {
+      --theme-name: "Window XD";
+
+      --desk-bg: #3a6ea8;
+      --desk-wallpaper: url('../assets/wallpapers/xp.svg');
+
+      --taskbar-bg: linear-gradient(180deg, #245edc 0%, #1540c4 40%, #2456d4 100%);
+      --taskbar-border: #1a3ab8;
+      --taskbar-text: #fff;
+      --taskbar-btn-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.1) 100%);
+      --taskbar-btn-hover: rgba(255, 255, 255, 0.15);
+      --taskbar-height: 40px;
+
+      --win-titlebar: linear-gradient(180deg, #4a90e8 0%, #0058c4 80%, #0050b8 100%);
+      --win-titlebar-border: #0040a0;
+      --win-titlebar-text: #fff;
+      --win-body-bg: #ece9d8;
+      --win-border: #0058c4;
+      --win-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+      --win-radius: 8px 8px 0 0;
+      --win-titlebar-h: 28px;
+
+      --glass-bg: #ece9d8;
+      --glass-border: #aca899;
+      --glass-shadow: inset 0 0 0 1px #aca899;
+
+      --accent: #316ac5;
+      --accent-grad: linear-gradient(180deg, #4a80d4 0%, #1a50c0 100%);
+      --accent-text: #fff;
+      --accent-glow: rgba(49, 106, 197, 0.4);
+
+      --text-primary: #000;
+      --text-secondary: #316ac5;
+      --text-muted: #808080;
+
+      --icon-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+      --start-bg: linear-gradient(180deg, #5dc44a 0%, #3ca428 100%);
+      --start-text: #fff;
+
+      --scroll-track: #d4d0c8;
+      --scroll-thumb: linear-gradient(180deg, #aaa, #888);
+      --orb1: rgba(49, 106, 197, 0.1);
+      --orb2: rgba(49, 106, 197, 0.05);
+    }
+
+    /* â”€â”€ Y2K / CHROME â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    [data-theme="y2k"] {
+      --theme-name: "Y2K Chrome";
+
+      --desk-bg: #0a0a1a;
+      --desk-wallpaper: url('../assets/wallpapers/y2k.svg');
+
+      --taskbar-bg: linear-gradient(180deg, #2a0050 0%, #1a003a 100%);
+      --taskbar-border: #ff00ff44;
+      --taskbar-text: #ff88ff;
+      --taskbar-btn-bg: linear-gradient(180deg, rgba(255, 0, 255, 0.15) 0%, rgba(255, 0, 255, 0.05) 100%);
+      --taskbar-btn-hover: rgba(255, 0, 255, 0.2);
+      --taskbar-height: 44px;
+
+      --win-titlebar: linear-gradient(90deg, #ff00ff 0%, #8800ff 50%, #0088ff 100%);
+      --win-titlebar-border: #ff00ff;
+      --win-titlebar-text: #fff;
+      --win-body-bg: #0d001a;
+      --win-border: #ff00ff66;
+      --win-shadow: 0 0 30px rgba(255, 0, 255, 0.4), 0 8px 30px rgba(0, 0, 0, 0.8);
+      --win-radius: 4px;
+      --win-titlebar-h: 30px;
+
+      --glass-bg: rgba(20, 0, 40, 0.85);
+      --glass-border: rgba(255, 0, 255, 0.4);
+      --glass-shadow: 0 0 20px rgba(255, 0, 255, 0.2), inset 0 1px 0 rgba(255, 0, 255, 0.3);
+
+      --accent: #ff00ff;
+      --accent-grad: linear-gradient(180deg, #ff44ff 0%, #cc00cc 100%);
+      --accent-text: #fff;
+      --accent-glow: rgba(255, 0, 255, 0.6);
+
+      --text-primary: #ffffff;
+      --text-secondary: #ffbbff;
+      --text-muted: #aa44aa;
+
+      --icon-shadow: 0 0 12px rgba(255, 0, 255, 0.6);
+      --start-bg: linear-gradient(180deg, #ff44ff 0%, #aa00cc 100%);
+      --start-text: #fff;
+
+      --scroll-track: rgba(255, 0, 255, 0.1);
+      --scroll-thumb: linear-gradient(180deg, #ff00ff, #8800ff);
+      --orb1: rgba(255, 0, 255, 0.2);
+      --orb2: rgba(0, 136, 255, 0.15);
+    }
+
+    /* â”€â”€ DARK MATTER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    [data-theme="dark-matter"] {
+      --theme-name: "Shadow Realm";
+
+      --desk-bg: #080810;
+      --desk-wallpaper: url('../assets/wallpapers/dark.svg');
+
+      --taskbar-bg: rgba(10, 10, 20, 0.95);
+      --taskbar-border: rgba(100, 100, 255, 0.2);
+      --taskbar-text: #a0a0ff;
+      --taskbar-btn-bg: rgba(60, 60, 120, 0.3);
+      --taskbar-btn-hover: rgba(80, 80, 180, 0.4);
+      --taskbar-height: 42px;
+
+      --win-titlebar: linear-gradient(180deg, #1a1a3a 0%, #0d0d20 100%);
+      --win-titlebar-border: rgba(100, 100, 255, 0.3);
+      --win-titlebar-text: #c0c0ff;
+      --win-body-bg: rgba(10, 10, 20, 0.95);
+      --win-border: rgba(80, 80, 200, 0.4);
+      --win-shadow: 0 8px 40px rgba(60, 60, 255, 0.25), 0 2px 8px rgba(0, 0, 0, 0.8);
+      --win-radius: 8px;
+      --win-titlebar-h: 32px;
+
+      --glass-bg: rgba(15, 15, 30, 0.88);
+      --glass-border: rgba(80, 80, 200, 0.35);
+      --glass-shadow: 0 4px 20px rgba(60, 60, 255, 0.15), inset 0 1px 0 rgba(100, 100, 255, 0.2);
+
+      --accent: #6060ff;
+      --accent-grad: linear-gradient(180deg, #8888ff 0%, #4040cc 100%);
+      --accent-text: #fff;
+      --accent-glow: rgba(96, 96, 255, 0.5);
+
+      --text-primary: #ddddf8;
+      --text-secondary: #8080d0;
+      --text-muted: #5050a0;
+
+      --icon-shadow: 0 0 16px rgba(96, 96, 255, 0.4);
+      --start-bg: linear-gradient(180deg, #6060ff 0%, #3030cc 100%);
+      --start-text: #fff;
+
+      --scroll-track: rgba(60, 60, 120, 0.3);
+      --scroll-thumb: linear-gradient(180deg, #6060ff, #3030aa);
+      --orb1: rgba(96, 96, 255, 0.15);
+      --orb2: rgba(60, 60, 200, 0.1);
+    }
+
+    /* â”€â”€ GEOCITIES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    [data-theme="geocities"] {
+      --theme-name: "Geocountries";
+
+      --desk-bg: #000080;
+      --desk-wallpaper: url('../assets/wallpapers/geocities.svg');
+
+      --taskbar-bg: #c0c0c0;
+      --taskbar-border: #808080;
+      --taskbar-text: #000;
+      --taskbar-btn-bg: linear-gradient(180deg, #dfdfdf 0%, #aaaaaa 100%);
+      --taskbar-btn-hover: #e0e0e0;
+      --taskbar-height: 38px;
+
+      --win-titlebar: linear-gradient(90deg, #000080 0%, #1084d0 100%);
+      --win-titlebar-border: #000080;
+      --win-titlebar-text: #fff;
+      --win-body-bg: #c0c0c0;
+      --win-border: #808080;
+      --win-shadow: 2px 2px 0 #000;
+      --win-radius: 0px;
+      --win-titlebar-h: 24px;
+
+      --glass-bg: #c0c0c0;
+      --glass-border: #808080;
+      --glass-shadow: inset -1px -1px 0 #fff, inset 1px 1px 0 #808080;
+
+      --accent: #000080;
+      --accent-grad: linear-gradient(180deg, #0000cc 0%, #000080 100%);
+      --accent-text: #fff;
+      --accent-glow: rgba(0, 0, 128, 0.5);
+
+      --text-primary: #000;
+      --text-secondary: #000080;
+      --text-muted: #808080;
+
+      --icon-shadow: 1px 1px 0 #808080;
+      --start-bg: #c0c0c0;
+      --start-text: #000;
+
+      --scroll-track: #c0c0c0;
+      --scroll-thumb: linear-gradient(180deg, #d0d0d0, #a0a0a0);
+      --orb1: rgba(0, 0, 128, 0.05);
+      --orb2: rgba(0, 0, 128, 0.03);
+    }
+
+    /* â”€â”€ SHARED UTILITY CLASSES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    .theme-accent-bg {
+      background: var(--accent-grad);
+    }
+
+    .theme-glass {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+    }
+  </style>
+  <style>
+    #boot-screen {
+      display: none !important;
+      position: fixed;
+      inset: 0;
+      z-index: 999999;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 1s ease;
+    }
+
+    #boot-screen.gone {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(1.1);
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&family=VT323&display=swap');
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Nunito', sans-serif;
+      user-select: none;
+    }
+
+    /* â”€â”€ DESKTOP â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    #desktop {
+      position: fixed;
+      inset: 0;
+      background: var(--desk-bg, #3a6ea8);
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    #wallpaper-layer {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: background-image 0.5s ease, background-color 0.5s ease;
+      z-index: 0;
+    }
+
+    #desktop-icons-container {
+      position: absolute;
+      inset: 0;
+      bottom: var(--taskbar-height, 42px);
+      z-index: 2;
+      padding: 12px;
+    }
+
+    .desktop-icon {
+      position: absolute;
+      width: 72px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 6px;
+      transition: background 0.1s;
+    }
+
+    .desktop-icon:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .desktop-icon.selected {
+      background: rgba(255, 255, 255, 0.25);
+      outline: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .desk-icon-img {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      filter: drop-shadow(var(--icon-shadow, 0 2px 6px rgba(0, 0, 0, 0.3)));
+      pointer-events: none;
+    }
+
+    .desk-icon-img svg {
+      width: 48px;
+      height: 48px;
+    }
+
+    .desk-icon-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      text-align: center;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7), 0 0 6px rgba(0, 0, 0, 0.5);
+      line-height: 1.2;
+      word-break: break-word;
+      pointer-events: none;
+      max-width: 68px;
+    }
+
+    /* â”€â”€ ORBS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(50px);
+    }
+
+    #orb1 {
+      width: 400px;
+      height: 400px;
+      top: -100px;
+      left: -100px;
+      background: var(--orb1);
+      animation: orbDrift 9s ease-in-out infinite alternate;
+    }
+
+    #orb2 {
+      width: 280px;
+      height: 280px;
+      bottom: 60px;
+      right: -60px;
+      background: var(--orb2);
+      animation: orbDrift 12s ease-in-out infinite alternate-reverse;
+    }
+
+    /* â”€â”€ WINDOWS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    #windows-container {
+      position: fixed;
+      inset: 0;
+      bottom: var(--taskbar-height, 42px);
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .os-window {
+      position: absolute;
+      min-width: 300px;
+      min-height: 200px;
+      background: var(--win-body-bg, #fff);
+      border: 1px solid var(--win-border, rgba(255, 255, 255, 0.9));
+      border-radius: var(--win-radius, 10px);
+      box-shadow: var(--win-shadow);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      pointer-events: all;
+      transition: box-shadow 0.15s ease;
+    }
+
+    .os-window.focused {
+      box-shadow: var(--win-shadow), 0 0 0 1px var(--accent, #1a88d4);
+    }
+
+    .os-window.maximized {
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: calc(100vh - var(--taskbar-height, 42px)) !important;
+      border-radius: 0 !important;
+    }
+
+    /* Title bar */
+    .win-titlebar {
+      height: var(--win-titlebar-h, 32px);
+      background: var(--win-titlebar);
+      border-bottom: 1px solid var(--win-titlebar-border, rgba(255, 255, 255, 0.5));
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      gap: 8px;
+      cursor: move;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .win-titlebar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 48%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
+      pointer-events: none;
+    }
+
+    .win-icon {
+      font-size: 14px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .win-icon-entity {
+      font-size: 16px;
+      line-height: 1;
+      display: block;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+    }
+
+    .win-title {
+      flex: 1;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--win-titlebar-text, #fff);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Window controls */
+    .win-controls {
+      display: flex;
+      gap: 4px;
+      flex-shrink: 0;
+      align-items: center;
+    }
+
+    .win-btn {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      font-size: 9px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(0, 0, 0, 0.6);
+      transition: transform 0.1s, filter 0.1s;
+      position: relative;
+    }
+
+    .win-btn:hover {
+      transform: scale(1.15);
+      filter: brightness(1.15);
+    }
+
+    .win-btn.close {
+      background: linear-gradient(180deg, #ff6868, #e02020);
+    }
+
+    .win-btn.minimize {
+      background: linear-gradient(180deg, #ffde59, #e0a800);
+    }
+
+    .win-btn.maximize {
+      background: linear-gradient(180deg, #56d364, #28a428);
+    }
+
+    /* Window body */
+    .win-body {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .win-body iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* Resize handle */
+    .win-resize {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 16px;
+      height: 16px;
+      cursor: se-resize;
+      z-index: 1;
+    }
+
+    .win-resize::after {
+      content: '';
+      position: absolute;
+      bottom: 3px;
+      right: 3px;
+      width: 10px;
+      height: 10px;
+      border-right: 2px solid var(--win-titlebar-text, rgba(255, 255, 255, 0.5));
+      border-bottom: 2px solid var(--win-titlebar-text, rgba(255, 255, 255, 0.5));
+      opacity: 0.5;
+    }
+
+    /* â”€â”€ TASKBAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    #taskbar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: var(--taskbar-height, 42px);
+      background: var(--taskbar-bg);
+      border-top: 1px solid var(--taskbar-border);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 8px;
+      z-index: 9000;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      transition: opacity 0.3s;
+    }
+
+    body[data-taskbar-pos="top"] #taskbar {
+      top: 0;
+      bottom: auto;
+      border-top: none;
+      border-bottom: 1px solid var(--taskbar-border);
+    }
+
+    body[data-taskbar-pos="top"] #desktop-icons-container {
+      top: var(--taskbar-height, 42px);
+      bottom: 0;
+    }
+
+    body[data-taskbar-pos="top"] #start-menu {
+      top: var(--taskbar-height, 42px);
+      bottom: auto;
+      border-radius: 0 0 10px 10px;
+    }
+
+    #taskbar::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Start button */
+    #start-btn {
+      height: 30px;
+      padding: 0 14px;
+      background: var(--start-bg);
+      border: none;
+      border-radius: 4px 14px 14px 4px;
+      color: var(--start-text);
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      transition: filter 0.1s;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    #start-btn:hover {
+      filter: brightness(1.12);
+    }
+
+    #start-btn:active {
+      filter: brightness(0.9);
+    }
+
+    /* Taskbar divider */
+    .tb-divider {
+      width: 1px;
+      height: 24px;
+      background: var(--taskbar-border);
+      flex-shrink: 0;
+      opacity: 0.5;
+    }
+
+    /* Running apps */
+    #taskbar-apps {
+      flex: 1;
+      display: flex;
+      gap: 4px;
+      overflow: hidden;
+      align-items: center;
+    }
+
+    .taskbar-app-btn {
+      height: 28px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 10px;
+      background: var(--taskbar-btn-bg);
+      border: 1px solid var(--taskbar-border);
+      border-radius: 4px;
+      color: var(--taskbar-text);
+      font-family: 'Nunito', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      max-width: 160px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      transition: background 0.1s;
+      flex-shrink: 0;
+    }
+
+    .taskbar-app-btn.active {
+      background: rgba(255, 255, 255, 0.25);
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    /* System tray */
+    #sys-tray {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+      padding: 0 8px;
+    }
+
+    .tray-icon {
+      font-size: 14px;
+      color: var(--taskbar-text);
+      cursor: pointer;
+      opacity: 0.85;
+      transition: opacity 0.1s;
+    }
+
+    .tray-icon:hover {
+      opacity: 1;
+    }
+
+    #clock {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--taskbar-text);
+      text-align: right;
+      line-height: 1.3;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    /* â”€â”€ START MENU â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    #start-menu {
+      position: fixed;
+      bottom: var(--taskbar-height, 42px);
+      left: 0;
+      width: 280px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--win-shadow);
+      border-radius: 10px 10px 0 0;
+      z-index: 8999;
+      display: none;
+      overflow: hidden;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    #start-menu.open {
+      display: block;
+    }
+
+    .start-menu-header {
+      background: var(--win-titlebar);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .start-av {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent-grad);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .start-username {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--win-titlebar-text);
+    }
+
+    .start-tagline {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .start-menu-apps {
+      padding: 8px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+    }
+
+    .sm-app-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-primary);
+      transition: background 0.1s;
+    }
+
+    .sm-app-item:hover {
+      background: var(--taskbar-btn-hover);
+    }
+
+    .sm-app-icon {
+      font-size: 20px;
+    }
+
+    .start-menu-footer {
+      border-top: 1px solid var(--glass-border);
+      padding: 8px;
+      display: flex;
+      gap: 4px;
+    }
+
+    .sm-footer-btn {
+      flex: 1;
+      padding: 8px;
+      border-radius: 6px;
+      background: none;
+      border: 1px solid var(--glass-border);
+      color: var(--text-secondary);
+      font-family: 'Nunito', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+
+    .sm-footer-btn:hover {
+      background: var(--taskbar-btn-hover);
+    }
+
+    /* â”€â”€ CONTEXT MENU â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    #context-menu {
+      position: fixed;
+      z-index: 99000;
+      min-width: 180px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      box-shadow: var(--win-shadow);
+      padding: 4px;
+      display: none;
+    }
+
+    #context-menu.open {
+      display: block;
+    }
+
+    .ctx-item {
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-primary);
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.1s;
+    }
+
+    .ctx-item:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .ctx-sep {
+      height: 1px;
+      background: var(--glass-border);
+      margin: 3px 8px;
+    }
+
+    /* â”€â”€ TOAST NOTIFICATIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    #toast-container {
+      position: fixed;
+      bottom: calc(var(--taskbar-height, 42px) + 12px);
+      right: 12px;
+      z-index: 99001;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .toast {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      padding: 10px 16px;
+      box-shadow: var(--win-shadow);
+      max-width: 280px;
+      font-size: 12px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toast-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    /* â”€â”€ SELECTION BOX â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    #select-box {
+      position: fixed;
+      border: 1px solid var(--accent);
+      background: rgba(26, 136, 212, 0.1);
+      pointer-events: none;
+      display: none;
+      z-index: 5;
+    }
+
+    /* â”€â”€ BUTTONS GLOBAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 16px;
+      background: var(--accent-grad);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 20px;
+      color: var(--accent-text, #fff);
+      font-family: 'Nunito', sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 3px 10px var(--accent-glow);
+      transition: filter 0.1s, transform 0.1s;
+    }
+
+    .btn:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      filter: brightness(0.9);
+      transform: translateY(0);
+    }
+
+    .btn-ghost {
+      background: var(--glass-bg);
+      border-color: var(--glass-border);
+      color: var(--text-primary);
+      box-shadow: var(--glass-shadow);
+    }
+
+    /* â”€â”€ INPUTS GLOBAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    .inp {
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    #webamp,
+    #webamp-app,
+    .webamp-app,
+    #webamp-os-root,
+    [id^="webamp"] {
+      background: transparent !important;
+      background-color: transparent !important;
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999999 !important;
+    }
+
+    /* Ensure Webamp windows and their contents are clickable */
+    #webamp *,
+    #webamp-app *,
+    .webamp-app *,
+    #webamp-os-root * {
+      pointer-events: auto;
+    }
+
+    /* Fix for Webamp context menus which are sometimes appended to body */
+    [class*="webamp-context-menu"],
+    #webamp-context-menu,
+    .webamp-context-menu {
+      z-index: 1000000 !important;
+      pointer-events: auto !important;
+      position: fixed !important;
+    }
+
+    /* â”€â”€ CUSTOM CURSORS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    [data-cursor-set="frutiger-aero"],
+    [data-cursor-set="frutiger-aero"] * {
+      cursor: url('/mouse/FrutigerAero_Default.cur'), auto !important;
+    }
+
+    [data-cursor-set="frutiger-aero"] a,
+    [data-cursor-set="frutiger-aero"] button,
+    [data-cursor-set="frutiger-aero"] .clickable,
+    [data-cursor-set="frutiger-aero"] [role="button"],
+    [data-cursor-set="frutiger-aero"] .win-btn,
+    [data-cursor-set="frutiger-aero"] .start-btn,
+    [data-cursor-set="frutiger-aero"] .desktop-icon,
+    [data-cursor-set="frutiger-aero"] .taskbar-app-btn,
+    [data-cursor-set="frutiger-aero"] .sm-app-item,
+    [data-cursor-set="frutiger-aero"] .ctx-item {
+      cursor: url('/assets/mouse/FrutigerAero_Hover.cur'), pointer !important;
+    }
+
+    [data-cursor-set="frutiger-aero"] [data-cursor-type="help"],
+    [data-cursor-set="frutiger-aero"] [data-cursor-type="help"] * {
+      cursor: url('/assets/mouse/FrutigerAero_Help_Select.cur'), help !important;
+    }
+
+    [data-cursor-set="frutiger-aero"] [data-cursor-type="text"],
+    [data-cursor-set="frutiger-aero"] [data-cursor-type="text"] *,
+    [data-cursor-set="frutiger-aero"] input[type="text"],
+    [data-cursor-set="frutiger-aero"] input[type="search"],
+    [data-cursor-set="frutiger-aero"] textarea,
+    [data-cursor-set="frutiger-aero"] .editor {
+      cursor: url('/assets/mouse/FrutigerAero_Text_Select.cur'), text !important;
+    }
+
+    [data-cursor-set="frutiger-aero"] [data-cursor-type="move"],
+    [data-cursor-set="frutiger-aero"] [data-cursor-type="move"] *,
+    [data-cursor-set="frutiger-aero"] .win-titlebar {
+      cursor: url('/assets/mouse/FrutigerAero_Move.cur'), move !important;
+    }
+
+    [data-cursor-set="frutiger-aero"] [data-cursor-type="crosshair"],
+    [data-cursor-set="frutiger-aero"] [data-cursor-type="crosshair"] * {
+      cursor: url('/assets/mouse/FrutigerAero_Cross.cur'), crosshair !important;
+    }
+
+    [data-cursor-set="frutiger-aero"] [data-cursor-type="not-allowed"],
+    [data-cursor-set="frutiger-aero"] [data-cursor-type="not-allowed"] * {
+      cursor: url('/assets/mouse/FrutigerAero_Unavailable.cur'), not-allowed !important;
+    }
+
+    [data-cursor-set="frutiger-aero"] [data-cursor-type="ns-resize"],
+    [data-cursor-set="frutiger-aero"] [data-cursor-type="ns-resize"] *,
+    [data-cursor-set="frutiger-aero"] [data-win-resize] {
+      cursor: url('/assets/mouse/FrutigerAero_Vertical.cur'), ns-resize !important;
+    }
+
+    [data-cursor-set="frutiger-aero"] [data-cursor-type="ew-resize"],
+    [data-cursor-set="frutiger-aero"] [data-cursor-type="ew-resize"] * {
+      cursor: url('/assets/mouse/FrutigerAero_Horizontal.cur'), ew-resize !important;
+    }
+
+    [data-cursor-set="frutiger-aero"] [data-cursor-type="nwse-resize"],
+    [data-cursor-set="frutiger-aero"] [data-cursor-type="nwse-resize"] * {
+      cursor: url('/assets/mouse/FrutigerAero_Diagonal_1.cur'), nwse-resize !important;
+    }
+
+    [data-cursor-set="frutiger-aero"] [data-cursor-type="nesw-resize"],
+    [data-cursor-set="frutiger-aero"] [data-cursor-type="nesw-resize"] * {
+      cursor: url('/assets/mouse/FrutigerAero_Diagonal_2.cur'), nesw-resize !important;
+    }
+
+    /* â•â• GLASSMORPHIC ICONS â€” background:inherit blur trick â•â• */
+    #desktop {
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+      background-position: center;
+      background-image: url(https://i.redd.it/puzkje595kf81.jpg);
+    }
+
+    /* Override theme wallpaper layer to be transparent so desktop bg shows */
+    #wallpaper-layer {
+      display: none !important;
+    }
+
+    .desktop-icon {
+      transition: opacity 0.15s ease !important;
+      padding: 6px !important;
+      animation: iconDropIn 0.4s cubic-bezier(0.34, 1.5, 0.64, 1) both;
+    }
+
+    .desktop-icon:hover {
+      background: transparent !important;
+      transform: none !important;
+      z-index: 999;
+      opacity: 0.85;
+    }
+
+    .desktop-icon:active {
+      opacity: 0.7 !important;
+      transform: none !important;
+    }
+
+    .desktop-icon.selected {
+      background: rgba(255, 255, 255, 0.12) !important;
+      outline: 1px solid rgba(255, 255, 255, 0.40) !important;
+      border-radius: 14px !important;
+    }
+
+    /* â”€â”€ The glass squircle: background:inherit + blur â”€â”€ */
+    .desk-icon-img {
+      width: 54px !important;
+      height: 54px !important;
+      border-radius: 16px !important;
+      position: relative !important;
+      overflow: hidden !important;
+      background: inherit !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      filter: none !important;
+    }
+
+    /* Blurred clone of the background behind the icon */
+    .desk-icon-img::after {
+      content: '';
+      position: absolute;
+      inset: -25px;
+      background: inherit;
+      filter: blur(10px);
+      z-index: 0;
+    }
+
+    /* White tint glass overlay + rim highlight */
+    .desk-icon-img::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      z-index: 1;
+      background:
+        linear-gradient(145deg,
+          rgba(255, 255, 255, 0.60) 0%,
+          rgba(255, 255, 255, 0.28) 30%,
+          rgba(255, 255, 255, 0.10) 60%,
+          rgba(200, 230, 255, 0.20) 100%);
+      box-shadow:
+        inset 0 1.5px 0 rgba(255, 255, 255, 1.0),
+        inset 1.5px 0 0 rgba(255, 255, 255, 0.70),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.35),
+        inset -1px 0 0 rgba(255, 255, 255, 0.45);
+      animation: glassShimmer 4s ease-in-out infinite;
+    }
+
+    /* SVG sits above the blur and tint */
+    .desk-icon-img svg {
+      width: 38px !important;
+      height: 38px !important;
+      position: relative;
+      z-index: 2;
+      filter: drop-shadow(0 2px 6px rgba(255, 255, 255, 0.9)) brightness(1.15) !important;
+      opacity: 1 !important;
+    }
+
+    /* â”€â”€ Label: white text, no shadow â”€â”€ */
+    .desk-icon-label {
+      font-size: 11px !important;
+      font-weight: 700 !important;
+      color: rgba(255, 255, 255, 1) !important;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5), 0 0 8px rgba(0, 0, 0, 0.3) !important;
+      letter-spacing: 0.01em;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Boost SVG fill/stroke opacity inside icons â€” max white enhancement */
+    .desk-icon-img svg rect,
+    .desk-icon-img svg circle,
+    .desk-icon-img svg path,
+    .desk-icon-img svg polygon,
+    .desk-icon-img svg ellipse,
+    .desk-icon-img svg line,
+    .desk-icon-img svg text {
+      opacity: 1 !important;
+    }
+
+    .desk-icon-img svg [opacity="0.08"] {
+      opacity: 0.65 !important;
+    }
+
+    .desk-icon-img svg [opacity="0.12"] {
+      opacity: 0.75 !important;
+    }
+
+    .desk-icon-img svg [opacity="0.18"] {
+      opacity: 0.80 !important;
+    }
+
+    .desk-icon-img svg [opacity="0.25"] {
+      opacity: 0.85 !important;
+    }
+
+    .desk-icon-img svg [opacity="0.3"] {
+      opacity: 0.88 !important;
+    }
+
+    .desk-icon-img svg [opacity="0.35"] {
+      opacity: 0.90 !important;
+    }
+
+    .desk-icon-img svg [opacity="0.45"] {
+      opacity: 0.93 !important;
+    }
+
+    .desk-icon-img svg [opacity="0.5"] {
+      opacity: 0.95 !important;
+    }
+
+    .desk-icon-img svg [opacity="0.55"] {
+      opacity: 0.96 !important;
+    }
+
+    .desk-icon-img svg [opacity="0.6"] {
+      opacity: 0.97 !important;
+    }
+
+    .desk-icon-img svg [opacity="0.7"] {
+      opacity: 0.98 !important;
+    }
+
+    .desk-icon-img svg [opacity="0.82"] {
+      opacity: 1.0 !important;
+    }
+
+    @keyframes glassShimmer {
+
+      0%,
+      100% {
+        opacity: 0.85;
+      }
+
+      50% {
+        opacity: 1.0;
+      }
+    }
+
+    @keyframes iconDropIn {
+      from {
+        opacity: 0;
+        transform: scale(0.55) translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    /* stagger entrance */
+    .desktop-icon:nth-child(1) {
+      animation-delay: 0.04s
+    }
+
+    .desktop-icon:nth-child(2) {
+      animation-delay: 0.08s
+    }
+
+    .desktop-icon:nth-child(3) {
+      animation-delay: 0.12s
+    }
+
+    .desktop-icon:nth-child(4) {
+      animation-delay: 0.16s
+    }
+
+    .desktop-icon:nth-child(5) {
+      animation-delay: 0.20s
+    }
+
+    .desktop-icon:nth-child(6) {
+      animation-delay: 0.24s
+    }
+
+    .desktop-icon:nth-child(7) {
+      animation-delay: 0.28s
+    }
+
+    .desktop-icon:nth-child(8) {
+      animation-delay: 0.32s
+    }
+
+    .desktop-icon:nth-child(9) {
+      animation-delay: 0.36s
+    }
+
+    .desktop-icon:nth-child(10) {
+      animation-delay: 0.40s
+    }
+
+    /* â”€â”€ Mobile dock glass â”€â”€ */
+    #mobile-dock {
+      background: inherit !important;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.50) !important;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.70), 0 -4px 24px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    #mobile-dock::before {
+      content: '';
+      position: absolute;
+      inset: -25px;
+      background: inherit;
+      filter: blur(12px);
+      z-index: 0;
+    }
+
+    #mobile-dock>* {
+      position: relative;
+      z-index: 1;
+    }
+  </style>
+  <style>
+    /* â”€â”€ USER PROVIDED PREMIUM BOOT ANIMATIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;400;600&family=Orbitron:wght@300;400;700&display=swap');
+
+    .boot-variant {
+      position: fixed;
+      inset: 0;
+      z-index: 1000000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 1s ease;
+    }
+
+    .boot-variant.gone {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* â”€â”€ DARK BOOT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    #dark-screen {
+      background: radial-gradient(ellipse at 50% 60%, #0a1628 0%, #060d1a 45%, #020408 100%);
+    }
+
+    .arc-layer {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .arc {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(120, 180, 255, 0.12);
+      transform-origin: center;
+    }
+
+    .arc1 {
+      width: 160%;
+      height: 160%;
+      top: -30%;
+      left: -30%;
+      transform: rotate(-15deg) scaleY(0.4);
+      border-color: rgba(100, 170, 255, 0.18);
+      animation: arcPulse 4s ease-in-out infinite;
+    }
+
+    .arc2 {
+      width: 130%;
+      height: 130%;
+      top: -15%;
+      left: -15%;
+      transform: rotate(20deg) scaleY(0.35);
+      border-color: rgba(80, 140, 220, 0.12);
+      animation: arcPulse 4s ease-in-out 0.8s infinite;
+    }
+
+    .arc3 {
+      width: 110%;
+      height: 110%;
+      top: -5%;
+      left: -5%;
+      transform: rotate(-8deg) scaleY(0.3);
+      border-color: rgba(60, 120, 200, 0.1);
+      animation: arcPulse 4s ease-in-out 1.6s infinite;
+    }
+
+    @keyframes arcPulse {
+
+      0%,
+      100% {
+        opacity: 0.6;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    .flare {
+      position: absolute;
+      top: 18%;
+      right: 28%;
+      width: 3px;
+      height: 3px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 8px 4px rgba(200, 230, 255, 0.9), 0 0 40px 20px rgba(150, 200, 255, 0.3);
+      animation: flarePulse 3s ease-in-out infinite;
+    }
+
+    .flare::before,
+    .flare::after {
+      content: '';
+      position: absolute;
+      background: linear-gradient(90deg, transparent, rgba(200, 230, 255, 0.8), transparent);
+      border-radius: 2px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .flare::before {
+      width: 60px;
+      height: 1px;
+    }
+
+    .flare::after {
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(0deg, transparent, rgba(200, 230, 255, 0.8), transparent);
+    }
+
+    @keyframes flarePulse {
+
+      0%,
+      100% {
+        opacity: 0.7;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.3);
+      }
+    }
+
+    .dark-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+    }
+
+    .orb-wrap {
+      animation: orbIn 1.2s cubic-bezier(0.34, 1.2, 0.64, 1) 0.3s both;
+    }
+
+    .orb {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 42% 30%, rgba(180, 220, 255, 0.25) 0%, rgba(40, 100, 200, 0.4) 35%, rgba(10, 40, 120, 0.7) 65%, rgba(5, 15, 60, 0.95) 100%);
+      border: 1.5px solid rgba(120, 190, 255, 0.5);
+      box-shadow: 0 0 30px rgba(80, 160, 255, 0.6), 0 0 80px rgba(50, 120, 220, 0.3), inset 0 -20px 40px rgba(5, 20, 100, 0.8), inset 0 10px 30px rgba(180, 230, 255, 0.15);
+      position: relative;
+      animation: orbGlow 3s ease-in-out infinite;
+    }
+
+    .orb-shine {
+      position: absolute;
+      top: 12%;
+      left: 18%;
+      width: 50%;
+      height: 28%;
+      background: radial-gradient(ellipse, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.05));
+      border-radius: 50%;
+      transform: rotate(-20deg);
+      filter: blur(2px);
+    }
+
+    .orb-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+    }
+
+    .orb-name {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 300;
+      font-size: 26px;
+      color: rgba(210, 235, 255, 0.95);
+      letter-spacing: 2px;
+      text-shadow: 0 0 20px rgba(150, 200, 255, 0.9);
+    }
+
+    .orb-sub {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 200;
+      font-size: 10px;
+      color: rgba(150, 200, 255, 0.7);
+      letter-spacing: 6px;
+      text-transform: uppercase;
+    }
+
+    @keyframes orbIn {
+      from {
+        transform: scale(0) rotate(-90deg);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+      }
+    }
+
+    @keyframes orbGlow {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    .dark-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      animation: fadeUp 0.8s ease 1.2s both;
+    }
+
+    .dark-tagline {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 200;
+      font-size: 12px;
+      color: rgba(130, 180, 255, 0.6);
+      letter-spacing: 5px;
+      text-transform: uppercase;
+    }
+
+    .dark-bar-track {
+      width: 220px;
+      height: 2px;
+      background: rgba(80, 140, 255, 0.15);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .dark-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, rgba(80, 140, 220, 0.3), rgba(180, 220, 255, 0.9), rgba(80, 140, 220, 0.3));
+      border-radius: 3px;
+      animation: darkFill 1.8s cubic-bezier(0.4, 0, 0.2, 1) 1.5s both;
+      width: 0%;
+    }
+
+    @keyframes darkFill {
+      to {
+        width: 100%;
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* â”€â”€ LIGHT BOOT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    #light-screen {
+      background: radial-gradient(ellipse at 50% 50%, #f0f8ff 0%, #daeeff 35%, #b8dcf5 65%, #8cbfe8 100%);
+    }
+
+    .larc-layer {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .larc {
+      position: absolute;
+      border-radius: 50%;
+      border: 1.5px solid rgba(100, 160, 220, 0.2);
+      transform-origin: center;
+    }
+
+    .larc1 {
+      width: 160%;
+      height: 160%;
+      top: -30%;
+      left: -30%;
+      transform: rotate(-15deg) scaleY(0.4);
+      border-color: rgba(80, 150, 210, 0.25);
+      animation: arcPulse 4s ease-in-out infinite;
+    }
+
+    .larc2 {
+      width: 130%;
+      height: 130%;
+      top: -15%;
+      left: -15%;
+      transform: rotate(20deg) scaleY(0.35);
+      border-color: rgba(60, 130, 200, 0.18);
+      animation: arcPulse 4s ease-in-out 0.8s infinite;
+    }
+
+    .larc3 {
+      width: 110%;
+      height: 110%;
+      top: -5%;
+      left: -5%;
+      transform: rotate(-8deg) scaleY(0.3);
+      border-color: rgba(40, 110, 185, 0.14);
+      animation: arcPulse 4s ease-in-out 1.6s infinite;
+    }
+
+    .lflare {
+      position: absolute;
+      top: 20%;
+      right: 26%;
+      width: 4px;
+      height: 4px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 6px 3px rgba(255, 255, 255, 1), 0 0 30px 15px rgba(180, 220, 255, 0.6);
+      animation: flarePulse 3s ease-in-out infinite;
+    }
+
+    .lflare::before,
+    .lflare::after {
+      content: '';
+      position: absolute;
+      border-radius: 2px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .lflare::before {
+      width: 80px;
+      height: 1.5px;
+      background: linear-gradient(90deg, transparent, rgba(150, 200, 255, 0.9), transparent);
+    }
+
+    .lflare::after {
+      width: 1.5px;
+      height: 80px;
+      background: linear-gradient(0deg, transparent, rgba(150, 200, 255, 0.9), transparent);
+    }
+
+    .light-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+    }
+
+    .lorb-wrap {
+      animation: orbIn 1.2s cubic-bezier(0.34, 1.2, 0.64, 1) 0.3s both;
+    }
+
+    .lorb {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 28%, rgba(255, 255, 255, 0.95) 0%, rgba(200, 235, 255, 0.7) 20%, rgba(120, 190, 240, 0.5) 50%, rgba(60, 140, 210, 0.4) 75%, rgba(20, 80, 170, 0.3) 100%);
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 0 40px rgba(120, 190, 255, 0.7), 0 0 100px rgba(80, 160, 240, 0.4), inset 0 -15px 35px rgba(20, 80, 180, 0.2), inset 0 5px 25px rgba(255, 255, 255, 0.6);
+      position: relative;
+      animation: orbGlow 3s ease-in-out infinite;
+    }
+
+    .lorb-shine {
+      position: absolute;
+      top: 10%;
+      left: 15%;
+      width: 55%;
+      height: 32%;
+      background: radial-gradient(ellipse, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.2));
+      border-radius: 50%;
+      transform: rotate(-18deg);
+    }
+
+    .lorb-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+    }
+
+    .lorb-name {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 300;
+      font-size: 26px;
+      color: rgba(15, 60, 140, 0.9);
+      letter-spacing: 2px;
+      text-shadow: 0 1px 8px rgba(255, 255, 255, 0.8);
+    }
+
+    .lorb-sub {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 200;
+      font-size: 10px;
+      color: rgba(30, 80, 160, 0.65);
+      letter-spacing: 6px;
+      text-transform: uppercase;
+    }
+
+    .light-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      animation: fadeUp 0.8s ease 1.2s both;
+    }
+
+    .light-tagline {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 300;
+      font-size: 12px;
+      color: rgba(30, 80, 160, 0.55);
+      letter-spacing: 5px;
+      text-transform: uppercase;
+    }
+
+    .light-bar-track {
+      width: 220px;
+      height: 2.5px;
+      background: rgba(80, 140, 220, 0.2);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .light-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, rgba(80, 160, 240, 0.4), rgba(255, 255, 255, 0.9), rgba(80, 160, 240, 0.6));
+      border-radius: 3px;
+      animation: darkFill 1.8s cubic-bezier(0.4, 0, 0.2, 1) 1.5s both;
+      width: 0%;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+  <style>
+    /* ============================================================
+   AERONET OS â€” MOBILE SKIN
+   iOS-era handheld feel at <768px
+   ============================================================ */
+
+    @media (max-width: 767px) {
+
+      /* â”€â”€ BOOT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      .boot-logo {
+        font-size: 34px;
+      }
+
+      .boot-subtitle {
+        font-size: 11px;
+      }
+
+      .boot-bar-wrap {
+        width: 180px;
+      }
+
+      /* â”€â”€ DESKTOP â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      #desktop {
+        overflow: hidden;
+      }
+
+      /* Hide orbs on mobile for performance */
+      .orb {
+        display: none;
+      }
+
+      /* â”€â”€ ICON GRID (iOS-style home screen) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      #desktop-icons-container {
+        padding: 20px 12px 8px;
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr);
+        grid-auto-rows: 84px;
+        align-content: start;
+        gap: 0;
+        position: relative;
+        overflow-y: auto;
+      }
+
+      .desktop-icon {
+        position: relative !important;
+        left: auto !important;
+        top: auto !important;
+        width: auto !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding: 8px 4px 4px;
+      }
+
+      .desk-icon-img {
+        width: 52px;
+        height: 52px;
+        font-size: 34px;
+      }
+
+      .desk-icon-img svg {
+        width: 52px;
+        height: 52px;
+      }
+
+      .desk-icon-label {
+        font-size: 10px;
+      }
+
+      /* â”€â”€ TASKBAR â†’ Status Bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      #taskbar {
+        height: 44px;
+        padding: 0 16px;
+        border-top: none;
+        border-bottom: 1px solid var(--taskbar-border);
+        top: 0;
+        bottom: auto;
+      }
+
+      #start-btn {
+        display: none;
+      }
+
+      .tb-divider {
+        display: none;
+      }
+
+      #taskbar-apps {
+        flex: 1;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .taskbar-app-btn {
+        max-width: 90px;
+        font-size: 10px;
+      }
+
+      #sys-tray {
+        gap: 10px;
+      }
+
+      .tray-icon {
+        font-size: 16px;
+      }
+
+      #clock {
+        font-size: 12px;
+      }
+
+      /* Adjust desktop for top bar */
+      #desktop-icons-container {
+        top: 44px;
+        bottom: 0;
+      }
+
+      /* â”€â”€ WINDOWS â†’ Full screen sheets â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      #windows-container {
+        top: 44px;
+        bottom: 0;
+      }
+
+      .os-window {
+        position: fixed !important;
+        top: 44px !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: calc(100vh - 44px) !important;
+        border-radius: 0 !important;
+        min-width: unset;
+        min-height: unset;
+      }
+
+      .win-titlebar {
+        height: 40px;
+        padding: 0 12px;
+      }
+
+      .win-btn {
+        width: 22px;
+        height: 22px;
+        font-size: 10px;
+      }
+
+      /* Disable drag and resize on mobile */
+      .os-window .win-resize {
+        display: none;
+      }
+
+      /* â”€â”€ START MENU â†’ Bottom sheet â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      #start-menu {
+        display: none !important;
+        /* hidden on mobile, use dock instead */
+      }
+
+      /* â”€â”€ CONTEXT MENU â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      #context-menu {
+        min-width: 160px;
+      }
+
+      /* â”€â”€ TOAST â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      #toast-container {
+        bottom: 12px;
+        right: 8px;
+        left: 8px;
+      }
+
+      .toast {
+        max-width: 100%;
+      }
+
+      /* â”€â”€ MOBILE DOCK â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      #mobile-dock {
+        display: flex !important;
+        position: fixed;
+        bottom: 0;
+        left: 8px;
+        right: 8px;
+        height: 70px;
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 20px 20px 0 0;
+        z-index: 9500;
+        align-items: center;
+        justify-content: space-around;
+        padding: 0 16px;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .dock-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+        cursor: pointer;
+        padding: 4px 8px;
+        border-radius: 12px;
+        transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .dock-item:active {
+        transform: scale(0.9);
+      }
+
+      .dock-icon {
+        font-size: 28px;
+      }
+
+      .dock-icon svg {
+        width: 30px;
+        height: 30px;
+      }
+
+      .dock-label {
+        font-size: 9px;
+        font-weight: 700;
+        color: var(--taskbar-text);
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      }
+
+    }
+
+    /* â”€â”€ DESKTOP: hide mobile dock â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    @media (min-width: 768px) {
+      #mobile-dock {
+        display: none !important;
+      }
+    }
+  </style>
+  <style id="boot-styles">
+    /* â”€â”€ PREMIUM BOOT CSS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    .boot-variant {
+      position: fixed;
+      inset: 0;
+      z-index: 1000000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 1s ease;
+    }
+
+    .boot-variant.hidden {
+      display: none !important;
+    }
+
+    .boot-variant.gone {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #boot-screen.gone {
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    #dark-screen {
+      background: radial-gradient(ellipse at 50% 60%, #0a1628 0%, #060d1a 45%, #020408 100%);
+    }
+
+    #light-screen {
+      background: radial-gradient(ellipse at 50% 50%, #f0f8ff 0%, #daeeff 35%, #b8dcf5 65%, #8cbfe8 100%);
+    }
+
+    .arc-layer,
+    .larc-layer {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .arc,
+    .larc {
+      position: absolute;
+      border-radius: 50%;
+      transform-origin: center;
+      animation: arcPulse 4s ease-in-out infinite;
+    }
+
+    .arc1 {
+      width: 160%;
+      height: 160%;
+      top: -30%;
+      left: -30%;
+      transform: rotate(-15deg) scaleY(0.4);
+      border: 1px solid rgba(100, 170, 255, 0.18);
+    }
+
+    .arc2 {
+      width: 130%;
+      height: 130%;
+      top: -15%;
+      left: -15%;
+      transform: rotate(20deg) scaleY(0.35);
+      border: 1px solid rgba(80, 140, 220, 0.12);
+    }
+
+    .arc3 {
+      width: 110%;
+      height: 110%;
+      top: -5%;
+      left: -5%;
+      transform: rotate(-8deg) scaleY(0.3);
+      border: 1px solid rgba(60, 120, 200, 0.1);
+    }
+
+    .larc1 {
+      width: 160%;
+      height: 160%;
+      top: -30%;
+      left: -30%;
+      transform: rotate(-15deg) scaleY(0.4);
+      border: 1.5px solid rgba(80, 150, 210, 0.25);
+    }
+
+    .larc2 {
+      width: 130%;
+      height: 130%;
+      top: -15%;
+      left: -15%;
+      transform: rotate(20deg) scaleY(0.35);
+      border: 1.5px solid rgba(60, 130, 200, 0.18);
+    }
+
+    .larc3 {
+      width: 110%;
+      height: 110%;
+      top: -5%;
+      left: -5%;
+      transform: rotate(-8deg) scaleY(0.3);
+      border: 1.5px solid rgba(40, 110, 185, 0.14);
+    }
+
+    @keyframes arcPulse {
+
+      0%,
+      100% {
+        opacity: 0.6;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    .flare,
+    .lflare {
+      position: absolute;
+      top: 18%;
+      right: 28%;
+      width: 3px;
+      height: 3px;
+      background: #fff;
+      border-radius: 50%;
+      animation: flarePulse 3s ease-in-out infinite;
+    }
+
+    .flare {
+      box-shadow: 0 0 8px 4px rgba(200, 230, 255, 0.9), 0 0 40px 20px rgba(150, 200, 255, 0.3);
+    }
+
+    .lflare {
+      box-shadow: 0 0 6px 3px rgba(255, 255, 255, 1), 0 0 30px 15px rgba(180, 220, 255, 0.6);
+    }
+
+    .flare::before,
+    .flare::after {
+      content: '';
+      position: absolute;
+      background: linear-gradient(90deg, transparent, rgba(200, 230, 255, 0.8), transparent);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 1px;
+    }
+
+    @keyframes flarePulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 0.7;
+      }
+
+      50% {
+        transform: scale(1.3);
+        opacity: 1;
+      }
+    }
+
+    .dark-center,
+    .light-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+    }
+
+    .orb-wrap,
+    .lorb-wrap {
+      animation: orbIn 1.2s cubic-bezier(0.34, 1.2, 0.64, 1) 0.3s both;
+    }
+
+    .orb,
+    .lorb {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      position: relative;
+      animation: orbGlow 3s ease-in-out infinite;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #dark-screen .orb {
+      background: radial-gradient(circle at 42% 30%, rgba(180, 220, 255, 0.25) 0%, rgba(40, 100, 200, 0.4) 35%, rgba(10, 40, 120, 0.7) 65%, rgba(5, 15, 60, 0.95) 100%);
+      border: 1.5px solid rgba(120, 190, 255, 0.5);
+      box-shadow: 0 0 30px rgba(80, 160, 255, 0.6), 0 0 80px rgba(50, 120, 220, 0.3);
+    }
+
+    #light-screen .lorb {
+      background: radial-gradient(circle at 40% 28%, rgba(255, 255, 255, 0.95) 0%, rgba(200, 235, 255, 0.7) 20%, rgba(120, 190, 240, 0.5) 50%, rgba(60, 140, 210, 0.4) 75%, rgba(20, 80, 170, 0.3) 100%);
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 0 40px rgba(120, 190, 255, 0.7), 0 0 100px rgba(80, 160, 240, 0.4);
+    }
+
+    .orb-name,
+    .lorb-name {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 300;
+      font-size: 26px;
+      letter-spacing: 2px;
+    }
+
+    #dark-screen .orb-name {
+      color: #d2ebff;
+      text-shadow: 0 0 20px rgba(150, 200, 255, 0.9);
+    }
+
+    #light-screen .lorb-name {
+      color: #0f3c8c;
+      text-shadow: 0 1px 8px #fff;
+    }
+
+    .orb-sub,
+    .lorb-sub {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 200;
+      font-size: 10px;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: rgba(150, 200, 255, 0.7);
+    }
+
+    @keyframes orbIn {
+      from {
+        transform: scale(0) rotate(-90deg);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+      }
+    }
+
+    @keyframes orbGlow {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.04);
+      }
+    }
+
+    .dark-info,
+    .light-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      animation: fadeUp 0.8s ease 1.2s both;
+    }
+
+    .dark-tagline,
+    .light-tagline {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 200;
+      font-size: 12px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: rgba(130, 180, 255, 0.6);
+    }
+
+    .dark-bar-track,
+    .light-bar-track {
+      width: 220px;
+      height: 2px;
+      background: rgba(80, 140, 255, 0.15);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .dark-bar-fill,
+    .light-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, rgba(80, 140, 220, 0.3), rgba(180, 220, 255, 0.9), rgba(80, 140, 220, 0.3));
+      animation: darkFill 1s cubic-bezier(0.4, 0, 0.2, 1) 0.5s forwards;
+    }
+
+    @keyframes darkFill {
+      to {
+        width: 100%;
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+
+    /* Iframe title fix */
+    .win-body iframe[title] {
+      border: none;
+    }
+  </style>
+</head>
+
+<body data-theme="frutiger-aero">
+
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <!--  RANDOMIZED BOOT SCREEN                             -->
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <div id="boot-screen">
+    <!-- Dark Variant -->
+    <div class="boot-variant hidden" id="dark-screen">
+      <div class="arc-layer">
+        <div class="arc arc1"></div>
+        <div class="arc arc2"></div>
+        <div class="arc arc3"></div>
+      </div>
+      <div class="flare"></div>
+      <div class="dark-center">
+        <div class="boot-logo-container">
+          <div class="boot-logo-icon"></div>
+          <h1 class="boot-title">faero</h1>
+          <p class="boot-tagline">Our Collective Future</p>
+          <div class="boot-progress-container">
+            <div class="boot-progress-bar" id="bootProgress"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Light Variant -->
+    <div class="boot-variant hidden" id="light-screen">
+      <div class="larc-layer">
+        <div class="larc larc1"></div>
+        <div class="larc larc2"></div>
+        <div class="larc larc3"></div>
+      </div>
+      <div class="lflare"></div>
+      <div class="light-center">
+        <div class="lorb-wrap">
+          <div class="lorb">
+            <div class="lorb-shine"></div>
+            <div class="lorb-text">
+              <span class="lorb-name">faero</span>
+              <span class="lorb-sub">system boot</span>
+            </div>
+          </div>
+        </div>
+        <div class="light-info">
+          <div class="light-tagline">Our Promised Future</div>
+          <div class="light-bar-track">
+            <div class="light-bar-fill" id="lbf"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <!--  DESKTOP                                             -->
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <div id="desktop">
+    <!-- Ambient orbs -->
+    <div class="orb" id="orb1" style="width:400px;height:400px;top:-100px;left:-100px"></div>
+    <div class="orb" id="orb2" style="width:280px;height:280px;bottom:60px;right:-60px"></div>
+
+    <!-- Wallpaper -->
+    <div id="wallpaper-layer"></div>
+
+    <!-- Desktop Icons -->
+    <div id="desktop-icons-container"></div>
+
+    <!-- Windows -->
+    <div id="windows-container"></div>
+
+    <!-- â”€â”€â”€ TASKBAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+    <div id="taskbar">
+      <button id="start-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="8" cy="8" r="7" fill="rgba(255,255,255,0.3)" stroke="rgba(255,255,255,0.6)" stroke-width="1" />
+          <circle cx="8" cy="8" r="4" fill="white" />
+        </svg>
+        Start
+      </button>
+
+      <div class="tb-divider"></div>
+
+      <div id="taskbar-apps"></div>
+
+      <div id="sys-tray">
+        <span class="tray-icon" title="Volume" id="tray-vol">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M3 6H1v4h2l4 3V3L3 6zM11 8a3 3 0 00-2-2.83v5.66A3 3 0 0011 8z" />
+          </svg>
+        </span>
+        <span class="tray-icon" title="Network">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 3C5 3 2.5 5 1 8c1.5 3 4 5 7 5s5.5-2 7-5c-1.5-3-4-5-7-5zm0 8a3 3 0 110-6 3 3 0 010 6z"
+              opacity="0.7" />
+          </svg>
+        </span>
+        <div id="clock">00:00<br><small>Jan 1</small></div>
+      </div>
+    </div>
+
+    <!-- â”€â”€â”€ START MENU â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+    <div id="start-menu"></div>
+
+    <!-- â”€â”€â”€ CONTEXT MENU â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+    <div id="context-menu"></div>
+
+    <!-- â”€â”€â”€ TOASTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+    <div id="toast-container"></div>
+
+    <!-- â”€â”€â”€ SELECTION BOX â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+    <div id="select-box"></div>
+
+    <!-- â”€â”€â”€ WEBAMP ROOT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+    <div id="webamp-os-root"></div>
+
+    <!-- â”€â”€â”€ MOBILE DOCK â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+    <div id="mobile-dock" style="display:none">
+      <div class="dock-item" data-sm-open="faero">
+        <div class="dock-icon">
+          <svg viewBox="0 0 30 30" fill="none">
+            <circle cx="15" cy="15" r="14" fill="url(#md1)" />
+            <defs>
+              <linearGradient id="md1" x1="0" y1="0" x2="30" y2="30">
+                <stop offset="0%" stop-color="#4ab8f4" />
+                <stop offset="100%" stop-color="#1a88d4" />
+              </linearGradient>
+            </defs>
+            <text x="7" y="20" font-size="14" font-weight="900" fill="white" font-family="Nunito,sans-serif">A</text>
+          </svg>
+        </div>
+        <div class="dock-label">faero</div>
+      </div>
+      <div class="dock-item" data-sm-open="photobooth">
+        <div class="dock-icon">
+          <svg viewBox="0 0 30 30" fill="none">
+            <rect x="2" y="7" width="26" height="18" rx="4" fill="url(#md2)" />
+            <circle cx="15" cy="16" r="6" fill="rgba(255,255,255,0.3)" stroke="white" stroke-width="1.5" />
+            <defs>
+              <linearGradient id="md2" x1="0" y1="0" x2="30" y2="30">
+                <stop offset="0%" stop-color="#e84393" />
+                <stop offset="100%" stop-color="#a020c0" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="dock-label">Disposable</div>
+      </div>
+      <div class="dock-item" data-sm-open="chat">
+        <div class="dock-icon">
+          <svg viewBox="0 0 30 30" fill="none">
+            <rect x="2" y="5" width="26" height="18" rx="5" fill="url(#md3)" />
+            <polygon points="6,23 10,22 12,26" fill="url(#md3)" />
+            <defs>
+              <linearGradient id="md3" x1="0" y1="0" x2="30" y2="30">
+                <stop offset="0%" stop-color="#f04060" />
+                <stop offset="100%" stop-color="#c02040" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="dock-label">Chat</div>
+      </div>
+      <div class="dock-item" data-sm-open="winamp">
+        <div class="dock-icon">
+          <svg viewBox="0 0 30 30" fill="none">
+            <rect x="1" y="1" width="28" height="28" rx="6" fill="#1a1a1a" />
+            <path d="M10 8l14 7-14 7V8z" fill="#54e050" />
+          </svg>
+        </div>
+        <div class="dock-label">Winamp</div>
+      </div>
+      <div class="dock-item" data-sm-open="ps1">
+        <div class="dock-icon"
+          style="font-size:22px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#444,#111);border-radius:6px;width:30px;height:30px">
+          &#128191;
+        </div>
+        <div class="dock-label">PSX</div>
+      </div>
+      <div class="dock-item" id="dock-more"
+        onclick="document.getElementById('start-menu').classList.toggle('open'); document.getElementById('start-menu').style.display='block'">
+        <div class="dock-icon" style="font-size:28px;line-height:1">&#8943;</div>
+        <div class="dock-label">More</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <!--  SCRIPTS                                            -->
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <script>/* ============================================================
+faero OS â€” STORAGE (localStorage + IndexedDB)
+============================================================ */
+
+    const Storage = (() => {
+
+      /* â”€â”€ localStorage helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      const get = (key, fallback = null) => {
+        try {
+          const v = localStorage.getItem('faero_' + key);
+          return v !== null ? JSON.parse(v) : fallback;
+        } catch { return fallback; }
+      };
+
+      const set = (key, value) => {
+        try { localStorage.setItem('faero_' + key, JSON.stringify(value)); }
+        catch (e) { console.warn('Storage.set failed', e); }
+      };
+
+      const del = (key) => localStorage.removeItem('faero_' + key);
+
+      /* â”€â”€ IndexedDB for large files â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      let _db = null;
+      const DB_NAME = 'faeroDB';
+      const DB_VER = 1;
+      const STORES = ['files', 'posts', 'profile'];
+
+      const openDB = () => new Promise((resolve, reject) => {
+        if (_db) { resolve(_db); return; }
+        const req = indexedDB.open(DB_NAME, DB_VER);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          STORES.forEach(s => {
+            if (!db.objectStoreNames.contains(s)) {
+              const store = db.createObjectStore(s, { keyPath: 'id', autoIncrement: true });
+              if (s === 'files') {
+                store.createIndex('type', 'type', { unique: false });
+                store.createIndex('name', 'name', { unique: false });
+              }
+              if (s === 'posts') {
+                store.createIndex('ts', 'ts', { unique: false });
+              }
+            }
+          });
+        };
+        req.onsuccess = (e) => { _db = e.target.result; resolve(_db); };
+        req.onerror = (e) => reject(e);
+      });
+
+      const dbPut = async (storeName, record) => {
+        const db = await openDB();
+        return new Promise((resolve, reject) => {
+          const tx = db.transaction(storeName, 'readwrite');
+          const req = tx.objectStore(storeName).put(record);
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = reject;
+        });
+      };
+
+      const dbGetAll = async (storeName, indexName, query) => {
+        const db = await openDB();
+        return new Promise((resolve, reject) => {
+          const tx = db.transaction(storeName, 'readonly');
+          const store = tx.objectStore(storeName);
+          const req = indexName ? store.index(indexName).getAll(query) : store.getAll();
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = reject;
+        });
+      };
+
+      const dbDelete = async (storeName, id) => {
+        const db = await openDB();
+        return new Promise((resolve, reject) => {
+          const tx = db.transaction(storeName, 'readwrite');
+          const req = tx.objectStore(storeName).delete(id);
+          req.onsuccess = resolve;
+          req.onerror = reject;
+        });
+      };
+
+      /* â”€â”€ File helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      const saveFile = async (name, type, dataURL, extra = {}) => {
+        const id = await dbPut('files', { name, type, dataURL, ts: Date.now(), ...extra });
+        return id;
+      };
+
+      const getFiles = async (type = null) => {
+        if (type) return dbGetAll('files', 'type', type);
+        return dbGetAll('files');
+      };
+
+      const deleteFile = (id) => dbDelete('files', id);
+
+      /* â”€â”€ Post helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      const savePost = async (post) => {
+        const id = await dbPut('posts', { ...post, ts: post.ts || Date.now() });
+        return id;
+      };
+
+      const getPosts = () => dbGetAll('posts');
+      const deletePost = (id) => dbDelete('posts', id);
+
+      /* â”€â”€ Profile â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      const getProfile = () => get('profile', {
+        username: 'faerouser',
+        displayName: 'faero User',
+        handle: '@faerouser',
+        bio: 'living in glass and gradients...',
+        avatar: null,
+        avatarLetter: 'f',
+        avatarGrad: 'linear-gradient(135deg, #80d4ff, #1a88d4)',
+        bgColor: null,
+        bgImage: null,
+        mood: 'somewhere between 2004 and forever',
+        friends: 42,
+        posts: 0,
+        views: '1.2k',
+        layoutFont: 'Nunito',
+        profileTheme: 'frutiger-aero'
+      });
+
+      const setProfile = (data) => set('profile', { ...getProfile(), ...data });
+
+      return { get, set, del, saveFile, getFiles, deleteFile, savePost, getPosts, deletePost, getProfile, setProfile, openDB };
+
+    })();
+
+    window.faeroStorage = Storage;
+    window.AeroStorage = Storage; // Alias for old code
+  </script>
+  <script>/* ============================================================
+AERONET OS â€” THEME ENGINE
+============================================================ */
+
+    const ThemeEngine = (() => {
+      const THEMES = ['frutiger-aero', 'xp-luna', 'y2k', 'dark-matter', 'geocities'];
+
+      const WALLPAPERS = {
+        'frutiger-aero': 'aero',
+        'xp-luna': 'xp',
+        'y2k': 'y2k',
+        'dark-matter': 'dark',
+        'geocities': 'geocities'
+      };
+
+      let current = AeroStorage.get('theme', 'frutiger-aero');
+
+      const apply = (themeName) => {
+        if (!THEMES.includes(themeName)) return;
+        current = themeName;
+        document.body.dataset.theme = themeName;
+        AeroStorage.set('theme', themeName);
+
+        // Wallpaper
+        const wp = AeroStorage.get('wallpaper', null);
+        const wallLayer = document.getElementById('wallpaper-layer');
+        if (wallLayer) {
+          if (wp && wp.startsWith('data:')) {
+            wallLayer.style.backgroundImage = `url('${wp}')`;
+          } else {
+            wallLayer.style.backgroundImage = `none`;
+            // Inline SVG wallpapers rendered via JS
+            renderWallpaper(themeName, wallLayer);
+          }
+        }
+
+        // Cursor reset
+        document.body.style.cursor = 'auto';
+
+        // Notify iframes
+        document.querySelectorAll('iframe.app-frame').forEach(iframe => {
+          try {
+            iframe.contentWindow.postMessage({ type: 'THEME_CHANGE', theme: themeName }, '*');
+          } catch (e) { }
+        });
+      };
+
+      const renderWallpaper = (theme, el) => {
+        const configs = {
+          'frutiger-aero': {
+            bg: 'linear-gradient(160deg, #7ec8e3 0%, #a8dcf0 30%, #c5eeff 60%, #a0d8ec 100%)',
+            svg: `<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+          <defs>
+            <radialGradient id="g1" cx="30%" cy="0%" r="60%"><stop offset="0%" stop-color="#a0d8f0" stop-opacity="0.6"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+            <radialGradient id="g2" cx="80%" cy="100%" r="50%"><stop offset="0%" stop-color="#80c8e8" stop-opacity="0.5"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+            <filter id="blur1"><feGaussianBlur stdDeviation="40"/></filter>
+          </defs>
+          <rect width="1920" height="1080" fill="url(#g1)"/>
+          <rect width="1920" height="1080" fill="url(#g2)"/>
+          <!-- Hills -->
+          <ellipse cx="400" cy="1200" rx="900" ry="500" fill="#5ab882" opacity="0.7"/>
+          <ellipse cx="1200" cy="1300" rx="1100" ry="600" fill="#3da068" opacity="0.6"/>
+          <ellipse cx="960" cy="1400" rx="1400" ry="700" fill="#2a9050" opacity="0.5"/>
+          <!-- Sky orbs -->
+          <circle cx="300" cy="200" r="200" fill="#a0d0f8" opacity="0.25" filter="url(#blur1)"/>
+          <circle cx="1600" cy="300" r="160" fill="#80e0ff" opacity="0.2" filter="url(#blur1)"/>
+          <circle cx="960" cy="100" r="300" fill="#c8f0ff" opacity="0.2" filter="url(#blur1)"/>
+        </svg>`
+          },
+          'xp-luna': {
+            bg: '#3a72c8',
+            svg: `<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+          <defs>
+            <radialGradient id="sky" cx="50%" cy="40%" r="70%"><stop offset="0%" stop-color="#78c4f8"/><stop offset="100%" stop-color="#3a72c8"/></radialGradient>
+          </defs>
+          <rect width="1920" height="1080" fill="url(#sky)"/>
+          <ellipse cx="300" cy="1000" rx="700" ry="400" fill="#5ab83c" opacity="0.9"/>
+          <ellipse cx="1200" cy="1100" rx="900" ry="500" fill="#48a028" opacity="0.85"/>
+          <ellipse cx="960" cy="1180" rx="1400" ry="600" fill="#3a8a1c" opacity="0.9"/>
+          <ellipse cx="1700" cy="980" rx="600" ry="350" fill="#5ab83c" opacity="0.8"/>
+          <circle cx="960" cy="300" r="180" fill="#fff8c8" opacity="0.12"/>
+        </svg>`
+          },
+          'y2k': {
+            bg: '#0a0010',
+            svg: `<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+          <defs>
+            <radialGradient id="gy" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="#2a0050"/><stop offset="100%" stop-color="#050010"/></radialGradient>
+          </defs>
+          <rect width="1920" height="1080" fill="url(#gy)"/>
+          <!-- Grid lines -->
+          <g stroke="#ff00ff" stroke-width="0.5" opacity="0.15">
+            ${Array.from({ length: 30 }, (_, i) => `<line x1="${i * 64}" y1="0" x2="${i * 64}" y2="1080"/>`).join('')}
+            ${Array.from({ length: 17 }, (_, i) => `<line x1="0" y1="${i * 64}" x2="1920" y2="${i * 64}"/>`).join('')}
+          </g>
+          <!-- Star bursts -->
+          <circle cx="400" cy="200" r="3" fill="#ff88ff" opacity="0.8"/>
+          <circle cx="1500" cy="150" r="2" fill="#88ffff" opacity="0.7"/>
+          <circle cx="960" cy="400" r="4" fill="#ff44ff" opacity="0.6"/>
+          <circle cx="200" cy="600" r="2" fill="#ff00ff" opacity="0.9"/>
+          <circle cx="1700" cy="700" r="3" fill="#44ffff" opacity="0.7"/>
+          <!-- Chrome orbs -->
+          <circle cx="960" cy="540" r="300" fill="none" stroke="#ff00ff" stroke-width="1" opacity="0.1"/>
+          <circle cx="960" cy="540" r="450" fill="none" stroke="#8800ff" stroke-width="0.5" opacity="0.08"/>
+        </svg>`
+          },
+          'dark-matter': {
+            bg: '#060610',
+            svg: `<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+          <defs>
+            <radialGradient id="gd" cx="40%" cy="30%" r="60%"><stop offset="0%" stop-color="#1a1a4a"/><stop offset="100%" stop-color="#030308"/></radialGradient>
+          </defs>
+          <rect width="1920" height="1080" fill="url(#gd)"/>
+          ${Array.from({ length: 80 }, () => {
+              const x = Math.random() * 1920, y = Math.random() * 1080, r = Math.random() * 1.5 + 0.5;
+              return `<circle cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="${r.toFixed(1)}" fill="#8080ff" opacity="${(Math.random() * 0.6 + 0.2).toFixed(2)}"/>`;
+            }).join('')}
+          <circle cx="400" cy="300" r="200" fill="#3030aa" opacity="0.15" filter="url(#b)"/>
+          <defs><filter id="b"><feGaussianBlur stdDeviation="60"/></filter></defs>
+          <circle cx="1500" cy="700" r="250" fill="#2020aa" opacity="0.12" filter="url(#b)"/>
+        </svg>`
+          },
+          'geocities': {
+            bg: '#000080',
+            svg: `<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+          <rect width="1920" height="1080" fill="#000080"/>
+          <g opacity="0.08">
+            ${Array.from({ length: 20 }, (_, i) => Array.from({ length: 12 }, (_, j) =>
+              `<rect x="${i * 96 + 8}" y="${j * 90 + 8}" width="80" height="74" fill="none" stroke="#ffff00" stroke-width="1"/>`
+            ).join('')).join('')}
+          </g>
+          <!-- Stars -->
+          ${Array.from({ length: 50 }, () => {
+              const x = Math.random() * 1920, y = Math.random() * 1080;
+              return `<text x="${x.toFixed(0)}" y="${y.toFixed(0)}" font-size="12" fill="#ffff00" opacity="0.4">*</text>`;
+            }).join('')}
+        </svg>`
+          }
+        };
+
+        const cfg = configs[theme];
+        if (!cfg) return;
+        el.style.backgroundColor = cfg.bg;
+        const blob = new Blob([cfg.svg], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(blob);
+        el.style.backgroundImage = `url('${url}')`;
+      };
+
+      const init = () => {
+        apply(current);
+      };
+
+      const get = () => current;
+      const list = () => THEMES;
+
+      return { init, apply, get, list };
+    })();
+
+    window.ThemeEngine = ThemeEngine;
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/butterchurn@2.6.7/dist/index.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/butterchurn-presets@2.4.7/dist/bundle.min.js"></script>
+  <script src="https://unpkg.com/webamp@1.5.0/built/webamp.bundle.min.js"></script>
+  <script>/* ============================================================
+AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
+============================================================ */
+
+    const OS = (() => {
+      /* â”€â”€ STATE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      let windows = {};
+      let iconPositions = {};
+      let zCounter = 100;
+      let focusedId = null;
+      let draggingWin = null, dragOffX = 0, dragOffY = 0;
+      let resizingWin = null, resizeStartW = 0, resizeStartH = 0, resizeStartX = 0, resizeStartY = 0;
+      let draggingIcon = null, iconDragOffX = 0, iconDragOffY = 0;
+      let selectBoxStart = null;
+      let selectedIcons = new Set();
+
+      /* â”€â”€ APP REGISTRY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      const APPS = {
+        faero: { title: 'faero', icon: '&#127760;', file: 'apps/faero.html', w: 1320, h: 840, minW: 700, minH: 500 },
+        photobooth: { title: 'Disposable', icon: 'icons/photo.svg', file: 'apps/photobooth.html', w: 1032, h: 768, minW: 640, minH: 480 },
+        winamp: { title: 'Winamp', icon: '&#9836;', file: 'apps/winamp.html', w: 528, h: 480, minW: 280, minH: 340 },
+        chat: { title: 'Chat', icon: 'icons/chat.svg', file: 'apps/chat.html', w: 864, h: 648, minW: 500, minH: 400 },
+        emulator: { title: 'GameBoy', icon: 'icons/gameboy.svg', file: 'apps/emulator.html', w: 600, h: 576, minW: 400, minH: 440 },
+        notepad: { title: 'Notepad', icon: 'icons/notepad.svg', file: 'apps/notepad.html', w: 648, h: 528, minW: 340, minH: 300 },
+        mydocs: { title: 'Documents', icon: 'icons/docs.svg', file: 'apps/mydocs.html', w: 864, h: 624, minW: 500, minH: 380 },
+        painter: { title: 'Painter', icon: 'icons/painter.svg', file: 'apps/painter.html', w: 1056, h: 696, minW: 600, minH: 420 },
+
+        calendar: { title: 'Calendar', icon: '&#128197;', file: 'apps/stampcam.html', w: 860, h: 640, minW: 600, minH: 500 },
+        games: { title: 'Games', icon: '&#127918;', file: 'apps/games.html', w: 600, h: 450, minW: 400, minH: 300 },
+        calculator: { title: 'Calculator', icon: '&#128159;', file: 'apps/calculator.html', w: 320, h: 460, minW: 280, minH: 400 },
+        radio: { title: 'faeroRadio', icon: '&#128251;', file: 'apps/radio.html', w: 800, h: 600, minW: 600, minH: 400 },
+
+        game_2048: { title: '2048', icon: 'ðŸ”¢', file: 'apps/games/2048.html', w: 400, h: 600, minW: 300, minH: 400 },
+        game_breakout: { title: 'Breakout', icon: 'ðŸ§±', file: 'apps/games/breakout.html', w: 600, h: 500, minW: 400, minH: 400 },
+        game_flappy: { title: 'Flappy Bird', icon: 'ðŸ¦', file: 'apps/games/flappy.html', w: 400, h: 600, minW: 300, minH: 400 }
+      };
+
+      /* â”€â”€ UTILITY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      const genId = () => 'win_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+
+      const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+
+      const $ = (sel, ctx = document) => ctx.querySelector(sel);
+      const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
+
+      /* â”€â”€ WINDOW FACTORY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      const openApp = (appId, extraData = {}) => {
+        // If already open, focus it
+        const existing = Object.values(windows).find(w => w.appId === appId);
+        if (existing) { focusWindow(existing.id); return; }
+
+        const app = APPS[appId];
+        if (!app) return;
+
+        // Add cache-buster to force refresh
+        const cacheBuster = `cb=${Date.now()}`;
+        const fileUrl = app.file.includes('?') ? `${app.file}&${cacheBuster}` : `${app.file}?${cacheBuster}`;
+
+        const id = genId();
+        const vw = window.innerWidth, vh = window.innerHeight - parseInt(getComputedStyle(document.documentElement).getPropertyValue('--taskbar-height') || 42);
+
+        // Center + slight offset
+        const cnt = Object.keys(windows).length;
+        const left = clamp(Math.round((vw - app.w) / 2) + cnt * 24, 0, vw - app.w);
+        const top = clamp(Math.round((vh - app.h) / 2) + cnt * 24, 0, vh - app.h);
+
+        const url = new URL(fileUrl, location.href);
+        url.searchParams.set('theme', ThemeEngine.get());
+        if (extraData.view) url.searchParams.set('view', extraData.view);
+
+        const el = document.createElement('div');
+        el.className = 'os-window';
+        el.id = id;
+        el.style.cssText = `left:${left}px;top:${top}px;width:${app.w}px;height:${app.h}px;z-index:${++zCounter}`;
+        el.dataset.appId = appId;
+        el.dataset.minW = app.minW || 300;
+        el.dataset.minH = app.minH || 200;
+
+        const iconHtml = getDefaultIcon(appId);
+
+        el.innerHTML = `
+      <div class="win-titlebar" data-win-drag="${id}">
+        <div class="win-icon">${iconHtml}</div>
+        <div class="win-title">${app.title}</div>
+        <div class="win-controls">
+          <button class="win-btn minimize" data-win-min="${id}" title="Minimize">&#8212;</button>
+          <button class="win-btn maximize" data-win-max="${id}" title="Maximize">&#9633;</button>
+          <button class="win-btn close" data-win-close="${id}" title="Close">&times;</button>
+        </div>
+      </div>
+      <div class="win-body">
+        <iframe class="app-frame" src="${url.toString()}" title="${app.title}" onload="OS.injectCursors(this)" allowfullscreen allow="camera; microphone; gamepad"></iframe>
+      </div>
+  <div class="win-resize" data-win-resize="${id}"></div>
+`;
+
+        document.getElementById('windows-container').appendChild(el);
+        const winObj = { id, appId, el, minimized: false, maximized: false, prevRect: { left: left, top: top, width: app.w, height: app.h } };
+        windows[id] = winObj;
+        addToTaskbar(id, app);
+
+        // Auto-maximize if requested
+        if (extraData && extraData.maximized) {
+          toggleMaximize(id);
+        } else {
+          focusWindow(id);
+        }
+        return id;
+      };
+
+      const closeWindow = (id) => {
+        const win = windows[id];
+        if (!win) return;
+        win.el.classList.add('minimizing');
+        setTimeout(() => {
+          win.el.remove();
+          delete windows[id];
+          removeFromTaskbar(id);
+        }, 160);
+      };
+
+      const minimizeWindow = (id) => {
+        const win = windows[id];
+        if (!win) return;
+        win.minimized = true;
+        win.el.style.display = 'none';
+        updateTaskbarBtn(id, false);
+      };
+
+      const restoreWindow = (id) => {
+        const win = windows[id];
+        if (!win) return;
+        win.minimized = false;
+        win.el.style.display = 'flex';
+        focusWindow(id);
+        updateTaskbarBtn(id, true);
+      };
+
+      const toggleMaximize = (id) => {
+        const win = windows[id];
+        if (!win) return;
+        if (win.maximized) {
+          const r = win.prevRect;
+          win.el.classList.remove('maximized');
+          win.el.style.left = r.left + 'px';
+          win.el.style.top = r.top + 'px';
+          win.el.style.width = r.width + 'px';
+          win.el.style.height = r.height + 'px';
+          win.maximized = false;
+        } else {
+          const el = win.el;
+          win.prevRect = { left: parseInt(el.style.left), top: parseInt(el.style.top), width: parseInt(el.style.width), height: parseInt(el.style.height) };
+          win.maximized = true;
+          el.classList.add('maximized');
+        }
+        focusWindow(id);
+      };
+
+      const focusWindow = (id) => {
+        const win = windows[id];
+        if (!win) return;
+        Object.values(windows).forEach(w => w.el.classList.remove('focused'));
+        win.el.style.zIndex = ++zCounter;
+        win.el.classList.add('focused');
+        focusedId = id;
+        updateTaskbarBtn(id, true);
+      };
+
+      /* â”€â”€ TASKBAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      const addToTaskbar = (id, app) => {
+        const container = document.getElementById('taskbar-apps');
+        const btn = document.createElement('button');
+        btn.className = 'taskbar-app-btn active';
+        btn.id = 'tb_' + id;
+        btn.innerHTML = `<span style="font-size:12px">${app.title}</span>`;
+        btn.addEventListener('click', () => {
+          const win = windows[id];
+          if (!win) return;
+          if (win.minimized) restoreWindow(id);
+          else if (focusedId === id) minimizeWindow(id);
+          else focusWindow(id);
+        });
+        container.appendChild(btn);
+      };
+
+      const removeFromTaskbar = (id) => {
+        const btn = document.getElementById('tb_' + id);
+        if (btn) btn.remove();
+      };
+
+      const updateTaskbarBtn = (id, active) => {
+        const btn = document.getElementById('tb_' + id);
+        if (btn) btn.classList.toggle('active', active);
+      };
+
+      /* â”€â”€ DRAG â€” WINDOWS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      const startWinDrag = (e, id) => {
+        if (e.button !== 0) return;
+        const win = windows[id];
+        if (!win || win.maximized) return;
+        draggingWin = id;
+        dragOffX = e.clientX - parseInt(win.el.style.left);
+        dragOffY = e.clientY - parseInt(win.el.style.top);
+        focusWindow(id);
+        e.preventDefault();
+      };
+
+      /* â”€â”€ RESIZE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      const startResize = (e, id) => {
+        if (e.button !== 0) return;
+        const win = windows[id];
+        if (!win || win.maximized) return;
+        resizingWin = id;
+        resizeStartX = e.clientX;
+        resizeStartY = e.clientY;
+        resizeStartW = parseInt(win.el.style.width);
+        resizeStartH = parseInt(win.el.style.height);
+        e.preventDefault();
+        e.stopPropagation();
+      };
+
+      /* â”€â”€ DRAG â€” ICONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      const startIconDrag = (e, iconEl) => {
+        if (e.button !== 0) return;
+        if (window.innerWidth <= 767) return; // no drag on mobile
+        draggingIcon = iconEl;
+        iconDragOffX = e.clientX - iconEl.getBoundingClientRect().left;
+        iconDragOffY = e.clientY - iconEl.getBoundingClientRect().top;
+        iconEl.style.zIndex = 9;
+        e.preventDefault();
+      };
+
+      /* â”€â”€ MOUSE EVENTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      const onMouseMove = (e) => {
+        if (draggingWin) {
+          const win = windows[draggingWin];
+          const vw = window.innerWidth, vh = window.innerHeight - parseInt(getComputedStyle(document.documentElement).getPropertyValue('--taskbar-height') || 42);
+          win.el.style.left = clamp(e.clientX - dragOffX, 0, vw - 120) + 'px';
+          win.el.style.top = clamp(e.clientY - dragOffY, 0, vh - 32) + 'px';
+        }
+        if (resizingWin) {
+          const win = windows[resizingWin];
+          const minW = parseInt(win.el.dataset.minW);
+          const minH = parseInt(win.el.dataset.minH);
+          win.el.style.width = Math.max(minW, resizeStartW + (e.clientX - resizeStartX)) + 'px';
+          win.el.style.height = Math.max(minH, resizeStartH + (e.clientY - resizeStartY)) + 'px';
+        }
+        if (draggingIcon) {
+          const cont = document.getElementById('desktop-icons-container');
+          const rect = cont.getBoundingClientRect();
+          draggingIcon.style.left = (e.clientX - rect.left - iconDragOffX) + 'px';
+          draggingIcon.style.top = (e.clientY - rect.top - iconDragOffY) + 'px';
+        }
+      };
+
+      const onMouseUp = (e) => {
+        if (draggingIcon) {
+          const appId = draggingIcon.dataset.appId;
+          iconPositions[appId] = { left: draggingIcon.style.left, top: draggingIcon.style.top };
+          AeroStorage.set('iconPositions', iconPositions);
+          draggingIcon.style.zIndex = '';
+          draggingIcon = null;
+        }
+        draggingWin = null;
+        resizingWin = null;
+      };
+
+      /* â”€â”€ CONTEXT MENU â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      const showContextMenu = (x, y, items) => {
+        const menu = document.getElementById('context-menu');
+        menu.innerHTML = '';
+        items.forEach(item => {
+          if (item === 'sep') {
+            const sep = document.createElement('div');
+            sep.className = 'ctx-sep';
+            menu.appendChild(sep);
+            return;
+          }
+          const el = document.createElement('div');
+          el.className = 'ctx-item';
+          el.innerHTML = `${item.icon ? `<span>${item.icon}</span>` : ''} <span>${item.label}</span>`;
+          el.addEventListener('click', () => { hideContextMenu(); item.action(); });
+          menu.appendChild(el);
+        });
+        const vw = window.innerWidth, vh = window.innerHeight;
+        menu.style.left = Math.min(x, vw - 200) + 'px';
+        menu.style.top = Math.min(y, vh - 50) + 'px';
+        menu.classList.add('open', 'context-menu');
+      };
+
+      const hideContextMenu = () => {
+        document.getElementById('context-menu').classList.remove('open');
+      };
+      /* â”€â”€ DESKTOP ICONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      const buildDesktopIcons = () => {
+        const container = document.getElementById('desktop-icons-container');
+        container.innerHTML = '';
+        // Force reset to v8_rename_docs
+        if (!AeroStorage.get('grid_fixed_v8')) {
+          AeroStorage.set('iconPositions', {});
+          AeroStorage.set('grid_fixed_v8', true);
+        }
+        iconPositions = AeroStorage.get('iconPositions', {});
+
+        const isMobile = window.innerWidth <= 767;
+                const defaultPositions = [
+      { id: 'faero', x: 38, y: 28 },
+      { id: 'chat', x: 38, y: 128 },
+      { id: 'winamp', x: 38, y: 228 },
+      { id: 'notepad', x: 38, y: 328 },
+      { id: 'games', x: 138, y: 28 },
+      { id: 'calendar', x: 138, y: 128 },
+      { id: 'painter', x: 138, y: 228 },
+      { id: 'radio', x: 138, y: 328 }
+    ];
+
+        defaultPositions.forEach(({ id, x, y }, idx) => {
+          const app = APPS[id];
+          if (!app) return;
+          const pos = iconPositions[id] || { left: x + 'px', top: y + 'px' };
+
+          const icon = document.createElement('div');
+          icon.className = 'desktop-icon';
+          icon.dataset.appId = id;
+          if (!isMobile) {
+            icon.style.left = pos.left;
+            icon.style.top = pos.top;
+          }
+
+          icon.innerHTML = `
+        <div class="desk-icon-img">
+          ${getDefaultIcon(id)}
+        </div>
+        <div class="desk-icon-label" style="display:block;opacity:1;color:#fff">${app.title}</div>
+      `;
+
+          // Single-click to open app
+          icon.addEventListener('click', (e) => {
+            if (!e.shiftKey) selectedIcons.clear();
+            selectedIcons.add(id);
+            $$('.desktop-icon').forEach(el => el.classList.toggle('selected', selectedIcons.has(el.dataset.appId)));
+            if (id === 'faero') { showBetaPopup(); } else if (id === 'winamp') { window.postMessage({ type: 'LAUNCH_WEBAMP' }, '*'); } else { openApp(id); }
+          });
+
+          // Drag
+          icon.addEventListener('mousedown', (e) => startIconDrag(e, icon));
+
+          // Right-click
+          icon.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            showContextMenu(e.clientX, e.clientY, [
+              { label: `Open ${app.title} `, icon: '&#9654;', action: () => openApp(id) },
+              'sep',
+              { label: 'Rename', icon: '&#9998;', action: () => { } },
+              { label: 'Delete', icon: '&#128465;', action: () => { } }
+            ]);
+          });
+
+          container.appendChild(icon);
+        });
+      };
+
+      /* â”€â”€ START MENU â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      const toggleStartMenu = () => {
+        const menu = document.getElementById('start-menu');
+        menu.classList.toggle('open');
+      };
+
+      const buildStartMenu = () => {
+        const profile = AeroStorage.getProfile();
+        const menu = document.getElementById('start-menu');
+        menu.innerHTML = `
+      <div class="start-menu-header">
+        <div class="start-av" style="background:${profile.avatarGrad}">${profile.avatarLetter}</div>
+        <div>
+          <div class="start-username">${profile.displayName}</div>
+          <div class="start-tagline">${profile.handle}</div>
+        </div>
+      </div>
+      <div class="start-menu-apps">
+        ${Object.entries(APPS).map(([id, app]) => `
+          <div class="sm-app-item" data-sm-open="${id}">
+            <span class="sm-app-icon" style="width:20px;height:20px;display:inline-block">${getDefaultIcon(id)}</span>
+            <span>${app.title}</span>
+          </div>
+        `).join('')}
+      </div>
+      <div class="start-menu-footer">
+        <button class="sm-footer-btn" id="sm-settings">Settings</button>
+        <button class="sm-footer-btn" id="sm-shutdown">Shut Down</button>
+      </div>
+`;
+        $$('[data-sm-open]', menu).forEach(el => {
+          el.addEventListener('click', () => { openApp(el.dataset.smOpen); toggleStartMenu(); });
+        });
+        $('#sm-settings', menu)?.addEventListener('click', () => { openApp('settings'); toggleStartMenu(); });
+        $('#sm-shutdown', menu)?.addEventListener('click', () => { location.reload(); });
+      };
+
+      /* â”€â”€ CLOCK â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      const startClock = () => {
+        const update = () => {
+          const now = new Date();
+          const h = now.getHours().toString().padStart(2, '0');
+          const m = now.getMinutes().toString().padStart(2, '0');
+          const d = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+          const el = document.getElementById('clock');
+          if (el) el.innerHTML = `${h}:${m} <br><small>${d}</small>`;
+        };
+        update();
+        setInterval(update, 10000);
+      };
+
+      /* â”€â”€ TOAST â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      const toast = (msg, icon = '&#9993;', duration = 3000) => {
+        const container = document.getElementById('toast-container');
+        const el = document.createElement('div');
+        el.className = 'toast';
+        el.innerHTML = `<span class="toast-icon">${icon}</span><span>${msg}</span>`;
+        container.appendChild(el);
+        setTimeout(() => {
+          el.classList.add('hiding');
+          setTimeout(() => el.remove(), 260);
+        }, duration);
+      };
+
+      /* â”€â”€ INTER-APP MESSAGING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      const onMessage = (e) => {
+        const msg = e.data;
+        if (!msg || typeof msg !== 'object') return;
+        switch (msg.type) {
+          case 'OPEN_APP':
+            openApp(msg.appId, msg.data || {});
+            break;
+          case 'TOAST':
+            toast(msg.text, msg.icon);
+            break;
+          case 'SET_THEME':
+            ThemeEngine.apply(msg.theme);
+            break;
+          case 'SET_WALLPAPER':
+            AeroStorage.set('wallpaper', msg.url);
+            ThemeEngine.init();
+            break;
+          case 'PROFILE_UPDATE':
+            AeroStorage.setProfile(msg.profile);
+            buildStartMenu();
+            break;
+          case 'POST_TO_FEED':
+            {
+              const aeronetPost = {
+                id: Date.now(),
+                isOwn: true,
+                text: msg.content,
+                image: msg.image,
+                type: 'image',
+                likes: 0,
+                liked: false,
+                comments: [],
+                ts: Date.now()
+              };
+
+              let aeronetWin = Object.values(windows).find(w => w.appId === 'aeronet');
+              const sendToAeronet = (win) => {
+                try {
+                  win.el.querySelector('iframe').contentWindow.postMessage({
+                    type: 'INCOMING_POST',
+                    post: aeronetPost
+                  }, '*');
+                } catch (e) { console.error("Post failed", e); }
+              };
+
+              if (aeronetWin) {
+                sendToAeronet(aeronetWin);
+                focusWindow(aeronetWin.id);
+              } else {
+                openApp('aeronet');
+                setTimeout(() => {
+                  const newWin = Object.values(windows).find(w => w.appId === 'aeronet');
+                  if (newWin) sendToAeronet(newWin);
+                }, 1000);
+              }
+            }
+            break;
+          case 'TOGGLE_CLOCK':
+            const clock = document.getElementById('clock');
+            if (clock) clock.style.display = msg.show ? 'block' : 'none';
+            break;
+          case 'SET_TASKBAR_OPACITY':
+            const tb = document.getElementById('taskbar');
+            if (tb) tb.style.opacity = msg.opacity;
+            break;
+          case 'SET_TASKBAR_POS':
+            document.body.dataset.taskbarPos = msg.pos;
+            break;
+          case 'SET_WEBAMP_SKIN':
+            if (window.__webampInstance && msg.url) {
+              window.__webampInstance.setSkinFromUrl(msg.url).catch(err => {
+                console.error("Skin Fetch Error:", err);
+                toast("CORS Error: Cannot download skin from webamp.org", "&#10060;");
+              });
+            }
+            break;
+          case 'LAUNCH_WEBAMP':
+            if (window.__webampInstance) {
+              toast("Winamp is already active", "&#9836;");
+              return;
+            }
+
+            const WebampClass = window.Webamp;
+            if (!WebampClass) {
+              toast("Webamp engine failed to load. Check internet.", "&#10060;");
+              return;
+            }
+
+            toast("Starting Winamp Engine...", "&#9836;");
+
+            const webamp = new WebampClass({
+              initialTracks: [
+                {
+                  metaData: { artist: "Scott Joplin", title: "Maple Leaf Rag" },
+                  url: "https://upload.wikimedia.org/wikipedia/commons/d/da/Maple_Leaf_Rag.mp3",
+                  duration: 191
+                },
+                {
+                  metaData: { artist: "Beethoven", title: "Moonlight Sonata" },
+                  url: "https://upload.wikimedia.org/wikipedia/commons/4/44/Moonlight_Sonata.mp3",
+                  duration: 300
+                },
+                {
+                  metaData: { artist: "Mozart", title: "Eine Kleine Nachtmusik" },
+                  url: "https://upload.wikimedia.org/wikipedia/commons/b/be/Wolfgang_Amadeus_Mozart_-_Eine_Kleine_Nachtmusik_-_1._Allegro.mp3",
+                  duration: 350
+                }
+              ],
+              availableSkins: [
+                { url: "https://webamp.org/skins/m_Winamp_1.5.wsz", name: "Winamp Modern" }
+              ],
+              __butterchurnOptions: {
+                importButterchurn: () => {
+                  const bc = window.butterchurn || (window.butterchurn && window.butterchurn.default);
+                  return Promise.resolve(bc);
+                },
+                getPresets: () => {
+                  const ps = window.butterchurnPresets ? window.butterchurnPresets.getPresets() : {};
+                  return Promise.resolve(ps);
+                },
+                butterchurnOpen: true
+              },
+              __initialWindowLayout: {
+                main: { position: { top: 60, left: 60 } },
+                playlist: { position: { top: 180, left: 60 } },
+                equalizer: { position: { top: 60, left: 335 } },
+                milkdrop: { position: { top: 180, left: 335 } }
+              }
+            });
+
+            window.__webampInstance = webamp;
+
+            const webRoot = document.getElementById('webamp-os-root');
+            if (webRoot) webRoot.innerHTML = '';
+
+            webamp.renderWhenReady(webRoot || document.body).then(() => {
+              const launcher = Object.values(windows).find(w => w.appId === 'winamp');
+              if (launcher) closeWindow(launcher.id);
+
+              // Force Milkdrop reveal
+              try {
+                webamp.showWindow('milkdrop');
+                // Try everything to wake up Milkdrop
+                setTimeout(() => {
+                  const presets = window.butterchurnPresets ? window.butterchurnPresets.getPresets() : {};
+                  const names = Object.keys(presets);
+                  if (names.length) {
+                    const rand = presets[names[Math.floor(Math.random() * names.length)]];
+                    webamp.store.dispatch({ type: "SELECT_PRESET", preset: rand });
+                    webamp.store.dispatch({ type: "SET_MILKDROP_DESKTOP_VISIBILITY", visible: true });
+                  }
+                }, 1500);
+              } catch (e) { }
+
+              // Force reveal desktop
+              document.body.style.backgroundColor = "transparent";
+              document.getElementById('desktop').style.opacity = "1";
+              document.getElementById('desktop').style.display = "block";
+
+              toast("Winamp Ready!", "&#9989;");
+            }).catch(err => {
+              toast("Mount Error: " + err.message, "&#10060;");
+            });
+
+            webamp.onClose(() => {
+              webamp.dispose();
+              window.__webampInstance = null;
+            });
+
+            // Ensure it stays on top by forcing z-index on its container
+            // Webamp creates a #webamp element
+            setTimeout(() => {
+              const el = document.getElementById('webamp') || document.querySelector('[id^="webamp"]');
+              if (el) {
+                el.style.backgroundColor = "transparent";
+                el.style.zIndex = "999999";
+              }
+            }, 800);
+            break;
+          case 'SET_CURSOR':
+            document.body.dataset.cursorSet = msg.css;
+            AeroStorage.set('cursorSet', msg.css);
+            // Inject into open windows
+            Object.values(windows).forEach(w => {
+              const iframe = w.el.querySelector('iframe');
+              if (iframe) injectCursors(iframe);
+            });
+            break;
+        }
+      };
+
+      /* â”€â”€ INIT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+      const init = () => {
+        // Force remove boot screen if it's stuck
+        setTimeout(() => {
+          const boot = document.getElementById('boot-screen');
+          if (boot) {
+            boot.classList.add('gone');
+            setTimeout(() => boot.remove(), 1000);
+          }
+        }, 500);
+
+        // Event bindings
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+        window.addEventListener('message', onMessage);
+
+        // Delegated window control clicks
+        document.addEventListener('click', (e) => {
+          const minBtn = e.target.closest('[data-win-min]');
+          if (minBtn) { minimizeWindow(minBtn.dataset.winMin); return; }
+          const maxBtn = e.target.closest('[data-win-max]');
+          if (maxBtn) { toggleMaximize(maxBtn.dataset.winMax); return; }
+          const closeBtn = e.target.closest('[data-win-close]');
+          if (closeBtn) { closeWindow(closeBtn.dataset.winClose); return; }
+          const dragBar = e.target.closest('[data-win-drag]');
+          if (dragBar) focusWindow(dragBar.dataset.winDrag);
+          const smOpen = e.target.closest('[data-sm-open]');
+          if (smOpen) { openApp(smOpen.dataset.smOpen); return; }
+          // Close context menu
+          if (!e.target.closest('#context-menu')) hideContextMenu();
+          // Close start menu
+          if (!e.target.closest('#start-menu') && !e.target.closest('#start-btn')) {
+            document.getElementById('start-menu')?.classList.remove('open');
+          }
+          // Deselect icons
+          if (!e.target.closest('.desktop-icon') && !e.target.closest('#context-menu')) {
+            selectedIcons.clear();
+            $$('.desktop-icon').forEach(el => el.classList.remove('selected'));
+          }
+        });
+
+        document.addEventListener('mousedown', (e) => {
+          const dragBar = e.target.closest('[data-win-drag]');
+          if (dragBar) { startWinDrag(e, dragBar.dataset.winDrag); return; }
+          const resizeHandle = e.target.closest('[data-win-resize]');
+          if (resizeHandle) { startResize(e, resizeHandle.dataset.winResize); return; }
+          const winEl = e.target.closest('.os-window');
+          if (winEl) focusWindow(winEl.id);
+        });
+
+        // Double-click title bar to maximize
+        document.addEventListener('dblclick', (e) => {
+          const dragBar = e.target.closest('[data-win-drag]');
+          if (dragBar) { toggleMaximize(dragBar.dataset.winDrag); return; }
+        });
+
+        // Desktop right-click
+        document.addEventListener('contextmenu', (e) => {
+          // IF clicking on Webamp, allow native player menu
+          if (e.target.closest('#webamp') || e.target.closest('[id^="webamp"]') || e.target.closest('#webamp-os-root')) return;
+
+          if (e.target.closest('.desktop-icon') || e.target.closest('.os-window')) return;
+          e.preventDefault();
+          showContextMenu(e.clientX, e.clientY, [
+            { label: 'Open faero', icon: '&#9670;', action: () => openApp('faero') },
+            { label: 'Open Settings', icon: '&#9881;', action: () => openApp('settings') },
+            'sep',
+            { label: 'Change Wallpaper', icon: '&#9728;', action: () => openApp('settings') },
+            { label: 'Change Theme', icon: '&#9674;', action: () => openApp('settings') },
+          ]);
+        });
+
+        // Start button
+        document.getElementById('start-btn')?.addEventListener('click', toggleStartMenu);
+
+        buildDesktopIcons();
+        buildStartMenu();
+        startClock();
+
+        // Init cursor
+        const savedCursor = AeroStorage.get('cursorSet', 'default');
+        document.body.dataset.cursorSet = savedCursor;
+
+        // Desktop is ready â€” no auto-open
+      };
+
+      const injectCursors = (iframe) => {
+        try {
+          const set = document.body.dataset.cursorSet || 'default';
+          const doc = iframe.contentDocument;
+          if (!doc) return;
+          doc.body.dataset.cursorSet = set;
+          if (!doc.getElementById('os-cursors')) {
+            const link = doc.createElement('link');
+            link.id = 'os-cursors';
+            link.rel = 'stylesheet';
+            link.href = '/css/cursors.css';
+            doc.head.appendChild(link);
+          }
+        } catch (e) { }
+      };
+
+      return { init, openApp, closeWindow, minimizeWindow, restoreWindow, toast, APPS, injectCursors };
+    })();
+
+    /* â”€â”€ DEFAULT ICON FALLBACKS (SVG inline) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    function getDefaultIcon(id) {
+      const W = "rgba(255,255,255,1)";
+      const S = "rgba(255,255,255,1)";
+      const icons = {
+        faero: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="20" fill="${W}" opacity="0.15"/>
+      <circle cx="24" cy="24" r="20" fill="none" stroke="${W}" stroke-width="2"/>
+      <text x="12" y="33" font-size="22" font-family="Nunito,sans-serif" font-weight="900" fill="${W}">f</text>
+    </svg>`,
+        photobooth: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="11" width="40" height="29" rx="6" fill="${W}" opacity="0.12" stroke="${W}" stroke-width="1.8"/>
+      <rect x="4" y="11" width="40" height="8" rx="6" fill="${W}" opacity="0.18"/>
+      <rect x="4" y="17" width="40" height="2" fill="${W}" opacity="0.18"/>
+      <circle cx="24" cy="28" r="8" fill="none" stroke="${W}" stroke-width="2"/>
+      <circle cx="24" cy="28" r="4" fill="${S}" opacity="0.7"/>
+      <rect x="34" y="13" width="6" height="4" rx="1.5" fill="${S}" opacity="0.6"/>
+    </svg>`,
+        winamp: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="2" width="44" height="44" rx="8" fill="${W}" opacity="0.12" stroke="${W}" stroke-width="1.8"/>
+      <polygon points="16,14 36,24 16,34" fill="${W}"/>
+      <line x1="8" y1="38" x2="40" y2="38" stroke="${S}" stroke-width="1.5" opacity="0.5"/>
+    </svg>`,
+        chat: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="8" width="40" height="27" rx="8" fill="${W}" opacity="0.12" stroke="${W}" stroke-width="1.8"/>
+      <polygon points="10,35 10,43 18,35" fill="${W}"/>
+      <line x1="12" y1="19" x2="36" y2="19" stroke="${S}" stroke-width="2" stroke-linecap="round"/>
+      <line x1="12" y1="26" x2="28" y2="26" stroke="${S}" stroke-width="2" stroke-linecap="round"/>
+    </svg>`,
+        emulator: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="8" y="6" width="32" height="38" rx="6" fill="${W}" opacity="0.12" stroke="${W}" stroke-width="1.8"/>
+      <rect x="12" y="10" width="24" height="15" rx="2" fill="${S}" opacity="0.35"/>
+      <line x1="20" y1="30" x2="28" y2="30" stroke="${W}" stroke-width="2" stroke-linecap="round"/>
+      <line x1="24" y1="26" x2="24" y2="34" stroke="${W}" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="36" cy="30" r="2.5" fill="${S}" opacity="0.7"/>
+      <circle cx="30" cy="34" r="2.5" fill="${S}" opacity="0.7"/>
+    </svg>`,
+        notepad: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="8" y="4" width="32" height="40" rx="4" fill="${W}" opacity="0.12" stroke="${W}" stroke-width="1.8"/>
+      <rect x="8" y="4" width="32" height="8" rx="4" fill="${W}" opacity="0.18"/>
+      <line x1="14" y1="20" x2="34" y2="20" stroke="${S}" stroke-width="2" stroke-linecap="round"/>
+      <line x1="14" y1="27" x2="34" y2="27" stroke="${S}" stroke-width="2" stroke-linecap="round"/>
+      <line x1="14" y1="34" x2="26" y2="34" stroke="${S}" stroke-width="2" stroke-linecap="round"/>
+    </svg>`,
+        mydocs: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8 40V10h20l8 8v22H8z" fill="${W}" opacity="0.12" stroke="${W}" stroke-width="1.8"/>
+      <path d="M28 10l8 8h-8V10z" fill="${S}" opacity="0.45"/>
+      <line x1="14" y1="24" x2="32" y2="24" stroke="${S}" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="14" y1="30" x2="32" y2="30" stroke="${S}" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="14" y1="36" x2="24" y2="36" stroke="${S}" stroke-width="1.8" stroke-linecap="round"/>
+    </svg>`,
+        settings: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="7" fill="${W}" opacity="0.18" stroke="${W}" stroke-width="2.2"/>
+      <path d="M24 6v5M24 37v5M6 24h5M37 24h5M11 11l3.5 3.5M33.5 33.5l3.5 3.5M11 37l3.5-3.5M33.5 14.5l3.5-3.5" stroke="${W}" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>`,
+        painter: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="4" width="40" height="40" rx="8" fill="${W}" opacity="0.12" stroke="${W}" stroke-width="1.8"/>
+      <circle cx="14" cy="14" r="5" fill="${W}" opacity="0.9"/>
+      <circle cx="24" cy="14" r="5" fill="${S}" opacity="0.7"/>
+      <circle cx="34" cy="14" r="5" fill="${W}" opacity="0.55"/>
+      <path d="M10 28 Q24 20 38 28 Q24 40 10 28z" fill="${S}" opacity="0.35" stroke="${W}" stroke-width="1.2"/>
+    </svg>`,
+        ps1: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="6" y="16" width="36" height="22" rx="6" fill="${W}" opacity="0.12" stroke="${W}" stroke-width="1.8"/>
+      <circle cx="24" cy="10" r="5" fill="${W}" opacity="0.12" stroke="${W}" stroke-width="1.8"/>
+      <line x1="24" y1="15" x2="24" y2="16" stroke="${W}" stroke-width="2"/>
+      <line x1="16" y1="28" x2="20" y2="28" stroke="${W}" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="18" y1="26" x2="18" y2="30" stroke="${W}" stroke-width="2.2" stroke-linecap="round"/>
+      <circle cx="32" cy="27" r="2" fill="${S}" opacity="0.7"/>
+      <circle cx="28" cy="30" r="2" fill="${S}" opacity="0.7"/>
+    </svg>`,
+        calendar: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="6" y="8" width="36" height="34" rx="5" fill="${W}" opacity="0.12" stroke="${W}" stroke-width="1.8"/>
+      <rect x="6" y="8" width="36" height="11" rx="5" fill="${W}" opacity="0.22"/>
+      <rect x="6" y="16" width="36" height="3" fill="${W}" opacity="0.12"/>
+      <line x1="14" y1="6" x2="14" y2="12" stroke="${W}" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="34" y1="6" x2="34" y2="12" stroke="${W}" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="13" y="36" font-size="16" font-family="Arial" fill="${W}" font-weight="900" opacity="0.9">31</text>
+    </svg>`,
+        games: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="14" width="40" height="24" rx="8" fill="${W}" opacity="0.12" stroke="${W}" stroke-width="1.8"/>
+      <line x1="16" y1="22" x2="16" y2="30" stroke="${W}" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="12" y1="26" x2="20" y2="26" stroke="${W}" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="32" cy="24" r="2.2" fill="${S}" opacity="0.8"/>
+      <circle cx="36" cy="28" r="2.2" fill="${S}" opacity="0.8"/>
+      <circle cx="28" cy="28" r="2.2" fill="${S}" opacity="0.8"/>
+      <circle cx="32" cy="32" r="2.2" fill="${S}" opacity="0.8"/>
+    </svg>`,
+        calculator: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="6" y="6" width="36" height="36" rx="5" fill="${W}" opacity="0.12" stroke="${W}" stroke-width="1.8"/>
+      <rect x="10" y="10" width="28" height="9" rx="2" fill="${S}" opacity="0.35"/>
+      <rect x="10" y="22" width="6" height="5" rx="1.5" fill="${S}" opacity="0.5"/>
+      <rect x="18" y="22" width="6" height="5" rx="1.5" fill="${S}" opacity="0.5"/>
+      <rect x="26" y="22" width="6" height="5" rx="1.5" fill="${S}" opacity="0.5"/>
+      <rect x="34" y="22" width="6" height="5" rx="1.5" fill="${W}" opacity="0.7"/>
+      <rect x="10" y="30" width="6" height="5" rx="1.5" fill="${S}" opacity="0.5"/>
+      <rect x="18" y="30" width="6" height="5" rx="1.5" fill="${S}" opacity="0.5"/>
+      <rect x="26" y="30" width="6" height="5" rx="1.5" fill="${S}" opacity="0.5"/>
+      <rect x="34" y="30" width="6" height="5" rx="1.5" fill="${W}" opacity="0.9"/>
+    </svg>`,
+        radio: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="16" width="40" height="24" rx="5" fill="${W}" opacity="0.12" stroke="${W}" stroke-width="1.8"/>
+      <line x1="14" y1="16" x2="10" y2="8" stroke="${W}" stroke-width="2" stroke-linecap="round"/>
+      <line x1="10" y1="8" x2="38" y2="8" stroke="${W}" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="16" cy="28" r="6" fill="${W}" opacity="0.12" stroke="${W}" stroke-width="1.5"/>
+      <circle cx="16" cy="28" r="2.5" fill="${S}" opacity="0.7"/>
+      <rect x="26" y="22" width="14" height="3" rx="1.5" fill="${S}" opacity="0.5"/>
+      <rect x="26" y="28" width="10" height="3" rx="1.5" fill="${S}" opacity="0.5"/>
+      <rect x="26" y="34" width="12" height="3" rx="1.5" fill="${S}" opacity="0.5"/>
+    </svg>`,
+        tv: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="10" width="40" height="28" rx="5" fill="${W}" opacity="0.12" stroke="${W}" stroke-width="1.8"/>
+      <rect x="8" y="14" width="26" height="19" rx="2" fill="${W}" opacity="0.08" stroke="${S}" stroke-width="1" opacity="0.4"/>
+      <line x1="14" y1="10" x2="10" y2="4" stroke="${W}" stroke-width="2" stroke-linecap="round"/>
+      <line x1="34" y1="10" x2="38" y2="4" stroke="${W}" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="38" cy="20" r="2" fill="${S}" opacity="0.6"/>
+      <circle cx="38" cy="28" r="2" fill="${S}" opacity="0.6"/>
+      <rect x="38" y="32" width="4" height="3" rx="1.5" fill="${W}" opacity="0.7"/>
+      <path d="M16 20 Q21 23 16 26 Q21 23 26 20" stroke="${W}" stroke-width="1.2" fill="none" opacity="0.3"/>
+    </svg>`
+      };
+      const W2 = "rgba(255,255,255,1)";
+      return icons[id] || `<svg viewBox="0 0 48 48"><rect width="48" height="48" rx="10" fill="none" stroke="${W2}" stroke-width="2" opacity="0.5"/></svg>`;
+    }
+
+    window.OS = OS;
+  </script>
+  <script>
+    // â”€â”€ Direct Desktop Init (no boot) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    document.addEventListener('DOMContentLoaded', () => {
+      // Apply saved theme immediately
+      const savedTheme = AeroStorage.get('theme', 'frutiger-aero');
+      document.body.dataset.theme = savedTheme;
+
+      // Remove boot screen immediately
+      const boot = document.getElementById('boot-screen');
+      if (boot) boot.remove();
+
+      // Init OS immediately
+      ThemeEngine.init();
+      OS.init();
+    });
+
+    // Mobile dock items
+    document.addEventListener('click', (e) => {
+      const dockItem = e.target.closest('#mobile-dock [data-sm-open]');
+      if (dockItem) {
+        OS.openApp(dockItem.dataset.smOpen);
+      }
+    });
+
+    // Window resize handler (mobile/desktop switch)
+    window.addEventListener('resize', () => {
+      const isMobile = window.innerWidth <= 767;
+      if (isMobile) {
+        // On mobile, reset all windows to full screen
+        document.querySelectorAll('.os-window').forEach(el => {
+          el.style.top = '44px';
+          el.style.left = '0';
+          el.style.width = '100%';
+          el.style.height = `calc(100vh - 44px)`;
+        });
+      }
+    });
+  </script>
+
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <!--  CLOSED BETA POPUP                                  -->
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <div id="beta-popup" style="display:none">
+    <div id="beta-popup-card">
+      <button id="beta-close" onclick="closeBetaPopup()" title="Close">&times;</button>
+      <div id="beta-logo-wrap">
+        <iframe id="beta-logo-frame" src="http://localhost:5500/faero_liquid_metal_v4.html" scrolling="no"
+          frameborder="0" allowtransparency="true"></iframe>
+      </div>
+      <div id="beta-badge">CLOSED BETA</div>
+      <h2 id="beta-title">faero</h2>
+      <p id="beta-desc">A real internet social OS.<br>Your desktop, your world.<br>Glass, gradients and a future we all
+        dreamed of.</p>
+      <a id="beta-link" href="https://faero.net/beta" target="_blank" rel="noopener">Request Access &rarr;</a>
+      <p id="beta-fine">Closed beta with limited spaces available</p>
+    </div>
+  </div>
+
+  <style>
+    /* â”€â”€ CLOSED BETA POPUP â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    #beta-popup {
+      position: fixed;
+      inset: 0;
+      z-index: 99998;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(5, 15, 40, 0.55);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      transition: opacity 0.4s ease;
+    }
+
+    #beta-popup.dismissed {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #beta-popup-card {
+      position: relative;
+      background: linear-gradient(160deg,
+          rgba(10, 28, 65, 0.97) 0%,
+          rgba(14, 38, 88, 0.95) 50%,
+          rgba(7, 20, 52, 0.99) 100%);
+      backdrop-filter: blur(30px) saturate(1.6);
+      -webkit-backdrop-filter: blur(30px) saturate(1.6);
+      border: 1px solid rgba(120, 180, 255, 0.22);
+      border-radius: 28px;
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.06),
+        0 40px 100px rgba(0, 0, 0, 0.6),
+        0 0 80px rgba(50, 110, 255, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.11);
+      padding: 44px 40px 36px;
+      max-width: 340px;
+      width: 90%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0;
+      animation: betaPopIn 0.5s cubic-bezier(0.34, 1.25, 0.64, 1) both;
+    }
+
+    @keyframes betaPopIn {
+      from {
+        opacity: 0;
+        transform: scale(0.82) translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    #beta-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: rgba(190, 225, 255, 0.55);
+      font-size: 20px;
+      font-weight: 300;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    #beta-close:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+
+    #beta-orb {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 38% 28%,
+          rgba(255, 255, 255, 0.96) 0%,
+          rgba(155, 215, 255, 0.72) 22%,
+          rgba(65, 150, 240, 0.56) 52%,
+          rgba(22, 86, 210, 0.46) 78%,
+          rgba(7, 34, 128, 0.36) 100%);
+      border: 1.5px solid rgba(255, 255, 255, 0.82);
+      box-shadow:
+        0 0 35px rgba(95, 175, 255, 0.68),
+        0 0 80px rgba(45, 125, 240, 0.38),
+        inset 0 7px 20px rgba(255, 255, 255, 0.20);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-bottom: 22px;
+      animation: betaOrbPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes betaOrbPulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 35px rgba(95, 175, 255, 0.68), 0 0 80px rgba(45, 125, 240, 0.38);
+      }
+
+      50% {
+        box-shadow: 0 0 55px rgba(120, 200, 255, 0.92), 0 0 110px rgba(70, 150, 255, 0.52);
+      }
+    }
+
+    #beta-orb-shine {
+      position: absolute;
+      top: 10%;
+      left: 16%;
+      width: 52%;
+      height: 28%;
+      background: radial-gradient(ellipse, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.04));
+      border-radius: 50%;
+      transform: rotate(-18deg);
+      filter: blur(1.5px);
+    }
+
+    #beta-orb-letter {
+      font-family: 'Raleway', 'Nunito', sans-serif;
+      font-weight: 300;
+      font-size: 32px;
+      color: rgba(7, 34, 118, 0.93);
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 1px 7px rgba(255, 255, 255, 0.65);
+    }
+
+    #beta-badge {
+      font-family: 'Nunito', sans-serif;
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: rgba(110, 185, 255, 0.9);
+      border: 1px solid rgba(90, 165, 255, 0.32);
+      border-radius: 20px;
+      padding: 4px 13px;
+      margin-bottom: 15px;
+      background: rgba(50, 110, 255, 0.1);
+    }
+
+    #beta-title {
+      font-family: 'Raleway', 'Nunito', sans-serif;
+      font-weight: 300;
+      font-size: 44px;
+      color: rgba(240, 250, 255, 0.98);
+      letter-spacing: 6px;
+      text-shadow: 0 0 40px rgba(100, 190, 255, 0.72);
+      line-height: 1;
+      margin-bottom: 13px;
+    }
+
+    #beta-desc {
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+      color: rgba(185, 222, 255, 0.6);
+      line-height: 1.75;
+      margin-bottom: 26px;
+    }
+
+    #beta-link {
+      display: inline-block;
+      padding: 13px 30px;
+      background: linear-gradient(135deg, #4ab8f4 0%, #1a78c4 100%);
+      border-radius: 30px;
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      box-shadow: 0 5px 22px rgba(26, 120, 196, 0.52);
+      transition: filter 0.15s, transform 0.15s;
+      margin-bottom: 15px;
+    }
+
+    #beta-link:hover {
+      filter: brightness(1.12);
+      transform: translateY(-2px);
+    }
+
+    #beta-link:active {
+      filter: brightness(0.9);
+      transform: translateY(0);
+    }
+
+    #beta-fine {
+      font-family: 'Nunito', sans-serif;
+      font-size: 10px;
+      color: rgba(130, 185, 255, 0.35);
+      letter-spacing: 0.3px;
+    }
+
+    @media (max-width: 767px) {
+      #beta-popup {
+        display: none !important;
+      }
+    }
+  </style>
+  <script>
+    function showBetaPopup() {
+      const p = document.getElementById('beta-popup');
+      if (p) { p.style.display = 'flex'; }
+    }
+    function closeBetaPopup() {
+      const p = document.getElementById('beta-popup');
+      if (p) { p.classList.add('dismissed'); setTimeout(() => { p.style.display = 'none'; p.classList.remove('dismissed'); }, 420); }
+    }
+    // Show popup shortly after desktop loads on desktop only
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.innerWidth > 767) {
+        setTimeout(showBetaPopup, 900);
+      }
+    });
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Notepad</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=VT323&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        :root {
+            --accent: #1a88d4;
+            --glass: rgba(255, 255, 255, 0.82);
+            --glass-b: rgba(255, 255, 255, 0.9);
+            --text: #0a2a4a;
+            --text2: #5a9ac0;
+            --bg: linear-gradient(160deg, #8ecae6, #cceeff);
+            --card: rgba(255, 255, 255, 0.9);
+            --shadow: 0 6px 24px rgba(80, 160, 220, 0.14)
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden
+        }
+
+        .toolbar {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(210, 235, 255, .82));
+            border-bottom: 1px solid var(--glass-b);
+            padding: 0 10px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(80, 160, 220, 0.1)
+        }
+
+        .toolbar span {
+            font-size: 18px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #1a7ad4, #40b4f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-right: 4px
+        }
+
+        .tb-btn {
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-b);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(210, 235, 255, 0.8));
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text2);
+            cursor: pointer;
+            transition: filter .1s
+        }
+
+        .tb-btn:hover {
+            filter: brightness(0.95)
+        }
+
+        .tb-sep {
+            width: 1px;
+            height: 20px;
+            background: rgba(180, 220, 255, 0.4)
+        }
+
+        .font-sel {
+            font-family: inherit;
+            font-size: 11px;
+            border: 1px solid var(--glass-b);
+            border-radius: 8px;
+            padding: 3px 8px;
+            background: rgba(255, 255, 255, 0.5);
+            color: var(--text);
+            outline: none
+        }
+
+        .size-sel {
+            width: 52px;
+            font-family: inherit;
+            font-size: 11px;
+            border: 1px solid var(--glass-b);
+            border-radius: 8px;
+            padding: 3px 6px;
+            background: rgba(255, 255, 255, 0.5);
+            color: var(--text);
+            outline: none
+        }
+
+        .editor {
+            flex: 1;
+            width: 100%;
+            border: none;
+            outline: none;
+            padding: 20px 24px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text);
+            background: var(--card);
+            resize: none;
+            overflow-y: auto
+        }
+
+        .statusbar {
+            height: 24px;
+            background: linear-gradient(180deg, rgba(210, 235, 255, 0.6), rgba(180, 220, 255, 0.4));
+            border-top: 1px solid var(--glass-b);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 12px;
+            font-size: 10px;
+            color: var(--text2);
+            flex-shrink: 0
+        }
+
+        .statusbar span {
+            padding: 0 6px;
+            border-right: 1px solid rgba(180, 220, 255, 0.3)
+        }
+
+        .statusbar span:last-child {
+            border: none
+        }
+
+        /* Filename bar */
+        .file-bar {
+            background: rgba(255, 255, 255, 0.6);
+            border-bottom: 1px solid var(--glass-b);
+            padding: 4px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0
+        }
+
+        .file-bar input {
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text);
+            outline: none;
+            flex: 1
+        }
+
+        .file-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #f0c040;
+            flex-shrink: 0
+        }
+
+        .file-dot.saved {
+            background: #40d060
+        }
+
+        body[data-theme="y2k"] {
+            --bg: #0a001a;
+            --card: rgba(10, 0, 30, 0.95);
+            --text: #ffccff;
+            --text2: #ff88ff;
+            --glass-b: rgba(255, 0, 255, 0.3);
+            --accent: #ff00ff
+        }
+
+        body[data-theme="dark-matter"] {
+            --bg: #060610;
+            --card: rgba(10, 10, 25, 0.98);
+            --text: #ddddf8;
+            --text2: #8080d0;
+            --glass-b: rgba(80, 80, 200, 0.3);
+            --accent: #6060ff
+        }
+
+        body[data-theme="xp-luna"] {
+            --bg: #3a6ea8;
+            --card: #fff;
+            --text: #000;
+            --text2: #316ac5;
+            --glass-b: #aca899
+        }
+
+        body[data-theme="geocities"] {
+            --bg: #000080;
+            --card: #fff;
+            --text: #000;
+            --text2: #000080;
+            --glass-b: #808080;
+            --accent: #000080
+        }
+    </style>
+</head>
+
+<body>
+    <div class="toolbar">
+        <span>Notepad</span>
+        <div class="tb-sep"></div>
+        <button class="tb-btn" id="newBtn">New</button>
+        <button class="tb-btn" id="saveBtn">Save</button>
+        <button class="tb-btn" id="dlBtn">Download</button>
+        <button class="tb-btn" id="postBtn">Post to AeroNet</button>
+        <div class="tb-sep"></div>
+        <select class="font-sel" id="fontSel">
+            <option value="'Courier New',monospace">Monospace</option>
+            <option value="'Nunito',sans-serif">Nunito</option>
+            <option value="'Comic Sans MS',cursive">Comic Sans</option>
+            <option value="Impact,sans-serif">Impact</option>
+            <option value="Papyrus,fantasy">Papyrus</option>
+            <option value="'VT323',monospace">VT323</option>
+        </select>
+        <select class="size-sel" id="sizeSel">
+            <option value="12">12px</option>
+            <option value="14" selected>14px</option>
+            <option value="16">16px</option>
+            <option value="18">18px</option>
+            <option value="24">24px</option>
+        </select>
+    </div>
+    <div class="file-bar">
+        <div class="file-dot" id="fileDot"></div>
+        <input id="filename" value="untitled.txt" spellcheck="false">
+    </div>
+    <textarea class="editor" id="editor" spellcheck="true" placeholder="Start typing..."></textarea>
+    <div class="statusbar">
+        <span id="wordCount">0 words</span>
+        <span id="lineCount">Line 1</span>
+        <span id="charCount">0 chars</span>
+    </div>
+
+    <script>
+        let saved = true;
+        const editor = document.getElementById('editor');
+        const dot = document.getElementById('fileDot');
+
+        function markUnsaved() { if (saved) { saved = false; dot.classList.remove('saved'); } }
+        function markSaved() { saved = true; dot.classList.add('saved'); }
+
+        function updateStatus() {
+            const text = editor.value;
+            const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+            const lines = editor.value.substr(0, editor.selectionStart).split('\n').length;
+            document.getElementById('wordCount').textContent = words + ' words';
+            document.getElementById('lineCount').textContent = 'Line ' + lines;
+            document.getElementById('charCount').textContent = text.length + ' chars';
+        }
+
+        editor.addEventListener('input', () => { markUnsaved(); updateStatus(); });
+        editor.addEventListener('keyup', updateStatus);
+
+        // Load last saved
+        const last = localStorage.getItem('notepad_last');
+        if (last) { const d = JSON.parse(last); editor.value = d.text; document.getElementById('filename').value = d.name; markSaved(); }
+
+        document.getElementById('newBtn').addEventListener('click', () => {
+            if (!saved && !confirm('Discard changes?')) return;
+            editor.value = ''; document.getElementById('filename').value = 'untitled.txt'; markSaved(); updateStatus();
+        });
+
+        document.getElementById('saveBtn').addEventListener('click', () => {
+            const name = document.getElementById('filename').value || 'untitled.txt';
+            const text = editor.value;
+            localStorage.setItem('notepad_last', JSON.stringify({ name, text }));
+            // Save to MyDocs
+            const docs = JSON.parse(localStorage.getItem('aeronet_mydocs') || '[]');
+            const existing = docs.findIndex(d => d.name === name);
+            const entry = { id: Date.now(), name, type: 'text', content: text, ts: Date.now() };
+            if (existing >= 0) docs[existing] = entry; else docs.push(entry);
+            localStorage.setItem('aeronet_mydocs', JSON.stringify(docs));
+            markSaved();
+            parent.postMessage({ type: 'TOAST', text: `"${name}" saved to My Documents`, icon: '&#128196;' }, '*');
+        });
+
+        document.getElementById('dlBtn').addEventListener('click', () => {
+            const name = document.getElementById('filename').value || 'note.txt';
+            const blob = new Blob([editor.value], { type: 'text/plain' });
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click();
+        });
+
+        document.getElementById('postBtn').addEventListener('click', () => {
+            const text = editor.value.trim();
+            if (!text) { alert('Nothing to post!'); return; }
+            const post = { id: Date.now(), isOwn: true, text: text.slice(0, 500), type: 'status', likes: 0, liked: false, comments: [], tags: ['#notepad'], ts: Date.now(), showComments: false };
+            parent.postMessage({ type: 'POST_TO_FEED', post }, '*');
+            parent.postMessage({ type: 'TOAST', text: 'Note posted to AeroNet!', icon: '&#9993;' }, '*');
+        });
+
+        document.getElementById('fontSel').addEventListener('change', e => {
+            editor.style.fontFamily = e.target.value;
+        });
+        document.getElementById('sizeSel').addEventListener('change', e => {
+            editor.style.fontSize = e.target.value + 'px';
+        });
+
+        window.addEventListener('message', e => {
+            if (e.data?.type === 'THEME_CHANGE') document.body.dataset.theme = e.data.theme;
+        });
+
+        const t = parent.document?.body?.dataset?.theme || 'frutiger-aero';
+        document.body.dataset.theme = t;
+        updateStatus();
+    </script>
+</body>
+
+</html>

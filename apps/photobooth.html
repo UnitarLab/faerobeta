@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Disposable Cam</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        :root {
+            --accent: #e84393;
+            --text: #fff;
+            --text2: rgba(255, 255, 255, 0.7);
+            --bg: #1a0a14;
+            --panel: #2a1020
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            color: var(--text)
+        }
+
+        .toolbar {
+            background: linear-gradient(180deg, #2a1020, #1a0a14);
+            border-bottom: 1px solid rgba(232, 67, 147, 0.3);
+            padding: 0 12px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0
+        }
+
+        .toolbar-title {
+            font-size: 15px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #e84393, #ff80c0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text
+        }
+
+        .tb-btn {
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(232, 67, 147, 0.4);
+            background: rgba(232, 67, 147, 0.1);
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent);
+            cursor: pointer;
+            transition: all .12s
+        }
+
+        .tb-btn:hover,
+        .tb-btn.on {
+            background: rgba(232, 67, 147, 0.25);
+            border-color: var(--accent)
+        }
+
+        .layout {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            overflow: hidden
+        }
+
+        /* Controls sidebar */
+        .ctrl-panel {
+            background: var(--panel);
+            border-right: 1px solid rgba(232, 67, 147, 0.2);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0
+        }
+
+        .ctrl-panel::-webkit-scrollbar {
+            width: 4px
+        }
+
+        .ctrl-panel::-webkit-scrollbar-thumb {
+            background: rgba(232, 67, 147, 0.3);
+            border-radius: 2px
+        }
+
+        .ctrl-section {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06)
+        }
+
+        .ctrl-label {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 8px
+        }
+
+        /* Grid layouts */
+        .grid-opts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px
+        }
+
+        .grid-opt {
+            padding: 8px 4px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.04);
+            cursor: pointer;
+            text-align: center;
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--text2);
+            transition: all .12s
+        }
+
+        .grid-opt:hover,
+        .grid-opt.on {
+            border-color: var(--accent);
+            background: rgba(232, 67, 147, 0.12);
+            color: var(--text)
+        }
+
+        .grid-preview {
+            display: grid;
+            gap: 2px;
+            margin-bottom: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px;
+            border-radius: 4px;
+            height: 32px
+        }
+
+        /* Filters */
+        .filter-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px
+        }
+
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background .1s
+        }
+
+        .filter-item:hover {
+            background: rgba(255, 255, 255, 0.05)
+        }
+
+        .filter-item.on {
+            background: rgba(232, 67, 147, 0.12)
+        }
+
+        .filter-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0
+        }
+
+        .filter-name {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text2)
+        }
+
+        .filter-item.on .filter-name {
+            color: var(--text)
+        }
+
+        /* Stickers */
+        .sticker-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px
+        }
+
+        .sticker {
+            font-size: 20px;
+            text-align: center;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 6px;
+            transition: background .1s;
+            line-height: 1
+        }
+
+        .sticker:hover {
+            background: rgba(255, 255, 255, 0.1)
+        }
+
+        /* Font overlays */
+        .font-btns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px
+        }
+
+        .font-btn {
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: none;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text2);
+            transition: all .1s
+        }
+
+        .font-btn:hover,
+        .font-btn.on {
+            border-color: var(--accent);
+            color: var(--text);
+            background: rgba(232, 67, 147, 0.1)
+        }
+
+        /* Sliders */
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px
+        }
+
+        .slider-row label {
+            font-size: 10px;
+            color: var(--text2);
+            width: 70px;
+            flex-shrink: 0
+        }
+
+        .slider-row input {
+            flex: 1;
+            accent-color: var(--accent)
+        }
+
+        /* Frames */
+        .frame-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px
+        }
+
+        .frame-opt {
+            padding: 6px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.04);
+            cursor: pointer;
+            text-align: center;
+            font-size: 10px;
+            color: var(--text2);
+            transition: all .12s
+        }
+
+        .frame-opt:hover,
+        .frame-opt.on {
+            border-color: var(--accent);
+            background: rgba(232, 67, 147, 0.12);
+            color: var(--text)
+        }
+
+        /* Main area */
+        .main-area {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: #0d0610
+        }
+
+        .camera-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0a0008
+        }
+
+        #previewCanvas {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain
+        }
+
+        #videoEl {
+            display: none
+        }
+
+        /* Photo strip */
+        .photo-strip {
+            background: var(--panel);
+            border-top: 1px solid rgba(232, 67, 147, 0.2);
+            padding: 10px 12px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            overflow-x: auto;
+            flex-shrink: 0;
+            min-height: 80px
+        }
+
+        .strip-slot {
+            width: 60px;
+            height: 60px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.05);
+            flex-shrink: 0;
+            overflow: hidden;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.3);
+            position: relative
+        }
+
+        .strip-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover
+        }
+
+        .strip-slot.active {
+            border-color: var(--accent);
+            box-shadow: 0 0 8px rgba(232, 67, 147, 0.4)
+        }
+
+        .strip-slot-del {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 16px;
+            height: 16px;
+            background: rgba(220, 40, 40, 0.8);
+            border-radius: 50%;
+            color: #fff;
+            font-size: 10px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none
+        }
+
+        .strip-slot:hover .strip-slot-del {
+            display: flex
+        }
+
+        /* Action buttons */
+        .action-bar {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05)
+        }
+
+        .capture-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            transition: all .1s;
+            flex-shrink: 0
+        }
+
+        .capture-btn:hover {
+            background: #fff;
+            transform: scale(1.05)
+        }
+
+        .capture-btn:active {
+            transform: scale(0.94)
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: none;
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all .12s
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(180deg, #e84393, #c02060);
+            color: #fff;
+            box-shadow: 0 3px 12px rgba(232, 67, 147, 0.4)
+        }
+
+        .action-btn.primary:hover {
+            filter: brightness(1.1)
+        }
+
+        .action-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text)
+        }
+
+        .action-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.15)
+        }
+
+        /* Date stamp */
+        .date-stamp {
+            position: absolute;
+            bottom: 8px;
+            right: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            color: #f04c00;
+            text-shadow: 0 0 4px rgba(240, 76, 0, 0.8);
+            pointer-events: none;
+            z-index: 5
+        }
+    </style>
+</head>
+
+<body>
+    <div class="toolbar">
+        <span style="font-size:22px">&#128247;</span>
+        <div class="toolbar-title">Disposable Cam</div>
+        <button class="tb-btn on" id="photoModeBtn">Photo</button>
+        <button class="tb-btn" id="videoModeBtn">Video</button>
+        <button class="tb-btn" id="startCamBtn">Start Camera</button>
+        <span style="flex:1"></span>
+        <button class="tb-btn" id="saveAllBtn">Save All to My Docs</button>
+        <button class="tb-btn" id="postAllBtn">Post to AeroNet</button>
+    </div>
+
+    <div class="layout">
+        <!-- Controls -->
+        <div class="ctrl-panel">
+            <!-- Grid layouts -->
+            <div class="ctrl-section">
+                <div class="ctrl-label">Layout</div>
+                <div class="grid-opts" id="gridOpts">
+                    <div class="grid-opt on" data-grid="single">
+                        <div class="grid-preview" style="grid-template-columns:1fr">
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                        </div>
+                        Single
+                    </div>
+                    <div class="grid-opt" data-grid="1x4h">
+                        <div class="grid-preview" style="grid-template-columns:repeat(4,1fr)">
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                        </div>
+                        1x4 H
+                    </div>
+                    <div class="grid-opt" data-grid="1x4v">
+                        <div class="grid-preview" style="grid-template-columns:1fr;grid-template-rows:repeat(4,1fr)">
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                        </div>
+                        1x4 V
+                    </div>
+                    <div class="grid-opt" data-grid="2x2">
+                        <div class="grid-preview" style="grid-template-columns:1fr 1fr">
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                        </div>
+                        2x2
+                    </div>
+                    <div class="grid-opt" data-grid="2x4">
+                        <div class="grid-preview" style="grid-template-columns:1fr 1fr">
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                        </div>
+                        2x4
+                    </div>
+                    <div class="grid-opt" data-grid="4x2">
+                        <div class="grid-preview" style="grid-template-columns:repeat(4,1fr)">
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                            <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
+                        </div>
+                        4x2
+                    </div>
+                </div>
+            </div>
+            <!-- Filters -->
+            <div class="ctrl-section">
+                <div class="ctrl-label">Filters</div>
+                <div class="filter-list" id="filterList">
+                    <div class="filter-item on" data-filter="none">
+                        <div class="filter-dot" style="background:#888"></div><span class="filter-name">None</span>
+                    </div>
+                    <div class="filter-item" data-filter="disposable">
+                        <div class="filter-dot" style="background:#f0c080"></div><span class="filter-name">Disposable
+                            Cam</span>
+                    </div>
+                    <div class="filter-item" data-filter="grain">
+                        <div class="filter-dot" style="background:#aaa"></div><span class="filter-name">Heavy
+                            Grain</span>
+                    </div>
+                    <div class="filter-item" data-filter="vhs">
+                        <div class="filter-dot" style="background:#80f080"></div><span class="filter-name">VHS</span>
+                    </div>
+                    <div class="filter-item" data-filter="dithered">
+                        <div class="filter-dot" style="background:#c080c0"></div><span
+                            class="filter-name">Dithered</span>
+                    </div>
+                    <div class="filter-item" data-filter="pixelate">
+                        <div class="filter-dot" style="background:#80c0f0"></div><span
+                            class="filter-name">Pixelate</span>
+                    </div>
+                    <div class="filter-item" data-filter="bw">
+                        <div class="filter-dot" style="background:#fff;border:1px solid #555"></div><span
+                            class="filter-name">Black &amp; White</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Adjustments -->
+            <div class="ctrl-section">
+                <div class="ctrl-label">Adjustments</div>
+                <div class="slider-row">
+                    <label>Grain</label>
+                    <input type="range" id="grainSlider" min="0" max="100" value="0">
+                </div>
+                <div class="slider-row">
+                    <label>Pixelate</label>
+                    <input type="range" id="pixelSlider" min="1" max="20" value="1">
+                </div>
+                <div class="slider-row">
+                    <label>Exposure</label>
+                    <input type="range" id="expSlider" min="-80" max="80" value="0">
+                </div>
+            </div>
+            <!-- Stickers -->
+            <div class="ctrl-section">
+                <div class="ctrl-label">Stickers / Overlays</div>
+                <div class="sticker-grid" id="stickerGrid">
+                    <span class="sticker" data-sticker="&#9733;">&#9733;</span>
+                    <span class="sticker" data-sticker="&#9829;">&#9829;</span>
+                    <span class="sticker" data-sticker="&#127381;">&#127381;</span>
+                    <span class="sticker" data-sticker="&#9825;">&#9825;</span>
+                    <span class="sticker" data-sticker="&#9734;">&#9734;</span>
+                    <span class="sticker" data-sticker="&#9820;">&#9820;</span>
+                    <span class="sticker" data-sticker="&#10022;">&#10022;</span>
+                    <span class="sticker" data-sticker="&#9775;">&#9775;</span>
+                    <span class="sticker" data-sticker="&#9836;">&#9836;</span>
+                    <span class="sticker" data-sticker="&#128100;">&#128100;</span>
+                </div>
+            </div>
+            <!-- Font overlays -->
+            <div class="ctrl-section">
+                <div class="ctrl-label">Text Overlay</div>
+                <div style="margin-bottom:6px"><input id="textOverlay" placeholder="Add text..."
+                        style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:6px 10px;font-family:inherit;font-size:12px;color:#fff;outline:none">
+                </div>
+                <div class="font-btns" id="fontBtns">
+                    <button class="font-btn on" data-font="Comic Sans MS,cursive">Comic Sans</button>
+                    <button class="font-btn" data-font="Impact,sans-serif">Impact</button>
+                    <button class="font-btn" data-font="Papyrus,fantasy">Papyrus</button>
+                    <button class="font-btn" data-font="'Courier New',monospace">Courier</button>
+                </div>
+            </div>
+            <!-- Frames -->
+            <div class="ctrl-section">
+                <div class="ctrl-label">Frame Style</div>
+                <div class="frame-grid" id="frameOpts">
+                    <div class="frame-opt on" data-frame="none">None</div>
+                    <div class="frame-opt" data-frame="polaroid">Polaroid</div>
+                    <div class="frame-opt" data-frame="filmstrip">Filmstrip</div>
+                    <div class="frame-opt" data-frame="scrapbook">Scrapbook</div>
+                    <div class="frame-opt" data-frame="aim">AIM Buddy</div>
+                </div>
+            </div>
+            <!-- Date stamp -->
+            <div class="ctrl-section">
+                <div class="ctrl-label">Date Stamp</div>
+                <div style="display:flex;align-items:center;gap:8px">
+                    <label class="ctrl-toggle" style="display:flex;align-items:center;gap:6px;cursor:pointer">
+                        <input type="checkbox" id="dateStampToggle" style="accent-color:var(--accent)"> <span
+                            style="font-size:11px;color:var(--text2)">Show date stamp</span>
+                    </label>
+                </div>
+                <div style="font-size:9px;color:rgba(255,255,255,0.3);margin-top:4px">e.g. 04/02/2001</div>
+            </div>
+        </div>
+
+        <!-- Main camera / canvas area -->
+        <div class="main-area">
+            <div class="camera-container" id="camContainer">
+                <video id="videoEl" autoplay playsinline muted></video>
+                <canvas id="previewCanvas"></canvas>
+                <div class="date-stamp" id="dateStamp" style="display:none">04/02/2001</div>
+                <div id="stickerLayer"
+                    style="position:absolute;inset:0;pointer-events:none;z-index:4;font-size:24px;display:flex;flex-wrap:wrap;align-items:flex-start;padding:8px;gap:4px">
+                </div>
+            </div>
+            <!-- Photo strip -->
+            <div class="photo-strip" id="photoStrip">
+                <div style="font-size:10px;color:rgba(255,255,255,0.3);flex-shrink:0">Photos will appear here</div>
+            </div>
+            <!-- Actions -->
+            <div class="action-bar">
+                <button class="capture-btn" id="captureBtn" title="Take Photo">&#128247;</button>
+                <button class="action-btn secondary" id="flipBtn">Flip Camera</button>
+                <button class="action-btn secondary" id="recordBtn">&#9673; Record</button>
+                <span style="flex:1"></span>
+                <button class="action-btn primary" id="saveOneBtn">Save Photo</button>
+                <button class="action-btn primary" id="postOneBtn">Post to AeroNet</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let stream = null; let facing = 'user'; let isRecording = false; let mediaRecorder = null; let recordedChunks = [];
+        let capturedPhotos = []; let currentFilter = 'none'; let currentFrame = 'none'; let currentFont = 'Comic Sans MS,cursive';
+        let currentGrid = 'single'; let grainAmt = 0; let pixelAmt = 1; let expAmt = 0; let showDate = false;
+        let overlayText = ''; let overlayStickers = [];
+        const video = document.getElementById('videoEl');
+        const canvas = document.getElementById('previewCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Grid opts
+        document.getElementById('gridOpts').addEventListener('click', e => {
+            const opt = e.target.closest('[data-grid]');
+            if (!opt) return;
+            document.querySelectorAll('.grid-opt').forEach(o => o.classList.remove('on'));
+            opt.classList.add('on');
+            currentGrid = opt.dataset.grid;
+            if (currentGrid !== 'single' && capturedPhotos.length > 0) renderGrid();
+        });
+
+        // Filters
+        document.getElementById('filterList').addEventListener('click', e => {
+            const item = e.target.closest('[data-filter]');
+            if (!item) return;
+            document.querySelectorAll('.filter-item').forEach(i => i.classList.remove('on'));
+            item.classList.add('on');
+            currentFilter = item.dataset.filter;
+            document.querySelectorAll('.slider-row').forEach(r => {
+                if (currentFilter === 'grain') document.getElementById('grainSlider').value = 60;
+                if (currentFilter === 'pixelate') document.getElementById('pixelSlider').value = 8;
+                if (currentFilter === 'disposable') { document.getElementById('grainSlider').value = 40; document.getElementById('expSlider').value = 30; }
+            });
+        });
+
+        // Frame opts
+        document.getElementById('frameOpts').addEventListener('click', e => {
+            const opt = e.target.closest('[data-frame]');
+            if (!opt) return;
+            document.querySelectorAll('.frame-opt').forEach(o => o.classList.remove('on'));
+            opt.classList.add('on');
+            currentFrame = opt.dataset.frame;
+        });
+
+        // Font btns
+        document.getElementById('fontBtns').addEventListener('click', e => {
+            const btn = e.target.closest('[data-font]');
+            if (!btn) return;
+            document.querySelectorAll('.font-btn').forEach(b => b.classList.remove('on'));
+            btn.classList.add('on');
+            currentFont = btn.dataset.font;
+        });
+
+        // Stickers
+        document.getElementById('stickerGrid').addEventListener('click', e => {
+            const s = e.target.closest('[data-sticker]');
+            if (!s) return;
+            overlayStickers.push(s.dataset.sticker);
+            const layer = document.getElementById('stickerLayer');
+            const span = document.createElement('span');
+            span.style.cssText = 'font-size:28px;cursor:move;user-select:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.5))';
+            span.textContent = s.dataset.sticker;
+            span.title = 'Click to remove';
+            span.addEventListener('click', () => span.remove());
+            layer.appendChild(span);
+        });
+
+        // Sliders
+        document.getElementById('grainSlider').addEventListener('input', e => grainAmt = parseInt(e.target.value));
+        document.getElementById('pixelSlider').addEventListener('input', e => pixelAmt = parseInt(e.target.value));
+        document.getElementById('expSlider').addEventListener('input', e => expAmt = parseInt(e.target.value));
+        document.getElementById('dateStampToggle').addEventListener('change', e => {
+            showDate = e.target.checked;
+            const ds = document.getElementById('dateStamp');
+            ds.style.display = showDate ? 'block' : 'none';
+            if (showDate) { const n = new Date(); ds.textContent = `${(n.getMonth() + 1).toString().padStart(2, '0')}/${n.getDate().toString().padStart(2, '0')}/${String(n.getFullYear() - 25).padStart(4, '0')}`; }
+        });
+        document.getElementById('textOverlay').addEventListener('input', e => overlayText = e.target.value);
+
+        // Camera
+        async function startCamera() {
+            try {
+                if (stream) { stream.getTracks().forEach(t => t.stop()); }
+                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: facing }, audio: true });
+                video.srcObject = stream;
+                video.style.display = 'none';
+                canvas.width = 640; canvas.height = 480;
+                renderLoop();
+                document.getElementById('startCamBtn').textContent = 'Camera On';
+                parent.postMessage({ type: 'TOAST', text: 'Camera ready!', icon: '&#128247;' }, '*');
+            } catch (e) {
+                parent.postMessage({ type: 'TOAST', text: 'Camera access denied or unavailable', icon: '&#9888;' }, '*');
+                // Show demo placeholder
+                renderDemoLoop();
+            }
+        }
+
+        function applyFilter(ctx, w, h) {
+            const id = ctx.getImageData(0, 0, w, h);
+            const d = id.data;
+            const grain = grainAmt;
+            const brightness = expAmt;
+            for (let i = 0; i < d.length; i += 4) {
+                let r = d[i], g = d[i + 1], b = d[i + 2];
+                // Brightness
+                if (brightness !== 0) { r += brightness; g += brightness; b += brightness; }
+                // Filter effects
+                if (currentFilter === 'bw') { const gray = 0.299 * r + 0.587 * g + 0.114 * b; r = g = b = gray; }
+                if (currentFilter === 'vhs') { r = Math.min(255, r * 1.1); b = Math.min(255, b * 0.85); }
+                if (currentFilter === 'disposable') { r = Math.min(255, r * 1.05 + 10); g = Math.min(255, g * 1.02 + 5); }
+                if (currentFilter === 'dithered') { const avg = (r + g + b) / 3; const dith = avg > 128 ? 200 : 50; r = g = b = dith; }
+                // Grain
+                if (grain > 0) { const n = (Math.random() - 0.5) * grain; r += n; g += n; b += n; }
+                d[i] = Math.max(0, Math.min(255, r));
+                d[i + 1] = Math.max(0, Math.min(255, g));
+                d[i + 2] = Math.max(0, Math.min(255, b));
+            }
+            ctx.putImageData(id, 0, 0);
+            // Pixelate
+            if (pixelAmt > 1 && currentFilter === 'pixelate') {
+                ctx.imageSmoothingEnabled = false;
+                const small = document.createElement('canvas'); small.width = Math.max(1, Math.floor(w / pixelAmt)); small.height = Math.max(1, Math.floor(h / pixelAmt));
+                small.getContext('2d').drawImage(canvas, 0, 0, small.width, small.height);
+                ctx.clearRect(0, 0, w, h); ctx.drawImage(small, 0, 0, w, h);
+            }
+        }
+
+        function drawOverlays(ctx, w, h) {
+            if (overlayText) {
+                ctx.font = `bold 28px ${currentFont}`;
+                ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.strokeStyle = 'rgba(0,0,0,0.5)'; ctx.lineWidth = 2;
+                ctx.textAlign = 'center'; ctx.strokeText(overlayText, w / 2, h - 30); ctx.fillText(overlayText, w / 2, h - 30);
+            }
+            if (showDate) {
+                const n = new Date(); const ds = `${(n.getMonth() + 1).toString().padStart(2, '0')}/${n.getDate().toString().padStart(2, '0')}/${String(n.getFullYear() - 25).padStart(4, '0')}`;
+                ctx.font = 'bold 14px Courier New, monospace'; ctx.fillStyle = '#f04c00'; ctx.textAlign = 'right'; ctx.fillText(ds, w - 10, h - 10);
+            }
+        }
+
+        function renderLoop() {
+            if (!stream || video.readyState < 2) { requestAnimationFrame(renderLoop); return; }
+            const w = canvas.width, h = canvas.height;
+            ctx.save();
+            if (facing === 'user') { ctx.scale(-1, 1); ctx.drawImage(video, -w, 0, w, h); }
+            else ctx.drawImage(video, 0, 0, w, h);
+            ctx.restore();
+            applyFilter(ctx, w, h);
+            drawOverlays(ctx, w, h);
+            requestAnimationFrame(renderLoop);
+        }
+
+        function renderDemoLoop() {
+            const w = canvas.width = 640, h = canvas.height = 480;
+            let t = 0;
+            const loop = () => {
+                ctx.fillStyle = `hsl(${(t * 0.5) % 360},40%,15%)`; ctx.fillRect(0, 0, w, h);
+                ctx.fillStyle = 'rgba(255,255,255,0.06)';
+                for (let i = 0; i < w; i += 40) ctx.fillRect(i, 0, 1, h);
+                for (let i = 0; i < h; i += 40) ctx.fillRect(0, i, w, 1);
+                ctx.font = 'bold 18px Nunito,sans-serif'; ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.textAlign = 'center';
+                ctx.fillText('Camera Not Available', w / 2, h / 2 - 20); ctx.font = '13px Nunito,sans-serif'; ctx.fillStyle = 'rgba(255,255,255,0.25)';
+                ctx.fillText('Click "Start Camera" to enable webcam', w / 2, h / 2 + 10);
+                drawOverlays(ctx, w, h); t++; requestAnimationFrame(loop);
+            }; loop();
+        }
+
+        // Capture
+        function capture() {
+            const dataURL = canvas.toDataURL('image/png');
+            capturedPhotos.push(dataURL);
+            const strip = document.getElementById('photoStrip');
+            if (capturedPhotos.length === 1) strip.innerHTML = '';
+            const slot = document.createElement('div'); slot.className = 'strip-slot';
+            const img = document.createElement('img'); img.src = dataURL;
+            const del = document.createElement('button'); del.className = 'strip-slot-del'; del.textContent = 'X';
+            del.addEventListener('click', e => { e.stopPropagation(); const idx = capturedPhotos.indexOf(dataURL); if (idx > -1) capturedPhotos.splice(idx, 1); slot.remove(); });
+            slot.appendChild(img); slot.appendChild(del);
+            slot.addEventListener('click', () => { document.querySelectorAll('.strip-slot').forEach(s => s.classList.remove('active')); slot.classList.add('active'); });
+            strip.appendChild(slot);
+            // Flash effect
+            const flash = document.createElement('div');
+            flash.style.cssText = 'position:absolute;inset:0;background:white;opacity:0.8;pointer-events:none;z-index:10;animation:flashAnim 0.2s forwards';
+            document.head.appendChild(Object.assign(document.createElement('style'), { textContent: '@keyframes flashAnim{0%{opacity:0.8}100%{opacity:0}}' }));
+            document.getElementById('camContainer').appendChild(flash);
+            setTimeout(() => flash.remove(), 220);
+            parent.postMessage({ type: 'TOAST', text: 'Photo captured!', icon: '&#128247;' }, '*');
+        }
+
+        function savePhoto(dataURL, filename = 'photo.png') {
+            // Save to My Docs
+            const docs = JSON.parse(localStorage.getItem('aeronet_mydocs') || '[]');
+            docs.push({ id: Date.now(), name: filename, type: 'image', dataURL, ts: Date.now() });
+            localStorage.setItem('aeronet_mydocs', JSON.stringify(docs));
+            // Also trigger download
+            const a = document.createElement('a'); a.href = dataURL; a.download = filename; a.click();
+            parent.postMessage({ type: 'TOAST', text: 'Photo saved to My Documents!', icon: '&#128247;' }, '*');
+        }
+
+        function postPhoto(dataURL) {
+            const post = { id: Date.now(), isOwn: true, text: overlayText || 'Shot on Disposable Cam &#128247;', type: 'image', image: dataURL, likes: 0, liked: false, comments: [], tags: ['#disposable', '#film'], ts: Date.now(), showComments: false };
+            parent.postMessage({ type: 'POST_TO_FEED', post }, '*');
+            parent.postMessage({ type: 'TOAST', text: 'Posted to AeroNet!', icon: '&#9993;' }, '*');
+        }
+
+        function renderGrid() {
+            if (capturedPhotos.length < 2) return;
+            const gridCanvas = document.createElement('canvas');
+            let cols = 1, rows = 1;
+            if (currentGrid === '1x4h') { cols = 4; rows = 1; }
+            else if (currentGrid === '1x4v') { cols = 1; rows = 4; }
+            else if (currentGrid === '2x2') { cols = 2; rows = 2; }
+            else if (currentGrid === '2x4') { cols = 2; rows = 4; }
+            else if (currentGrid === '4x2') { cols = 4; rows = 2; }
+            const cellW = 320, cellH = 240;
+            gridCanvas.width = cols * cellW; gridCanvas.height = rows * cellH;
+            const gctx = gridCanvas.getContext('2d');
+            gctx.fillStyle = 'white'; gctx.fillRect(0, 0, gridCanvas.width, gridCanvas.height);
+            const total = cols * rows;
+            for (let i = 0; i < Math.min(total, capturedPhotos.length); i++) {
+                const img = new Image(); img.src = capturedPhotos[i];
+                const col = i % cols, row = Math.floor(i / cols);
+                img.onload = () => { gctx.drawImage(img, col * cellW, row * cellH, cellW, cellH); };
+            }
+            setTimeout(() => {
+                const dataURL = gridCanvas.toDataURL('image/png');
+                savePhoto(dataURL, `grid_${currentGrid}_${Date.now()}.png`);
+            }, 200);
+        }
+
+        // Buttons
+        document.getElementById('startCamBtn').addEventListener('click', startCamera);
+        document.getElementById('captureBtn').addEventListener('click', capture);
+        document.getElementById('flipBtn').addEventListener('click', async () => { facing = facing === 'user' ? 'environment' : 'user'; await startCamera(); });
+        document.getElementById('saveOneBtn').addEventListener('click', () => { const url = canvas.toDataURL('image/png'); savePhoto(url, `shot_${Date.now()}.png`); });
+        document.getElementById('postOneBtn').addEventListener('click', () => { const url = canvas.toDataURL('image/png'); postPhoto(url); });
+        document.getElementById('saveAllBtn').addEventListener('click', () => { if (!capturedPhotos.length) { parent.postMessage({ type: 'TOAST', text: 'No photos to save!', icon: '&#9888;' }, '*'); return; } capturedPhotos.forEach((p, i) => savePhoto(p, `photo_${i + 1}_${Date.now()}.png`)); });
+        document.getElementById('postAllBtn').addEventListener('click', () => { if (!capturedPhotos.length) { parent.postMessage({ type: 'TOAST', text: 'No photos to post!', icon: '&#9888;' }, '*'); return; } postPhoto(capturedPhotos[capturedPhotos.length - 1]); });
+
+        // Video recording
+        document.getElementById('recordBtn').addEventListener('click', () => {
+            if (!stream) { parent.postMessage({ type: 'TOAST', text: 'Start camera first!', icon: '&#9888;' }, '*'); return; }
+            if (!isRecording) {
+                recordedChunks = [];
+                mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.ondataavailable = e => { if (e.data.size > 0) recordedChunks.push(e.data); };
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a'); a.href = url; a.download = `video_${Date.now()}.webm`; a.click();
+                    parent.postMessage({ type: 'TOAST', text: 'Video saved!', icon: '&#127909;' }, '*');
+                };
+                mediaRecorder.start(); isRecording = true;
+                document.getElementById('recordBtn').textContent = '&#9646;&#9646; Stop';
+                document.getElementById('recordBtn').style.background = 'rgba(220,40,40,0.3)';
+            } else {
+                mediaRecorder.stop(); isRecording = false;
+                document.getElementById('recordBtn').textContent = '&#9673; Record';
+                document.getElementById('recordBtn').style.background = '';
+            }
+        });
+
+        // Mode switch
+        document.getElementById('photoModeBtn').addEventListener('click', () => {
+            document.getElementById('photoModeBtn').classList.add('on');
+            document.getElementById('videoModeBtn').classList.remove('on');
+        });
+        document.getElementById('videoModeBtn').addEventListener('click', () => {
+            document.getElementById('videoModeBtn').classList.add('on');
+            document.getElementById('photoModeBtn').classList.remove('on');
+        });
+
+        window.addEventListener('message', e => { if (e.data?.type === 'THEME_CHANGE') document.body.dataset.theme = e.data.theme; });
+        renderDemoLoop();
+    </script>
+</body>
+
+</html>

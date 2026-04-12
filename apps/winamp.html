@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Winamp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        :root {
+            --accent: #1a88d4;
+            --glass: rgba(255, 255, 255, 0.85);
+            --text: #0a2a4a;
+            --text2: #5a9ac0;
+            --bg: linear-gradient(160deg, #8ecae6, #b8def0, #cceeff, #a8d8ea);
+            --card: linear-gradient(160deg, rgba(255, 255, 255, 0.9), rgba(220, 242, 255, 0.85));
+            --shadow: 0 6px 20px rgba(80, 160, 220, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.9)
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden
+        }
+
+        .toolbar {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(210, 235, 255, 0.85));
+            border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+            padding: 0 12px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .toolbar-title {
+            font-size: 16px;
+            font-weight: 900;
+            color: var(--accent);
+            text-shadow: 0 2px 4px rgba(26, 136, 212, 0.1);
+        }
+
+        .tb-btn {
+            padding: 6px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(26, 136, 212, 0.3);
+            background: #fff;
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--accent);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tb-btn:hover {
+            background: var(--accent);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 240px;
+            flex: 1;
+            overflow: hidden;
+            padding: 16px;
+            gap: 16px;
+        }
+
+        .webamp-container {
+            background: var(--card);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 18px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .webamp-note {
+            padding: 40px;
+        }
+
+        .hero-btn {
+            background: linear-gradient(180deg, #4ab8f4, #1a88d4);
+            color: #fff;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(26, 136, 212, 0.3);
+            transition: all 0.2s;
+            margin: 20px 0;
+        }
+
+        .hero-btn:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        /* Skin panel */
+        .skin-panel {
+            background: var(--card);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 18px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .skin-head {
+            padding: 14px 16px;
+            font-size: 11px;
+            font-weight: 900;
+            color: var(--accent);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(180, 220, 255, 0.3);
+        }
+
+        .skin-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px
+        }
+
+        .skin-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-bottom: 6px;
+            transition: all .2s;
+            border: 1px solid transparent;
+        }
+
+        .skin-item:hover {
+            background: rgba(26, 136, 212, 0.05);
+            border-color: rgba(26, 136, 212, 0.1);
+        }
+
+        .skin-item.on {
+            background: rgba(26, 136, 212, 0.1);
+            border-color: var(--accent);
+        }
+
+        .skin-thumb {
+            width: 44px;
+            height: 30px;
+            border-radius: 6px;
+            flex-shrink: 0;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .skin-name {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--text)
+        }
+
+        .skin-version {
+            font-size: 10px;
+            color: var(--text2)
+        }
+
+        /* Now playing bar */
+        .now-playing-bar {
+            background: var(--card);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.8);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-shrink: 0;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .np-vis {
+            width: 50px;
+            height: 34px;
+            background: rgba(26, 136, 212, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+            flex-shrink: 0;
+            border: 1px solid rgba(26, 136, 212, 0.2);
+        }
+
+        .np-bars {
+            display: flex;
+            gap: 3px;
+            align-items: flex-end;
+            height: 100%;
+            padding: 4px;
+            justify-content: center;
+        }
+
+        .np-bar {
+            width: 5px;
+            background: var(--accent);
+            border-radius: 3px 3px 0 0;
+            animation: barBounce 0.6s ease-in-out infinite alternate;
+            box-shadow: 0 0 5px rgba(26, 136, 212, 0.4);
+        }
+
+        @keyframes barBounce {
+            from {
+                height: 4px
+            }
+
+            to {
+                height: 26px
+            }
+        }
+
+        .np-info {
+            flex: 1;
+            min-width: 0
+        }
+
+        .np-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .np-artist {
+            font-size: 11px;
+            color: var(--text2);
+            font-weight: 600;
+        }
+
+        .np-share {
+            padding: 8px 18px;
+            border-radius: 20px;
+            border: none;
+            background: linear-gradient(180deg, #4ab8f4, #1a88d4);
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 900;
+            color: #fff;
+            cursor: pointer;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(26, 136, 212, 0.25);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="toolbar">
+        <span style="font-size:24px">&#9836;</span>
+        <div class="toolbar-title">Winamp</div>
+        <div style="flex:1"></div>
+        <button class="tb-btn" id="playlistBtn">Playlist</button>
+        <button class="tb-btn" id="visualBtn">Visualizer</button>
+    </div>
+
+    <div class="layout">
+        <div class="webamp-container" id="webampContainer">
+            <div class="webamp-note" id="webampNote">
+                <div style="font-size:64px;margin-bottom:10px">&#9836;</div>
+                <h2 style="font-size:24px;margin-bottom:8px">Ready to Rock?</h2>
+                <p style="color:var(--text2);font-weight:600">The legendary player is ready for your desktop.</p>
+                <button class="hero-btn" id="launchWebamp">Launch Winamp Player</button>
+                <p style="font-size:11px;color:var(--text2);opacity:0.7">Supports MP3, Skins, and Milkdrop</p>
+            </div>
+        </div>
+        <div class="skin-panel">
+            <div class="skin-head">Skin Museum</div>
+            <div class="skin-list" id="skinList"></div>
+        </div>
+    </div>
+
+    <div class="now-playing-bar">
+        <div class="np-vis">
+            <div class="np-bars" id="npBars">
+                <div class="np-bar" style="height:12px"></div>
+                <div class="np-bar" style="height:18px"></div>
+                <div class="np-bar" style="height:24px"></div>
+                <div class="np-bar" style="height:16px"></div>
+                <div class="np-bar" style="height:10px"></div>
+            </div>
+        </div>
+        <div class="np-info">
+            <div class="np-title" id="npTitle">Digital Silence</div>
+            <div class="np-artist" id="npArtist">Launch the player to start the vibes</div>
+        </div>
+        <button class="np-share" id="npShare">Share to AeroNet</button>
+    </div>
+
+    <script>
+        const SKINS = [
+            { name: 'Classic (Built-in)', version: '2.9.x', color: '#1a1a1a', url: null },
+            { name: 'Winamp Modern', version: 'CORS REQ', color: '#2a2a2a', url: 'https://webamp.org/skins/m_Winamp_1.5.wsz' },
+            { name: 'Winamp Official', version: 'CORS REQ', color: '#1a2a1a', url: 'https://webamp.org/skins/Base-Winamp2-8.wsz' },
+            { name: 'Neon Green', version: 'local', color: '#003300', url: null },
+            { name: 'Frutiger Aero', version: 'fan', color: '#1a3a5a', url: null },
+            { name: 'Y2K Chrome', version: 'custom', color: '#0a001a', url: null },
+        ];
+
+        let webampLoaded = false;
+        let currentSkin = 0;
+        let npTrack = { title: 'Nothing playing', artist: '—' };
+
+        // Render skins
+        const skinList = document.getElementById('skinList');
+        SKINS.forEach((s, i) => {
+            const el = document.createElement('div');
+            el.className = 'skin-item' + (i === 0 ? ' on' : '');
+            el.innerHTML = `<div class="skin-thumb" style="background:${s.color};border-color:${i === 0 ? '#54e050' : '#444'}"></div><div><div class="skin-name">${s.name}</div><div class="skin-version">${s.version}</div></div>`;
+            el.addEventListener('click', () => {
+                document.querySelectorAll('.skin-item').forEach(e => e.classList.remove('on'));
+                el.classList.add('on');
+                currentSkin = i;
+                if (webampLoaded) {
+                    if (s.url) {
+                        parent.postMessage({ type: 'SET_WEBAMP_SKIN', url: s.url }, '*');
+                    } else {
+                        parent.postMessage({ type: 'TOAST', text: `Skin "${s.name}" applied!`, icon: '&#9836;' }, '*');
+                    }
+                }
+            });
+            skinList.appendChild(el);
+        });
+
+        // Launch Webamp directly on main desktop
+        document.getElementById('launchWebamp').addEventListener('click', () => {
+            document.getElementById('webampNote').style.display = 'none';
+            webampLoaded = true;
+            parent.postMessage({ type: 'LAUNCH_WEBAMP' }, '*');
+        });
+
+        // Visualizer toggle (simulated)
+        let vizOn = false;
+        document.getElementById('visualBtn').addEventListener('click', () => {
+            vizOn = !vizOn;
+            document.querySelectorAll('.np-bar').forEach(b => {
+                b.style.animation = vizOn ? 'barBounce 0.6s ease-in-out infinite alternate' : 'none';
+                b.style.height = vizOn ? '' : '4px';
+            });
+            parent.postMessage({ type: 'TOAST', text: vizOn ? 'Milkdrop visualizer ON' : 'Visualizer OFF', icon: '&#9830;' }, '*');
+        });
+
+        // Playlist
+        document.getElementById('playlistBtn').addEventListener('click', () => {
+            parent.postMessage({ type: 'TOAST', text: 'Playlist: drag audio files to Winamp to add tracks', icon: '&#9839;' }, '*');
+        });
+
+        // Share now playing
+        document.getElementById('npShare').addEventListener('click', () => {
+            const post = { id: Date.now(), isOwn: true, text: `Now Playing: ${npTrack.title} by ${npTrack.artist} &#9836;`, type: 'music', music: { title: npTrack.title, artist: npTrack.artist, url: '#' }, likes: 0, liked: false, comments: [], tags: ['#nowplaying', '#winamp'], ts: Date.now(), showComments: false };
+            parent.postMessage({ type: 'POST_TO_FEED', post }, '*');
+            parent.postMessage({ type: 'NOW_PLAYING', track: npTrack.title, artist: npTrack.artist }, '*');
+            parent.postMessage({ type: 'TOAST', text: 'Now Playing shared to AeroNet!', icon: '&#9836;' }, '*');
+        });
+
+        // Demo: update now playing periodically
+        const demos = [
+            { title: 'Breathe (2am)', artist: 'Anna Nalick' },
+            { title: 'Konstantine', artist: 'Something Corporate' },
+            { title: 'Such Great Heights', artist: 'The Postal Service' },
+            { title: 'Sunday Morning', artist: 'Maroon 5' },
+            { title: 'Float On', artist: 'Modest Mouse' }
+        ];
+        let demoIdx = 0;
+        setInterval(() => {
+            if (!webampLoaded) return;
+            npTrack = demos[demoIdx % demos.length]; demoIdx++;
+            document.getElementById('npTitle').textContent = npTrack.title;
+            document.getElementById('npArtist').textContent = npTrack.artist;
+        }, (Math.random() * 60 + 30) * 1000);
+
+        window.addEventListener('message', e => {
+            if (e.data?.type === 'THEME_CHANGE') document.body.dataset.theme = e.data.theme;
+        });
+    </script>
+</body>
+
+</html>

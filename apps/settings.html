@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/cursors.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        :root {
+            --accent: #1a88d4;
+            --glass: rgba(255, 255, 255, 0.82);
+            --glass-b: rgba(255, 255, 255, 0.9);
+            --text: #0a2a4a;
+            --text2: #5a9ac0;
+            --text3: #7ab0d0;
+            --bg: linear-gradient(160deg, #8ecae6, #b8def0, #cceeff, #a8d8ea);
+            --card: linear-gradient(160deg, rgba(255, 255, 255, 0.82), rgba(220, 242, 255, 0.78));
+            --shadow: 0 6px 24px rgba(80, 160, 220, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.95)
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column
+        }
+
+        .hdr {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(210, 235, 255, 0.82));
+            border-bottom: 1px solid var(--glass-b);
+            padding: 0 16px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0
+        }
+
+        .hdr-title {
+            font-size: 16px;
+            font-weight: 900;
+            color: var(--text)
+        }
+
+        .layout {
+            display: flex;
+            flex: 1;
+            overflow: hidden
+        }
+
+        .sidebar {
+            width: 180px;
+            flex-shrink: 0;
+            padding: 10px;
+            border-right: 1px solid rgba(180, 220, 255, 0.3);
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.3)
+        }
+
+        .main {
+            flex: 1;
+            padding: 14px;
+            overflow-y: auto
+        }
+
+        .s-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text2);
+            margin-bottom: 2px;
+            transition: all .12s
+        }
+
+        .s-item:hover {
+            background: rgba(74, 184, 244, 0.1)
+        }
+
+        .s-item.on {
+            background: var(--accent-grad);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: var(--accent-text, #fff);
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+
+        .s-icon {
+            font-size: 16px;
+            width: 28px;
+            text-align: center
+        }
+
+        .panel {
+            display: none
+        }
+
+        .panel.active {
+            display: block
+        }
+
+        .panel-title {
+            font-size: 15px;
+            font-weight: 900;
+            color: var(--text);
+            margin-bottom: 14px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(180, 220, 255, 0.3)
+        }
+
+        .section {
+            background: var(--card);
+            border: 1px solid var(--glass-b);
+            border-radius: 14px;
+            box-shadow: var(--shadow);
+            padding: 16px;
+            margin-bottom: 12px
+        }
+
+        .section-title {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text2);
+            margin-bottom: 12px
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 0;
+            border-bottom: 1px solid rgba(180, 220, 255, 0.15)
+        }
+
+        .row:last-child {
+            border: none
+        }
+
+        .row span {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+            flex: 1
+        }
+
+        .row label:not(.toggle) {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text);
+            width: 100px;
+            flex-shrink: 0;
+        }
+
+        .row small {
+            font-size: 10px;
+            color: var(--text3);
+            display: block
+        }
+
+        /* Themes grid */
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px
+        }
+
+        .theme-card {
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all .15s;
+            position: relative
+        }
+
+        .theme-card:hover {
+            transform: translateY(-2px)
+        }
+
+        .theme-card.on {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(26, 136, 212, 0.4)
+        }
+
+        .theme-preview {
+            height: 60px;
+            display: flex;
+            flex-direction: column
+        }
+
+        .th-bar {
+            height: 12px
+        }
+
+        .th-desk {
+            flex: 1
+        }
+
+        .theme-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-align: center;
+            padding: 5px;
+            background: rgba(255, 255, 255, 0.8);
+            color: var(--text)
+        }
+
+        /* Wallpapers */
+        .wall-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px
+        }
+
+        .wall-item {
+            height: 60px;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all .15s;
+            overflow: hidden
+        }
+
+        .wall-item:hover,
+        .wall-item.on {
+            border-color: var(--accent)
+        }
+
+        /* Toggles */
+        .toggle {
+            position: relative;
+            width: 40px;
+            height: 22px;
+            flex-shrink: 0;
+            flex: 0 0 40px;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0
+        }
+
+        .toggle-slider {
+            position: absolute;
+            inset: 0;
+            background: rgba(180, 210, 240, 0.5);
+            border-radius: 22px;
+            cursor: pointer;
+            transition: .25s
+        }
+
+        .toggle input:checked+.toggle-slider {
+            background: linear-gradient(90deg, #4ab8f4, #1a88d4)
+        }
+
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background: #fff;
+            border-radius: 50%;
+            transition: .25s;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2)
+        }
+
+        .toggle input:checked+.toggle-slider::before {
+            transform: translateX(18px)
+        }
+
+        /* Range Slider */
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 6px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--accent-grad, #1a88d4);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            border: 2px solid #fff;
+        }
+
+        .p-input {
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid var(--glass-b);
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-family: inherit;
+            font-size: 13px;
+            color: var(--text);
+            outline: none;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .p-input:focus {
+            background: #fff;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(26, 136, 212, 0.2);
+        }
+
+        /* Btn */
+        .btn {
+            padding: 7px 16px;
+            border-radius: 20px;
+            border: none;
+            background: linear-gradient(180deg, #4ab8f4, #1a88d4);
+            color: #fff;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(26, 136, 212, 0.3)
+        }
+
+        .btn:hover {
+            filter: brightness(1.1)
+        }
+
+        .btn-outline {
+            padding: 7px 16px;
+            border-radius: 20px;
+            border: 1px solid var(--accent);
+            background: none;
+            color: var(--accent);
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer
+        }
+
+        /* Theme adaptations */
+        body[data-theme="y2k"] {
+            --bg: #0a001a;
+            --card: rgba(20, 0, 40, 0.85);
+            --text: #ffffff;
+            --text2: #ffbbff;
+            --text3: #aa44aa;
+            --glass-b: rgba(255, 0, 255, 0.3);
+            --accent: #ff00ff;
+            --accent-grad: linear-gradient(180deg, #ff44ff, #cc00cc);
+            --accent-text: #fff;
+            --accent-glow: rgba(255, 0, 255, 0.6);
+        }
+
+        body[data-theme="dark-matter"] {
+            --bg: #060610;
+            --card: rgba(15, 15, 30, 0.9);
+            --text: #ffffff;
+            --text2: #8080d0;
+            --text3: #5050a0;
+            --glass-b: rgba(80, 80, 200, 0.3);
+            --accent: #6060ff;
+            --accent-grad: linear-gradient(180deg, #8888ff, #4040cc);
+            --accent-text: #fff;
+            --accent-glow: rgba(96, 96, 255, 0.5);
+        }
+
+        body[data-theme="xp-luna"] {
+            --bg: #3a6ea8;
+            --card: rgba(236, 233, 216, 0.95);
+            --text: #000;
+            --text2: #316ac5;
+            --text3: #808080;
+            --glass-b: #aca899
+        }
+
+        body[data-theme="geocities"] {
+            --bg: #000080;
+            --card: #c0c0c0;
+            --text: #000;
+            --text2: #000080;
+            --text3: #808080;
+            --glass-b: #808080;
+            --accent: #000080
+        }
+    </style>
+</head>
+
+<body>
+    <div class="hdr">
+        <span style="font-size:22px">&#9881;</span>
+        <div class="hdr-title">Settings</div>
+    </div>
+    <div class="layout">
+        <div class="sidebar">
+            <div class="s-item on" data-panel="themes"><span class="s-icon">&#9674;</span>Themes</div>
+            <div class="s-item" data-panel="wallpaper"><span class="s-icon">&#9728;</span>Wallpaper</div>
+            <div class="s-item" data-panel="cursor"><span class="s-icon">&#10162;</span>Cursor</div>
+            <div class="s-item" data-panel="taskbar"><span class="s-icon">&#9776;</span>Taskbar</div>
+            <div class="s-item" data-panel="sounds"><span class="s-icon">&#9834;</span>Sounds</div>
+            <div class="s-item" data-panel="aeronet"><span class="s-icon">&#9670;</span>AeroNet</div>
+            <div class="s-item" data-panel="about"><span class="s-icon">&#9432;</span>About</div>
+        </div>
+        <div class="main">
+            <!-- THEMES -->
+            <div class="panel active" id="panel-themes">
+                <div class="panel-title">Themes</div>
+                <div class="section">
+                    <div class="section-title">Select Theme</div>
+                    <div class="themes-grid" id="themesGrid"></div>
+                </div>
+            </div>
+            <!-- WALLPAPER -->
+            <div class="panel" id="panel-wallpaper">
+                <div class="panel-title">Wallpaper</div>
+                <div class="section">
+                    <div class="section-title">Preset Wallpapers</div>
+                    <div class="wall-grid" id="wallGrid"></div>
+                    <div style="margin-top:10px">
+                        <button class="btn-outline" id="wallUploadBtn">Upload Custom Image</button>
+                        <input type="file" id="wallFile" accept="image/*" style="display:none">
+                    </div>
+                </div>
+            </div>
+            <!-- CURSOR -->
+            <div class="panel" id="panel-cursor">
+                <div class="panel-title">Cursor Style</div>
+                <div class="section">
+                    <div class="section-title">Choose Cursor</div>
+                    <div style="display:flex;flex-direction:column;gap:6px" id="cursorList"></div>
+                </div>
+            </div>
+            <!-- TASKBAR -->
+            <div class="panel" id="panel-taskbar">
+                <div class="panel-title">Taskbar</div>
+                <div class="section">
+                    <div class="section-title">Options</div>
+                    <div class="row"><span>Taskbar Position<small>Bottom or Top</small></span>
+                        <select id="taskbarPos"
+                            style="font-family:inherit;font-size:12px;border-radius:8px;border:1px solid var(--glass-b);padding:4px 8px;background:rgba(255,255,255,0.5);color:var(--text)">
+                            <option value="bottom">Bottom</option>
+                            <option value="top">Top</option>
+                        </select>
+                    </div>
+                    <div class="row"><span>Show Clock</span><label class="toggle"><input type="checkbox" id="showClock"
+                                checked><span class="toggle-slider"></span></label></div>
+                    <div class="row"><span>Transparency</span><input type="range" min="0.5" max="1" step="0.05"
+                            id="taskbarOpacity" value="1" style="flex:1"></div>
+                </div>
+            </div>
+            <!-- SOUNDS -->
+            <div class="panel" id="panel-sounds">
+                <div class="panel-title">Sounds</div>
+                <div class="section">
+                    <div class="section-title">System Sounds</div>
+                    <div class="row"><span>Enable Sounds</span><label class="toggle"><input type="checkbox"
+                                id="soundToggle" checked><span class="toggle-slider"></span></label></div>
+                    <div class="row"><span>Boot Chime</span><label class="toggle"><input type="checkbox" id="bootSound"
+                                checked><span class="toggle-slider"></span></label></div>
+                    <div class="row"><span>Notification Sounds</span><label class="toggle"><input type="checkbox"
+                                id="notifSound" checked><span class="toggle-slider"></span></label></div>
+                </div>
+            </div>
+            <!-- AERONET PROFILE SETTINGS -->
+            <div class="panel" id="panel-aeronet">
+                <div class="panel-title">AeroNet Profile</div>
+                <div class="section">
+                    <div class="section-title">Quick Edit</div>
+                    <div class="row"><label>Display Name</label><input id="pname" class="p-input"
+                            placeholder="Your display name"></div>
+                    <div class="row"><label>Handle</label><input id="phandle" class="p-input" placeholder="@handle">
+                    </div>
+                    <div class="row"><label>Mood</label><input id="pmood" class="p-input"
+                            placeholder="What's your mood?"></div>
+                    <div style="margin-top:10px;display:flex;gap:8px">
+                        <button class="btn" id="saveAeroProfile">Save Profile</button>
+                        <button class="btn-outline" id="openAeronetBtn">Open AeroNet</button>
+                    </div>
+                </div>
+                <div class="section">
+                    <div class="section-title">Privacy</div>
+                    <div class="row"><span>Public Profile</span><label class="toggle"><input type="checkbox"
+                                id="pubProfile" checked><span class="toggle-slider"></span></label></div>
+                    <div class="row"><span>Allow Comments</span><label class="toggle"><input type="checkbox"
+                                id="allowComments" checked><span class="toggle-slider"></span></label></div>
+                    <div class="row"><span>Show Online Status</span><label class="toggle"><input type="checkbox"
+                                id="showOnline" checked><span class="toggle-slider"></span></label></div>
+                </div>
+            </div>
+            <!-- ABOUT -->
+            <div class="panel" id="panel-about">
+                <div class="panel-title">About AeroNet OS</div>
+                <div class="section" style="text-align:center;padding:24px">
+                    <div style="font-size:48px;margin-bottom:8px">&#9728;</div>
+                    <div
+                        style="font-size:22px;font-weight:900;background:linear-gradient(135deg,#1a7ad4,#40b4f0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
+                        AeroNet OS</div>
+                    <div style="font-size:11px;color:var(--text2);margin-top:4px">Version 1.0 &mdash; Frutiger Era</div>
+                    <div style="font-size:12px;color:var(--text3);margin-top:12px;line-height:1.6">Your retro internet
+                        desktop.<br>Built with glass, gradients, and nostalgia.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const THEMES = [
+            { id: 'frutiger-aero', label: 'Frutiger Aero', bar: 'linear-gradient(180deg,rgba(120,200,255,0.85),rgba(60,140,220,0.92))', desk: 'linear-gradient(160deg,#8ecae6,#cceeff)' },
+            { id: 'xp-luna', label: 'Window XD', bar: 'linear-gradient(180deg,#245edc,#1540c4)', desk: '#3a6ea8' },
+            { id: 'y2k', label: 'Y2K Chrome', bar: 'linear-gradient(180deg,#2a0050,#1a003a)', desk: '#0a0010' },
+            { id: 'dark-matter', label: 'Shadow Realm', bar: 'rgba(10,10,20,0.95)', desk: '#060610' },
+            { id: 'geocities', label: 'Geocountries', bar: '#c0c0c0', desk: '#000080' }
+        ];
+
+        const SCHEMES = [
+            { id: 'default', label: 'Classic Windows' },
+            { id: 'frutiger-aero', label: 'Frutiger Aero (Custom)' }
+        ];
+
+        const CURSORS = [
+            { id: 'default', label: 'Normal Select', css: 'default' },
+            { id: 'help', label: 'Help Select', css: 'help' },
+            { id: 'pointer', label: 'Link Select', css: 'pointer' },
+            { id: 'text', label: 'Text Select', css: 'text' },
+            { id: 'move', label: 'Move / Drag', css: 'move' },
+            { id: 'crosshair', label: 'Precision Select', css: 'crosshair' },
+            { id: 'alias', label: 'Link Overlay (Alt)', css: 'alias' },
+            { id: 'not-allowed', label: 'Unavailable', css: 'not-allowed' },
+            { id: 'ns-resize', label: 'Vertical Resize', css: 'ns-resize' },
+            { id: 'ew-resize', label: 'Horizontal Resize', css: 'ew-resize' },
+            { id: 'nwse-resize', label: 'Diagonal Resize 1', css: 'nwse-resize' },
+            { id: 'nesw-resize', label: 'Diagonal Resize 2', css: 'nesw-resize' },
+            { id: 'cell', label: 'Pencil / Cell Select', css: 'cell' }
+        ];
+
+        let curTheme = parent.document?.body?.dataset?.theme || localStorage.getItem('aeronet_theme') || 'frutiger-aero';
+        let curCursor = parent.document?.body?.dataset?.cursorSet || localStorage.getItem('aeronet_cursorSet') || 'default';
+
+        // Render Schemes Dropdown
+        const cp = document.getElementById('panel-cursor');
+        const schemeDiv = document.createElement('div');
+        schemeDiv.style.marginBottom = '20px';
+        schemeDiv.innerHTML = `
+            <div class="section-title">Cursor Scheme</div>
+            <select id="schemeSel" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--glass-b);background:rgba(255,255,255,0.5);font-family:inherit;font-size:13px;outline:none;font-weight:700;color:var(--text)">
+                ${SCHEMES.map(s => `<option value="${s.id}" ${curCursor === s.id ? 'selected' : ''}>${s.label}</option>`).join('')}
+            </select>
+        `;
+        cp.querySelector('.section').prepend(schemeDiv);
+
+        const sel = document.getElementById('schemeSel');
+        sel.onchange = () => {
+            const id = sel.value;
+            parent.postMessage({ type: 'SET_CURSOR', css: id }, '*');
+            localStorage.setItem('aeronet_cursorSet', id);
+            document.body.dataset.cursorSet = id;
+            curCursor = id;
+            renderCursorPreview();
+        };
+
+        // Render Cursor Previews
+        function renderCursorPreview() {
+            const cl = document.getElementById('cursorList');
+            cl.innerHTML = '';
+            CURSORS.forEach(c => {
+                const el = document.createElement('div');
+                el.className = 'row';
+                el.dataset.cursorType = c.id;
+                el.style.cursor = c.css;
+                el.innerHTML = `<span>${c.label}</span><small style="font-size:10px;color:var(--text3)">${c.css}</small>`;
+                cl.appendChild(el);
+            });
+        }
+
+        renderCursorPreview();
+        document.body.dataset.cursorSet = curCursor;
+
+        // Render themes
+        const tg = document.getElementById('themesGrid');
+        THEMES.forEach(t => {
+            const el = document.createElement('div');
+            el.className = 'theme-card' + (curTheme === t.id ? ' on' : '');
+            el.dataset.themeId = t.id;
+            el.innerHTML = `<div class="theme-preview"><div class="th-bar" style="background:${t.bar}"></div><div class="th-desk" style="background:${t.desk}"></div></div><div class="theme-label">${t.label}</div>`;
+            tg.appendChild(el);
+        });
+        tg.addEventListener('click', e => {
+            const card = e.target.closest('[data-theme-id]');
+            if (!card) return;
+            const id = card.dataset.themeId;
+            document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('on'));
+            card.classList.add('on');
+            parent.postMessage({ type: 'SET_THEME', theme: id }, '*');
+            document.body.dataset.theme = id;
+            localStorage.setItem('aeronet_theme', id);
+        });
+
+        // Render wallpaper presets
+        const WALLS = [
+            { label: 'Aero Sky', bg: 'linear-gradient(160deg,#7ec8e3,#a8dcf0,#c5eeff)' },
+            { label: 'Green Hills', bg: 'linear-gradient(180deg,#78c4f8,#3a72c8) 0 0, linear-gradient(0deg,#48a028,#3a8a1c) 0 60%' },
+            { label: 'Deep Space', bg: 'radial-gradient(ellipse at center,#1a1a3a,#030308)' },
+            { label: 'Sunset Aero', bg: 'linear-gradient(160deg,#ffb5a7,#ff8fa3,#c77dff)' },
+            { label: 'Neon Grid', bg: 'linear-gradient(180deg,#0a001a,#2a0050)' },
+            { label: 'Chrome', bg: 'linear-gradient(135deg,#888,#eee,#888,#eee)' }
+        ];
+        const wg = document.getElementById('wallGrid');
+        WALLS.forEach(w => {
+            const el = document.createElement('div');
+            el.className = 'wall-item';
+            el.style.background = w.bg;
+            el.title = w.label;
+            el.addEventListener('click', () => {
+                document.querySelectorAll('.wall-item').forEach(i => i.classList.remove('on'));
+                el.classList.add('on');
+                parent.postMessage({ type: 'SET_WALLPAPER', url: null, bg: w.bg }, '*');
+            });
+            wg.appendChild(el);
+        });
+        document.getElementById('wallUploadBtn').addEventListener('click', () => document.getElementById('wallFile').click());
+        document.getElementById('wallFile').addEventListener('change', e => {
+            const f = e.target.files[0]; if (!f) return;
+            const r = new FileReader();
+            r.onload = ev => parent.postMessage({ type: 'SET_WALLPAPER', url: ev.target.result }, '*');
+            r.readAsDataURL(f);
+        });
+
+        // AeroNet profile
+        const prof = JSON.parse(localStorage.getItem('aeronet_profile') || '{}');
+        if (prof.name) document.getElementById('pname').value = prof.name;
+        if (prof.handle) document.getElementById('phandle').value = prof.handle;
+        if (prof.mood) document.getElementById('pmood').value = prof.mood;
+
+        document.getElementById('saveAeroProfile').addEventListener('click', () => {
+            const up = { name: document.getElementById('pname').value || prof.name, handle: document.getElementById('phandle').value || prof.handle, mood: document.getElementById('pmood').value || prof.mood };
+            const merged = { ...prof, ...up };
+            localStorage.setItem('aeronet_profile', JSON.stringify(merged));
+            parent.postMessage({ type: 'PROFILE_UPDATE', profile: merged }, '*');
+            parent.postMessage({ type: 'TOAST', text: 'Profile saved!', icon: '&#9989;' }, '*');
+        });
+
+        document.getElementById('openAeronetBtn').addEventListener('click', () => parent.postMessage({ type: 'OPEN_APP', appId: 'aeronet', data: { view: 'profile' } }, '*'));
+
+        // Panel switching
+        document.querySelectorAll('[data-panel]').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.s-item').forEach(i => i.classList.remove('on'));
+                document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+                item.classList.add('on');
+                document.getElementById('panel-' + item.dataset.panel)?.classList.add('active');
+            });
+        });
+
+        // Taskbar options
+        document.getElementById('showClock').addEventListener('change', e => {
+            parent.postMessage({ type: 'TOGGLE_CLOCK', show: e.target.checked }, '*');
+            localStorage.setItem('aeronet_showClock', e.target.checked ? '1' : '0');
+        });
+        if (localStorage.getItem('aeronet_showClock') === '0') document.getElementById('showClock').checked = false;
+
+        document.getElementById('taskbarOpacity').addEventListener('input', e => {
+            parent.postMessage({ type: 'SET_TASKBAR_OPACITY', opacity: e.target.value }, '*');
+            localStorage.setItem('aeronet_taskbarOpacity', e.target.value);
+        });
+        const savedOpacity = localStorage.getItem('aeronet_taskbarOpacity') || '1';
+        document.getElementById('taskbarOpacity').value = savedOpacity;
+
+        document.getElementById('taskbarPos').addEventListener('change', e => {
+            parent.postMessage({ type: 'SET_TASKBAR_POS', pos: e.target.value }, '*');
+            localStorage.setItem('aeronet_taskbarPos', e.target.value);
+        });
+        const savedPos = localStorage.getItem('aeronet_taskbarPos') || 'bottom';
+        document.getElementById('taskbarPos').value = savedPos;
+
+        // Theme changes from OS
+        window.addEventListener('message', e => {
+            if (e.data?.type === 'THEME_CHANGE') document.body.dataset.theme = e.data.theme;
+        });
+
+        // Deep-link to aeronet panel
+        const params = new URLSearchParams(location.search);
+        if (params.get('view') === 'aeronet') {
+            document.querySelectorAll('.s-item').forEach(i => i.classList.remove('on'));
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.querySelector('[data-panel="aeronet"]')?.classList.add('on');
+            document.getElementById('panel-aeronet')?.classList.add('active');
+        }
+        document.body.dataset.theme = curTheme;
+    </script>
+</body>
+
+</html>

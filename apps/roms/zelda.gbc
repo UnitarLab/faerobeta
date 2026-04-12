@@ -1,0 +1,11 @@
+<!DOCTYPE HTML>
+<head>
+	<meta charset="UTF-8">
+	<meta name="robots" content="noindex">
+	<title>Vimm's Lair: Error 400</title>
+	<link rel="stylesheet" type="text/css" href="//vimm.net/settings.css">
+</head>
+<body>
+	<p style="text-align:center"><a href="//vimm.net/"><img src="//vimm.net/images/vimm6.png" width="400" height="100" alt=""></a></p>
+	<p style="text-align:center">Your browser is acting funny.  It's likely an overzealous firewall or VPN, but malicious bots often behave the same.  So to be safe, you shall not pass!</p>
+</body>

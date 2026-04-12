@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        :root {
+            --accent: #1a88d4;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Nunito', sans-serif;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 20px;
+            color: white;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .game-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 12px;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .game-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .game-icon {
+            width: 64px;
+            height: 64px;
+            background: white;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .game-label {
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-item" onclick="launch('2048')">
+        <div class="game-icon">🔢</div>
+        <div class="game-label">2048</div>
+    </div>
+    <div class="game-item" onclick="launch('breakout')">
+        <div class="game-icon">🧱</div>
+        <div class="game-label">Breakout</div>
+    </div>
+    <div class="game-item" onclick="launch('flappy')">
+        <div class="game-icon">🐦</div>
+        <div class="game-label">Flappy Bird</div>
+    </div>
+
+    <script>
+        function launch(game) {
+            window.parent.postMessage({ type: 'OPEN_APP', appId: 'game_' + game }, '*');
+        }
+    </script>
+</body>
+
+</html>

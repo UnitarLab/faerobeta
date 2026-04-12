@@ -1,0 +1,258 @@
+/* ============================================================
+   AERONET OS — THEME TOKENS
+   All themes defined as CSS custom properties on [data-theme]
+   ============================================================ */
+
+/* ── DEFAULT / FRUTIGER AERO ─────────────────────────────── */
+:root,
+[data-theme="frutiger-aero"] {
+  --theme-name: "Frutiger Aero";
+
+  /* Desktop */
+  --desk-bg: linear-gradient(160deg, #8ecae6 0%, #b8def0 30%, #cceeff 60%, #a8d8ea 100%);
+  --desk-wallpaper: url('../assets/wallpapers/aero.svg');
+
+  /* Taskbar */
+  --taskbar-bg: linear-gradient(180deg, rgba(120, 200, 255, 0.85) 0%, rgba(60, 140, 220, 0.92) 100%);
+  --taskbar-border: rgba(255, 255, 255, 0.6);
+  --taskbar-text: #fff;
+  --taskbar-btn-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.1) 100%);
+  --taskbar-btn-hover: rgba(255, 255, 255, 0.25);
+  --taskbar-height: 42px;
+
+  /* Window chrome */
+  --win-titlebar: linear-gradient(180deg, rgba(160, 220, 255, 0.95) 0%, rgba(80, 160, 230, 0.9) 100%);
+  --win-titlebar-border: rgba(255, 255, 255, 0.8);
+  --win-titlebar-text: #fff;
+  --win-body-bg: rgba(255, 255, 255, 0.82);
+  --win-border: rgba(255, 255, 255, 0.9);
+  --win-shadow: 0 12px 40px rgba(30, 100, 200, 0.25), 0 2px 8px rgba(30, 100, 200, 0.15);
+  --win-radius: 10px;
+  --win-titlebar-h: 32px;
+
+  /* Glass cards */
+  --glass-bg: linear-gradient(160deg, rgba(255, 255, 255, 0.82) 0%, rgba(220, 242, 255, 0.78) 100%);
+  --glass-border: rgba(255, 255, 255, 0.9);
+  --glass-shadow: 0 6px 24px rgba(80, 160, 220, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+
+  /* Accent / buttons */
+  --accent: #1a88d4;
+  --accent-grad: linear-gradient(180deg, #4ab8f4 0%, #1a88d4 100%);
+  --accent-text: #fff;
+  --accent-glow: rgba(26, 136, 212, 0.4);
+
+  /* Text */
+  --text-primary: #0a2a4a;
+  --text-secondary: #5a9ac0;
+  --text-muted: #7ab0d0;
+
+  /* Icons */
+  --icon-shadow: 0 4px 12px rgba(30, 100, 200, 0.3);
+
+  /* Start button */
+  --start-bg: linear-gradient(180deg, #54c4f0 0%, #1a78c4 100%);
+  --start-text: #fff;
+
+  /* Scrollbar */
+  --scroll-track: rgba(200, 230, 255, 0.4);
+  --scroll-thumb: linear-gradient(180deg, #80c8f4, #1a88d4);
+
+  /* App-specific orbs */
+  --orb1: rgba(120, 200, 255, 0.35);
+  --orb2: rgba(160, 220, 255, 0.3);
+}
+
+/* ── WINDOWS XP LUNA ─────────────────────────────────────── */
+[data-theme="xp-luna"] {
+  --theme-name: "Window XD";
+
+  --desk-bg: #3a6ea8;
+  --desk-wallpaper: url('../assets/wallpapers/xp.svg');
+
+  --taskbar-bg: linear-gradient(180deg, #245edc 0%, #1540c4 40%, #2456d4 100%);
+  --taskbar-border: #1a3ab8;
+  --taskbar-text: #fff;
+  --taskbar-btn-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.1) 100%);
+  --taskbar-btn-hover: rgba(255, 255, 255, 0.15);
+  --taskbar-height: 40px;
+
+  --win-titlebar: linear-gradient(180deg, #4a90e8 0%, #0058c4 80%, #0050b8 100%);
+  --win-titlebar-border: #0040a0;
+  --win-titlebar-text: #fff;
+  --win-body-bg: #ece9d8;
+  --win-border: #0058c4;
+  --win-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  --win-radius: 8px 8px 0 0;
+  --win-titlebar-h: 28px;
+
+  --glass-bg: #ece9d8;
+  --glass-border: #aca899;
+  --glass-shadow: inset 0 0 0 1px #aca899;
+
+  --accent: #316ac5;
+  --accent-grad: linear-gradient(180deg, #4a80d4 0%, #1a50c0 100%);
+  --accent-text: #fff;
+  --accent-glow: rgba(49, 106, 197, 0.4);
+
+  --text-primary: #000;
+  --text-secondary: #316ac5;
+  --text-muted: #808080;
+
+  --icon-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  --start-bg: linear-gradient(180deg, #5dc44a 0%, #3ca428 100%);
+  --start-text: #fff;
+
+  --scroll-track: #d4d0c8;
+  --scroll-thumb: linear-gradient(180deg, #aaa, #888);
+  --orb1: rgba(49, 106, 197, 0.1);
+  --orb2: rgba(49, 106, 197, 0.05);
+}
+
+/* ── Y2K / CHROME ────────────────────────────────────────── */
+[data-theme="y2k"] {
+  --theme-name: "Y2K Chrome";
+
+  --desk-bg: #0a0a1a;
+  --desk-wallpaper: url('../assets/wallpapers/y2k.svg');
+
+  --taskbar-bg: linear-gradient(180deg, #2a0050 0%, #1a003a 100%);
+  --taskbar-border: #ff00ff44;
+  --taskbar-text: #ff88ff;
+  --taskbar-btn-bg: linear-gradient(180deg, rgba(255, 0, 255, 0.15) 0%, rgba(255, 0, 255, 0.05) 100%);
+  --taskbar-btn-hover: rgba(255, 0, 255, 0.2);
+  --taskbar-height: 44px;
+
+  --win-titlebar: linear-gradient(90deg, #ff00ff 0%, #8800ff 50%, #0088ff 100%);
+  --win-titlebar-border: #ff00ff;
+  --win-titlebar-text: #fff;
+  --win-body-bg: #0d001a;
+  --win-border: #ff00ff66;
+  --win-shadow: 0 0 30px rgba(255, 0, 255, 0.4), 0 8px 30px rgba(0, 0, 0, 0.8);
+  --win-radius: 4px;
+  --win-titlebar-h: 30px;
+
+  --glass-bg: rgba(20, 0, 40, 0.85);
+  --glass-border: rgba(255, 0, 255, 0.4);
+  --glass-shadow: 0 0 20px rgba(255, 0, 255, 0.2), inset 0 1px 0 rgba(255, 0, 255, 0.3);
+
+  --accent: #ff00ff;
+  --accent-grad: linear-gradient(180deg, #ff44ff 0%, #cc00cc 100%);
+  --accent-text: #fff;
+  --accent-glow: rgba(255, 0, 255, 0.6);
+
+  --text-primary: #ffffff;
+  --text-secondary: #ffbbff;
+  --text-muted: #aa44aa;
+
+  --icon-shadow: 0 0 12px rgba(255, 0, 255, 0.6);
+  --start-bg: linear-gradient(180deg, #ff44ff 0%, #aa00cc 100%);
+  --start-text: #fff;
+
+  --scroll-track: rgba(255, 0, 255, 0.1);
+  --scroll-thumb: linear-gradient(180deg, #ff00ff, #8800ff);
+  --orb1: rgba(255, 0, 255, 0.2);
+  --orb2: rgba(0, 136, 255, 0.15);
+}
+
+/* ── DARK MATTER ─────────────────────────────────────────── */
+[data-theme="dark-matter"] {
+  --theme-name: "Shadow Realm";
+
+  --desk-bg: #080810;
+  --desk-wallpaper: url('../assets/wallpapers/dark.svg');
+
+  --taskbar-bg: rgba(10, 10, 20, 0.95);
+  --taskbar-border: rgba(100, 100, 255, 0.2);
+  --taskbar-text: #a0a0ff;
+  --taskbar-btn-bg: rgba(60, 60, 120, 0.3);
+  --taskbar-btn-hover: rgba(80, 80, 180, 0.4);
+  --taskbar-height: 42px;
+
+  --win-titlebar: linear-gradient(180deg, #1a1a3a 0%, #0d0d20 100%);
+  --win-titlebar-border: rgba(100, 100, 255, 0.3);
+  --win-titlebar-text: #c0c0ff;
+  --win-body-bg: rgba(10, 10, 20, 0.95);
+  --win-border: rgba(80, 80, 200, 0.4);
+  --win-shadow: 0 8px 40px rgba(60, 60, 255, 0.25), 0 2px 8px rgba(0, 0, 0, 0.8);
+  --win-radius: 8px;
+  --win-titlebar-h: 32px;
+
+  --glass-bg: rgba(15, 15, 30, 0.88);
+  --glass-border: rgba(80, 80, 200, 0.35);
+  --glass-shadow: 0 4px 20px rgba(60, 60, 255, 0.15), inset 0 1px 0 rgba(100, 100, 255, 0.2);
+
+  --accent: #6060ff;
+  --accent-grad: linear-gradient(180deg, #8888ff 0%, #4040cc 100%);
+  --accent-text: #fff;
+  --accent-glow: rgba(96, 96, 255, 0.5);
+
+  --text-primary: #ddddf8;
+  --text-secondary: #8080d0;
+  --text-muted: #5050a0;
+
+  --icon-shadow: 0 0 16px rgba(96, 96, 255, 0.4);
+  --start-bg: linear-gradient(180deg, #6060ff 0%, #3030cc 100%);
+  --start-text: #fff;
+
+  --scroll-track: rgba(60, 60, 120, 0.3);
+  --scroll-thumb: linear-gradient(180deg, #6060ff, #3030aa);
+  --orb1: rgba(96, 96, 255, 0.15);
+  --orb2: rgba(60, 60, 200, 0.1);
+}
+
+/* ── GEOCITIES ────────────────────────────────────────────── */
+[data-theme="geocities"] {
+  --theme-name: "Geocountries";
+
+  --desk-bg: #000080;
+  --desk-wallpaper: url('../assets/wallpapers/geocities.svg');
+
+  --taskbar-bg: #c0c0c0;
+  --taskbar-border: #808080;
+  --taskbar-text: #000;
+  --taskbar-btn-bg: linear-gradient(180deg, #dfdfdf 0%, #aaaaaa 100%);
+  --taskbar-btn-hover: #e0e0e0;
+  --taskbar-height: 38px;
+
+  --win-titlebar: linear-gradient(90deg, #000080 0%, #1084d0 100%);
+  --win-titlebar-border: #000080;
+  --win-titlebar-text: #fff;
+  --win-body-bg: #c0c0c0;
+  --win-border: #808080;
+  --win-shadow: 2px 2px 0 #000;
+  --win-radius: 0px;
+  --win-titlebar-h: 24px;
+
+  --glass-bg: #c0c0c0;
+  --glass-border: #808080;
+  --glass-shadow: inset -1px -1px 0 #fff, inset 1px 1px 0 #808080;
+
+  --accent: #000080;
+  --accent-grad: linear-gradient(180deg, #0000cc 0%, #000080 100%);
+  --accent-text: #fff;
+  --accent-glow: rgba(0, 0, 128, 0.5);
+
+  --text-primary: #000;
+  --text-secondary: #000080;
+  --text-muted: #808080;
+
+  --icon-shadow: 1px 1px 0 #808080;
+  --start-bg: #c0c0c0;
+  --start-text: #000;
+
+  --scroll-track: #c0c0c0;
+  --scroll-thumb: linear-gradient(180deg, #d0d0d0, #a0a0a0);
+  --orb1: rgba(0, 0, 128, 0.05);
+  --orb2: rgba(0, 0, 128, 0.03);
+}
+
+/* ── SHARED UTILITY CLASSES ──────────────────────────────── */
+.theme-accent-bg {
+  background: var(--accent-grad);
+}
+
+.theme-glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}

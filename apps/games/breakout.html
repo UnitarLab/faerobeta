@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Breakout — Aero Edition</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: radial-gradient(ellipse at 60% 20%, #1a0a2e 0%, #0a0518 50%, #04020c 100%);
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    font-family: 'Exo 2', sans-serif; overflow: hidden;
+  }
+  body::before {
+    content:''; position:fixed; inset:0;
+    background:
+      radial-gradient(circle at 25% 30%, rgba(160,80,255,0.07) 0%, transparent 45%),
+      radial-gradient(circle at 75% 60%, rgba(80,0,255,0.05) 0%, transparent 40%),
+      radial-gradient(circle at 50% 90%, rgba(200,100,255,0.04) 0%, transparent 35%);
+    pointer-events:none;
+  }
+  .orb { position:fixed; border-radius:50%; filter:blur(70px); opacity:0.18; pointer-events:none; animation:drift 10s ease-in-out infinite alternate; }
+  .orb1 { width:400px; height:400px; background:radial-gradient(circle,#8800ff,transparent); top:-120px; left:-100px; }
+  .orb2 { width:300px; height:300px; background:radial-gradient(circle,#cc44ff,transparent); bottom:-80px; right:-60px; animation-delay:-5s; }
+  .orb3 { width:200px; height:200px; background:radial-gradient(circle,#aa00ff,transparent); top:30%; right:2%; animation-delay:-3s; }
+  @keyframes drift { from{transform:translateY(0);} to{transform:translateY(30px);} }
+
+  h1 {
+    font-family:'Orbitron',sans-serif; font-size:2rem; font-weight:900; color:transparent;
+    background:linear-gradient(180deg,#ffffff 0%,#dd88ff 50%,#8800ff 100%);
+    -webkit-background-clip:text; background-clip:text; letter-spacing:0.3em;
+    filter:drop-shadow(0 0 20px rgba(180,80,255,0.6)); margin-bottom:1rem;
+  }
+  .hud { display:flex; gap:2rem; margin-bottom:1rem; }
+  .hud-panel {
+    background:linear-gradient(145deg,rgba(255,255,255,0.1),rgba(255,255,255,0.03));
+    border:1px solid rgba(200,100,255,0.25); border-radius:14px; padding:0.5rem 1.5rem;
+    text-align:center; backdrop-filter:blur(12px);
+    box-shadow:0 4px 20px rgba(120,0,200,0.25),inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+  .hud-label { font-size:0.6rem; letter-spacing:0.2em; color:rgba(200,140,255,0.6); text-transform:uppercase; }
+  .hud-value { font-family:'Orbitron',sans-serif; font-size:2rem; font-weight:700; color:#fff; text-shadow:0 0 15px rgba(180,80,255,0.8); }
+  .canvas-wrapper {
+    position:relative; border-radius:20px; padding:3px;
+    background:linear-gradient(135deg,rgba(200,100,255,0.35),rgba(60,0,150,0.2),rgba(180,80,255,0.25));
+    box-shadow:0 0 0 1px rgba(160,60,255,0.2),0 20px 60px rgba(80,0,180,0.4),0 0 80px rgba(150,0,255,0.1);
+  }
+  .canvas-wrapper::before {
+    content:''; position:absolute; top:3px; left:3px; right:3px; height:40%;
+    background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,transparent 100%);
+    border-radius:17px 17px 50% 50%; pointer-events:none; z-index:2;
+  }
+  canvas { display:block; border-radius:17px; background:radial-gradient(ellipse at 50% 25%,#0f0520 0%,#040210 100%); }
+  .hint { font-size:0.7rem; color:rgba(180,120,255,0.45); letter-spacing:0.1em; text-align:center; margin-top:0.8rem; }
+  .lives { display:flex; gap:0.4rem; align-items:center; justify-content:center; margin-top:0.5rem; }
+  .life-dot { width:10px; height:10px; border-radius:50%; background:radial-gradient(circle,#dd88ff,#7700cc); box-shadow:0 0 8px rgba(200,100,255,0.7); transition:all 0.3s; }
+  .life-dot.lost { background:rgba(100,60,120,0.3); box-shadow:none; }
+  .overlay {
+    position:absolute; inset:0; border-radius:17px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    background:rgba(4,2,12,0.82); backdrop-filter:blur(6px); z-index:10; gap:1rem;
+  }
+  .overlay-title { font-family:'Orbitron',sans-serif; font-size:1.8rem; font-weight:900; color:#fff; text-shadow:0 0 30px rgba(180,80,255,0.9); letter-spacing:0.15em; }
+  .overlay-sub { font-size:0.85rem; color:rgba(200,140,255,0.8); letter-spacing:0.1em; }
+  .btn {
+    font-family:'Exo 2',sans-serif; font-size:0.8rem; font-weight:600;
+    letter-spacing:0.15em; text-transform:uppercase; padding:0.6rem 2rem;
+    border:none; border-radius:50px; cursor:pointer; position:relative; overflow:hidden; transition:all 0.2s;
+    background:linear-gradient(145deg,rgba(160,60,255,0.75),rgba(80,0,180,0.55));
+    color:#fff; border:1px solid rgba(200,100,255,0.45);
+    box-shadow:0 4px 15px rgba(120,0,200,0.35),inset 0 1px 0 rgba(255,255,255,0.2);
+  }
+  .btn::before { content:''; position:absolute; top:0; left:0; right:0; height:50%; background:linear-gradient(180deg,rgba(255,255,255,0.15),transparent); border-radius:50px; pointer-events:none; }
+  .btn:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(160,80,255,0.5); }
+</style>
+</head>
+<body>
+<div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
+<h1>BREAKOUT</h1>
+<div class="hud">
+  <div class="hud-panel"><div class="hud-label">Score</div><div class="hud-value" id="score">0</div></div>
+  <div class="hud-panel"><div class="hud-label">Level</div><div class="hud-value" id="level">1</div></div>
+  <div class="hud-panel"><div class="hud-label">Bricks</div><div class="hud-value" id="bricks">0</div></div>
+</div>
+<div class="canvas-wrapper">
+  <canvas id="c" width="560" height="480"></canvas>
+  <div class="overlay" id="overlay">
+    <div class="overlay-title">BREAKOUT</div>
+    <div class="overlay-sub">Move mouse to control paddle · Click to launch</div>
+    <button class="btn" onclick="startGame()">START GAME</button>
+  </div>
+</div>
+<div class="lives" id="lives"></div>
+<div class="hint">MOUSE — Move paddle &nbsp;|&nbsp; CLICK / SPACE — Launch ball</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const W = canvas.width, H = canvas.height;
+const COLS = 10, BRICK_ROWS = 5;
+const BRICK_W = W / COLS, BRICK_H = 24, BRICK_PAD = 3;
+const PAD_W = 90, PAD_H = 14, PAD_Y = H - 40;
+const BALL_R = 8;
+
+let score=0, lives=3, level=1, brickCount=0;
+let pad = {x: W/2 - PAD_W/2};
+let ball = {x:W/2,y:PAD_Y-BALL_R-1,vx:3.5,vy:-4};
+let launched = false;
+let bricks = [];
+let particles = [];
+let running = false;
+let animId;
+
+const COLORS = [
+  ['rgba(255,80,120,0.9)','rgba(255,30,80,0.7)','#ff4488'],
+  ['rgba(255,140,40,0.9)','rgba(220,90,0,0.7)','#ff8822'],
+  ['rgba(255,220,40,0.9)','rgba(200,160,0,0.7)','#ffdd00'],
+  ['rgba(80,220,80,0.9)','rgba(40,160,40,0.7)','#44ee44'],
+  ['rgba(80,160,255,0.9)','rgba(40,100,220,0.7)','#4499ff'],
+];
+
+function buildBricks() {
+  bricks = [];
+  for (let r=0; r<BRICK_ROWS; r++) {
+    for (let c=0; c<COLS; c++) {
+      bricks.push({r,c,alive:true,hp:BRICK_ROWS-r, color:COLORS[r]});
+    }
+  }
+  brickCount = bricks.filter(b=>b.alive).length;
+  updateHUD();
+}
+
+function updateLives() {
+  const el = document.getElementById('lives');
+  el.innerHTML = '';
+  for (let i=0;i<3;i++) {
+    const d = document.createElement('div');
+    d.className = 'life-dot' + (i >= lives ? ' lost' : '');
+    el.appendChild(d);
+  }
+}
+
+function updateHUD() {
+  document.getElementById('score').textContent = score;
+  document.getElementById('level').textContent = level;
+  document.getElementById('bricks').textContent = bricks.filter(b=>b.alive).length;
+}
+
+canvas.addEventListener('mousemove', e => {
+  const rect = canvas.getBoundingClientRect();
+  const mx = (e.clientX - rect.left) * (W / rect.width);
+  pad.x = Math.max(0, Math.min(W - PAD_W, mx - PAD_W/2));
+  if (!launched) ball.x = pad.x + PAD_W/2;
+});
+
+function launchBall() {
+  if (!launched && running) {
+    launched = true;
+    ball.vx = (Math.random() > 0.5 ? 1 : -1) * (3.5 + level * 0.4);
+    ball.vy = -(4 + level * 0.3);
+  }
+}
+
+canvas.addEventListener('click', launchBall);
+window.addEventListener('keydown', e => { if (e.code === 'Space') { launchBall(); e.preventDefault(); }});
+
+function startGame() {
+  document.getElementById('overlay').style.display = 'none';
+  score=0; lives=3; level=1;
+  launched=false;
+  ball.x=W/2; ball.y=PAD_Y-BALL_R-1;
+  buildBricks(); updateLives(); running=true;
+  if (animId) cancelAnimationFrame(animId);
+  loop();
+}
+
+function spawnParticles(x, y, color) {
+  for (let i=0;i<18;i++) {
+    const a = Math.random()*Math.PI*2, s = 2+Math.random()*6;
+    particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,color,size:2+Math.random()*3});
+  }
+}
+
+function drawBrick(b) {
+  const px = b.c*BRICK_W+BRICK_PAD, py = 50+b.r*BRICK_H+BRICK_PAD;
+  const bw = BRICK_W-BRICK_PAD*2, bh = BRICK_H-BRICK_PAD*2;
+  const [ct,cb,glow] = b.color;
+  const grd = ctx.createLinearGradient(px,py,px,py+bh);
+  grd.addColorStop(0,ct); grd.addColorStop(1,cb);
+  ctx.shadowColor = glow; ctx.shadowBlur = 8;
+  ctx.beginPath(); ctx.roundRect(px,py,bw,bh,4); ctx.fillStyle=grd; ctx.fill();
+  ctx.shadowBlur=0;
+  // gloss
+  ctx.beginPath(); ctx.roundRect(px+2,py+2,bw-4,bh*0.42,3); ctx.fillStyle='rgba(255,255,255,0.22)'; ctx.fill();
+  // hp indicator
+  if (b.hp > 1) {
+    ctx.font = 'bold 9px Orbitron,sans-serif'; ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.textAlign='center';
+    ctx.fillText(b.hp, px+bw/2, py+bh-3);
+  }
+}
+
+function drawPad() {
+  const grd = ctx.createLinearGradient(pad.x,PAD_Y,pad.x,PAD_Y+PAD_H);
+  grd.addColorStop(0,'rgba(180,100,255,0.95)');
+  grd.addColorStop(0.5,'rgba(220,160,255,0.98)');
+  grd.addColorStop(1,'rgba(120,40,220,0.85)');
+  ctx.shadowColor='#cc66ff'; ctx.shadowBlur=20;
+  ctx.beginPath(); ctx.roundRect(pad.x,PAD_Y,PAD_W,PAD_H,7); ctx.fillStyle=grd; ctx.fill();
+  ctx.shadowBlur=0;
+  ctx.beginPath(); ctx.roundRect(pad.x+3,PAD_Y+2,PAD_W-6,PAD_H*0.45,5); ctx.fillStyle='rgba(255,255,255,0.22)'; ctx.fill();
+}
+
+function drawBall() {
+  const grd = ctx.createRadialGradient(ball.x-2,ball.y-2,1,ball.x,ball.y,BALL_R);
+  grd.addColorStop(0,'#ffffff'); grd.addColorStop(0.3,'#ddaaff'); grd.addColorStop(1,'#8800ff');
+  ctx.shadowColor='#cc44ff'; ctx.shadowBlur=22;
+  ctx.beginPath(); ctx.arc(ball.x,ball.y,BALL_R,0,Math.PI*2); ctx.fillStyle=grd; ctx.fill();
+  ctx.beginPath(); ctx.arc(ball.x-2,ball.y-2,BALL_R*0.3,0,Math.PI*2); ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.fill();
+  ctx.shadowBlur=0;
+}
+
+function loop() {
+  ctx.clearRect(0,0,W,H);
+  // Grid
+  ctx.strokeStyle='rgba(100,0,200,0.06)'; ctx.lineWidth=1;
+  for (let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for (let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+  bricks.filter(b=>b.alive).forEach(drawBrick);
+
+  if (launched) {
+    ball.x += ball.vx; ball.y += ball.vy;
+    // wall
+    if (ball.x-BALL_R<0){ball.x=BALL_R;ball.vx*=-1;}
+    if (ball.x+BALL_R>W){ball.x=W-BALL_R;ball.vx*=-1;}
+    if (ball.y-BALL_R<0){ball.y=BALL_R;ball.vy*=-1;}
+    // paddle
+    if (ball.y+BALL_R>=PAD_Y && ball.y+BALL_R<=PAD_Y+PAD_H+5 && ball.x>pad.x && ball.x<pad.x+PAD_W && ball.vy>0) {
+      const rel = (ball.x-(pad.x+PAD_W/2))/(PAD_W/2);
+      ball.vy = -Math.abs(ball.vy);
+      ball.vx = rel * 6;
+      ball.y = PAD_Y - BALL_R;
+    }
+    // bottom
+    if (ball.y > H+20) {
+      lives--;
+      updateLives();
+      if (lives<=0) { gameOver(); return; }
+      launched=false;
+      ball.x=pad.x+PAD_W/2; ball.y=PAD_Y-BALL_R-1;
+    }
+    // bricks
+    for (const b of bricks) {
+      if (!b.alive) continue;
+      const bx=b.c*BRICK_W+BRICK_PAD, by=50+b.r*BRICK_H+BRICK_PAD;
+      const bw=BRICK_W-BRICK_PAD*2, bh=BRICK_H-BRICK_PAD*2;
+      if (ball.x+BALL_R>bx&&ball.x-BALL_R<bx+bw&&ball.y+BALL_R>by&&ball.y-BALL_R<by+bh) {
+        b.hp--;
+        if (b.hp<=0) {
+          b.alive=false;
+          score += (b.r+1)*10*level;
+          spawnParticles(bx+bw/2,by+bh/2,b.color[2]);
+        }
+        // bounce direction
+        const overlapL=ball.x+BALL_R-bx,overlapR=bx+bw-ball.x+BALL_R;
+        const overlapT=ball.y+BALL_R-by,overlapB=by+bh-ball.y+BALL_R;
+        const minH=Math.min(overlapL,overlapR),minV=Math.min(overlapT,overlapB);
+        if (minH<minV) ball.vx*=-1; else ball.vy*=-1;
+        updateHUD();
+        break;
+      }
+    }
+    // level clear
+    if (bricks.every(b=>!b.alive)) {
+      level++;
+      launched=false;
+      ball.x=W/2; ball.y=PAD_Y-BALL_R-1;
+      buildBricks();
+    }
+  }
+
+  // particles
+  particles = particles.filter(p=>p.life>0);
+  for (const p of particles) {
+    ctx.globalAlpha=p.life; ctx.fillStyle=p.color; ctx.shadowColor=p.color; ctx.shadowBlur=6;
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2); ctx.fill();
+    p.x+=p.vx; p.y+=p.vy; p.vx*=0.92; p.vy*=0.92; p.life-=0.04;
+  }
+  ctx.globalAlpha=1; ctx.shadowBlur=0;
+
+  drawPad(); drawBall();
+
+  if (!launched && running) {
+    ctx.font='0.7rem Exo 2,sans-serif'; ctx.fillStyle='rgba(200,140,255,0.6)';
+    ctx.textAlign='center'; ctx.fillText('Click or Space to launch',W/2,PAD_Y-20);
+  }
+
+  animId = requestAnimationFrame(loop);
+}
+
+function gameOver() {
+  running=false; cancelAnimationFrame(animId);
+  const ov=document.getElementById('overlay');
+  ov.innerHTML=`<div class="overlay-title">GAME OVER</div><div class="overlay-sub">Level reached: ${level} &nbsp;|&nbsp; Score: ${score}</div><button class="btn" onclick="startGame()">PLAY AGAIN</button>`;
+  ov.style.display='flex';
+}
+</script>
+</body>
+</html>

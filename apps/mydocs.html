@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Documents</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        :root {
+            --accent: #1a88d4;
+            --glass-b: rgba(255, 255, 255, 0.9);
+            --text: #0a2a4a;
+            --text2: #5a9ac0;
+            --text3: #7ab0d0;
+            --bg: linear-gradient(160deg, #8ecae6, #cceeff);
+            --card: linear-gradient(160deg, rgba(255, 255, 255, 0.82), rgba(220, 242, 255, 0.78));
+            --shadow: 0 6px 24px rgba(80, 160, 220, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.95)
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden
+        }
+
+        .toolbar {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(210, 235, 255, .82));
+            border-bottom: 1px solid var(--glass-b);
+            padding: 0 12px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0
+        }
+
+        .toolbar-title {
+            font-size: 16px;
+            font-weight: 900;
+            color: var(--text);
+            flex: 1
+        }
+
+        .tabs {
+            display: flex;
+            gap: 4px;
+            flex-shrink: 0
+        }
+
+        .tab {
+            padding: 5px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(180, 220, 255, 0.4);
+            background: none;
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text2);
+            cursor: pointer;
+            transition: all .12s
+        }
+
+        .tab.on {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(200, 235, 255, 0.85));
+            border-color: var(--glass-b);
+            color: var(--text);
+            box-shadow: 0 2px 8px rgba(80, 160, 220, 0.12)
+        }
+
+        .search-bar {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(180, 220, 255, 0.5);
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-family: inherit;
+            font-size: 11px;
+            color: var(--text);
+            outline: none;
+            width: 140px
+        }
+
+        .search-bar::placeholder {
+            color: var(--text3)
+        }
+
+        .content {
+            flex: 1;
+            padding: 12px;
+            overflow-y: auto
+        }
+
+        .content::-webkit-scrollbar {
+            width: 4px
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: rgba(120, 180, 220, 0.3);
+            border-radius: 2px
+        }
+
+        /* File grid */
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            padding: 4px
+        }
+
+        .file-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 6px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all .12s;
+            position: relative
+        }
+
+        .file-item:hover {
+            background: rgba(74, 184, 244, 0.1)
+        }
+
+        .file-item.selected {
+            background: rgba(26, 136, 212, 0.15);
+            outline: 1px solid rgba(26, 136, 212, 0.4);
+            border-radius: 12px
+        }
+
+        .file-icon {
+            font-size: 42px;
+            line-height: 1
+        }
+
+        .file-name {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text);
+            text-align: center;
+            word-break: break-all;
+            max-width: 90px
+        }
+
+        .file-date {
+            font-size: 9px;
+            color: var(--text3)
+        }
+
+        .file-del {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: rgba(220, 60, 60, 0.8);
+            color: #fff;
+            font-size: 11px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none
+        }
+
+        .file-item:hover .file-del {
+            display: flex
+        }
+
+        /* Empty state */
+        .empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text3)
+        }
+
+        .empty-icon {
+            font-size: 56px;
+            margin-bottom: 12px
+        }
+
+        .empty-text {
+            font-size: 13px;
+            font-weight: 700
+        }
+
+        /* Preview modal */
+        .preview-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(6px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center
+        }
+
+        .preview-overlay.open {
+            display: flex
+        }
+
+        .preview-box {
+            background: var(--card);
+            border: 1px solid var(--glass-b);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            padding: 16px;
+            max-width: 80%;
+            max-height: 80vh;
+            overflow: auto;
+            min-width: 300px
+        }
+
+        .preview-box img,
+        .preview-box video {
+            max-width: 100%;
+            max-height: 50vh;
+            border-radius: 8px
+        }
+
+        .preview-box pre {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.4);
+            padding: 10px;
+            border-radius: 8px;
+            max-height: 40vh;
+            overflow-y: auto
+        }
+
+        .preview-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px
+        }
+
+        .preview-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text)
+        }
+
+        .preview-actions {
+            display: flex;
+            gap: 8px
+        }
+
+        .btn {
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: none;
+            background: linear-gradient(180deg, #4ab8f4, #1a88d4);
+            color: #fff;
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer
+        }
+
+        .btn-danger {
+            background: linear-gradient(180deg, #f06060, #c02020)
+        }
+
+        .btn-outline {
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--accent);
+            background: none;
+            color: var(--accent);
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer
+        }
+
+        body[data-theme="y2k"] {
+            --bg: #0a001a;
+            --card: rgba(20, 0, 40, .85);
+            --text: #ffccff;
+            --text2: #ff88ff;
+            --text3: #aa44aa;
+            --glass-b: rgba(255, 0, 255, 0.3);
+            --accent: #ff00ff
+        }
+
+        body[data-theme="dark-matter"] {
+            --bg: #060610;
+            --card: rgba(15, 15, 30, .9);
+            --text: #ddddf8;
+            --text2: #8080d0;
+            --text3: #5050a0;
+            --glass-b: rgba(80, 80, 200, 0.3);
+            --accent: #6060ff
+        }
+
+        body[data-theme="xp-luna"] {
+            --bg: #3a6ea8;
+            --card: rgba(236, 233, 216, .95);
+            --text: #000;
+            --text2: #316ac5;
+            --text3: #808080;
+            --glass-b: #aca899
+        }
+
+        body[data-theme="geocities"] {
+            --bg: #000080;
+            --card: #c0c0c0;
+            --text: #000;
+            --text2: #000080;
+            --text3: #808080;
+            --glass-b: #808080;
+            --accent: #000080
+        }
+    </style>
+</head>
+
+<body>
+    <div class="toolbar">
+        <span style="font-size:24px;margin-right:4px">&#128193;</span>
+        <div class="toolbar-title">Documents</div>
+        <div class="tabs" id="tabs">
+            <button class="tab on" data-filter="all">All</button>
+            <button class="tab" data-filter="image">Photos</button>
+            <button class="tab" data-filter="video">Videos</button>
+            <button class="tab" data-filter="text">Text</button>
+            <button class="tab" data-filter="audio">Music</button>
+        </div>
+        <input class="search-bar" id="searchBar" placeholder="Search files...">
+    </div>
+    <div class="content" id="content"></div>
+
+    <!-- Preview -->
+    <div class="preview-overlay" id="previewOverlay">
+        <div class="preview-box">
+            <div class="preview-head">
+                <div class="preview-title" id="previewTitle"></div>
+                <div class="preview-actions">
+                    <button class="btn" id="previewDl">Download</button>
+                    <button class="btn" id="previewPost">Post to AeroNet</button>
+                    <button class="btn-outline" id="previewClose">Close</button>
+                </div>
+            </div>
+            <div id="previewBody"></div>
+        </div>
+    </div>
+
+    <script>
+        let filter = 'all';
+        let search = '';
+        let selectedFile = null;
+        const ICONS = { image: '&#128247;', video: '&#127909;', text: '&#128196;', audio: '&#127925;', paint: '&#127912;' };
+
+        function getFiles() { return JSON.parse(localStorage.getItem('aeronet_mydocs') || '[]'); }
+        function saveFiles(files) { localStorage.setItem('aeronet_mydocs', JSON.stringify(files)); }
+
+        function formatDate(ts) { return new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: '2-digit' }); }
+
+        function render() {
+            const files = getFiles();
+            const filtered = files.filter(f => {
+                const matchType = filter === 'all' || f.type === filter;
+                const matchSearch = !search || f.name.toLowerCase().includes(search.toLowerCase());
+                return matchType && matchSearch;
+            });
+            const cont = document.getElementById('content');
+            if (!filtered.length) {
+                cont.innerHTML = `<div class="empty"><div class="empty-icon">${filter === 'all' ? '&#128193;' : ICONS[filter] || '&#128196;'}</div><div class="empty-text">No files yet</div><div style="font-size:11px;color:var(--text3);margin-top:6px">Save files from other apps to see them here</div></div>`;
+                return;
+            }
+            cont.innerHTML = `<div class="file-grid">${filtered.map(f => `
+    <div class="file-item" data-id="${f.id}" title="${f.name}">
+      <div class="file-icon">${ICONS[f.type] || '&#128196;'}</div>
+      <div class="file-name">${f.name}</div>
+      <div class="file-date">${formatDate(f.ts)}</div>
+      <button class="file-del" data-del="${f.id}" title="Delete">&#215;</button>
+    </div>`).join('')}</div>`;
+        }
+
+        // Tab switching
+        document.getElementById('tabs').addEventListener('click', e => {
+            const btn = e.target.closest('[data-filter]');
+            if (!btn) return;
+            filter = btn.dataset.filter;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+            btn.classList.add('on');
+            render();
+        });
+
+        // Search
+        document.getElementById('searchBar').addEventListener('input', e => { search = e.target.value; render(); });
+
+        // Click on file
+        document.getElementById('content').addEventListener('click', e => {
+            const del = e.target.closest('[data-del]');
+            if (del) {
+                e.stopPropagation();
+                if (confirm('Delete this file?')) {
+                    const files = getFiles().filter(f => f.id !== parseInt(del.dataset.del));
+                    saveFiles(files); render();
+                }
+                return;
+            }
+            const item = e.target.closest('.file-item');
+            if (!item) return;
+            const id = parseInt(item.dataset.id);
+            const file = getFiles().find(f => f.id === id);
+            if (!file) return;
+            selectedFile = file;
+            openPreview(file);
+        });
+
+        function openPreview(file) {
+            document.getElementById('previewTitle').textContent = file.name;
+            const body = document.getElementById('previewBody');
+            if (file.type === 'image' && file.dataURL) body.innerHTML = `<img src="${file.dataURL}" alt="${file.name}">`;
+            else if (file.type === 'video' && file.dataURL) body.innerHTML = `<video src="${file.dataURL}" controls style="max-width:100%"></video>`;
+            else if (file.type === 'text' || file.content) body.innerHTML = `<pre>${file.content || '(empty)'}</pre>`;
+            else body.innerHTML = `<div style="text-align:center;padding:20px;font-size:40px">${ICONS[file.type] || '&#128196;'}</div>`;
+            document.getElementById('previewOverlay').classList.add('open');
+        }
+
+        document.getElementById('previewClose').addEventListener('click', () => document.getElementById('previewOverlay').classList.remove('open'));
+        document.getElementById('previewOverlay').addEventListener('click', e => { if (e.target === document.getElementById('previewOverlay')) document.getElementById('previewOverlay').classList.remove('open'); });
+
+        document.getElementById('previewDl').addEventListener('click', () => {
+            if (!selectedFile) return;
+            if (selectedFile.dataURL) {
+                const a = document.createElement('a'); a.href = selectedFile.dataURL; a.download = selectedFile.name; a.click();
+            } else if (selectedFile.content) {
+                const b = new Blob([selectedFile.content], { type: 'text/plain' });
+                const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = selectedFile.name; a.click();
+            }
+        });
+
+        document.getElementById('previewPost').addEventListener('click', () => {
+            if (!selectedFile) return;
+            const post = { id: Date.now(), isOwn: true, text: `Sharing: ${selectedFile.name}`, type: selectedFile.type, likes: 0, liked: false, comments: [], tags: ['#mydocs'], ts: Date.now(), showComments: false };
+            if (selectedFile.type === 'image') post.image = selectedFile.dataURL;
+            parent.postMessage({ type: 'POST_TO_FEED', post }, '*');
+            parent.postMessage({ type: 'TOAST', text: 'Shared to faero!', icon: '&#9993;' }, '*');
+            document.getElementById('previewOverlay').classList.remove('open');
+        });
+
+        window.addEventListener('message', e => {
+            if (e.data?.type === 'THEME_CHANGE') document.body.dataset.theme = e.data.theme;
+            if (e.data?.type === 'FILE_SAVED') render();
+        });
+        document.body.dataset.theme = parent.document?.body?.dataset?.theme || 'frutiger-aero';
+        render();
+    </script>
+</body>
+
+</html>

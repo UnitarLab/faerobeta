@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>FAERO — Our Promised Future</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;0,800;0,900;1,200;1,300&family=Kode+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --xp-titlebar: linear-gradient(180deg, #4c9be8 0%, #1a5faa 50%, #1a5faa 95%, #1058a7 100%);
+  --blue: #1a5faa;
+  --green: #3ca641;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: 'Exo 2', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: linear-gradient(180deg,
+    #1a3a8a 0%, #2d6fd4 18%, #4da6ff 44%,
+    #87ceeb 60%, #b8e0a0 78%, #5ab055 90%, #3a8035 100%);
+}
+
+/* ---- BUBBLE CANVAS ---- */
+#bcanvas {
+  position: fixed; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; z-index: 1;
+}
+
+/* ---- CLOUDS ---- */
+.cloud-svg { width: 0; height: 0; position: fixed; }
+.cloud-sky {
+  position: fixed; top: 0; left: 0;
+  width: 100vw; height: 65vh;
+  pointer-events: none; z-index: 2;
+  filter: url(#cloudFilt2); overflow: hidden;
+}
+.c-blob {
+  position: absolute; background: rgba(255,255,255,0.88);
+  border-radius: 50%; cursor: grab; touch-action: none;
+}
+.c-blob:active { cursor: grabbing; }
+.c-blob-a { width: 460px; height: 180px; top: 8%; left: 5%; }
+.c-blob-b { width: 340px; height: 140px; top: 5%; right: 8%; }
+.c-blob-c { width: 200px; height: 100px; top: 28%; left: 38%; }
+
+/* ---- TASKBAR ---- */
+.taskbar {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 1000; height: 40px;
+  background: linear-gradient(180deg, rgba(80,160,255,0.45) 0%, rgba(20,80,180,0.55) 100%);
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(255,255,255,0.22);
+  display: flex; align-items: center; padding: 0 14px; gap: 10px;
+}
+.start-btn {
+  display: flex; align-items: center; gap: 7px;
+  background: linear-gradient(180deg, #62c462, #3ca641);
+  border: 1px solid rgba(255,255,255,0.4); border-radius: 14px;
+  padding: 4px 13px 4px 7px;
+  font-family: 'Exo 2', sans-serif; font-size: 0.8rem; font-weight: 800;
+  color: white; cursor: pointer; flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.4);
+}
+.start-orb {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.6); overflow: hidden; flex-shrink: 0;
+}
+.start-orb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.taskbar-clock {
+  margin-left: auto;
+  font-family: 'Kode Mono', monospace; font-size: 0.72rem;
+  color: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+  padding: 4px 10px; border-radius: 4px; flex-shrink: 0;
+}
+
+/* ---- PAGE ---- */
+.page {
+  position: relative; z-index: 10;
+  padding-top: 40px; /* taskbar is 40px, sit right below it */
+  display: flex; flex-direction: column; align-items: center;
+  overflow: visible;
+}
+/* All direct content in page sits above the bg logo (z-index 0) */
+.hero-header, .window, .window-features, .footer-win {
+  position: relative; z-index: 2;
+}
+
+/* ---- HERO HEADER ---- */
+.hero-header {
+  text-align: center;
+  padding: 0px 20px 0px;
+  display: flex; flex-direction: column; align-items: center;
+  position: relative;
+  gap: 0;
+}
+.hero-logo-wrap {
+  /* Always perfectly square — vmin keeps it proportional on any screen */
+  width: clamp(300px, 50vmin, 520px);
+  height: clamp(300px, 50vmin, 520px);
+  margin-bottom: -60px; /* overlap FAERO text for compactness */
+  position: relative;
+  overflow: visible;
+  flex-shrink: 0;
+}
+/* Giant background main logo — page-level, behind all content */
+.hero-main-logo-bg {
+  position: absolute;
+  top: 40px; /* flush below taskbar */
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(1000px, 210vw, 1800px);
+  height: clamp(1000px, 210vw, 1800px);
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.22;
+  filter: drop-shadow(0 0 100px rgba(100,180,255,0.35));
+  animation: bgLogoDrift 9s ease-in-out infinite;
+}
+@keyframes bgLogoDrift {
+  0%,100% { opacity: 0.22; transform: translateX(-50%) scale(1) rotate(-0.8deg); }
+  50%      { opacity: 0.30; transform: translateX(-50%) scale(1.02) rotate(0.8deg); }
+}
+.hero-main-logo-bg img {
+  width: 100%; height: 100%; object-fit: contain; display: block;
+}
+.hero-logo-ring {
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  animation: logoPulse 4s ease infinite;
+  pointer-events: none;
+  display: block;
+  position: relative;
+}
+@keyframes logoPulse {
+  0%,100% { filter: drop-shadow(0 0 18px rgba(60,200,80,0.45)) drop-shadow(0 0 40px rgba(60,164,65,0.2)); }
+  50%      { filter: drop-shadow(0 0 32px rgba(80,230,100,0.7)) drop-shadow(0 0 70px rgba(60,200,80,0.35)); }
+}
+#liquid-logo-canvas {
+  width: 100% !important; height: 100% !important; display: block;
+  background: transparent;
+}
+.hero-name {
+  font-family: 'Exo 2', sans-serif; font-weight: 900;
+  font-size: clamp(5rem, 18vw, 10rem);
+  background: linear-gradient(180deg, #fff 20%, #c8e8ff 65%, #7ec8ff 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  letter-spacing: 0.18em; line-height: 1;
+  text-shadow: none;
+  filter: drop-shadow(0 4px 22px rgba(0,60,180,0.4));
+  position: relative; z-index: 3;
+  margin-top: 0;
+}
+.hero-tagline {
+  font-family: 'Exo 2', sans-serif; font-size: clamp(0.85rem, 2.5vw, 1.1rem);
+  font-style: italic; font-weight: 300;
+  color: rgba(255,255,255,0.75); letter-spacing: 0.06em;
+  margin-top: 4px;
+  position: relative; z-index: 4;
+}
+
+/* ---- WINDOW BASE ---- */
+.window, .window-features {
+  width: 100%; max-width: 820px;
+  margin: 18px 16px 14px;
+  background: rgba(235,245,255,0.92);
+  backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
+  border-radius: 10px 10px 8px 8px;
+  border: 1px solid rgba(255,255,255,0.65);
+  box-shadow:
+    0 28px 75px rgba(0,30,120,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.9),
+    0 0 0 1px rgba(100,150,220,0.2);
+  overflow: hidden;
+}
+.window-titlebar {
+  background: var(--xp-titlebar);
+  padding: 7px 10px 8px;
+  display: flex; align-items: center; gap: 8px; user-select: none;
+}
+.window-features .window-titlebar {
+  background: linear-gradient(180deg, #5aa8e8 0%, #2878c8 100%);
+}
+.window-buttons { display: flex; gap: 3px; margin-left: auto; }
+.wb {
+  width: 18px; height: 18px; border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; color: rgba(255,255,255,0.9); cursor: pointer; font-weight: 700; flex-shrink: 0;
+}
+.wb-min, .wb-max { background: linear-gradient(180deg, #7ec8fc, #3a80d2); }
+.wb-close { background: linear-gradient(180deg, #e87c7c, #c94040); }
+.window-title-text {
+  font-family: 'Exo 2', sans-serif; font-size: 0.74rem; font-weight: 600;
+  color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  display: flex; align-items: center; gap: 7px;
+  overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+}
+.title-icon {
+  width: 15px; height: 15px; border-radius: 50%;
+  overflow: hidden; flex-shrink: 0;
+}
+.title-icon img { width: 100%; height: 100%; object-fit: cover; }
+
+.window-body { padding: 30px 40px 36px; }
+
+/* ---- HEADLINE ---- */
+.w-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #aaccee, transparent);
+  margin-bottom: 22px;
+}
+.w-headline {
+  font-size: clamp(1.7rem, 4.5vw, 2.6rem); font-weight: 900;
+  color: #0a2a4a; line-height: 1.25; margin-bottom: 14px;
+  text-align: center;
+}
+.w-headline em { font-style: italic; font-weight: 300; color: #1a5faa; -webkit-text-fill-color: #1a5faa; }
+.w-headline .w-is { font-style: italic; font-weight: 300; color: #0a2a4a; }
+.w-sub {
+  font-size: 1rem; color: #3a5a7a; line-height: 1.78; margin-bottom: 26px;
+}
+
+/* ---- CHIPS ---- */
+.chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
+.chip {
+  font-family: 'Kode Mono', monospace; font-size: 0.72rem;
+  padding: 5px 14px; border-radius: 100px; border: 1px solid; letter-spacing: 0.04em;
+}
+.chip-blue  { color: #1a5faa; border-color: #aaccee; background: rgba(26,95,170,0.07); }
+.chip-green { color: #1a7a1a; border-color: #90d890; background: rgba(60,164,65,0.07); }
+.chip-teal  { color: #0a6a7a; border-color: #80ccdd; background: rgba(0,160,180,0.07); }
+.chip-warm  { color: #8a4000; border-color: #e0b070; background: rgba(180,100,0,0.07); }
+
+/* ---- AURA BADGE STRIP ---- */
+.aura-strip {
+  background: linear-gradient(135deg, rgba(180,100,0,0.07), rgba(240,160,0,0.06));
+  border: 1px solid rgba(200,140,0,0.28);
+  border-radius: 9px; padding: 14px 16px;
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 22px;
+}
+.aura-vis {
+  width: 46px; height: 46px; border-radius: 50%; flex-shrink: 0;
+  background: radial-gradient(circle at 35% 30%,
+    rgba(255,255,255,0.92),
+    rgba(255,190,0,0.65),
+    rgba(180,80,0,0.82));
+  border: 2.5px solid rgba(255,255,255,0.75);
+  box-shadow: 0 0 0 4px rgba(240,160,0,0.22), 0 4px 18px rgba(180,80,0,0.35);
+  display: flex; align-items: center; justify-content: center;
+  animation: auraGlow 3.5s ease infinite;
+}
+@keyframes auraGlow {
+  0%,100% { box-shadow: 0 0 0 4px rgba(240,160,0,0.22), 0 4px 18px rgba(180,80,0,0.35); }
+  50%      { box-shadow: 0 0 0 7px rgba(255,180,0,0.3),  0 4px 28px rgba(180,80,0,0.5); }
+}
+.aura-vis svg { width: 20px; height: 20px; }
+.aura-text strong {
+  display: block; font-size: 0.8rem; font-weight: 800;
+  color: #7a3a00; margin-bottom: 3px; letter-spacing: 0.02em;
+}
+.aura-text span { font-size: 0.7rem; color: #6a4a1a; line-height: 1.5; }
+
+/* ---- FORM ---- */
+.xp-field { margin-bottom: 12px; }
+.xp-field label {
+  display: block; font-size: 0.75rem; font-weight: 700;
+  color: #2a4a6a; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px;
+}
+.opt-label { font-weight: 400; text-transform: none; letter-spacing: 0; color: #8aaccf; font-size: 0.7rem; }
+.xp-field input {
+  width: 100%; background: white;
+  border: 1px solid #aaccee; border-radius: 4px;
+  padding: 12px 15px;
+  font-family: 'Exo 2', sans-serif; font-size: 1rem; color: #1a2a3a;
+  outline: none; -webkit-appearance: none;
+  box-shadow: inset 0 2px 4px rgba(0,50,120,0.07);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.xp-field input::placeholder { color: #aabbc8; }
+.xp-field input:focus {
+  border-color: #1a5faa;
+  box-shadow: inset 0 2px 4px rgba(0,50,120,0.07), 0 0 0 3px rgba(26,95,170,0.13);
+}
+.xp-field input.err { border-color: #cc4040; }
+
+.xp-btn {
+  width: 100%; margin-top: 8px; padding: 15px;
+  background: linear-gradient(180deg, #62c462 0%, #3ca641 50%, #2d8c35 100%);
+  border: 1px solid #2a7030; border-radius: 6px;
+  font-family: 'Exo 2', sans-serif; font-size: 1.08rem; font-weight: 800;
+  color: white; cursor: pointer; letter-spacing: 0.04em;
+  box-shadow: 0 4px 14px rgba(60,164,65,0.4), inset 0 1px 0 rgba(255,255,255,0.4);
+  transition: transform 0.1s, box-shadow 0.1s;
+  position: relative; overflow: hidden;
+}
+.xp-btn::after {
+  content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+  animation: btnshim 2.8s ease infinite;
+}
+@keyframes btnshim { to { left: 200%; } }
+.xp-btn:hover { box-shadow: 0 6px 20px rgba(60,164,65,0.5), inset 0 1px 0 rgba(255,255,255,0.4); }
+.xp-btn:active { transform: translateY(1px); }
+.xp-btn:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+
+.xp-fine-print {
+  font-family: 'Kode Mono', monospace; font-size: 0.6rem;
+  color: #8aaccf; text-align: center; margin-top: 10px;
+}
+
+/* ---- SOCIAL ---- */
+.social-row { display: flex; gap: 9px; margin-top: 18px; flex-wrap: wrap; }
+.soc-btn {
+  display: flex; align-items: center; gap: 7px;
+  padding: 9px 16px; border-radius: 6px;
+  font-family: 'Exo 2', sans-serif; font-size: 0.78rem; font-weight: 700;
+  text-decoration: none; transition: all 0.2s; border: 1px solid;
+  flex: 1; justify-content: center; white-space: nowrap;
+}
+.soc-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+.soc-tiktok { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.14); color: #1a1a2a; }
+.soc-tiktok:hover { background: rgba(0,0,0,0.1); transform: translateY(-1px); }
+.soc-discord { background: rgba(88,101,242,0.07); border-color: rgba(88,101,242,0.26); color: #4a55c8; }
+.soc-discord:hover { background: rgba(88,101,242,0.13); transform: translateY(-1px); }
+
+/* ---- SUCCESS ---- */
+.xp-success { display: none; text-align: center; padding: 10px 0; }
+.xp-success-icon {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: linear-gradient(135deg, #3ca641, #2d8c35);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 14px;
+  box-shadow: 0 6px 28px rgba(60,164,65,0.45);
+  animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes popIn { from { transform: scale(0); } to { transform: scale(1); } }
+.xp-success-icon svg { width: 26px; height: 26px; }
+.xp-success h3 { font-size: 1.3rem; font-weight: 900; color: #1a2a3a; margin-bottom: 8px; }
+.xp-success p { font-size: 0.82rem; color: #4a6a8a; line-height: 1.65; }
+
+/* ---- FEATURES WINDOW ---- */
+.feats-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px; padding: 22px;
+}
+.xp-feat {
+  background: rgba(255,255,255,0.72); border: 1px solid rgba(170,204,238,0.6);
+  border-radius: 8px; padding: 18px; transition: background 0.2s;
+}
+.xp-feat:hover { background: rgba(255,255,255,0.96); }
+.xp-feat-icon {
+  width: 40px; height: 40px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 11px; position: relative; overflow: hidden;
+}
+.xp-feat-icon::after {
+  content: ''; position: absolute; top: -15%; left: -15%;
+  width: 45%; height: 45%; background: rgba(255,255,255,0.5); border-radius: 50%;
+}
+.xp-feat-icon svg { width: 20px; height: 20px; fill: white; z-index: 1; position: relative; }
+.xp-feat h4 { font-size: 0.95rem; font-weight: 800; color: #1a2a3a; margin-bottom: 5px; }
+.xp-feat p { font-size: 0.82rem; color: #4a6a8a; line-height: 1.52; }
+
+/* ---- FOOTER ---- */
+.footer-win {
+  max-width: 820px; width: 100%; margin: 0 16px 60px;
+  text-align: center; padding: 20px;
+}
+.footer-win-logo {
+  font-family: 'Exo 2', sans-serif; font-size: 1.1rem; font-weight: 900;
+  letter-spacing: 0.2em; color: rgba(255,255,255,0.42);
+}
+.footer-win p {
+  font-family: 'Kode Mono', monospace; font-size: 0.56rem;
+  color: rgba(255,255,255,0.28); margin-top: 5px; letter-spacing: 0.15em;
+}
+
+/* ---- POPUP ---- */
+.popup-overlay {
+  position: fixed; inset: 0; z-index: 2000;
+  background: rgba(5,20,60,0.65); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 20px;
+}
+.popup-overlay.show { opacity: 1; pointer-events: all; }
+.popup-box {
+  background: rgba(235,245,255,0.97); border: 1px solid rgba(255,255,255,0.8);
+  border-radius: 10px 10px 8px 8px;
+  box-shadow: 0 30px 80px rgba(0,30,120,0.4);
+  max-width: 370px; width: 100%; overflow: hidden;
+  transform: scale(0.9); transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+}
+.popup-overlay.show .popup-box { transform: scale(1); }
+.popup-titlebar {
+  background: var(--xp-titlebar); padding: 7px 10px 8px;
+  display: flex; align-items: center; gap: 7px;
+}
+.popup-title-text {
+  font-family: 'Exo 2', sans-serif; font-size: 0.72rem; font-weight: 600;
+  color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.5); flex: 1;
+}
+.popup-body { padding: 26px 26px 22px; text-align: center; }
+.popup-check {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: linear-gradient(135deg, #3ca641, #2d8c35);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 14px;
+  box-shadow: 0 6px 28px rgba(60,164,65,0.45);
+  animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+.popup-check svg { width: 24px; height: 24px; }
+.popup-h { font-size: 1.2rem; font-weight: 900; color: #0a1a3a; margin-bottom: 9px; }
+.popup-p { font-size: 0.81rem; color: #3a5a7a; line-height: 1.72; margin-bottom: 20px; }
+.popup-close {
+  padding: 9px 26px;
+  background: linear-gradient(180deg, #62c462, #3ca641);
+  border: 1px solid #2a7030; border-radius: 6px;
+  font-family: 'Exo 2', sans-serif; font-size: 0.82rem; font-weight: 800;
+  color: white; cursor: pointer; letter-spacing: 0.04em;
+  box-shadow: 0 3px 10px rgba(60,164,65,0.35), inset 0 1px 0 rgba(255,255,255,0.4);
+}
+.popup-close:hover { box-shadow: 0 5px 16px rgba(60,164,65,0.45); }
+
+/* ---- NOTIF ---- */
+.notif {
+  position: fixed; bottom: 20px; left: 50%;
+  transform: translateX(-50%) translateY(70px);
+  background: rgba(235,245,255,0.97); border: 1px solid rgba(170,204,238,0.8);
+  border-radius: 6px; padding: 10px 20px;
+  font-family: 'Exo 2', sans-serif; font-size: 0.8rem; font-weight: 700; color: #1a3a6a;
+  z-index: 3000; transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  pointer-events: none; white-space: nowrap;
+  box-shadow: 0 6px 20px rgba(0,30,120,0.2);
+}
+.notif.show { transform: translateX(-50%) translateY(0); }
+
+/* ---- MOBILE ---- */
+@media (max-width: 560px) {
+  .window, .window-features { margin: 20px 10px 12px; }
+  .window-body { padding: 18px 16px 20px; }
+  .feats-grid { grid-template-columns: 1fr; padding: 13px; gap: 8px; }
+  .c-blob-a { width: 250px; height: 100px; }
+  .c-blob-b { width: 180px; height: 80px; }
+  .c-blob-c { display: none; }
+  .social-row { flex-direction: column; }
+  .soc-btn { flex: none; width: 100%; }
+  /* Keep logo perfectly square on mobile using vmin */
+  .hero-logo-wrap { width: 80vmin; height: 80vmin; max-width: 360px; max-height: 360px; margin-bottom: -40px; }
+  .hero-logo-ring { width: 100%; height: 100%; }
+  .hero-name { font-size: clamp(3.5rem, 20vw, 6rem); }
+}
+@media (max-width: 360px) {
+  .aura-strip { flex-direction: column; text-align: center; }
+  .chip-row { justify-content: center; }
+}
+</style>
+<script async src="https://unpkg.com/es-module-shims@1.8.0/dist/es-module-shims.js"></script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+
+<canvas id="bcanvas"></canvas>
+
+<svg class="cloud-svg" xmlns="http://www.w3.org/2000/svg">
+  <filter id="cloudFilt2" x="-50%" y="-50%" width="200%" height="200%" style="color-interpolation-filters:sRGB">
+    <feTurbulence type="fractalNoise" seed="728" baseFrequency="0.012" numOctaves="5" result="noise1"/>
+    <feTurbulence type="fractalNoise" seed="728" baseFrequency="0.012" numOctaves="2" result="noise2"/>
+    <feGaussianBlur in="SourceGraphic" stdDeviation="16" result="blur1"/>
+    <feDisplacementMap in="blur1" scale="90" in2="noise1" result="cloud1"/>
+    <feFlood flood-color="rgb(200,220,255)" flood-opacity="0.18" result="f2"/>
+    <feComposite operator="in" in="f2" in2="SourceGraphic" result="c2"/>
+    <feOffset in="c2" dx="-8" dy="-2" result="o2"/>
+    <feMorphology in="o2" radius="16" result="m2"/>
+    <feGaussianBlur in="m2" stdDeviation="16" result="cloud2"/>
+    <feFlood flood-color="rgb(80,130,200)" flood-opacity="0.12" result="f3"/>
+    <feComposite operator="in" in="f3" in2="SourceGraphic" result="c3"/>
+    <feOffset in="c3" dx="-8" dy="30" result="o3"/>
+    <feMorphology in="o3" radius="0 30" result="m3"/>
+    <feGaussianBlur in="m3" stdDeviation="16" result="cloud3"/>
+    <feMerge>
+      <feMergeNode in="cloud1"/>
+      <feMergeNode in="cloud2"/>
+      <feMergeNode in="cloud3"/>
+    </feMerge>
+  </filter>
+</svg>
+
+<div class="cloud-sky" id="cloudSky">
+  <div class="c-blob c-blob-a" id="cA"></div>
+  <div class="c-blob c-blob-b" id="cB"></div>
+  <div class="c-blob c-blob-c" id="cC"></div>
+</div>
+
+<div class="taskbar">
+  <div class="start-btn">
+    <div class="start-orb">
+      <img src="https://i.ibb.co/hh0h9ZX/faerologomediumsiksi.webp" alt="FAERO">
+    </div>
+    FAERO
+  </div>
+  <div class="taskbar-clock" id="clock">00:00</div>
+</div>
+
+<div class="page">
+
+  <!-- MAIN LOGO BG — behind all content, centered on page -->
+  <div class="hero-main-logo-bg" aria-hidden="true">
+    <img src="https://i.ibb.co/hh0h9ZX/faerologomediumsiksi.webp" alt="">
+  </div>
+
+  <!-- CENTERED HERO HEADER -->
+  <div class="hero-header">
+    <div class="hero-logo-wrap">
+      <div class="hero-logo-ring" id="liquid-logo-wrap">
+        <canvas id="liquid-logo-canvas"></canvas>
+      </div>
+    </div>
+    <div class="hero-name">FAERO</div>
+    <div class="hero-tagline">Our promised future</div>
+  </div>
+
+  <!-- MAIN WINDOW -->
+  <div class="window">
+    <div class="window-titlebar">
+      <div class="title-icon"><img src="https://i.ibb.co/hh0h9ZX/faerologomediumsiksi.webp" alt=""></div>
+      <div class="window-title-text">faero.net — early access</div>
+      <div class="window-buttons">
+        <div class="wb wb-min">&#8211;</div>
+        <div class="wb wb-max">&#9633;</div>
+        <div class="wb wb-close">&#215;</div>
+      </div>
+    </div>
+
+    <div class="window-body">
+      <div class="w-divider"></div>
+
+      <h1 class="w-headline">Our promised future&hellip;<br><span class="w-is">is</span> <em>finally here.</em></h1>
+      <p class="w-sub">
+        Customize your profile just like in the old days where you control the design. Real forums where conversations actually matter. Chat, play, share music, and exist online the way you used to. Internet experience the way it used to feel, but better.
+      </p>
+
+      <div class="chip-row">
+        <div class="chip chip-blue">Profile Builder</div>
+        <div class="chip chip-green">Forum Culture</div>
+        <div class="chip chip-teal">Play Games</div>
+        <div class="chip chip-blue">Share Music</div>
+        <div class="chip chip-warm">Early Access</div>
+        <div class="chip chip-green">No Ads</div>
+        <div class="chip chip-teal">Exclusive Items</div>
+        <div class="chip chip-blue">Human Only</div>
+        <div class="chip chip-warm">Chat with Friends</div>
+      </div>
+
+      <!-- AURA BADGE -->
+      <div class="aura-strip">
+        <!-- Avatar: ring canvas + koi image + pip canvas — overflow visible so ring shadows don't clip -->
+        <div class="aura-vis-wrap" id="aviWrap" title="Click to preview your avatar" style="position:relative;flex-shrink:0;width:92px;height:92px;overflow:visible;cursor:pointer;">
+          <!-- Ring canvas: CSS 92×92, actual buffer scaled by DPR for crisp rendering -->
+          <canvas id="badgeRingCanvas" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:1;width:92px;height:92px;"></canvas>
+          <!-- Koi avatar image — 62×62 centered — darkens on click -->
+          <img id="aviImg" src="https://images2.alphacoders.com/941/thumb-1920-941898.jpg" alt="koi" style="width:62px;height:62px;border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);object-fit:cover;object-position:center 40%;z-index:2;background:#081828;transition:filter 0.18s,transform 0.18s;">
+          <!-- Dark overlay shown on click -->
+          <div id="aviDarkOverlay" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:62px;height:62px;border-radius:50%;background:rgba(0,0,0,0);z-index:3;pointer-events:none;transition:background 0.18s;"></div>
+          <!-- Pip canvas: CSS 30×30, DPR-scaled for crisp clownfish -->
+          <canvas id="badgePipCanvas" style="position:absolute;bottom:0;right:0;z-index:10;border-radius:50%;border:2px solid rgba(0,0,0,.55);box-shadow:0 0 8px #4488ff99,0 0 2px rgba(0,0,0,0.8);width:30px;height:30px;"></canvas>
+          <!-- Click hint pulse ring -->
+          <div id="aviClickHint" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:62px;height:62px;border-radius:50%;border:2px solid rgba(68,136,255,0.5);z-index:4;pointer-events:none;animation:aviPulse 2.4s ease-in-out infinite;"></div>
+          <!-- Arrow pointing at avatar -->
+          <svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" style="position:absolute;left:82px;top:8px;width:52px;height:36px;z-index:10;pointer-events:none;overflow:visible;">
+            <path d="M8 28 C18 28, 38 16, 48 8" stroke="rgba(68,136,255,0.7)" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <polygon points="48,8 40,10 44,18" fill="rgba(68,136,255,0.7)"/>
+            <text x="0" y="38" font-family="'Kode Mono',monospace" font-size="7" fill="rgba(68,136,255,0.85)" letter-spacing="0.02em">your avi</text>
+          </svg>
+        </div>
+        <div class="aura-text" style="padding-left:20px;">
+          <strong>Get the exclusive Frutiger Aero Badge and Frame for your avatar.</strong>
+          <span>You will stand out right away with this exclusive animated badge and matching frame. Crafted for the first 100 users only. Click to preview with your own avatar &amp; upload your own photo.</span>
+        </div>
+      </div>
+
+      <!-- ═══ AVATAR PREVIEW MODAL ═══ -->
+      <div id="aviModal" style="
+        display:none;position:fixed;inset:0;z-index:5000;
+        background:rgba(2,8,28,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+        align-items:center;justify-content:center;padding:20px;
+        opacity:0;transition:opacity 0.3s;
+      ">
+        <!-- XP-style popup window -->
+        <div id="aviModalBox" style="
+          background:rgba(225,238,255,0.97);border:1px solid rgba(255,255,255,0.8);
+          border-radius:10px 10px 8px 8px;
+          box-shadow:0 32px 90px rgba(0,20,100,0.55),0 0 0 1px rgba(100,160,240,0.25);
+          max-width:420px;width:100%;overflow:hidden;
+          transform:scale(0.88) translateY(18px);
+          transition:transform 0.38s cubic-bezier(0.22,1,0.36,1);
+        ">
+          <!-- Titlebar -->
+          <div style="background:linear-gradient(180deg,#4c9be8 0%,#1a5faa 50%,#1a5faa 95%,#1058a7 100%);padding:7px 10px 8px;display:flex;align-items:center;gap:8px;user-select:none;">
+            <img src="https://i.ibb.co/hh0h9ZX/faerologomediumsiksi.webp" style="width:15px;height:15px;border-radius:50%;object-fit:cover;" alt="">
+            <span style="font-family:'Exo 2',sans-serif;font-size:0.73rem;font-weight:600;color:white;text-shadow:1px 1px 3px rgba(0,0,0,0.5);flex:1;">Avatar Preview — Frutiger Aero Badge</span>
+            <div style="display:flex;gap:3px;">
+              <div style="width:18px;height:18px;border-radius:4px;background:linear-gradient(180deg,#7ec8fc,#3a80d2);border:1px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(255,255,255,0.9);cursor:pointer;font-weight:700;">&#8211;</div>
+              <div style="width:18px;height:18px;border-radius:4px;background:linear-gradient(180deg,#7ec8fc,#3a80d2);border:1px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(255,255,255,0.9);cursor:pointer;font-weight:700;">&#9633;</div>
+              <div onclick="closeAviModal()" style="width:18px;height:18px;border-radius:4px;background:linear-gradient(180deg,#e87c7c,#c94040);border:1px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(255,255,255,0.9);cursor:pointer;font-weight:700;">&#215;</div>
+            </div>
+          </div>
+
+          <!-- Body -->
+          <div style="padding:28px 28px 24px;text-align:center;">
+            <!-- Big avatar preview with animated ring -->
+            <div style="position:relative;width:180px;height:180px;margin:0 auto 22px;overflow:visible;">
+              <canvas id="aviModalRing" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:1;width:180px;height:180px;"></canvas>
+              <!-- The big avatar image -->
+              <img id="aviModalImg" src="https://images2.alphacoders.com/941/thumb-1920-941898.jpg" alt="Your avatar"
+                style="width:130px;height:130px;border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);object-fit:cover;object-position:center 40%;z-index:2;background:#081828;transition:opacity 0.25s;">
+              <!-- Pip canvas large -->
+              <canvas id="aviModalPip" style="position:absolute;bottom:6px;right:6px;z-index:10;border-radius:50%;border:3px solid rgba(0,0,0,.55);box-shadow:0 0 14px #4488ff99,0 0 4px rgba(0,0,0,0.8);width:52px;height:52px;"></canvas>
+            </div>
+
+            <!-- Badge label -->
+            <div style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,rgba(180,100,0,0.1),rgba(240,160,0,0.07));border:1px solid rgba(200,140,0,0.32);border-radius:100px;padding:6px 16px 6px 10px;margin-bottom:20px;">
+              <div style="width:20px;height:20px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,0.92),rgba(255,190,0,0.65),rgba(180,80,0,0.82));border:1.5px solid rgba(255,255,255,0.7);box-shadow:0 0 0 3px rgba(240,160,0,0.22);flex-shrink:0;"></div>
+              <span style="font-family:'Exo 2',sans-serif;font-size:0.75rem;font-weight:800;color:#7a3a00;letter-spacing:0.04em;">FRUTIGER AERO BADGE</span>
+            </div>
+
+            <p style="font-family:'Exo 2',sans-serif;font-size:0.82rem;color:#3a5a7a;line-height:1.65;margin-bottom:20px;">
+              This is how your avatar will look with the exclusive animated frame on FAERO. Upload your own photo to preview it with the badge.
+            </p>
+
+            <!-- Upload button -->
+            <input type="file" id="aviUploadInput" accept="image/*" style="display:none;" onchange="handleAviUpload(event)">
+            <button onclick="document.getElementById('aviUploadInput').click()" style="
+              display:inline-flex;align-items:center;gap:9px;
+              padding:12px 24px;
+              background:linear-gradient(180deg,#4ca8f8 0%,#1a5faa 50%,#1248a0 100%);
+              border:1px solid #0e3d80;border-radius:6px;
+              font-family:'Exo 2',sans-serif;font-size:0.9rem;font-weight:800;
+              color:white;cursor:pointer;letter-spacing:0.04em;
+              box-shadow:0 4px 14px rgba(26,95,170,0.42),inset 0 1px 0 rgba(255,255,255,0.4);
+              transition:transform 0.1s,box-shadow 0.1s;margin-bottom:10px;
+            " onmouseover="this.style.boxShadow='0 6px 20px rgba(26,95,170,0.55),inset 0 1px 0 rgba(255,255,255,0.4)'" onmouseout="this.style.boxShadow='0 4px 14px rgba(26,95,170,0.42),inset 0 1px 0 rgba(255,255,255,0.4)'">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Upload Your Photo
+            </button>
+            <div id="aviUploadHint" style="font-family:'Kode Mono',monospace;font-size:0.6rem;color:#8aaccf;margin-top:2px;">jpg, png, gif · stays local, never uploaded</div>
+
+            <!-- Reset button (shown after upload) -->
+            <div id="aviResetRow" style="display:none;margin-top:8px;">
+              <button onclick="resetAviPhoto()" style="background:none;border:1px solid rgba(170,204,238,0.6);border-radius:4px;padding:5px 14px;font-family:'Exo 2',sans-serif;font-size:0.72rem;font-weight:700;color:#4a6a9a;cursor:pointer;">↩ Reset to default</button>
+            </div>
+          </div>
+        </div>
+      </div>
+<style>
+@keyframes frameSpim { to { transform: rotate(360deg); } }
+@keyframes aviPulse {
+  0%,100% { transform:translate(-50%,-50%) scale(1); opacity:0.5; }
+  50%      { transform:translate(-50%,-50%) scale(1.22); opacity:0; }
+}
+#aviWrap:hover #aviImg { filter: brightness(0.62) saturate(0.4); transform: translate(-50%,-50%) scale(1.04); }
+#aviWrap:active #aviDarkOverlay { background: rgba(0,0,0,0.68) !important; }
+</style>
+<script>
+// Polar Depths — Frozen Tide I — DPR-aware canvases for crisp rendering
+(function(){
+  const TAU=Math.PI*2,sn=Math.sin,cs=Math.cos;
+  const DPR = window.devicePixelRatio || 1;
+
+  // Set canvas buffer size to CSS size × DPR, then scale context
+  function setupCanvas(canvas, cssW, cssH) {
+    canvas.width  = Math.round(cssW  * DPR);
+    canvas.height = Math.round(cssH * DPR);
+    canvas.style.width  = cssW  + 'px';
+    canvas.style.height = cssH + 'px';
+    const ctx = canvas.getContext('2d');
+    ctx.scale(DPR, DPR);
+    return ctx;
+  }
+
+  const rc = document.getElementById('badgeRingCanvas');
+  const pc = document.getElementById('badgePipCanvas');
+  // Initialize canvases at correct DPR resolution
+  setupCanvas(rc, 92, 92);
+  setupCanvas(pc, 30, 30);
+
+  // ── pipBg — exact from koi ──────────────────────────────────
+  function pipBg(ctx, W, H) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(W/2,H/2,W/2-0.5,0,TAU);
+    ctx.clip();
+    const bg=ctx.createRadialGradient(W/2,H*.3,1,W/2,H/2,W/2);
+    bg.addColorStop(0,'#0d3a5c');
+    bg.addColorStop(0.5,'#072540');
+    bg.addColorStop(1,'#020d1e');
+    ctx.fillStyle=bg;
+    ctx.fillRect(0,0,W,H);
+    for(let i=0;i<3;i++){
+      ctx.strokeStyle=`rgba(0,180,255,${0.05+i*0.02})`;
+      ctx.lineWidth=1;
+      ctx.beginPath();
+      ctx.moveTo(i*8+2,H*.2);
+      ctx.quadraticCurveTo(W*.5+sn(Date.now()*.001+i)*4, H*.5, W-i*4-2, H*.8);
+      ctx.stroke();
+    }
+    // leave clip active for caller — pipEnd restores
+  }
+  function pipEnd(ctx){ctx.restore();}
+
+  // ── drawClownfish — exact from koi ───────────────────────────
+  function drawClownfish(canvas, t) {
+    const ctx = canvas.getContext('2d');
+    // CSS logical size (not buffer size)
+    const W = 30, H = 30;
+    ctx.clearRect(0,0,W,H);
+    pipBg(ctx,W,H);
+    const cx=W/2, cy=H/2;
+    const sw=sn(t*1.1)*2.2;
+    const tilt=sn(t*1.1)*0.07;
+    ctx.save();
+    ctx.translate(cx+sw, cy+sn(t*0.9)*1.2);
+    ctx.rotate(tilt);
+    // tail
+    const tb=sn(t*2.2)*0.32;
+    ctx.save();ctx.rotate(tb);
+    ctx.beginPath();ctx.moveTo(-7,0);ctx.bezierCurveTo(-9,-3,-13,-7,-12,-3);ctx.bezierCurveTo(-11,-1,-9,0,-7,0);ctx.fillStyle='#e8732a';ctx.fill();
+    ctx.beginPath();ctx.moveTo(-7,0);ctx.bezierCurveTo(-9,3,-13,7,-12,3);ctx.bezierCurveTo(-11,1,-9,0,-7,0);ctx.fillStyle='#d0601a';ctx.fill();
+    ctx.beginPath();ctx.moveTo(-7,0);ctx.bezierCurveTo(-9,-3,-13,-7,-12,-3);ctx.bezierCurveTo(-11,-1,-9,0,-7,0);ctx.bezierCurveTo(-9,0,-11,1,-12,3);ctx.bezierCurveTo(-13,7,-9,3,-7,0);ctx.strokeStyle='#1a2e5a';ctx.lineWidth=1.1;ctx.stroke();
+    ctx.beginPath();ctx.moveTo(-7,-1.5);ctx.lineTo(-9,0);ctx.lineTo(-7,1.5);ctx.fillStyle='rgba(220,235,255,0.3)';ctx.fill();
+    ctx.restore();
+    // body
+    ctx.beginPath();ctx.moveTo(9,0);ctx.bezierCurveTo(9,-8,3,-10,-3,-8);ctx.bezierCurveTo(-7,-6,-9,-3,-9,0);ctx.bezierCurveTo(-9,3,-7,6,-3,8);ctx.bezierCurveTo(3,10,9,8,9,0);ctx.fillStyle='#e8732a';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=1.3;ctx.stroke();
+    // band near head
+    ctx.save();ctx.beginPath();ctx.rect(4,-9,4,18);ctx.clip();ctx.beginPath();ctx.ellipse(6,0,4.5,9,0,0,TAU);ctx.fillStyle='#c8dcf0';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=1;ctx.stroke();ctx.restore();
+    // band mid
+    ctx.save();ctx.beginPath();ctx.rect(-3,-9,4,18);ctx.clip();ctx.beginPath();ctx.ellipse(-1,0,3.5,8.5,0,0,TAU);ctx.fillStyle='#c8dcf0';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=1;ctx.stroke();ctx.restore();
+    // band near tail
+    ctx.save();ctx.beginPath();ctx.rect(-9,-6,3.5,12);ctx.clip();ctx.beginPath();ctx.ellipse(-7.5,0,2.5,6,0,0,TAU);ctx.fillStyle='#c8dcf0';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=0.8;ctx.stroke();ctx.restore();
+    // orange section
+    ctx.beginPath();ctx.arc(-5,0,2.5,-Math.PI*.7,Math.PI*.7);ctx.strokeStyle='#e8732a';ctx.lineWidth=2;ctx.stroke();
+    // dorsal fin
+    const df=sn(t*1.5)*0.12;
+    ctx.save();ctx.translate(0,-9);ctx.rotate(df);
+    ctx.beginPath();ctx.moveTo(-4,0);ctx.bezierCurveTo(-3,-6,2,-9,7,-7);ctx.bezierCurveTo(8,-4,5,-1,4,0);ctx.fillStyle='#d96020';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=1;ctx.stroke();
+    for(let i=0;i<3;i++){ctx.beginPath();ctx.moveTo(-1+i*3,0);ctx.lineTo(-1+i*2.5,-4-i*.5);ctx.strokeStyle='rgba(30,46,90,0.3)';ctx.lineWidth=0.6;ctx.stroke();}
+    ctx.restore();
+    // pectoral fin
+    const pf=sn(t*1.9)*0.28;
+    ctx.save();ctx.translate(4,3);ctx.rotate(pf);
+    ctx.beginPath();ctx.moveTo(0,0);ctx.bezierCurveTo(2,3,5,7,3,9);ctx.bezierCurveTo(1,9,-1,5,-1,2);ctx.closePath();ctx.fillStyle='#d96020';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=0.8;ctx.stroke();
+    ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(2,6);ctx.strokeStyle='rgba(30,46,90,0.25)';ctx.lineWidth=0.5;ctx.stroke();
+    ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(0,7);ctx.stroke();
+    ctx.restore();
+    // anal fin
+    ctx.save();ctx.translate(-3,8);ctx.rotate(sn(t*2)*0.08);
+    ctx.beginPath();ctx.moveTo(0,0);ctx.bezierCurveTo(1,3,4,4,5,2);ctx.bezierCurveTo(4,0,2,0,0,0);ctx.fillStyle='#d06018';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=0.7;ctx.stroke();
+    ctx.restore();
+    // head
+    ctx.beginPath();ctx.ellipse(8,0,4.5,5.5,0,0,TAU);ctx.fillStyle='#e87830';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=1.3;ctx.stroke();
+    const hg=ctx.createRadialGradient(9,-2,0.5,8,-1,5);hg.addColorStop(0,'rgba(255,210,130,0.55)');hg.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.beginPath();ctx.ellipse(8,0,4.5,5.5,0,0,TAU);ctx.fillStyle=hg;ctx.fill();
+    // eye
+    ctx.beginPath();ctx.arc(10,-1.5,2.3,0,TAU);ctx.fillStyle='#f5c842';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=1;ctx.stroke();
+    ctx.beginPath();ctx.arc(10.4,-1.5,1.1,0,TAU);ctx.fillStyle='#0d0000';ctx.fill();
+    ctx.beginPath();ctx.arc(11,-2.1,0.5,0,TAU);ctx.fillStyle='rgba(255,255,255,0.95)';ctx.fill();
+    ctx.restore();
+    pipEnd(ctx);
+  }
+
+  // ── frozen_tide ring — exact from koi drawFrame ───────────────
+  function drawRing(canvas, t) {
+    const ctx = canvas.getContext('2d');
+    // CSS logical size
+    const W = 92, H = 92;
+    ctx.clearRect(0,0,W,H);
+    const cx=W/2,cy=H/2;
+    const c1='#4488ff',c2='#0033cc',c3='#99bbff';
+    const R=38;
+    ctx.save();
+    ctx.translate(cx,cy);
+    for(let j=0;j<3;j++){
+      const pulse=sn(t*.06+j*.9)*.5+.5;
+      ctx.beginPath();
+      for(let i=0;i<=180;i++){const a=i/180*TAU;const rr=(R-j*5)+sn(a*4+t*.035*(j+1))*2.8+sn(a*6-t*.028)*1.8+cs(a*8+t*.02)*1;i===0?ctx.moveTo(cs(a)*rr,sn(a)*rr):ctx.lineTo(cs(a)*rr,sn(a)*rr);}
+      ctx.closePath();ctx.strokeStyle=j===0?c1:j===1?c2:c3;ctx.lineWidth=j===0?2.6:j===1?1.5:.9;ctx.shadowColor=j===0?c1:c2;ctx.shadowBlur=(11-j*3)*(pulse*.4+.6);ctx.globalAlpha=.65+pulse*.3;ctx.stroke();ctx.globalAlpha=1;
+    }
+    for(let i=0;i<12;i++){const a=i/12*TAU+t*.022*(i%2?1:-.5);const rr=R+sn(i*1.4+t*.08)*3.5;const g=sn(t*.1+i*.55)*.5+.5;ctx.fillStyle=c1;ctx.shadowColor=c1;ctx.shadowBlur=5*g;ctx.globalAlpha=g*.65;ctx.beginPath();ctx.arc(cs(a)*rr,sn(a)*rr,1.6+g*.6,0,TAU);ctx.fill();ctx.globalAlpha=1;}
+    ctx.restore();
+  }
+
+  let ringT=0, pipT=Math.random()*TAU, last=null;
+  function frame(ts){
+    if(!last)last=ts;
+    const dt=Math.min((ts-last)/1000,.05);last=ts;
+    ringT+=dt*60; pipT+=dt;
+    drawRing(rc,ringT);
+    drawClownfish(pc,pipT);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+
+      <!-- FORM -->
+      <div id="xpForm">
+        <div class="xp-field">
+          <label>Email Address</label>
+          <input type="email" id="xpEmail" placeholder="your@email.com" autocomplete="email"/>
+        </div>
+        <div class="xp-field">
+          <label>Name <span class="opt-label">(optional)</span></label>
+          <input type="text" id="xpName" placeholder="What should we call you" autocomplete="given-name"/>
+        </div>
+        <div class="xp-field">
+          <label>TikTok <span class="opt-label">(optional &mdash; leave it if you want a personal heads-up at launch)</span></label>
+          <input type="text" id="xpTiktok" placeholder="@username"/>
+        </div>
+
+        <button class="xp-btn" id="xpBtn" onclick="submitXP()">
+          Sign up here
+        </button>
+        <div class="xp-fine-print" style="display:flex;align-items:flex-start;gap:8px;text-align:left;margin-top:12px;">
+          <input type="checkbox" id="tosCheck" style="margin-top:1px;flex-shrink:0;accent-color:#1a5faa;cursor:pointer;" oninput="document.getElementById('xpBtn').disabled=!this.checked;" checked/>
+          <label for="tosCheck" style="cursor:pointer;line-height:1.55;">
+            By signing up you agree to our <a href="#" onclick="showTosPopup(event)" style="color:#1a5faa;text-decoration:underline;">Terms of Service &amp; Privacy Policy</a>. We may send you updates and news about FAERO.
+          </label>
+        </div>
+
+        <div class="social-row">
+          <a href="https://tiktok.com/@frutigeraerosoftclub" target="_blank" rel="noopener" class="soc-btn soc-tiktok">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.21 8.21 0 0 0 4.79 1.53V6.78a4.85 4.85 0 0 1-1.02-.09z"/></svg>
+            Follow on TikTok
+          </a>
+          <a href="https://discord.com/invite/gf8yYG7FzZ" target="_blank" rel="noopener" class="soc-btn soc-discord">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+            Join Discord
+          </a>
+        </div>
+      </div>
+
+      <div class="xp-success" id="xpSuccess">
+        <div class="xp-success-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h3>You're in.</h3>
+        <p>Your Aura Badge is held. You'll hear from us when FAERO opens.<br><br>Welcome to the promised future.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES WINDOW -->
+  <div class="window-features">
+    <div class="window-titlebar">
+      <div class="title-icon"><img src="https://i.ibb.co/hh0h9ZX/faerologomediumsiksi.webp" alt=""></div>
+      <div class="window-title-text">What FAERO actually is</div>
+      <div class="window-buttons">
+        <div class="wb wb-min">&#8211;</div>
+        <div class="wb wb-max">&#9633;</div>
+        <div class="wb wb-close">&#215;</div>
+      </div>
+    </div>
+    <div class="feats-grid">
+      <div class="xp-feat">
+        <div class="xp-feat-icon" style="background:linear-gradient(135deg,#4da6ff,#1a5faa)">
+          <svg viewBox="0 0 24 24"><path d="M3 3h18v18H3V3zm0 6h18M9 21V9"/></svg>
+        </div>
+        <h4>Your Profile, Your Canvas</h4>
+        <p>Customize your profile just like in the old days where you control the design. Make it yours, make it different, make it unmistakably you.</p>
+      </div>
+      <div class="xp-feat">
+        <div class="xp-feat-icon" style="background:linear-gradient(135deg,#62c462,#3a8035)">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h4>Forums &amp; Community</h4>
+        <p>Real forums where conversations go deep. Threads, boards, communities, the old-school way conversations were meant to work.</p>
+      </div>
+      <div class="xp-feat">
+        <div class="xp-feat-icon" style="background:linear-gradient(135deg,#f0a040,#c05010)">
+          <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13M6 18a3 3 0 1 1-3-3 3 3 0 0 1 3 3zm12-2a3 3 0 1 1-3-3 3 3 0 0 1 3 3z"/></svg>
+        </div>
+        <h4>Share Music</h4>
+        <p>Put your playlist on your profile. Let people hear what you're into the moment they land on your page.</p>
+      </div>
+      <div class="xp-feat">
+        <div class="xp-feat-icon" style="background:linear-gradient(135deg,#b080f0,#6020c0)">
+          <svg viewBox="0 0 24 24"><path d="M8 6h8M8 12h8M8 18h5"/><rect x="2" y="3" width="4" height="4" rx="1"/><rect x="2" y="10" width="4" height="4" rx="1"/><rect x="2" y="17" width="4" height="4" rx="1"/></svg>
+        </div>
+        <h4>Groups</h4>
+        <p>Find your people. Create spaces around anything. No algorithmic ranking, just your group, your conversations.</p>
+      </div>
+      <div class="xp-feat">
+        <div class="xp-feat-icon" style="background:linear-gradient(135deg,#40c8d0,#1070a0)">
+          <svg viewBox="0 0 24 24"><path d="M21 6H3M21 12H3M21 18H3"/><circle cx="7" cy="6" r="1.5" fill="white" stroke="none"/><circle cx="14" cy="12" r="1.5" fill="white" stroke="none"/><circle cx="9" cy="18" r="1.5" fill="white" stroke="none"/></svg>
+        </div>
+        <h4>Play Games</h4>
+        <p>Jump into games with friends without leaving the platform. Chat while you play, the way it should have always worked.</p>
+      </div>
+      <div class="xp-feat">
+        <div class="xp-feat-icon" style="background:linear-gradient(135deg,#e07070,#a02020)">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm14 10v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h4>Real People, Real Connections</h4>
+        <p>Make friends, not followers. Talk to actual people, find your crowd, and build something real.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-win">
+    <div class="footer-win-logo">FAERO</div>
+    <p>Our Promised Future &mdash; Early Access Open</p>
+  </div>
+</div>
+
+<!-- POPUP -->
+<div class="popup-overlay" id="popupOverlay">
+  <div class="popup-box">
+    <div class="popup-titlebar">
+      <div class="title-icon" style="width:14px;height:14px;border-radius:50%;overflow:hidden;flex-shrink:0;">
+        <img src="https://i.ibb.co/hh0h9ZX/faerologomediumsiksi.webp" alt="" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+      <div class="popup-title-text">FAERO &mdash; You're in</div>
+      <div class="window-buttons">
+        <div class="wb wb-close" onclick="closePopup()">&#215;</div>
+      </div>
+    </div>
+    <div class="popup-body">
+      <div class="popup-check">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="popup-h">You're in.</div>
+      <p class="popup-p">Your Aura Badge is held. You'll hear from us when FAERO opens its doors.<br><br>Welcome to the promised future.</p>
+      <button class="popup-close" onclick="closePopup()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOS POPUP -->
+<div class="popup-overlay" id="tosOverlay" style="z-index:2100;">
+  <div class="popup-box" style="max-width:420px;">
+    <div class="popup-titlebar">
+      <div class="popup-title-text">Terms of Service &amp; Privacy Policy — FAERO</div>
+      <div class="window-buttons">
+        <div class="wb wb-close" onclick="document.getElementById('tosOverlay').classList.remove('show')">&#215;</div>
+      </div>
+    </div>
+    <div class="popup-body" style="text-align:left;max-height:60vh;overflow-y:auto;">
+      <p style="font-size:0.78rem;color:#1a2a3a;font-weight:800;margin-bottom:8px;">Last updated: 2025</p>
+      <p style="font-size:0.76rem;color:#3a5a7a;line-height:1.7;margin-bottom:12px;">By joining the FAERO waitlist, you agree to the following:</p>
+      <p style="font-size:0.76rem;color:#1a2a3a;font-weight:700;margin-bottom:4px;">1. What we collect</p>
+      <p style="font-size:0.74rem;color:#3a5a7a;line-height:1.65;margin-bottom:10px;">We collect your email address, and optionally your name and TikTok handle. This is used solely to contact you about FAERO's launch and updates.</p>
+      <p style="font-size:0.76rem;color:#1a2a3a;font-weight:700;margin-bottom:4px;">2. How we use it</p>
+      <p style="font-size:0.74rem;color:#3a5a7a;line-height:1.65;margin-bottom:10px;">We will send you communications about FAERO — including launch announcements, platform news, and relevant updates. You can unsubscribe at any time by clicking the unsubscribe link in any email.</p>
+      <p style="font-size:0.76rem;color:#1a2a3a;font-weight:700;margin-bottom:4px;">3. What we don't do</p>
+      <p style="font-size:0.74rem;color:#3a5a7a;line-height:1.65;margin-bottom:16px;">We do not sell, rent, or share your information with third parties for advertising purposes. We do not use your data for AI training.</p>
+      <button class="popup-close" onclick="document.getElementById('tosOverlay').classList.remove('show')" style="width:100%;">Got it</button>
+    </div>
+  </div>
+</div>
+
+<div class="notif" id="notif"></div>
+
+<script>
+/* ================================================================
+   SUPABASE CONFIG
+   — To connect: create a table called "waitlist" in your project
+   — Columns: id (int8, pk, auto), email (text), name (text, nullable),
+              tiktok (text, nullable), created_at (timestamptz, default now())
+   — Set RLS policy: allow INSERT for anon role
+================================================================ */
+const SB_URL = 'https://pvqxsgqqlupldroooyhy.supabase.co';
+const SB_KEY = 'sb_publishable_xKCbxNZtJAxP3GtYSGGXPw_IjN1UoFE';
+
+async function sbInsert(email, name, tiktok) {
+  const res = await fetch(`${SB_URL}/rest/v1/waitlist`, {
+    method: 'POST',
+    headers: {
+      'apikey': SB_KEY,
+      'Authorization': `Bearer ${SB_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify({
+      email,
+      name: name || null,
+      tiktok: tiktok || null
+    })
+  });
+  if (!res.ok) throw new Error(await res.text());
+}
+
+/* ================================================================
+   LIQUID GLASS BUBBLES — fixed speed, no acceleration over time
+================================================================ */
+(function () {
+  const canvas = document.getElementById('bcanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Each drop gets a fixed terminal velocity — never changes
+  const COUNT = 20;
+  const drops = Array.from({ length: COUNT }, () => {
+    const r = 0.011 + Math.random() * 0.026;
+    const SPEED = 0.00028 + Math.random() * 0.00022; // fixed per bubble
+    return {
+      x: Math.random(),
+      y: Math.random(),        // start spread across screen
+      r,
+      speed: SPEED,            // constant rise speed
+      drift: (Math.random() - 0.5) * 0.00018, // gentle horizontal drift
+      wAngle: Math.random() * Math.PI * 2,
+      wAmp: 0.00012 + Math.random() * 0.00010,
+      wFreq: 0.4 + Math.random() * 0.5,
+      t: Math.random() * 100,  // offset so they're not in sync
+    };
+  });
+
+  function step() {
+    drops.forEach(d => {
+      d.t += 0.016;
+      // Constant upward speed — no acceleration ever
+      d.y -= d.speed;
+      // Gentle sinusoidal horizontal sway — amplitude fixed
+      d.x += d.drift + Math.sin(d.t * d.wFreq) * d.wAmp;
+
+      // Wrap
+      if (d.y + d.r < -0.05) {
+        d.y = 1.05;
+        d.x = Math.random();
+      }
+      if (d.x < -d.r) d.x = 1 + d.r;
+      if (d.x > 1 + d.r) d.x = -d.r;
+    });
+  }
+
+  function drawDrop(d) {
+    const cx = d.x * W;
+    const cy = d.y * H;
+    const r = d.r * Math.min(W, H);
+
+    // Soft outer glow
+    const glow = ctx.createRadialGradient(cx, cy, r * 0.1, cx, cy, r * 1.75);
+    glow.addColorStop(0, 'rgba(80,180,255,0.055)');
+    glow.addColorStop(1, 'rgba(80,180,255,0)');
+    ctx.beginPath(); ctx.arc(cx, cy, r * 1.75, 0, Math.PI * 2);
+    ctx.fillStyle = glow; ctx.fill();
+
+    // Glass body
+    const g = ctx.createRadialGradient(cx - r * 0.3, cy - r * 0.3, r * 0.04, cx, cy, r);
+    g.addColorStop(0,    'rgba(255,255,255,0.8)');
+    g.addColorStop(0.2,  'rgba(220,240,255,0.42)');
+    g.addColorStop(0.72, 'rgba(120,195,240,0.15)');
+    g.addColorStop(1,    'rgba(80,160,230,0.03)');
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.fillStyle = g; ctx.fill();
+
+    // Rim
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(255,255,255,0.52)';
+    ctx.lineWidth = 0.75; ctx.stroke();
+
+    // Top-left specular
+    const hl = ctx.createRadialGradient(cx - r * 0.3, cy - r * 0.32, 0, cx - r * 0.3, cy - r * 0.32, r * 0.38);
+    hl.addColorStop(0, 'rgba(255,255,255,0.74)');
+    hl.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.beginPath(); ctx.arc(cx - r * 0.3, cy - r * 0.32, r * 0.38, 0, Math.PI * 2);
+    ctx.fillStyle = hl; ctx.fill();
+
+    // Bottom tint
+    const bt = ctx.createRadialGradient(cx + r * 0.2, cy + r * 0.3, 0, cx + r * 0.2, cy + r * 0.3, r * 0.22);
+    bt.addColorStop(0, 'rgba(120,200,255,0.26)');
+    bt.addColorStop(1, 'rgba(120,200,255,0)');
+    ctx.beginPath(); ctx.arc(cx + r * 0.2, cy + r * 0.3, r * 0.22, 0, Math.PI * 2);
+    ctx.fillStyle = bt; ctx.fill();
+  }
+
+  function frame() {
+    ctx.clearRect(0, 0, W, H);
+    drops.forEach(drawDrop);
+    step();
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+
+/* ================================================================
+   LIQUID METAL LOGO — Three.js character, transparent background
+================================================================ */
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const simplex3D=`
+vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x,289.0);}
+vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-0.85373472095314*r;}
+float snoise(vec3 v){
+  const vec2 C=vec2(1.0/6.0,1.0/3.0);const vec4 D=vec4(0.0,0.5,1.0,2.0);
+  vec3 i=floor(v+dot(v,C.yyy));vec3 x0=v-i+dot(i,C.xxx);
+  vec3 g=step(x0.yzx,x0.xyz);vec3 l=1.0-g;
+  vec3 i1=min(g.xyz,l.zxy);vec3 i2=max(g.xyz,l.zxy);
+  vec3 x1=x0-i1+C.xxx;vec3 x2=x0-i2+C.yyy*2.0;vec3 x3=x0-1.0+3.0*C.xxx;
+  i=mod(i,289.0);
+  vec4 p=permute(permute(permute(i.z+vec4(0.0,i1.z,i2.z,1.0))+i.y+vec4(0.0,i1.y,i2.y,1.0))+i.x+vec4(0.0,i1.x,i2.x,1.0));
+  float n_=1.0/7.0;vec3 ns=n_*D.wyz-D.xzx;
+  vec4 j=p-49.0*floor(p*ns.z*ns.z);vec4 x_=floor(j*ns.z);vec4 y_=floor(j-7.0*x_);
+  vec4 x=x_*ns.x+ns.yyyy;vec4 y=y_*ns.x+ns.yyyy;vec4 h=1.0-abs(x)-abs(y);
+  vec4 b0=vec4(x.xy,y.xy);vec4 b1=vec4(x.zw,y.zw);
+  vec4 s0=floor(b0)*2.0+1.0;vec4 s1=floor(b1)*2.0+1.0;vec4 sh=-step(h,vec4(0.0));
+  vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy;vec4 a1=b1.xzyw+s1.xzyw*sh.zzww;
+  vec3 p0=vec3(a0.xy,h.x);vec3 p1=vec3(a0.zw,h.y);vec3 p2=vec3(a1.xy,h.z);vec3 p3=vec3(a1.zw,h.w);
+  vec4 norm=taylorInvSqrt(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));
+  p0*=norm.x;p1*=norm.y;p2*=norm.z;p3*=norm.w;
+  vec4 m=max(0.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.0);
+  m=m*m;return 42.0*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
+}`;
+
+const logoCanvas = document.getElementById('liquid-logo-canvas');
+const SIZE = 1024; // high-res internal render for crisp shaders on all screens
+logoCanvas.width = SIZE; logoCanvas.height = SIZE;
+
+const scene = new THREE.Scene(); scene.background = null;
+const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 2000);
+camera.position.set(0, 0, 55);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, canvas: logoCanvas, precision: 'highp', powerPreference: 'high-performance' });
+renderer.setSize(SIZE, SIZE);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 3));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 2.6;
+renderer.setClearColor(0x000000, 0);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true; controls.dampingFactor = 0.05;
+controls.autoRotate = true; controls.autoRotateSpeed = 3.02;
+controls.enableZoom = false; controls.enablePan = false;
+
+const pmrem = new THREE.PMREMGenerator(renderer);
+pmrem.compileEquirectangularShader();
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = 1.6;
+
+[[0xffffff,10,[12,22,18]],[0x88ddff,5,[-18,-10,12]],[0xff88ee,4,[0,-25,-8]],[0xffdd88,3,[20,5,5]]]
+  .forEach(([c,i,p])=>{ const l=new THREE.DirectionalLight(c,i); l.position.set(...p); scene.add(l); });
+const pointLight = new THREE.PointLight(0xffffff, 8, 120); scene.add(pointLight);
+
+const bgReflectionCfg = { enabled: true, influence: 2.35 };
+[[0,1,0.3],[0,-1,0.3],[-1,0,0.3],[1,0,0.3],[0,0,1],[0,0,-1]].forEach(dir=>{
+  const l = new THREE.DirectionalLight(0x6688cc, bgReflectionCfg.influence);
+  l.position.set(...dir).multiplyScalar(60); scene.add(l);
+});
+
+const dummyTex = new THREE.DataTexture(new Uint8Array([255,255,255,255]),1,1); dummyTex.needsUpdate=true;
+const liquidMaterial = new THREE.MeshPhysicalMaterial({
+  color:0xffffff, metalness:1.0, roughness:0.0,
+  clearcoat:1.0, clearcoatRoughness:0.0,
+  iridescence:0.68, iridescenceIOR:3.0,
+  iridescenceThicknessRange:[0,1500],
+  iridescenceThicknessMap:dummyTex,
+  envMapIntensity:7.9, dithering:true, ior:1.6095, transmission:0
+});
+liquidMaterial.userData = {
+  uTime:{value:0}, uSpeed:{value:0.0}, uScale:{value:0.00139},
+  uDistortion:{value:0.945}, uEdgeProtection:{value:0.803}, uShapeReactivity:{value:5},
+  uShapeMask:{value:dummyTex}, uShapeBounds:{value:new THREE.Vector4(0,0,1,1)}
+};
+liquidMaterial.onBeforeCompile = shader => {
+  Object.entries(liquidMaterial.userData).forEach(([k,v])=>shader.uniforms[k]=v);
+  shader.vertexShader=`varying vec3 vWorldPos;varying vec3 vLocalPos;varying vec3 vOriginalNormal;\n`+shader.vertexShader;
+  shader.vertexShader=shader.vertexShader.replace('#include <worldpos_vertex>',
+    `#include <worldpos_vertex>
+     vWorldPos=(modelMatrix*vec4(transformed,1.0)).xyz;
+     vLocalPos=position; vOriginalNormal=normal;`);
+  shader.fragmentShader=`
+    uniform float uTime,uSpeed,uScale,uDistortion,uEdgeProtection,uShapeReactivity;
+    uniform sampler2D uShapeMask; uniform vec4 uShapeBounds;
+    varying vec3 vWorldPos,vLocalPos,vOriginalNormal; float vFluidNoise;
+    ${simplex3D}\n`+shader.fragmentShader;
+  shader.fragmentShader=shader.fragmentShader.replace('#include <normal_fragment_begin>',
+    `#include <normal_fragment_begin>
+    vec2 shapeUV=(vLocalPos.xy-uShapeBounds.xy)/uShapeBounds.zw;
+    vec2 te=vec2(4.0/1024.0);
+    float mC=texture2D(uShapeMask,shapeUV).r,mR=texture2D(uShapeMask,shapeUV+vec2(te.x,0.0)).r,mL=texture2D(uShapeMask,shapeUV-vec2(te.x,0.0)).r,mT=texture2D(uShapeMask,shapeUV+vec2(0.0,te.y)).r,mB=texture2D(uShapeMask,shapeUV-vec2(0.0,te.y)).r;
+    float smoothDist=(mC+mR+mL+mT+mB)*0.2;
+    vec2 maskGrad=vec2(mR-mL,mT-mB)/(2.0*te.x);
+    vec3 p=vLocalPos*uScale; p.z+=smoothDist*uShapeReactivity*150.0*uScale;
+    p.xy+=vec2(-maskGrad.y,maskGrad.x)*(uTime*uSpeed*0.5); p.y-=uTime*uSpeed*0.1;
+    vec3 warp; warp.x=snoise(p+vec3(0,0,uTime*0.1)); warp.y=snoise(p+vec3(114.5,22.1,uTime*0.1)); warp.z=snoise(p+vec3(233.2,51.5,uTime*0.1));
+    vec3 wp=p+warp*1.5; float eps=0.03;
+    float n0=snoise(wp),nx=snoise(wp+vec3(eps,0,0)),ny=snoise(wp+vec3(0,eps,0)),nz=snoise(wp+vec3(0,0,eps));
+    vFluidNoise=n0+smoothDist*uShapeReactivity*2.0;
+    vec3 nn=normalize(vec3(nx-n0,ny-n0,nz-n0));
+    vec3 vnn=normalize((viewMatrix*vec4(nn,0.0)).xyz);
+    float flatFace=smoothstep(0.1,0.9,abs(vOriginalNormal.z));
+    normal=normalize(normal+vnn*uDistortion*mix(1.0,flatFace,uEdgeProtection));`);
+  shader.fragmentShader=shader.fragmentShader.replace(
+    /texture2D\(\s*iridescenceThicknessMap\s*,\s*vIridescenceThicknessMapUv\s*\)/g,
+    'vec4(vFluidNoise*0.5+0.5)');
+};
+
+function generateShapeMaskTexture(shapes){
+  const b=new THREE.Box2();
+  shapes.forEach(s=>s.getPoints().forEach(p=>b.expandByPoint(p)));
+  const w=b.max.x-b.min.x,h=b.max.y-b.min.y;
+  const pad=Math.max(w,h)*0.25; const pX=b.min.x-pad,pY=b.min.y-pad,pW=w+pad*2,pH=h+pad*2;
+  const cv=document.createElement('canvas'); cv.width=cv.height=1024;
+  const ctx=cv.getContext('2d');
+  ctx.fillStyle='black'; ctx.fillRect(0,0,1024,1024);
+  ctx.save(); ctx.filter='blur(45px)'; ctx.fillStyle='white';
+  ctx.scale(1024/pW,1024/pH); ctx.translate(-pX,-pY); ctx.beginPath();
+  shapes.forEach(shape=>{
+    const pts=shape.getPoints(100); if(!pts.length)return;
+    ctx.moveTo(pts[0].x,pts[0].y); for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i].x,pts[i].y);
+    shape.holes.forEach(hole=>{
+      const hp=hole.getPoints(100); if(!hp.length)return;
+      ctx.moveTo(hp[0].x,hp[0].y); for(let i=1;i<hp.length;i++)ctx.lineTo(hp[i].x,hp[i].y);
+    });
+  });
+  ctx.fill('evenodd'); ctx.restore();
+  const tex=new THREE.CanvasTexture(cv); tex.flipY=false;
+  liquidMaterial.userData.uShapeMask.value=tex;
+  liquidMaterial.userData.uShapeBounds.value.set(pX,pY,pW,pH);
+}
+
+const faeroSVG=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1008 1048">
+<path fill="white" d="M 497.34 83.23 C 532.98 80.69 569.25 96.53 591.65 124.35 C 605.90 141.74 614.71 163.49 616.59 185.89 C 619.60 218.94 606.98 253.02 583.03 276.03 C 556.52 302.36 516.32 313.73 479.93 305.28 C 453.19 299.41 428.88 283.30 413.02 260.99 C 398.33 240.58 390.84 215.14 392.14 190.03 C 393.40 162.41 405.29 135.41 424.97 115.97 C 444.01 96.70 470.31 84.88 497.34 83.23 Z"/>
+<path fill="white" d="M 98.71 360.65 C 110.26 343.88 129.93 333.56 150.03 331.80 C 156.51 331.77 163.01 331.47 169.48 332.01 C 187.02 334.35 202.79 343.74 216.25 354.83 C 225.96 362.37 233.75 371.94 242.67 380.33 C 250.32 388.33 258.59 395.68 266.67 403.23 C 278.45 413.49 291.61 422.22 306.10 428.17 C 317.88 434.06 330.83 437.14 343.88 438.52 C 362.10 440.97 380.95 438.25 397.77 430.84 C 412.95 424.41 426.63 414.85 438.87 403.89 C 448.78 394.36 459.42 385.24 471.75 378.98 C 479.97 375.22 488.79 371.71 498.00 372.22 C 504.33 372.31 510.66 372.19 516.99 372.25 C 521.85 372.30 526.46 374.11 530.95 375.81 C 539.93 379.13 547.27 385.48 554.97 390.98 C 563.36 397.20 570.68 404.65 578.88 411.10 C 595.37 424.34 614.84 434.60 635.96 437.68 C 654.59 440.94 674.06 439.21 691.87 432.85 C 705.73 428.17 719.01 421.65 730.62 412.69 C 738.40 408.00 744.50 401.22 751.44 395.46 C 765.75 382.12 778.53 367.16 793.50 354.50 C 800.85 347.88 809.37 342.64 818.38 338.60 C 829.07 333.33 841.14 331.13 853.02 331.72 C 867.78 331.12 882.05 336.75 894.29 344.62 C 902.74 350.05 909.02 358.09 914.73 366.21 C 922.12 379.79 926.55 395.46 925.10 410.99 C 924.52 431.13 914.46 450.27 900.01 464.00 C 895.51 467.86 890.99 472.04 885.28 474.02 C 880.86 475.64 876.62 477.77 872.05 478.98 C 864.77 481.38 857.16 482.50 849.79 484.55 C 840.76 487.24 831.26 485.99 822.00 486.24 C 811.35 485.42 800.66 485.86 790.00 485.73 C 784.54 485.52 779.36 487.57 773.96 487.76 C 767.99 488.13 762.36 490.29 756.59 491.66 C 746.55 493.83 737.41 498.67 727.80 502.12 C 722.11 503.97 717.59 508.10 712.15 510.48 C 697.90 518.21 687.70 531.12 676.09 542.09 C 668.03 549.58 663.62 559.85 658.77 569.49 C 656.36 574.39 654.90 579.67 653.28 584.86 C 651.83 589.84 650.15 594.81 649.69 600.01 C 649.44 604.40 647.38 608.52 647.70 612.97 C 648.04 620.05 646.79 627.36 649.22 634.20 C 650.00 638.96 649.55 643.90 651.25 648.53 C 653.33 662.28 659.18 675.15 665.84 687.25 C 669.76 694.67 675.23 701.07 680.13 707.84 C 689.66 719.97 701.66 729.90 713.92 739.15 C 727.35 748.24 741.32 756.49 755.32 764.67 C 761.22 768.27 766.58 772.66 772.05 776.87 C 790.26 790.48 803.45 811.25 806.19 833.99 C 807.34 849.20 806.92 865.44 798.89 878.93 C 789.02 899.58 768.93 914.66 746.67 919.41 C 739.79 919.86 732.85 920.59 725.96 919.77 C 698.78 917.14 674.66 898.88 662.18 874.99 C 659.11 868.72 655.61 862.61 653.42 855.95 C 648.79 842.57 646.30 828.50 640.83 815.40 C 635.27 794.46 625.01 775.05 612.83 757.24 C 605.50 748.56 597.39 740.55 589.02 732.88 C 573.67 720.48 555.76 711.18 536.67 706.09 C 532.33 704.89 527.91 704.01 523.54 702.92 C 519.08 701.73 514.44 702.48 509.90 702.50 C 501.96 701.78 491.90 701.51 487.62 703.79 C 480.10 704.02 473.12 706.88 465.93 708.77 C 462.07 710.11 458.32 711.74 454.52 713.23 C 446.70 716.35 439.88 721.37 432.56 725.45 C 424.97 729.62 419.55 736.50 413.38 742.39 C 408.81 747.16 403.79 751.51 399.52 756.58 C 393.82 764.54 388.47 772.79 384.48 781.76 C 377.36 794.25 374.17 808.36 369.35 821.79 C 364.33 835.39 361.71 849.80 355.83 863.10 C 350.77 872.94 346.52 883.58 338.42 891.42 C 334.13 895.42 330.27 899.88 325.82 903.73 C 316.45 911.12 305.36 916.20 293.84 919.18 C 288.26 919.93 282.61 919.70 277.00 919.76 C 263.36 920.45 249.66 916.12 238.35 908.58 C 232.12 904.63 227.91 898.40 222.38 893.62 C 217.31 889.23 213.42 883.60 211.03 877.33 C 207.09 867.71 203.06 857.59 203.73 847.00 C 203.77 843.64 203.68 840.29 203.73 836.94 C 203.75 832.50 205.47 828.33 206.10 823.98 C 207.24 816.48 210.72 809.65 214.24 803.03 C 221.50 789.89 232.76 779.49 245.14 771.21 C 256.26 763.07 268.64 756.88 280.06 749.18 C 288.18 744.93 295.33 739.19 302.65 733.72 C 315.99 724.22 327.65 712.32 336.80 698.73 C 342.14 691.76 347.00 684.36 350.50 676.28 C 355.89 663.34 361.04 650.05 362.53 636.01 C 364.40 629.15 363.60 622.01 363.77 614.99 C 364.06 608.77 362.02 602.80 361.49 596.65 C 358.82 585.02 355.31 573.35 348.93 563.16 C 345.03 557.06 341.93 550.39 337.07 544.95 C 331.56 538.79 326.16 532.49 319.93 527.04 C 312.72 520.30 304.27 515.16 296.04 509.80 C 288.07 504.47 278.93 501.35 270.14 497.68 C 253.36 490.46 235.10 487.46 217.00 486.23 C 200.99 486.14 184.99 486.27 168.98 486.27 C 163.88 486.38 159.04 484.57 154.01 484.04 C 135.47 481.64 117.70 472.75 104.86 459.14 C 94.77 448.32 88.42 434.34 85.90 419.84 C 85.48 412.57 85.91 405.27 85.71 397.99 C 85.31 391.23 87.36 384.63 89.64 378.35 C 92.47 372.35 94.53 365.89 98.71 360.65 Z"/>
+</svg>`;
+
+const svgGroup = new THREE.Group(); scene.add(svgGroup);
+const svgLoader = new SVGLoader();
+const shapeSettings = { depth: 103.8, bevelSize: 3.5 };
+
+function buildSVGFromData(svgData){
+  svgGroup.position.set(0,0,0); svgGroup.scale.set(1,1,1); svgGroup.rotation.set(0,0,0);
+  while(svgGroup.children.length){const c=svgGroup.children[0];svgGroup.remove(c);if(c.geometry)c.geometry.dispose();}
+  const ext={depth:shapeSettings.depth,bevelEnabled:true,bevelSegments:128,steps:3,bevelSize:shapeSettings.bevelSize,bevelThickness:shapeSettings.bevelSize};
+  const allRawShapes=[];
+  svgData.paths.forEach(path=>{
+    SVGLoader.createShapes(path).forEach(shape=>{
+      allRawShapes.push(shape);
+      svgGroup.add(new THREE.Mesh(new THREE.ExtrudeGeometry(shape,ext),liquidMaterial));
+    });
+  });
+  if(allRawShapes.length)generateShapeMaskTexture(allRawShapes);
+  const box=new THREE.Box3().setFromObject(svgGroup);
+  const size=box.getSize(new THREE.Vector3()); const maxDim=Math.max(size.x,size.y,size.z);
+  if(maxDim>0){const s=28/maxDim;svgGroup.scale.set(s,-s,s);}
+  svgGroup.updateMatrixWorld();
+  svgGroup.position.sub(new THREE.Box3().setFromObject(svgGroup).getCenter(new THREE.Vector3()));
+}
+
+const fixed = faeroSVG.replace(/fill\s*=\s*["']#000(000)?["']/gi,'fill="white"');
+buildSVGFromData(svgLoader.parse(fixed));
+
+const clock = new THREE.Clock();
+function animate(){
+  requestAnimationFrame(animate);
+  controls.update();
+  const t = clock.getElapsedTime();
+  liquidMaterial.userData.uTime.value = t;
+  pointLight.position.set(Math.sin(t*0.35)*30, Math.cos(t*0.28)*22, 28+Math.sin(t*0.5)*8);
+  renderer.render(scene, camera);
+}
+animate();
+</script>
+
+<script>
+/* ================================================================
+   CLOCK
+================================================================ */
+function updateClock() {
+  const n = new Date();
+  document.getElementById('clock').textContent =
+    String(n.getHours()).padStart(2, '0') + ':' + String(n.getMinutes()).padStart(2, '0');
+}
+updateClock(); setInterval(updateClock, 10000);
+
+/* ================================================================
+   DRAGGABLE CLOUDS
+================================================================ */
+function makeDraggable(el) {
+  let on = false, sx = 0, sy = 0, ox = 0, oy = 0;
+  const start = (cx, cy) => { on = true; sx = cx; sy = cy; };
+  const move  = (cx, cy) => { if (!on) return; el.style.transform = `translate(${ox+cx-sx}px,${oy+cy-sy}px)`; };
+  const end   = (cx, cy) => { if (on) { ox += cx-sx; oy += cy-sy; } on = false; };
+  el.addEventListener('mousedown',  e => { start(e.clientX, e.clientY); e.preventDefault(); });
+  el.addEventListener('touchstart', e => { start(e.touches[0].clientX, e.touches[0].clientY); e.preventDefault(); }, { passive: false });
+  document.addEventListener('mousemove',  e => move(e.clientX, e.clientY));
+  document.addEventListener('touchmove',  e => { if(on){ move(e.touches[0].clientX, e.touches[0].clientY); e.preventDefault(); } }, { passive: false });
+  document.addEventListener('mouseup',   e => end(e.clientX, e.clientY));
+  document.addEventListener('touchend',  e => end(e.changedTouches[0].clientX, e.changedTouches[0].clientY));
+}
+makeDraggable(document.getElementById('cA'));
+makeDraggable(document.getElementById('cB'));
+makeDraggable(document.getElementById('cC'));
+
+/* ================================================================
+   NOTIF + POPUP
+================================================================ */
+function showNotif(msg) {
+  const n = document.getElementById('notif');
+  n.textContent = msg; n.classList.add('show');
+  setTimeout(() => n.classList.remove('show'), 3200);
+}
+function closePopup() { document.getElementById('popupOverlay').classList.remove('show'); }
+document.getElementById('popupOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closePopup();
+});
+
+/* ================================================================
+   SUBMIT
+================================================================ */
+function showTosPopup(e) {
+  e.preventDefault();
+  document.getElementById('tosOverlay').classList.add('show');
+}
+document.getElementById('tosOverlay').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('show');
+});
+
+async function submitXP() {
+  const email  = document.getElementById('xpEmail').value.trim();
+  const name   = document.getElementById('xpName').value.trim();
+  const tiktok = document.getElementById('xpTiktok').value.trim();
+  const btn    = document.getElementById('xpBtn');
+
+  const tosCheck = document.getElementById('tosCheck');
+  if (!tosCheck.checked) {
+    showNotif('Please agree to the Terms of Service to continue');
+    return;
+  }
+
+  document.getElementById('xpEmail').classList.remove('err');
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    document.getElementById('xpEmail').classList.add('err');
+    showNotif('Please enter a valid email address');
+    document.getElementById('xpEmail').focus();
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Saving...';
+
+  try {
+    await sbInsert(email, name, tiktok);
+    document.getElementById('xpForm').style.display = 'none';
+    document.getElementById('xpSuccess').style.display = 'block';
+    document.getElementById('popupOverlay').classList.add('show');
+  } catch (e) {
+    console.error(e);
+    btn.disabled = false;
+    btn.textContent = 'Sign up here';
+    if (e.message && e.message.toLowerCase().includes('duplicate')) {
+      showNotif('That email is already on the list');
+    } else {
+      showNotif('Something went wrong — please try again');
+    }
+  }
+}
+
+document.getElementById('xpEmail').addEventListener('input', function () {
+  this.classList.remove('err');
+});
+</script>
+
+<script>
+/* ================================================================
+   AVATAR MODAL
+================================================================ */
+(function(){
+  const TAU=Math.PI*2,sn=Math.sin,cs=Math.cos;
+  const DPR=window.devicePixelRatio||1;
+  let modalRingT=0, modalPipT=Math.random()*TAU, modalLast=null, modalRAF=null;
+  let customAviSrc=null;
+  const DEFAULT_SRC='https://images2.alphacoders.com/941/thumb-1920-941898.jpg';
+
+  function setupCanvas(canvas,cssW,cssH){
+    canvas.width=Math.round(cssW*DPR);canvas.height=Math.round(cssH*DPR);
+    canvas.style.width=cssW+'px';canvas.style.height=cssH+'px';
+    const ctx=canvas.getContext('2d');ctx.scale(DPR,DPR);return ctx;
+  }
+
+  // ── pip bg (shared) ─────────────────────────────────
+  function pipBg(ctx,W,H){
+    ctx.save();ctx.beginPath();ctx.arc(W/2,H/2,W/2-0.5,0,TAU);ctx.clip();
+    const bg=ctx.createRadialGradient(W/2,H*.3,1,W/2,H/2,W/2);
+    bg.addColorStop(0,'#0d3a5c');bg.addColorStop(0.5,'#072540');bg.addColorStop(1,'#020d1e');
+    ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  }
+  function pipEnd(ctx){ctx.restore();}
+
+  // ── clownfish (shared drawing) ───────────────────────
+  function drawClownfishOn(canvas,t,W,H){
+    const ctx=canvas.getContext('2d');ctx.clearRect(0,0,W,H);
+    pipBg(ctx,W,H);
+    const cx=W/2,cy=H/2,scale=W/30;
+    ctx.save();ctx.translate(cx,cy);ctx.scale(scale,scale);
+    const sw=sn(t*1.1)*2.2,tilt=sn(t*1.1)*0.07;
+    ctx.save();ctx.translate(sw,sn(t*0.9)*1.2);ctx.rotate(tilt);
+    // tail
+    const tb=sn(t*2.2)*0.32;
+    ctx.save();ctx.rotate(tb);
+    ctx.beginPath();ctx.moveTo(-7,0);ctx.bezierCurveTo(-9,-3,-13,-7,-12,-3);ctx.bezierCurveTo(-11,-1,-9,0,-7,0);ctx.fillStyle='#e8732a';ctx.fill();
+    ctx.beginPath();ctx.moveTo(-7,0);ctx.bezierCurveTo(-9,3,-13,7,-12,3);ctx.bezierCurveTo(-11,1,-9,0,-7,0);ctx.fillStyle='#d0601a';ctx.fill();
+    ctx.beginPath();ctx.moveTo(-7,0);ctx.bezierCurveTo(-9,-3,-13,-7,-12,-3);ctx.bezierCurveTo(-11,-1,-9,0,-7,0);ctx.bezierCurveTo(-9,0,-11,1,-12,3);ctx.bezierCurveTo(-13,7,-9,3,-7,0);ctx.strokeStyle='#1a2e5a';ctx.lineWidth=1.1;ctx.stroke();
+    ctx.restore();
+    // body
+    ctx.beginPath();ctx.moveTo(9,0);ctx.bezierCurveTo(9,-8,3,-10,-3,-8);ctx.bezierCurveTo(-7,-6,-9,-3,-9,0);ctx.bezierCurveTo(-9,3,-7,6,-3,8);ctx.bezierCurveTo(3,10,9,8,9,0);ctx.fillStyle='#e8732a';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=1.3;ctx.stroke();
+    ctx.save();ctx.beginPath();ctx.rect(4,-9,4,18);ctx.clip();ctx.beginPath();ctx.ellipse(6,0,4.5,9,0,0,TAU);ctx.fillStyle='#c8dcf0';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=1;ctx.stroke();ctx.restore();
+    ctx.save();ctx.beginPath();ctx.rect(-3,-9,4,18);ctx.clip();ctx.beginPath();ctx.ellipse(-1,0,3.5,8.5,0,0,TAU);ctx.fillStyle='#c8dcf0';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=1;ctx.stroke();ctx.restore();
+    ctx.save();ctx.beginPath();ctx.rect(-9,-6,3.5,12);ctx.clip();ctx.beginPath();ctx.ellipse(-7.5,0,2.5,6,0,0,TAU);ctx.fillStyle='#c8dcf0';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=0.8;ctx.stroke();ctx.restore();
+    // dorsal fin
+    const df=sn(t*1.5)*0.12;
+    ctx.save();ctx.translate(0,-9);ctx.rotate(df);
+    ctx.beginPath();ctx.moveTo(-4,0);ctx.bezierCurveTo(-3,-6,2,-9,7,-7);ctx.bezierCurveTo(8,-4,5,-1,4,0);ctx.fillStyle='#d96020';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=1;ctx.stroke();
+    ctx.restore();
+    // pectoral fin
+    const pf=sn(t*1.9)*0.28;
+    ctx.save();ctx.translate(4,3);ctx.rotate(pf);
+    ctx.beginPath();ctx.moveTo(0,0);ctx.bezierCurveTo(2,3,5,7,3,9);ctx.bezierCurveTo(1,9,-1,5,-1,2);ctx.closePath();ctx.fillStyle='#d96020';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=0.8;ctx.stroke();
+    ctx.restore();
+    // head
+    ctx.beginPath();ctx.ellipse(8,0,4.5,5.5,0,0,TAU);ctx.fillStyle='#e87830';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=1.3;ctx.stroke();
+    const hg=ctx.createRadialGradient(9,-2,0.5,8,-1,5);hg.addColorStop(0,'rgba(255,210,130,0.55)');hg.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.beginPath();ctx.ellipse(8,0,4.5,5.5,0,0,TAU);ctx.fillStyle=hg;ctx.fill();
+    ctx.beginPath();ctx.arc(10,-1.5,2.3,0,TAU);ctx.fillStyle='#f5c842';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=1;ctx.stroke();
+    ctx.beginPath();ctx.arc(10.4,-1.5,1.1,0,TAU);ctx.fillStyle='#0d0000';ctx.fill();
+    ctx.beginPath();ctx.arc(11,-2.1,0.5,0,TAU);ctx.fillStyle='rgba(255,255,255,0.95)';ctx.fill();
+    ctx.restore();ctx.restore();
+    pipEnd(ctx);
+  }
+
+  // ── big ring (180px) ─────────────────────────────────
+  function drawBigRing(canvas,t){
+    const ctx=canvas.getContext('2d');
+    const W=180,H=180;ctx.clearRect(0,0,W,H);
+    const cx=W/2,cy=H/2;
+    const c1='#4488ff',c2='#0033cc',c3='#99bbff';
+    const R=75;
+    ctx.save();ctx.translate(cx,cy);
+    for(let j=0;j<3;j++){
+      const pulse=sn(t*.06+j*.9)*.5+.5;
+      ctx.beginPath();
+      for(let i=0;i<=360;i++){const a=i/360*TAU;const rr=(R-j*10)+sn(a*4+t*.035*(j+1))*5+sn(a*6-t*.028)*3.5+cs(a*8+t*.02)*2;i===0?ctx.moveTo(cs(a)*rr,sn(a)*rr):ctx.lineTo(cs(a)*rr,sn(a)*rr);}
+      ctx.closePath();ctx.strokeStyle=j===0?c1:j===1?c2:c3;ctx.lineWidth=j===0?3.5:j===1?2:1.2;ctx.shadowColor=j===0?c1:c2;ctx.shadowBlur=(18-j*5)*(pulse*.4+.6);ctx.globalAlpha=.7+pulse*.28;ctx.stroke();ctx.globalAlpha=1;
+    }
+    for(let i=0;i<18;i++){const a=i/18*TAU+t*.022*(i%2?1:-.5);const rr=R+sn(i*1.4+t*.08)*5;const g=sn(t*.1+i*.55)*.5+.5;ctx.fillStyle=c1;ctx.shadowColor=c1;ctx.shadowBlur=7*g;ctx.globalAlpha=g*.7;ctx.beginPath();ctx.arc(cs(a)*rr,sn(a)*rr,2.2+g*.9,0,TAU);ctx.fill();ctx.globalAlpha=1;}
+    ctx.restore();
+  }
+
+  // ── modal ring loop ───────────────────────────────────
+  function modalFrame(ts){
+    if(!document.getElementById('aviModal').style.display||document.getElementById('aviModal').style.display==='none'){return;}
+    if(!modalLast)modalLast=ts;
+    const dt=Math.min((ts-modalLast)/1000,.05);modalLast=ts;
+    modalRingT+=dt*60;modalPipT+=dt;
+    const rc=document.getElementById('aviModalRing');
+    const pc=document.getElementById('aviModalPip');
+    if(rc)drawBigRing(rc,modalRingT);
+    if(pc)drawClownfishOn(pc,modalPipT,52,52);
+    modalRAF=requestAnimationFrame(modalFrame);
+  }
+
+  // ── open / close ─────────────────────────────────────
+  window.openAviModal=function(){
+    const m=document.getElementById('aviModal');
+    const box=document.getElementById('aviModalBox');
+    m.style.display='flex';
+    // Setup modal canvases
+    const rc=document.getElementById('aviModalRing');
+    const pc=document.getElementById('aviModalPip');
+    if(rc){rc.width=Math.round(180*DPR);rc.height=Math.round(180*DPR);rc.style.width='180px';rc.style.height='180px';rc.getContext('2d').scale(DPR,DPR);}
+    if(pc){pc.width=Math.round(52*DPR);pc.height=Math.round(52*DPR);pc.style.width='52px';pc.style.height='52px';pc.getContext('2d').scale(DPR,DPR);}
+    // Update modal img src
+    const mi=document.getElementById('aviModalImg');
+    if(mi)mi.src=customAviSrc||DEFAULT_SRC;
+    // Fade in
+    requestAnimationFrame(()=>{
+      m.style.opacity='1';
+      box.style.transform='scale(1) translateY(0)';
+    });
+    modalLast=null;
+    if(modalRAF)cancelAnimationFrame(modalRAF);
+    modalRAF=requestAnimationFrame(modalFrame);
+    // darken the small avatar
+    const img=document.getElementById('aviImg');
+    if(img)img.style.filter='brightness(0.3) saturate(0.2)';
+    const ov=document.getElementById('aviDarkOverlay');
+    if(ov)ov.style.background='rgba(0,0,0,0.62)';
+  };
+
+  window.closeAviModal=function(){
+    const m=document.getElementById('aviModal');
+    const box=document.getElementById('aviModalBox');
+    m.style.opacity='0';
+    box.style.transform='scale(0.88) translateY(18px)';
+    setTimeout(()=>{m.style.display='none';},320);
+    if(modalRAF)cancelAnimationFrame(modalRAF);
+    // restore the small avatar
+    const img=document.getElementById('aviImg');
+    if(img)img.style.filter='';
+    const ov=document.getElementById('aviDarkOverlay');
+    if(ov)ov.style.background='rgba(0,0,0,0)';
+  };
+
+  // ── click backdrop to close ───────────────────────────
+  document.getElementById('aviModal').addEventListener('click',function(e){
+    if(e.target===this)window.closeAviModal();
+  });
+
+  // ── avatar click trigger ──────────────────────────────
+  document.getElementById('aviWrap').addEventListener('click',function(){
+    window.openAviModal();
+  });
+
+  // ── photo upload ──────────────────────────────────────
+  window.handleAviUpload=function(e){
+    const file=e.target.files[0];
+    if(!file)return;
+    const reader=new FileReader();
+    reader.onload=function(ev){
+      customAviSrc=ev.target.result;
+      // update both images
+      const mi=document.getElementById('aviModalImg');
+      if(mi){mi.style.opacity='0';setTimeout(()=>{mi.src=customAviSrc;mi.style.opacity='1';},150);}
+      const si=document.getElementById('aviImg');
+      if(si)si.src=customAviSrc;
+      document.getElementById('aviUploadHint').textContent='✓ Photo loaded — looking great!';
+      document.getElementById('aviResetRow').style.display='block';
+    };
+    reader.readAsDataURL(file);
+  };
+
+  window.resetAviPhoto=function(){
+    customAviSrc=null;
+    const mi=document.getElementById('aviModalImg');
+    if(mi){mi.style.opacity='0';setTimeout(()=>{mi.src=DEFAULT_SRC;mi.style.opacity='1';},150);}
+    const si=document.getElementById('aviImg');
+    if(si)si.src=DEFAULT_SRC;
+    document.getElementById('aviUploadHint').textContent='jpg, png, gif · stays local, never uploaded';
+    document.getElementById('aviResetRow').style.display='none';
+    document.getElementById('aviUploadInput').value='';
+  };
+})();
+</script>
+</body>
+</html>
