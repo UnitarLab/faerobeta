@@ -1,20 +1,14 @@
 {
-    "cleanUrls": true,
-    "rewrites": [
+  "cleanUrls": true,
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
         {
-            "source": "/beta",
-            "destination": "/betainvite.html"
+          "key": "Cache-Control",
+          "value": "max-age=0, s-maxage=86400, stale-while-revalidate"
         }
-    ],
-    "headers": [
-        {
-            "source": "/(.*)",
-            "headers": [
-                {
-                    "key": "Cache-Control",
-                    "value": "max-age=0, s-maxage=86400, stale-while-revalidate"
-                }
-            ]
-        }
-    ]
+      ]
+    }
+  ]
 }
