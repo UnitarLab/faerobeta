@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <script>
-const isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
 let lastFrame = 0;
 const _origRaf = window.requestAnimationFrame;
 window.requestAnimationFrame = function mobileFrameWrap(callback) {
@@ -751,7 +751,7 @@ body {
 .window, .window-features { contain: layout paint; }
 </style>
 <script>
-const isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
 
 if (isMobile) {
   const _origRaf = window.requestAnimationFrame;
@@ -768,7 +768,7 @@ if (isMobile) {
   };
 }
 
-const isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
 
 // Polar Depths — Frozen Tide I — DPR-aware canvases for crisp rendering
 (function(){
