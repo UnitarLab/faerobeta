@@ -623,79 +623,7 @@ body {
         </div>
       </div>
 
-      <!-- ═══ AVATAR PREVIEW MODAL ═══ -->
-      <div id="aviModal" style="
-        display:none;position:fixed;inset:0;z-index:5000;
-        background:rgba(2,8,28,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-        align-items:center;justify-content:center;padding:20px;
-        opacity:0;transition:opacity 0.3s;
-      ">
-        <!-- XP-style popup window -->
-        <div id="aviModalBox" style="
-          background:rgba(225,238,255,0.97);border:1px solid rgba(255,255,255,0.8);
-          border-radius:10px 10px 8px 8px;
-          box-shadow:0 32px 90px rgba(0,20,100,0.55),0 0 0 1px rgba(100,160,240,0.25);
-          max-width:420px;width:100%;overflow:hidden;
-          transform:scale(0.88) translateY(18px);
-          transition:transform 0.38s cubic-bezier(0.22,1,0.36,1);
-        ">
-          <!-- Titlebar -->
-          <div style="background:linear-gradient(180deg,#4c9be8 0%,#1a5faa 50%,#1a5faa 95%,#1058a7 100%);padding:7px 10px 8px;display:flex;align-items:center;gap:8px;user-select:none;">
-            <img src="https://i.ibb.co/hh0h9ZX/faerologomediumsiksi.webp" style="width:15px;height:15px;border-radius:50%;object-fit:cover;" alt="">
-            <span style="font-family:'Exo 2',sans-serif;font-size:0.73rem;font-weight:600;color:white;text-shadow:1px 1px 3px rgba(0,0,0,0.5);flex:1;">Avatar Preview — Frutiger Aero Badge</span>
-            <div style="display:flex;gap:3px;">
-              <div style="width:18px;height:18px;border-radius:4px;background:linear-gradient(180deg,#7ec8fc,#3a80d2);border:1px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(255,255,255,0.9);cursor:pointer;font-weight:700;">&#8211;</div>
-              <div style="width:18px;height:18px;border-radius:4px;background:linear-gradient(180deg,#7ec8fc,#3a80d2);border:1px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(255,255,255,0.9);cursor:pointer;font-weight:700;">&#9633;</div>
-              <div onclick="closeAviModal()" style="width:18px;height:18px;border-radius:4px;background:linear-gradient(180deg,#e87c7c,#c94040);border:1px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(255,255,255,0.9);cursor:pointer;font-weight:700;">&#215;</div>
-            </div>
-          </div>
-
-          <!-- Body -->
-          <div style="padding:28px 28px 24px;text-align:center;">
-            <!-- Big avatar preview with animated ring -->
-            <div style="position:relative;width:180px;height:180px;margin:0 auto 22px;overflow:visible;">
-              <canvas id="aviModalRing" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:1;width:180px;height:180px;"></canvas>
-              <!-- The big avatar image -->
-              <img id="aviModalImg" src="https://images2.alphacoders.com/941/thumb-1920-941898.jpg" alt="Your avatar"
-                style="width:130px;height:130px;border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);object-fit:cover;object-position:center 40%;z-index:2;background:#081828;transition:opacity 0.25s;">
-              <!-- Pip canvas large -->
-              <canvas id="aviModalPip" style="position:absolute;bottom:6px;right:6px;z-index:10;border-radius:50%;border:3px solid rgba(0,0,0,.55);box-shadow:0 0 14px #4488ff99,0 0 4px rgba(0,0,0,0.8);width:52px;height:52px;"></canvas>
-            </div>
-
-            <!-- Badge label -->
-            <div style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,rgba(180,100,0,0.1),rgba(240,160,0,0.07));border:1px solid rgba(200,140,0,0.32);border-radius:100px;padding:6px 16px 6px 10px;margin-bottom:20px;">
-              <div style="width:20px;height:20px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,0.92),rgba(255,190,0,0.65),rgba(180,80,0,0.82));border:1.5px solid rgba(255,255,255,0.7);box-shadow:0 0 0 3px rgba(240,160,0,0.22);flex-shrink:0;"></div>
-              <span style="font-family:'Exo 2',sans-serif;font-size:0.75rem;font-weight:800;color:#7a3a00;letter-spacing:0.04em;">FRUTIGER AERO BADGE</span>
-            </div>
-
-            <p style="font-family:'Exo 2',sans-serif;font-size:0.82rem;color:#3a5a7a;line-height:1.65;margin-bottom:20px;">
-              This is how your avatar will look with the exclusive animated frame on FAERO. Upload your own photo to preview it with the badge.
-            </p>
-
-            <!-- Upload button -->
-            <input type="file" id="aviUploadInput" accept="image/*" style="display:none;" onchange="handleAviUpload(event)">
-            <button onclick="document.getElementById('aviUploadInput').click()" style="
-              display:inline-flex;align-items:center;gap:9px;
-              padding:12px 24px;
-              background:linear-gradient(180deg,#4ca8f8 0%,#1a5faa 50%,#1248a0 100%);
-              border:1px solid #0e3d80;border-radius:6px;
-              font-family:'Exo 2',sans-serif;font-size:0.9rem;font-weight:800;
-              color:white;cursor:pointer;letter-spacing:0.04em;
-              box-shadow:0 4px 14px rgba(26,95,170,0.42),inset 0 1px 0 rgba(255,255,255,0.4);
-              transition:transform 0.1s,box-shadow 0.1s;margin-bottom:10px;
-            " onmouseover="this.style.boxShadow='0 6px 20px rgba(26,95,170,0.55),inset 0 1px 0 rgba(255,255,255,0.4)'" onmouseout="this.style.boxShadow='0 4px 14px rgba(26,95,170,0.42),inset 0 1px 0 rgba(255,255,255,0.4)'">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-              Upload Your Photo
-            </button>
-            <div id="aviUploadHint" style="font-family:'Kode Mono',monospace;font-size:0.6rem;color:#8aaccf;margin-top:2px;">jpg, png, gif · stays local, never uploaded</div>
-
-            <!-- Reset button (shown after upload) -->
-            <div id="aviResetRow" style="display:none;margin-top:8px;">
-              <button onclick="resetAviPhoto()" style="background:none;border:1px solid rgba(170,204,238,0.6);border-radius:4px;padding:5px 14px;font-family:'Exo 2',sans-serif;font-size:0.72rem;font-weight:700;color:#4a6a9a;cursor:pointer;">↩ Reset to default</button>
-            </div>
-          </div>
-        </div>
-      </div>
+      
 <style>
 @keyframes frameSpim { to { transform: rotate(360deg); } }
 @keyframes aviPulse {
@@ -1648,5 +1576,78 @@ document.getElementById('xpEmail').addEventListener('input', function () {
   };
 })();
 </script>
+<!-- ═══ AVATAR PREVIEW MODAL ═══ -->
+      <div id="aviModal" style="
+        display:none;position:fixed;inset:0;z-index:5000;
+        background:rgba(2,8,28,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+        align-items:center;justify-content:center;padding:20px;
+        opacity:0;transition:opacity 0.3s;
+      ">
+        <!-- XP-style popup window -->
+        <div id="aviModalBox" style="
+          background:rgba(225,238,255,0.97);border:1px solid rgba(255,255,255,0.8);
+          border-radius:10px 10px 8px 8px;
+          box-shadow:0 32px 90px rgba(0,20,100,0.55),0 0 0 1px rgba(100,160,240,0.25);
+          max-width:420px;width:100%;overflow:hidden;
+          transform:scale(0.88) translateY(18px);
+          transition:transform 0.38s cubic-bezier(0.22,1,0.36,1);
+        ">
+          <!-- Titlebar -->
+          <div style="background:linear-gradient(180deg,#4c9be8 0%,#1a5faa 50%,#1a5faa 95%,#1058a7 100%);padding:7px 10px 8px;display:flex;align-items:center;gap:8px;user-select:none;">
+            <img src="https://i.ibb.co/hh0h9ZX/faerologomediumsiksi.webp" style="width:15px;height:15px;border-radius:50%;object-fit:cover;" alt="">
+            <span style="font-family:'Exo 2',sans-serif;font-size:0.73rem;font-weight:600;color:white;text-shadow:1px 1px 3px rgba(0,0,0,0.5);flex:1;">Avatar Preview — Frutiger Aero Badge</span>
+            <div style="display:flex;gap:3px;">
+              <div style="width:18px;height:18px;border-radius:4px;background:linear-gradient(180deg,#7ec8fc,#3a80d2);border:1px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(255,255,255,0.9);cursor:pointer;font-weight:700;">&#8211;</div>
+              <div style="width:18px;height:18px;border-radius:4px;background:linear-gradient(180deg,#7ec8fc,#3a80d2);border:1px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(255,255,255,0.9);cursor:pointer;font-weight:700;">&#9633;</div>
+              <div onclick="closeAviModal()" style="width:18px;height:18px;border-radius:4px;background:linear-gradient(180deg,#e87c7c,#c94040);border:1px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(255,255,255,0.9);cursor:pointer;font-weight:700;">&#215;</div>
+            </div>
+          </div>
+
+          <!-- Body -->
+          <div style="padding:28px 28px 24px;text-align:center;">
+            <!-- Big avatar preview with animated ring -->
+            <div style="position:relative;width:180px;height:180px;margin:0 auto 22px;overflow:visible;">
+              <canvas id="aviModalRing" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:1;width:180px;height:180px;"></canvas>
+              <!-- The big avatar image -->
+              <img id="aviModalImg" src="https://images2.alphacoders.com/941/thumb-1920-941898.jpg" alt="Your avatar"
+                style="width:130px;height:130px;border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);object-fit:cover;object-position:center 40%;z-index:2;background:#081828;transition:opacity 0.25s;">
+              <!-- Pip canvas large -->
+              <canvas id="aviModalPip" style="position:absolute;bottom:6px;right:6px;z-index:10;border-radius:50%;border:3px solid rgba(0,0,0,.55);box-shadow:0 0 14px #4488ff99,0 0 4px rgba(0,0,0,0.8);width:52px;height:52px;"></canvas>
+            </div>
+
+            <!-- Badge label -->
+            <div style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,rgba(180,100,0,0.1),rgba(240,160,0,0.07));border:1px solid rgba(200,140,0,0.32);border-radius:100px;padding:6px 16px 6px 10px;margin-bottom:20px;">
+              <div style="width:20px;height:20px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,0.92),rgba(255,190,0,0.65),rgba(180,80,0,0.82));border:1.5px solid rgba(255,255,255,0.7);box-shadow:0 0 0 3px rgba(240,160,0,0.22);flex-shrink:0;"></div>
+              <span style="font-family:'Exo 2',sans-serif;font-size:0.75rem;font-weight:800;color:#7a3a00;letter-spacing:0.04em;">FRUTIGER AERO BADGE</span>
+            </div>
+
+            <p style="font-family:'Exo 2',sans-serif;font-size:0.82rem;color:#3a5a7a;line-height:1.65;margin-bottom:20px;">
+              This is how your avatar will look with the exclusive animated frame on FAERO. Upload your own photo to preview it with the badge.
+            </p>
+
+            <!-- Upload button -->
+            <input type="file" id="aviUploadInput" accept="image/*" style="display:none;" onchange="handleAviUpload(event)">
+            <button onclick="document.getElementById('aviUploadInput').click()" style="
+              display:inline-flex;align-items:center;gap:9px;
+              padding:12px 24px;
+              background:linear-gradient(180deg,#4ca8f8 0%,#1a5faa 50%,#1248a0 100%);
+              border:1px solid #0e3d80;border-radius:6px;
+              font-family:'Exo 2',sans-serif;font-size:0.9rem;font-weight:800;
+              color:white;cursor:pointer;letter-spacing:0.04em;
+              box-shadow:0 4px 14px rgba(26,95,170,0.42),inset 0 1px 0 rgba(255,255,255,0.4);
+              transition:transform 0.1s,box-shadow 0.1s;margin-bottom:10px;
+            " onmouseover="this.style.boxShadow='0 6px 20px rgba(26,95,170,0.55),inset 0 1px 0 rgba(255,255,255,0.4)'" onmouseout="this.style.boxShadow='0 4px 14px rgba(26,95,170,0.42),inset 0 1px 0 rgba(255,255,255,0.4)'">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Upload Your Photo
+            </button>
+            <div id="aviUploadHint" style="font-family:'Kode Mono',monospace;font-size:0.6rem;color:#8aaccf;margin-top:2px;">jpg, png, gif · stays local, never uploaded</div>
+
+            <!-- Reset button (shown after upload) -->
+            <div id="aviResetRow" style="display:none;margin-top:8px;">
+              <button onclick="resetAviPhoto()" style="background:none;border:1px solid rgba(170,204,238,0.6);border-radius:4px;padding:5px 14px;font-family:'Exo 2',sans-serif;font-size:0.72rem;font-weight:700;color:#4a6a9a;cursor:pointer;">↩ Reset to default</button>
+            </div>
+          </div>
+        </div>
+      </div>
 </body>
 </html>
