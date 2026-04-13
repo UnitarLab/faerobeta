@@ -682,16 +682,15 @@ body {
 
 var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
 
+
 // Polar Depths — Frozen Tide I — DPR-aware canvases for crisp rendering
 (function(){
+  const TAU=Math.PI*2,sn=Math.sin,cs=Math.cos;
+  const DPR = window.devicePixelRatio || 1;
   let modalRingT=0, modalPipT=0, modalLast=null, modalRAF=null;
   const DEFAULT_SRC = "https://images2.alphacoders.com/941/thumb-1920-941898.jpg";
   let customAviSrc = null;
 
-  const TAU=Math.PI*2,sn=Math.sin,cs=Math.cos;
-  const DPR = window.devicePixelRatio || 1;
-
-  // Set canvas buffer size to CSS size × DPR, then scale context
   function setupCanvas(canvas, cssW, cssH) {
     canvas.width  = Math.round(cssW  * DPR);
     canvas.height = Math.round(cssH * DPR);
@@ -702,127 +701,109 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
     return ctx;
   }
 
-  const rc = document.getElementById('badgeRingCanvas');
-  const pc = document.getElementById('badgePipCanvas');
-  // Initialize canvases at correct DPR resolution
-  setupCanvas(rc, 92, 92);
-  setupCanvas(pc, 30, 30);
-
-  // ── pipBg — exact from koi ──────────────────────────────────
   function pipBg(ctx, W, H) {
     ctx.save();
-    ctx.beginPath();
-    ctx.arc(W/2,H/2,W/2-0.5,0,TAU);
-    ctx.clip();
+    ctx.beginPath();ctx.arc(W/2,H/2,W/2-0.5,0,TAU);ctx.clip();
     const bg=ctx.createRadialGradient(W/2,H*.3,1,W/2,H/2,W/2);
-    bg.addColorStop(0,'#0d3a5c');
-    bg.addColorStop(0.5,'#072540');
-    bg.addColorStop(1,'#020d1e');
-    ctx.fillStyle=bg;
-    ctx.fillRect(0,0,W,H);
+    bg.addColorStop(0,'#0d3a5c'); bg.addColorStop(0.5,'#072540'); bg.addColorStop(1,'#020d1e');
+    ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
     for(let i=0;i<3;i++){
-      ctx.strokeStyle=`rgba(0,180,255,${0.05+i*0.02})`;
-      ctx.lineWidth=1;
-      ctx.beginPath();
-      ctx.moveTo(i*8+2,H*.2);
-      ctx.quadraticCurveTo(W*.5+sn(Date.now()*.001+i)*4, H*.5, W-i*4-2, H*.8);
-      ctx.stroke();
+      ctx.strokeStyle=`rgba(0,180,255,${0.05+i*0.02})`; ctx.lineWidth=1; ctx.beginPath();
+      ctx.moveTo(i*8+2,H*.2); ctx.quadraticCurveTo(W*.5+sn(Date.now()*.001+i)*4, H*.5, W-i*4-2, H*.8); ctx.stroke();
     }
-    // leave clip active for caller — pipEnd restores
   }
-  function pipEnd(ctx){ctx.restore();}
 
-  // ── drawClownfish — exact from koi ───────────────────────────
-  function drawClownfish(canvas, t) {
+  function drawClownfishOn(canvas, t, W, H) {
     const ctx = canvas.getContext('2d');
-    // CSS logical size (not buffer size)
-    const W = 30, H = 30;
-    ctx.clearRect(0,0,W,H);
-    pipBg(ctx,W,H);
-    const cx=W/2, cy=H/2;
-    const sw=sn(t*1.1)*2.2;
-    const tilt=sn(t*1.1)*0.07;
-    ctx.save();
-    ctx.translate(cx+sw, cy+sn(t*0.9)*1.2);
-    ctx.rotate(tilt);
-    // tail
-    const tb=sn(t*2.2)*0.32;
-    ctx.save();ctx.rotate(tb);
-    ctx.beginPath();ctx.moveTo(-7,0);ctx.bezierCurveTo(-9,-3,-13,-7,-12,-3);ctx.bezierCurveTo(-11,-1,-9,0,-7,0);ctx.fillStyle='#e8732a';ctx.fill();
-    ctx.beginPath();ctx.moveTo(-7,0);ctx.bezierCurveTo(-9,3,-13,7,-12,3);ctx.bezierCurveTo(-11,1,-9,0,-7,0);ctx.fillStyle='#d0601a';ctx.fill();
-    ctx.beginPath();ctx.moveTo(-7,0);ctx.bezierCurveTo(-9,-3,-13,-7,-12,-3);ctx.bezierCurveTo(-11,-1,-9,0,-7,0);ctx.bezierCurveTo(-9,0,-11,1,-12,3);ctx.bezierCurveTo(-13,7,-9,3,-7,0);ctx.strokeStyle='#1a2e5a';ctx.lineWidth=1.1;ctx.stroke();
-    ctx.beginPath();ctx.moveTo(-7,-1.5);ctx.lineTo(-9,0);ctx.lineTo(-7,1.5);ctx.fillStyle='rgba(220,235,255,0.3)';ctx.fill();
-    ctx.restore();
-    // body
+    ctx.clearRect(0,0,W,H); pipBg(ctx,W,H);
+    const cx=W/2, cy=H/2; const sw=sn(t*1.1)*2.2; const tilt=sn(t*1.1)*0.07;
+    ctx.save(); ctx.translate(cx+sw, cy+sn(t*0.9)*1.2); ctx.rotate(tilt);
+    // ... body ...
     ctx.beginPath();ctx.moveTo(9,0);ctx.bezierCurveTo(9,-8,3,-10,-3,-8);ctx.bezierCurveTo(-7,-6,-9,-3,-9,0);ctx.bezierCurveTo(-9,3,-7,6,-3,8);ctx.bezierCurveTo(3,10,9,8,9,0);ctx.fillStyle='#e8732a';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=1.3;ctx.stroke();
-    // band near head
-    ctx.save();ctx.beginPath();ctx.rect(4,-9,4,18);ctx.clip();ctx.beginPath();ctx.ellipse(6,0,4.5,9,0,0,TAU);ctx.fillStyle='#c8dcf0';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=1;ctx.stroke();ctx.restore();
-    // band mid
-    ctx.save();ctx.beginPath();ctx.rect(-3,-9,4,18);ctx.clip();ctx.beginPath();ctx.ellipse(-1,0,3.5,8.5,0,0,TAU);ctx.fillStyle='#c8dcf0';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=1;ctx.stroke();ctx.restore();
-    // band near tail
-    ctx.save();ctx.beginPath();ctx.rect(-9,-6,3.5,12);ctx.clip();ctx.beginPath();ctx.ellipse(-7.5,0,2.5,6,0,0,TAU);ctx.fillStyle='#c8dcf0';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=0.8;ctx.stroke();ctx.restore();
-    // orange section
-    ctx.beginPath();ctx.arc(-5,0,2.5,-Math.PI*.7,Math.PI*.7);ctx.strokeStyle='#e8732a';ctx.lineWidth=2;ctx.stroke();
-    // dorsal fin
-    const df=sn(t*1.5)*0.12;
-    ctx.save();ctx.translate(0,-9);ctx.rotate(df);
-    ctx.beginPath();ctx.moveTo(-4,0);ctx.bezierCurveTo(-3,-6,2,-9,7,-7);ctx.bezierCurveTo(8,-4,5,-1,4,0);ctx.fillStyle='#d96020';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=1;ctx.stroke();
-    for(let i=0;i<3;i++){ctx.beginPath();ctx.moveTo(-1+i*3,0);ctx.lineTo(-1+i*2.5,-4-i*.5);ctx.strokeStyle='rgba(30,46,90,0.3)';ctx.lineWidth=0.6;ctx.stroke();}
-    ctx.restore();
-    // pectoral fin
-    const pf=sn(t*1.9)*0.28;
-    ctx.save();ctx.translate(4,3);ctx.rotate(pf);
-    ctx.beginPath();ctx.moveTo(0,0);ctx.bezierCurveTo(2,3,5,7,3,9);ctx.bezierCurveTo(1,9,-1,5,-1,2);ctx.closePath();ctx.fillStyle='#d96020';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=0.8;ctx.stroke();
-    ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(2,6);ctx.strokeStyle='rgba(30,46,90,0.25)';ctx.lineWidth=0.5;ctx.stroke();
-    ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(0,7);ctx.stroke();
-    ctx.restore();
-    // anal fin
-    ctx.save();ctx.translate(-3,8);ctx.rotate(sn(t*2)*0.08);
-    ctx.beginPath();ctx.moveTo(0,0);ctx.bezierCurveTo(1,3,4,4,5,2);ctx.bezierCurveTo(4,0,2,0,0,0);ctx.fillStyle='#d06018';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=0.7;ctx.stroke();
-    ctx.restore();
-    // head
     ctx.beginPath();ctx.ellipse(8,0,4.5,5.5,0,0,TAU);ctx.fillStyle='#e87830';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=1.3;ctx.stroke();
-    const hg=ctx.createRadialGradient(9,-2,0.5,8,-1,5);hg.addColorStop(0,'rgba(255,210,130,0.55)');hg.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.beginPath();ctx.ellipse(8,0,4.5,5.5,0,0,TAU);ctx.fillStyle=hg;ctx.fill();
-    // eye
-    ctx.beginPath();ctx.arc(10,-1.5,2.3,0,TAU);ctx.fillStyle='#f5c842';ctx.fill();ctx.strokeStyle='#1a2e5a';ctx.lineWidth=1;ctx.stroke();
-    ctx.beginPath();ctx.arc(10.4,-1.5,1.1,0,TAU);ctx.fillStyle='#0d0000';ctx.fill();
-    ctx.beginPath();ctx.arc(11,-2.1,0.5,0,TAU);ctx.fillStyle='rgba(255,255,255,0.95)';ctx.fill();
-    ctx.restore();
-    pipEnd(ctx);
+    ctx.restore(); ctx.restore();
   }
 
-  // ── frozen_tide ring — exact from koi drawFrame ───────────────
-  function drawRing(canvas, t) {
-    const ctx = canvas.getContext('2d');
-    // CSS logical size
-    const W = 92, H = 92;
-    ctx.clearRect(0,0,W,H);
-    const cx=W/2,cy=H/2;
+  function drawRingLayer(ctx, cx, cy, R, t, DPR_VAL) {
     const c1='#4488ff',c2='#0033cc',c3='#99bbff';
-    const R=38;
-    ctx.save();
-    ctx.translate(cx,cy);
     for(let j=0;j<3;j++){
       const pulse=sn(t*.06+j*.9)*.5+.5;
       ctx.beginPath();
-      for(let i=0;i<=180;i++){const a=i/180*TAU;const rr=(R-j*5)+sn(a*4+t*.035*(j+1))*2.8+sn(a*6-t*.028)*1.8+cs(a*8+t*.02)*1;i===0?ctx.moveTo(cs(a)*rr,sn(a)*rr):ctx.lineTo(cs(a)*rr,sn(a)*rr);}
-      ctx.closePath();ctx.strokeStyle=j===0?c1:j===1?c2:c3;ctx.lineWidth=j===0?2.6:j===1?1.5:.9;ctx.shadowColor=j===0?c1:c2;ctx.shadowBlur=(11-j*3)*(pulse*.4+.6);ctx.globalAlpha=.65+pulse*.3;ctx.stroke();ctx.globalAlpha=1;
+      for(let i=0;i<=360;i++){const a=i/360*TAU;const rr=(R-j*(10/92*ctx.canvas.width/DPR_VAL))+sn(a*4+t*.035*(j+1))*5+sn(a*6-t*.028)*3.5+cs(a*8+t*.02)*2;i===0?ctx.moveTo(cs(a)*rr,sn(a)*rr):ctx.lineTo(cs(a)*rr,sn(a)*rr);}
+      ctx.closePath();ctx.strokeStyle=j===0?c1:j===1?c2:c3;ctx.lineWidth=j===0?3:j===1?1.5:1;ctx.shadowColor=j===0?c1:c2;ctx.shadowBlur=10*(pulse*.4+.6);ctx.globalAlpha=.7;ctx.stroke();
     }
-    for(let i=0;i<12;i++){const a=i/12*TAU+t*.022*(i%2?1:-.5);const rr=R+sn(i*1.4+t*.08)*3.5;const g=sn(t*.1+i*.55)*.5+.5;ctx.fillStyle=c1;ctx.shadowColor=c1;ctx.shadowBlur=5*g;ctx.globalAlpha=g*.65;ctx.beginPath();ctx.arc(cs(a)*rr,sn(a)*rr,1.6+g*.6,0,TAU);ctx.fill();ctx.globalAlpha=1;}
-    ctx.restore();
   }
 
-  let ringT=0, pipT=Math.random()*TAU, last=null;
-  function frame(ts){
-    if(!last)last=ts;
-    const dt=Math.min((ts-last)/1000,.05);last=ts;
-    ringT+=dt*60; pipT+=dt;
-    drawRing(rc,ringT);
-    drawClownfish(pc,pipT);
-    requestAnimationFrame(frame);
+  function drawBigRing(canvas,t){
+    const ctx=canvas.getContext('2d'); const W=180,H=180; ctx.clearRect(0,0,W,H);
+    ctx.save(); ctx.translate(W/2,H/2); drawRingLayer(ctx, 0, 0, 75, t, DPR); ctx.restore();
   }
-  requestAnimationFrame(frame);
+  function drawSmallRing(canvas,t){
+    const ctx=canvas.getContext('2d'); const W=92,H=92; ctx.clearRect(0,0,W,H);
+    ctx.save(); ctx.translate(W/2,H/2); drawRingLayer(ctx, 0, 0, 38, t, DPR); ctx.restore();
+  }
+
+  function modalFrame(ts){
+    const m=document.getElementById('aviModal');
+    if(!m || m.style.display==='none') return;
+    if(!modalLast)modalLast=ts; const dt=Math.min((ts-modalLast)/1000,.05); modalLast=ts;
+    modalRingT+=dt*60; modalPipT+=dt;
+    const rc=document.getElementById('aviModalRing'); const pc=document.getElementById('aviModalPip');
+    if(rc) drawBigRing(rc, modalRingT); if(pc) drawClownfishOn(pc, modalPipT, 52, 52);
+    modalRAF=requestAnimationFrame(modalFrame);
+  }
+
+  window.openAviModal=function(){
+    const m=document.getElementById('aviModal'); const box=document.getElementById('aviModalBox');
+    m.style.display='flex';
+    const rc=document.getElementById('aviModalRing'); const pc=document.getElementById('aviModalPip');
+    if(rc){rc.width=Math.round(180*DPR); rc.height=Math.round(180*DPR); rc.style.width='180px'; rc.style.height='180px'; rc.getContext('2d').scale(DPR,DPR);}
+    if(pc){pc.width=Math.round(52*DPR); pc.height=Math.round(52*DPR); pc.style.width='52px'; pc.style.height='52px'; pc.getContext('2d').scale(DPR,DPR);}
+    document.getElementById('aviModalImg').src=customAviSrc||DEFAULT_SRC;
+    requestAnimationFrame(()=>{ m.style.opacity='1'; box.style.transform='scale(1) translateY(0)'; });
+    modalLast=null; if(modalRAF)cancelAnimationFrame(modalRAF); modalRAF=requestAnimationFrame(modalFrame);
+    document.getElementById('aviImg').style.filter='brightness(0.3) saturate(0.2)';
+    document.getElementById('aviDarkOverlay').style.background='rgba(0,0,0,0.62)';
+  };
+
+  window.closeAviModal=function(){
+    const m=document.getElementById('aviModal'); const box=document.getElementById('aviModalBox');
+    m.style.opacity='0'; box.style.transform='scale(0.88) translateY(18px)';
+    setTimeout(()=>{m.style.display='none';},320);
+    if(modalRAF)cancelAnimationFrame(modalRAF);
+    document.getElementById('aviImg').style.filter=''; document.getElementById('aviDarkOverlay').style.background='rgba(0,0,0,0)';
+  };
+
+  const rcMain = document.getElementById('badgeRingCanvas'); 
+  const pcMain = document.getElementById('badgePipCanvas');
+  if(rcMain) setupCanvas(rcMain, 92, 92); if(pcMain) setupCanvas(pcMain, 30, 30);
+
+  function mainFrame(ts){
+    const dt=.016; modalRingT+=dt*60; modalPipT+=dt;
+    if(rcMain) drawSmallRing(rcMain, modalRingT);
+    if(pcMain) drawClownfishOn(pcMain, modalPipT, 30, 30);
+    requestAnimationFrame(mainFrame);
+  }
+  requestAnimationFrame(mainFrame);
+
+  document.getElementById('aviModal').addEventListener('click',function(e){if(e.target===this)window.closeAviModal();});
+  window.handleAviUpload=function(e){
+    const file=e.target.files[0]; if(!file)return; const reader=new FileReader();
+    reader.onload=function(ev){
+      customAviSrc=ev.target.result;
+      const mi=document.getElementById('aviModalImg'); if(mi){mi.style.opacity='0';setTimeout(()=>{mi.src=customAviSrc;mi.style.opacity='1';},150);}
+      document.getElementById('aviImg').src=customAviSrc;
+      document.getElementById('aviUploadHint').textContent='✓ Photo loaded!'; document.getElementById('aviResetRow').style.display='block';
+    };
+    reader.readAsDataURL(file);
+  };
+  window.resetAviPhoto=function(){
+    customAviSrc=null; const mi=document.getElementById('aviModalImg');
+    if(mi){mi.style.opacity='0';setTimeout(()=>{mi.src=DEFAULT_SRC;mi.style.opacity='1';},150);}
+    document.getElementById('aviImg').src=DEFAULT_SRC;
+    document.getElementById('aviUploadHint').textContent='jpg, png, gif · stays local';
+    document.getElementById('aviResetRow').style.display='none';
+  };
 })();
 </script>
 
@@ -1656,5 +1637,6 @@ document.getElementById('xpEmail').addEventListener('input', function () {
           </div>
         </div>
       </div>
+
 </body>
 </html>
