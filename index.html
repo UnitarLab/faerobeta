@@ -346,7 +346,11 @@
       inset: 0;
       bottom: var(--taskbar-height, 42px);
       z-index: 2;
-      padding: 12px;
+      padding: 16px 6px 90px !important;
+        top: 44px !important;
+        bottom: 0 !important;
+        position: absolute !important;
+        -webkit-overflow-scrolling: touch;
     }
 
     .desktop-icon {
@@ -1793,7 +1797,53 @@
       /* â”€â”€ BOOT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
       .boot-logo {
         font-size: 34px;
+  
+
+      /* Per-app iOS gradient overrides */
+      .desk-icon-img[data-app="faero"]       { background: linear-gradient(150deg,#5bcef8,#1a88d4) !important; }
+      .desk-icon-img[data-app="browser"]     { background: linear-gradient(150deg,#f5a623,#e67000) !important; }
+      .desk-icon-img[data-app="chat"]        { background: linear-gradient(150deg,#ff7055,#e02040) !important; }
+      .desk-icon-img[data-app="photobooth"]  { background: linear-gradient(150deg,#f06aa8,#a020c0) !important; }
+      .desk-icon-img[data-app="winamp"]      { background: linear-gradient(150deg,#2a2a2a,#0e0e0e) !important; }
+      .desk-icon-img[data-app="ps1"]         { background: linear-gradient(150deg,#555,#1a1a1a) !important; }
+      .desk-icon-img[data-app="painter"]     { background: linear-gradient(150deg,#ffe033,#e69000) !important; }
+      .desk-icon-img[data-app="settings"]    { background: linear-gradient(150deg,#8e8e93,#48484a) !important; }
+      .desk-icon-img[data-app="files"]       { background: linear-gradient(150deg,#5fcff4,#007aff) !important; }
+      .desk-icon-img[data-app="notepad"]     { background: linear-gradient(150deg,#fffbe6,#ffe066) !important; }
+      .desk-icon-img[data-app="terminal"]    { background: linear-gradient(150deg,#2a2a2a,#000) !important; }
+      .desk-icon-img[data-app="calculator"]  { background: linear-gradient(150deg,#2c2c2e,#1c1c1e) !important; }
+      .desk-icon-img[data-app="photos"]      { background: linear-gradient(150deg,#ff9f0a,#ff3b30) !important; }
+      .desk-icon-img[data-app="music"]       { background: linear-gradient(150deg,#fc3c44,#b22234) !important; }
+      .desk-icon-img[data-app="maps"]        { background: linear-gradient(150deg,#34c759,#248a3d) !important; }
+      .desk-icon-img[data-app="mail"]        { background: linear-gradient(150deg,#007aff,#0051a8) !important; }
+      .desk-icon-img[data-app="clock"]       { background: linear-gradient(150deg,#1c1c1e,#000) !important; }
+      
+      /* Dock sizes and shapes */
+      .dock-icon {
+        width: 52px !important;
+        height: 52px !important;
+        border-radius: 12px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 26px !important;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.28), 0 1px 3px rgba(0,0,0,0.15) !important;
+        position: relative !important;
+        overflow: hidden !important;
       }
+      .dock-icon::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 12px;
+        background: linear-gradient(155deg, rgba(255,255,255,0.50) 0%, rgba(255,255,255,0.10) 50%, rgba(255,255,255,0.00) 100%);
+        pointer-events: none;
+        z-index: 5;
+      }
+      .dock-icon svg { width: 32px !important; height: 32px !important; position: relative; z-index: 2; }
+      .dock-label { font-size: 10px !important; font-weight: 600 !important; color: rgba(255,255,255,0.92) !important; text-shadow: 0 1px 3px rgba(0,0,0,0.5) !important; letter-spacing: 0 !important; }
+    
+    }
 
       .boot-subtitle {
         font-size: 11px;
@@ -1818,7 +1868,7 @@
         padding: 20px 12px 8px;
         display: grid !important;
         grid-template-columns: repeat(4, 1fr);
-        grid-auto-rows: 84px;
+        grid-auto-rows:  96px !important;
         align-content: start;
         gap: 0;
         position: relative;
@@ -1838,8 +1888,12 @@
       }
 
       .desk-icon-img {
-        width: 52px;
-        height: 52px;
+        width:  60px !important;
+        height:  60px !important;
+        border-radius: 14px !important;
+        font-size: 34px !important;
+        background: none !important;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.28), 0 1px 3px rgba(0,0,0,0.18) !important;
         font-size: 34px;
       }
 
@@ -1895,22 +1949,22 @@
 
       /* Adjust desktop for top bar */
       #desktop-icons-container {
-        top: 44px;
+        top: 48px;
         bottom: 0;
       }
 
       /* â”€â”€ WINDOWS â†’ Full screen sheets â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
       #windows-container {
-        top: 44px;
+        top: 48px;
         bottom: 0;
       }
 
       .os-window {
         position: fixed !important;
-        top: 44px !important;
+        top: 48px !important;
         left: 0 !important;
         width: 100% !important;
-        height: calc(100vh - 44px) !important;
+        height: calc(100vh - 48px) !important;
         border-radius: 0 !important;
         min-width: unset;
         min-height: unset;
@@ -1961,7 +2015,9 @@
         bottom: 0;
         left: 8px;
         right: 8px;
-        height: 70px;
+        height:  84px !important;
+        padding: 0 12px 8px !important;
+        border-radius: 26px 26px 0 0 !important;
         background: rgba(255, 255, 255, 0.25);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
@@ -1990,7 +2046,11 @@
       }
 
       .dock-icon {
-        font-size: 28px;
+        font-size:  26px !important;
+        width: 52px !important;
+        height: 52px !important;
+        border-radius: 12px !important;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.28), 0 1px 3px rgba(0,0,0,0.15) !important;
       }
 
       .dock-icon svg {
@@ -2457,70 +2517,107 @@
 
     <!-- â”€â”€â”€ MOBILE DOCK â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
     <div id="mobile-dock" style="display:none">
+      <!-- faero -->
       <div class="dock-item" data-sm-open="faero">
-        <div class="dock-icon">
-          <svg viewBox="0 0 30 30" fill="none">
-            <circle cx="15" cy="15" r="14" fill="url(#md1)" />
-            <defs>
-              <linearGradient id="md1" x1="0" y1="0" x2="30" y2="30">
-                <stop offset="0%" stop-color="#4ab8f4" />
-                <stop offset="100%" stop-color="#1a88d4" />
-              </linearGradient>
-            </defs>
-            <text x="7" y="20" font-size="14" font-weight="900" fill="white" font-family="Nunito,sans-serif">A</text>
+        <div class="dock-icon" style="background:linear-gradient(150deg,#5bcef8 0%,#1a88d4 100%)">
+          <svg viewBox="0 0 32 32" fill="none" width="32" height="32">
+            <text x="11" y="22" font-size="20" font-weight="900" fill="white" font-family="Nunito,sans-serif" opacity="0.95">f</text>
           </svg>
         </div>
         <div class="dock-label">faero</div>
       </div>
+      <!-- Notepad -->
+      <div class="dock-item" data-sm-open="notepad">
+        <div class="dock-icon" style="background:linear-gradient(150deg,#fffbe6 0%,#ffe066 100%)">
+          <svg viewBox="0 0 32 32" fill="none" width="32" height="32">
+            <rect x="7" y="5" width="18" height="22" rx="2" fill="white" stroke="#d4b000" stroke-width="1.5" />
+            <line x1="10" y1="10" x2="22" y2="10" stroke="#d4b000" stroke-width="1.5" stroke-linecap="round" />
+            <line x1="10" y1="15" x2="22" y2="15" stroke="#d4b000" stroke-width="1.5" stroke-linecap="round" />
+            <line x1="10" y1="20" x2="18" y2="20" stroke="#d4b000" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div class="dock-label">Notepad</div>
+      </div>
+      <!-- Calendar -->
+      <div class="dock-item" data-sm-open="calendar">
+        <div class="dock-icon" style="background:linear-gradient(150deg,#eef2f5 0%,#c8d0d6 100%)">
+          <svg viewBox="0 0 32 32" fill="none" width="32" height="32">
+            <rect x="5" y="7" width="22" height="19" rx="3" fill="white" stroke="#1a88d4" stroke-width="1.5" />
+            <path d="M5 12h22" stroke="#1a88d4" stroke-width="1.5" />
+            <rect x="9" y="4" width="3" height="5" rx="1.5" fill="#e02040" />
+            <rect x="20" y="4" width="3" height="5" rx="1.5" fill="#e02040" />
+            <text x="16" y="23" font-size="9" font-weight="800" fill="#1a88d4" text-anchor="middle" font-family="sans-serif">31</text>
+          </svg>
+        </div>
+        <div class="dock-label">Calendar</div>
+      </div>
+      <!-- Painter -->
+      <div class="dock-item" data-sm-open="painter">
+        <div class="dock-icon" style="background:linear-gradient(150deg,#ffe033 0%,#e69000 100%)">
+          <svg viewBox="0 0 32 32" fill="none" width="32" height="32">
+            <path d="M16 6C10.5 6 6 10.5 6 16c0 5.5 4.5 10 10 10 3 0 5-1.5 5-3.5 0-1.5-1-2.5-2.5-2.5-.5 0-1-.2-1-.6 0-.3.2-.6.5-.8 1.5-1 4-2.5 4-5.6C26 10 21.5 6 16 6z" fill="white" opacity="0.9" />
+            <circle cx="11" cy="13" r="2" fill="#e02040" />
+            <circle cx="16" cy="10" r="2" fill="#1a88d4" />
+            <circle cx="21" cy="13" r="2" fill="#34c759" />
+            <circle cx="14" cy="18" r="2" fill="#f5a623" />
+          </svg>
+        </div>
+        <div class="dock-label">Painter</div>
+      </div>
+    </div>
+      </div>
+      <!-- Disposable — Pink-purple gradient tile -->
       <div class="dock-item" data-sm-open="photobooth">
-        <div class="dock-icon">
-          <svg viewBox="0 0 30 30" fill="none">
-            <rect x="2" y="7" width="26" height="18" rx="4" fill="url(#md2)" />
-            <circle cx="15" cy="16" r="6" fill="rgba(255,255,255,0.3)" stroke="white" stroke-width="1.5" />
-            <defs>
-              <linearGradient id="md2" x1="0" y1="0" x2="30" y2="30">
-                <stop offset="0%" stop-color="#e84393" />
-                <stop offset="100%" stop-color="#a020c0" />
-              </linearGradient>
-            </defs>
+        <div class="dock-icon" style="background:linear-gradient(150deg,#f06aa8 0%,#a020c0 100%)">
+          <svg viewBox="0 0 32 32" fill="none" width="32" height="32">
+            <rect x="4" y="9" width="24" height="17" rx="4" fill="rgba(255,255,255,0.25)"/>
+            <circle cx="16" cy="17" r="6" fill="rgba(255,255,255,0.35)" stroke="white" stroke-width="2"/>
+            <rect x="11" y="6" width="5" height="4" rx="1" fill="rgba(255,255,255,0.5)"/>
           </svg>
         </div>
         <div class="dock-label">Disposable</div>
       </div>
+      <!-- Chat — Coral-red tile -->
       <div class="dock-item" data-sm-open="chat">
-        <div class="dock-icon">
-          <svg viewBox="0 0 30 30" fill="none">
-            <rect x="2" y="5" width="26" height="18" rx="5" fill="url(#md3)" />
-            <polygon points="6,23 10,22 12,26" fill="url(#md3)" />
-            <defs>
-              <linearGradient id="md3" x1="0" y1="0" x2="30" y2="30">
-                <stop offset="0%" stop-color="#f04060" />
-                <stop offset="100%" stop-color="#c02040" />
-              </linearGradient>
-            </defs>
+        <div class="dock-icon" style="background:linear-gradient(150deg,#ff7055 0%,#e02040 100%)">
+          <svg viewBox="0 0 32 32" fill="none" width="32" height="32">
+            <rect x="4" y="6" width="24" height="17" rx="5" fill="rgba(255,255,255,0.3)"/>
+            <polygon points="7,23 13,22 10,28" fill="rgba(255,255,255,0.3)"/>
+            <circle cx="11" cy="15" r="2" fill="white"/>
+            <circle cx="16" cy="15" r="2" fill="white"/>
+            <circle cx="21" cy="15" r="2" fill="white"/>
           </svg>
         </div>
         <div class="dock-label">Chat</div>
       </div>
+      <!-- Winamp — Dark charcoal tile with green play -->
       <div class="dock-item" data-sm-open="winamp">
-        <div class="dock-icon">
-          <svg viewBox="0 0 30 30" fill="none">
-            <rect x="1" y="1" width="28" height="28" rx="6" fill="#1a1a1a" />
-            <path d="M10 8l14 7-14 7V8z" fill="#54e050" />
+        <div class="dock-icon" style="background:linear-gradient(150deg,#2a2a2a 0%,#0e0e0e 100%)">
+          <svg viewBox="0 0 32 32" fill="none" width="32" height="32">
+            <path d="M11 9l14 7-14 7z" fill="#54e050"/>
           </svg>
         </div>
         <div class="dock-label">Winamp</div>
       </div>
+      <!-- PSX — Dark grey tile -->
       <div class="dock-item" data-sm-open="ps1">
-        <div class="dock-icon"
-          style="font-size:22px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#444,#111);border-radius:6px;width:30px;height:30px">
-          &#128191;
+        <div class="dock-icon" style="background:linear-gradient(150deg,#555 0%,#1a1a1a 100%)">
+          <svg viewBox="0 0 32 32" fill="none" width="32" height="32">
+            <text x="7" y="23" font-size="16" fill="white" font-family="sans-serif" opacity="0.9">▶</text>
+          </svg>
         </div>
         <div class="dock-label">PSX</div>
       </div>
+      <!-- More — Frosted tile -->
       <div class="dock-item" id="dock-more"
         onclick="document.getElementById('start-menu').classList.toggle('open'); document.getElementById('start-menu').style.display='block'">
-        <div class="dock-icon" style="font-size:28px;line-height:1">&#8943;</div>
+        <div class="dock-icon" style="background:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.5)">
+          <svg viewBox="0 0 32 32" fill="none" width="32" height="32">
+            <circle cx="9" cy="16" r="2.5" fill="white"/>
+            <circle cx="16" cy="16" r="2.5" fill="white"/>
+            <circle cx="23" cy="16" r="2.5" fill="white"/>
+          </svg>
+        </div>
         <div class="dock-label">More</div>
       </div>
     </div>

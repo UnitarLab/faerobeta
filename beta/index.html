@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+const isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+let lastFrame = 0;
+const _origRaf = window.requestAnimationFrame;
+window.requestAnimationFrame = function mobileFrameWrap(callback) {
+  if (isMobile) {
+    return _origRaf(function(ts) {
+      if (ts - lastFrame < 33) {
+        window.requestAnimationFrame(callback);
+        return;
+      }
+      lastFrame = ts;
+      callback(ts);
+    });
+  } else {
+    return _origRaf(callback);
+  }
+};
+</script>
 <meta charset="UTF-8">
   <meta name="description" content="A real internet social OS. Your desktop, your world. Glass, gradients and a future we all dreamed of. Join the closed beta now.">
   <meta name="theme-color" content="#1a88d4">
@@ -685,8 +704,55 @@ body {
 }
 #aviWrap:hover #aviImg { filter: brightness(0.62) saturate(0.4); transform: translate(-50%,-50%) scale(1.04); }
 #aviWrap:active #aviDarkOverlay { background: rgba(0,0,0,0.68) !important; }
+
+@media (max-width: 768px) {
+  .window, .window-features {
+    background: rgba(235, 245, 255, 0.97) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .taskbar {
+    background: rgba(20, 80, 180, 0.92) !important;
+    backdrop-filter: blur(8px) !important;
+  }
+  .hero-main-logo-bg {
+    filter: none !important;
+    width: clamp(600px, 130vw, 1000px) !important;
+    animation: bgLogoDriftMobile 12s ease-in-out infinite !important;
+  }
+  @keyframes bgLogoDriftMobile {
+    0%, 100% { opacity: 0.18; }
+    50%       { opacity: 0.26; }
+  }
+  .cloud-sky {
+    filter: none !important;
+    /* Simplified blobs */
+  }
+}
+.hero-main-logo-bg { will-change: transform, opacity; }
+#bcanvas { will-change: contents; }
+.window, .window-features { contain: layout paint; }
 </style>
 <script>
+const isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+
+if (isMobile) {
+  const _origRaf = window.requestAnimationFrame;
+  let _lastFrame = 0;
+  window.requestAnimationFrame = function(callback) {
+    return _origRaf(function(ts) {
+      if (ts - _lastFrame < 33) {
+        window.requestAnimationFrame(callback);
+        return;
+      }
+      _lastFrame = ts;
+      callback(ts);
+    });
+  };
+}
+
+const isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+
 // Polar Depths — Frozen Tide I — DPR-aware canvases for crisp rendering
 (function(){
   const TAU=Math.PI*2,sn=Math.sin,cs=Math.cos;
@@ -1071,7 +1137,8 @@ async function sbInsert(email, name, tiktok) {
     const r = d.r * Math.min(W, H);
 
     // Soft outer glow
-    const glow = ctx.createRadialGradient(cx, cy, r * 0.1, cx, cy, r * 1.75);
+    if (isMobile) return;
+      const glow = ctx.createRadialGradient(cx, cy, r * 0.1, cx, cy, r * 1.75);
     glow.addColorStop(0, 'rgba(80,180,255,0.055)');
     glow.addColorStop(1, 'rgba(80,180,255,0)');
     ctx.beginPath(); ctx.arc(cx, cy, r * 1.75, 0, Math.PI * 2);
@@ -1151,16 +1218,16 @@ float snoise(vec3 v){
 }`;
 
 const logoCanvas = document.getElementById('liquid-logo-canvas');
-const SIZE = 1024; // high-res internal render for crisp shaders on all screens
+const SIZE = isMobile ? 512 : 1024; // high-res internal render for crisp shaders on all screens
 logoCanvas.width = SIZE; logoCanvas.height = SIZE;
 
 const scene = new THREE.Scene(); scene.background = null;
 const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 2000);
 camera.position.set(0, 0, 55);
 
-const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, canvas: logoCanvas, precision: 'highp', powerPreference: 'high-performance' });
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, canvas: logoCanvas, precision: isMobile ? 'mediump' : 'highp', powerPreference: 'high-performance' });
 renderer.setSize(SIZE, SIZE);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 3));
+renderer.setPixelRatio(isMobile ? Math.min(window.devicePixelRatio, 1.5) : Math.min(window.devicePixelRatio, 3));
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 2.6;
 renderer.setClearColor(0x000000, 0);
@@ -1269,7 +1336,7 @@ const shapeSettings = { depth: 103.8, bevelSize: 3.5 };
 function buildSVGFromData(svgData){
   svgGroup.position.set(0,0,0); svgGroup.scale.set(1,1,1); svgGroup.rotation.set(0,0,0);
   while(svgGroup.children.length){const c=svgGroup.children[0];svgGroup.remove(c);if(c.geometry)c.geometry.dispose();}
-  const ext={depth:shapeSettings.depth,bevelEnabled:true,bevelSegments:128,steps:3,bevelSize:shapeSettings.bevelSize,bevelThickness:shapeSettings.bevelSize};
+  const ext={depth:shapeSettings.depth,bevelEnabled:true,bevelSegments: isMobile ? 32 : 128,steps:3,bevelSize:shapeSettings.bevelSize,bevelThickness:shapeSettings.bevelSize};
   const allRawShapes=[];
   svgData.paths.forEach(path=>{
     SVGLoader.createShapes(path).forEach(shape=>{
