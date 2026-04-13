@@ -684,6 +684,10 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
 
 // Polar Depths — Frozen Tide I — DPR-aware canvases for crisp rendering
 (function(){
+  let modalRingT=0, modalPipT=0, modalLast=null, modalRAF=null;
+  const DEFAULT_SRC = "https://images2.alphacoders.com/941/thumb-1920-941898.jpg";
+  let customAviSrc = null;
+
   const TAU=Math.PI*2,sn=Math.sin,cs=Math.cos;
   const DPR = window.devicePixelRatio || 1;
 
@@ -1495,7 +1499,8 @@ document.getElementById('xpEmail').addEventListener('input', function () {
   }
 
   // ── open / close ─────────────────────────────────────
-  window.openAviModal=function(){
+  let m, box; window.openAviModal=function(){
+    try {
     const m=document.getElementById('aviModal');
     const box=document.getElementById('aviModalBox');
     m.style.display='flex';
@@ -1523,6 +1528,8 @@ document.getElementById('xpEmail').addEventListener('input', function () {
   };
 
   window.closeAviModal=function(){
+    const m=document.getElementById("aviModal");
+    const box=document.getElementById("aviModalBox");
     const m=document.getElementById('aviModal');
     const box=document.getElementById('aviModalBox');
     m.style.opacity='0';
@@ -1578,7 +1585,7 @@ document.getElementById('xpEmail').addEventListener('input', function () {
 </script>
 <!-- ═══ AVATAR PREVIEW MODAL ═══ -->
       <div id="aviModal" style="
-        display:none;position:fixed;inset:0;z-index:999999;
+        display:none;position:fixed;inset:0;z-index:1000000 !important;
         background:rgba(2,8,28,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
         align-items:center;justify-content:center;padding:20px;
         opacity:0;transition:opacity 0.3s;
