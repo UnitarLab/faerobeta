@@ -751,22 +751,6 @@ body {
 .window, .window-features { contain: layout paint; }
 </style>
 <script>
-var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
-
-if (isMobile) {
-  const _origRaf = window.requestAnimationFrame;
-  let _lastFrame = 0;
-  window.requestAnimationFrame = function(callback) {
-    return _origRaf(function(ts) {
-      if (ts - _lastFrame < 33) {
-        window.requestAnimationFrame(callback);
-        return;
-      }
-      _lastFrame = ts;
-      callback(ts);
-    });
-  };
-}
 
 var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
 
