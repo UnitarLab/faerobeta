@@ -599,7 +599,7 @@ body {
       <!-- AURA BADGE -->
       <div class="aura-strip">
         <!-- Avatar: ring canvas + koi image + pip canvas — overflow visible so ring shadows don't clip -->
-        <div class="aura-vis-wrap" id="aviWrap" title="Click to preview your avatar" style="position:relative;flex-shrink:0;width:92px;height:92px;overflow:visible;cursor:pointer;">
+        <div class="aura-vis-wrap" id="aviWrap" onclick="document.getElementById('aviModal').style.display='flex';setTimeout(()=>document.getElementById('aviModal').style.opacity='1',10);" title="Click to preview your avatar" style="position:relative;flex-shrink:0;width:92px;height:92px;overflow:visible;cursor:pointer;">
           <!-- Ring canvas: CSS 92×92, actual buffer scaled by DPR for crisp rendering -->
           <canvas id="badgeRingCanvas" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:1;width:92px;height:92px;"></canvas>
           <!-- Koi avatar image — 62×62 centered — darkens on click -->
@@ -706,6 +706,23 @@ body {
 #aviWrap:active #aviDarkOverlay { background: rgba(0,0,0,0.68) !important; }
 
 @media (max-width: 768px) {
+
+  /* Hide clouds strictly on mobile */
+  .cloud-sky, .cloud-svg {
+    display: none !important;
+  }
+  
+  /* Center "What FAERO is" items on mobile */
+  .xp-feat {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .xp-feat p {
+    text-align: center;
+  }
+
   .window, .window-features {
     background: rgba(235, 245, 255, 0.97) !important;
     backdrop-filter: none !important;
