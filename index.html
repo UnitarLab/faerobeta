@@ -3120,14 +3120,14 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
         const container = document.getElementById('desktop-icons-container');
         container.innerHTML = '';
         // Force reset to v8_rename_docs
-        if (!AeroStorage.get('grid_fixed_v8')) {
+        if (!AeroStorage.get('grid_fixed_v12_final')) {
           AeroStorage.set('iconPositions', {});
-          AeroStorage.set('grid_fixed_v8', true);
+          AeroStorage.set('grid_fixed_v12_final', true);
         }
         iconPositions = AeroStorage.get('iconPositions', {});
 
         const isMobile = window.innerWidth <= 767;
-                const defaultPositions = [
+                        const defaultPositions = [
       { id: 'faero', x: 38, y: 28 },
       { id: 'chat', x: 38, y: 128 },
       { id: 'winamp', x: 38, y: 228 },
