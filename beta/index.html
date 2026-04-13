@@ -599,7 +599,7 @@ body {
       <!-- AURA BADGE -->
       <div class="aura-strip">
         <!-- Avatar: ring canvas + koi image + pip canvas — overflow visible so ring shadows don't clip -->
-        <div class="aura-vis-wrap" id="aviWrap" onclick="document.getElementById('aviModal').style.display='flex';setTimeout(()=>document.getElementById('aviModal').style.opacity='1',10);" title="Click to preview your avatar" style="position:relative;flex-shrink:0;width:92px;height:92px;overflow:visible;cursor:pointer;">
+        <div class="aura-vis-wrap" id="aviWrap" onclick="openAviModal()" title="Click to preview your avatar" style="position:relative;flex-shrink:0;width:92px;height:92px;overflow:visible;cursor:pointer;">
           <!-- Ring canvas: CSS 92×92, actual buffer scaled by DPR for crisp rendering -->
           <canvas id="badgeRingCanvas" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:1;width:92px;height:92px;"></canvas>
           <!-- Koi avatar image — 62×62 centered — darkens on click -->
