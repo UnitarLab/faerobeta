@@ -668,6 +668,7 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
 
 
 
+
 // Polar Depths — Frozen Tide I — High Fidelity Avatar Framework
 (function(){
   const isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
@@ -685,6 +686,7 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
     canvas.style.width = cssW + 'px';
     canvas.style.height = cssH + 'px';
     const ctx = canvas.getContext('2d');
+    ctx.setTransform(1, 0, 0, 1, 0, 0); // reset
     ctx.scale(DPR, DPR);
     return ctx;
   }
@@ -747,12 +749,13 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
     const cx = W/2, cy = H/2;
     const [c1, c2, c3] = ['#4488ff','#0033cc','#99bbff'];
     ctx.save(); ctx.translate(cx, cy);
+    const ringSpacing = R === 75 ? 5 : (R/7.6);
     for (let j = 0; j < 3; j++) {
       const pulse = sn(t * 0.06 + j * 0.9) * 0.5 + 0.5;
       ctx.beginPath();
       for (let i = 0; i <= 180; i++) {
         const a = (i / 180) * TAU;
-        const rr = (R - j * (R/7.6)) + sn(a * 4 + t * 0.035 * (j + 1)) * 2.8 + sn(a * 6 - t * 0.028) * 1.8 + cs(a * 8 + t * 0.02) * 1;
+        const rr = (R - j * ringSpacing) + sn(a * 4 + t * 0.035 * (j + 1)) * 2.8 + sn(a * 6 - t * 0.028) * 1.8 + cs(a * 8 + t * 0.02) * 1;
         if (i === 0) ctx.moveTo(cs(a) * rr, sn(a) * rr);
         else ctx.lineTo(cs(a) * rr, sn(a) * rr);
       }
@@ -775,7 +778,6 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
     ctx.restore();
   }
 
-  // DYNAMIC LOOKUP
   let ctxMainRing = null, ctxMainPip = null;
   let ctxModalRing = null, ctxModalPip = null;
 
@@ -786,7 +788,6 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
     lastTs = ts;
     ringT += dt * 60; pipT += dt;
 
-    // Refresh main canvases
     const rcMain = document.getElementById('badgeRingCanvas');
     const pcMain = document.getElementById('badgePipCanvas');
     if (rcMain && !ctxMainRing) ctxMainRing = setupCanvas(rcMain, 92, 92);
@@ -795,9 +796,8 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
     drawRing(ctxMainRing, ringT, 92, 92, 38);
     drawClownfish(ctxMainPip, pipT, 30, 30);
 
-    // Refresh modal canvases
     const modal = document.getElementById('aviModal');
-    if (modal && (modal.style.display === 'flex' || modal.style.opacity === '1')) {
+    if (modal && (modal.style.display === 'flex' || modal.style.opacity > '0')) {
       const rcModal = document.getElementById('aviModalRing');
       const pcModal = document.getElementById('aviModalPip');
       if (rcModal && !ctxModalRing) ctxModalRing = setupCanvas(rcModal, 180, 180);
@@ -815,6 +815,8 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
   window.openAviModal = function() {
     const m = document.getElementById('aviModal'), box = document.getElementById('aviModalBox');
     if(!m) return;
+    // RESET MODAL CONTEXTS TO FORCE REDRAW on lookup
+    ctxModalRing = null; ctxModalPip = null;
     m.style.display = 'flex';
     document.getElementById('aviModalImg').src = customAviSrc || DEFAULT_SRC;
     requestAnimationFrame(() => { m.style.opacity = '1'; box.style.transform = 'scale(1) translateY(0)'; });
@@ -825,12 +827,11 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
     const m = document.getElementById('aviModal'), box = document.getElementById('aviModalBox');
     if(!m) return;
     m.style.opacity = '0'; box.style.transform = 'scale(0.88) translateY(18px)';
-    setTimeout(() => { m.style.display = 'none'; }, 320);
+    setTimeout(() => { m.style.display = 'none'; ctxModalRing = null; ctxModalPip = null; }, 320);
     const img = document.getElementById('aviImg'); if(img) img.style.filter = '';
     const ov = document.getElementById('aviDarkOverlay'); if(ov) ov.style.background = 'rgba(0,0,0,0)';
   };
 
-  // Re-attach listeners once DOM is ready if needed, or just define globals
   document.addEventListener('click', function(e) {
     if (e.target && e.target.id === 'aviModal') window.closeAviModal();
   });
