@@ -667,6 +667,7 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
 
 
 
+
 // Polar Depths — Frozen Tide I — High Fidelity Avatar Framework
 (function(){
   const isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
@@ -714,7 +715,6 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
     ctx.save();
     ctx.translate(cx + sw, cy + sn(t * 0.9) * 1.2);
     ctx.rotate(tilt);
-    // Tail
     const tb = sn(t * 2.2) * 0.32;
     ctx.save(); ctx.rotate(tb);
     ctx.beginPath(); ctx.moveTo(-7,0); ctx.bezierCurveTo(-9,-3,-13,-7,-12,-3); ctx.bezierCurveTo(-11,-1,-9,0,-7,0); ctx.fillStyle='#e8732a'; ctx.fill();
@@ -722,25 +722,18 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
     ctx.beginPath(); ctx.moveTo(-7,0); ctx.bezierCurveTo(-9,-3,-13,-7,-12,-3); ctx.bezierCurveTo(-11,-1,-9,0,-7,0); ctx.bezierCurveTo(-9,0,-11,1,-12,3); ctx.bezierCurveTo(-13,7,-9,3,-7,0); ctx.strokeStyle='#1a2e5a'; ctx.lineWidth=1.1; ctx.stroke();
     ctx.beginPath(); ctx.moveTo(-7,-1.5); ctx.lineTo(-9,0); ctx.lineTo(-7,1.5); ctx.fillStyle='rgba(220,235,255,0.3)'; ctx.fill();
     ctx.restore();
-    // Body
     ctx.beginPath(); ctx.moveTo(9, 0); ctx.bezierCurveTo(9,-8, 3,-10, -3,-8); ctx.bezierCurveTo(-7,-6, -9,-3, -9, 0); ctx.bezierCurveTo(-9, 3, -7, 6, -3, 8); ctx.bezierCurveTo( 3,10, 9, 8, 9, 0); ctx.fillStyle='#e8732a'; ctx.fill(); ctx.strokeStyle='#1a2e5a'; ctx.lineWidth=1.3; ctx.stroke();
-    // Bands
     ctx.save(); ctx.beginPath(); ctx.rect(4,-9,4,18); ctx.clip(); ctx.beginPath(); ctx.ellipse(6, 0, 4.5, 9, 0, 0, TAU); ctx.fillStyle='#c8dcf0'; ctx.fill(); ctx.strokeStyle='#1a2e5a'; ctx.lineWidth=1; ctx.stroke(); ctx.restore();
     ctx.save(); ctx.beginPath(); ctx.rect(-3,-9,4,18); ctx.clip(); ctx.beginPath(); ctx.ellipse(-1, 0, 3.5, 8.5, 0, 0, TAU); ctx.fillStyle='#c8dcf0'; ctx.fill(); ctx.strokeStyle='#1a2e5a'; ctx.lineWidth=1; ctx.stroke(); ctx.restore();
     ctx.save(); ctx.beginPath(); ctx.rect(-9,-6,3.5,12); ctx.clip(); ctx.beginPath(); ctx.ellipse(-7.5, 0, 2.5, 6, 0, 0, TAU); ctx.fillStyle='#c8dcf0'; ctx.fill(); ctx.strokeStyle='#1a2e5a'; ctx.lineWidth=0.8; ctx.stroke(); ctx.restore();
-    // Dorsal
     const df = sn(t * 1.5) * 0.12;
     ctx.save(); ctx.translate(0,-9); ctx.rotate(df); ctx.beginPath(); ctx.moveTo(-4,0); ctx.bezierCurveTo(-3,-6, 2,-9, 7,-7); ctx.bezierCurveTo(8,-4, 5,-1, 4,0); ctx.fillStyle='#d96020'; ctx.fill(); ctx.strokeStyle='#1a2e5a'; ctx.lineWidth=1; ctx.stroke(); ctx.restore();
-    // Pectoral
     const pf = sn(t * 1.9) * 0.28;
     ctx.save(); ctx.translate(4,3); ctx.rotate(pf); ctx.beginPath(); ctx.moveTo(0,0); ctx.bezierCurveTo(2,3,5,7,3,9); ctx.bezierCurveTo(1,9,-1,5,-1,2); ctx.closePath(); ctx.fillStyle='#d96020'; ctx.fill(); ctx.strokeStyle='#1a2e5a'; ctx.lineWidth=0.8; ctx.stroke(); ctx.restore();
-    // Anal
     ctx.save(); ctx.translate(-3,8); ctx.rotate(sn(t*2)*0.08); ctx.beginPath(); ctx.moveTo(0,0); ctx.bezierCurveTo(1,3,4,4,5,2); ctx.bezierCurveTo(4,0,2,0,0,0); ctx.fillStyle='#d06018'; ctx.fill(); ctx.strokeStyle='#1a2e5a'; ctx.lineWidth=0.7; ctx.stroke(); ctx.restore();
-    // Head
     ctx.beginPath(); ctx.ellipse(8, 0, 4.5, 5.5, 0, 0, TAU); ctx.fillStyle='#e87830'; ctx.fill(); ctx.strokeStyle='#1a2e5a'; ctx.lineWidth=1.3; ctx.stroke();
     const hg = ctx.createRadialGradient(9,-2,0.5,8,-1,5); hg.addColorStop(0,'rgba(255,210,130,0.55)'); hg.addColorStop(1,'rgba(0,0,0,0)');
     ctx.beginPath(); ctx.ellipse(8,0,4.5,5.5,0,0,TAU); ctx.fillStyle=hg; ctx.fill();
-    // Eye
     ctx.beginPath(); ctx.arc(10,-1.5,2.3,0,TAU); ctx.fillStyle='#f5c842'; ctx.fill(); ctx.strokeStyle='#1a2e5a'; ctx.lineWidth=1; ctx.stroke();
     ctx.beginPath(); ctx.arc(10.4,-1.5,1.1,0,TAU); ctx.fillStyle='#0d0000'; ctx.fill();
     ctx.beginPath(); ctx.arc(11,-2.1,0.5,0,TAU); ctx.fillStyle='rgba(255,255,255,0.95)'; ctx.fill();
@@ -754,7 +747,6 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
     const cx = W/2, cy = H/2;
     const [c1, c2, c3] = ['#4488ff','#0033cc','#99bbff'];
     ctx.save(); ctx.translate(cx, cy);
-    // Frozen Tide I Logic
     for (let j = 0; j < 3; j++) {
       const pulse = sn(t * 0.06 + j * 0.9) * 0.5 + 0.5;
       ctx.beginPath();
@@ -767,10 +759,7 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
       ctx.closePath();
       ctx.strokeStyle = j === 0 ? c1 : j === 1 ? c2 : c3;
       ctx.lineWidth = j === 0 ? 2.6 : j === 1 ? 1.5 : 0.9;
-      if (!isMobile) {
-        ctx.shadowColor = j === 0 ? c1 : c2;
-        ctx.shadowBlur = (11 - j * 3) * (pulse * 0.4 + 0.6);
-      }
+      if (!isMobile) { ctx.shadowColor = j === 0 ? c1 : c2; ctx.shadowBlur = (11 - j * 3) * (pulse * 0.4 + 0.6); }
       ctx.globalAlpha = 0.65 + pulse * 0.3;
       ctx.stroke();
     }
@@ -779,23 +768,15 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
       const rr = R + sn(i * 1.4 + t * 0.08) * 3.5;
       const g = sn(t * 0.1 + i * 0.55) * 0.5 + 0.5;
       ctx.fillStyle = c1;
-      if (!isMobile) {
-        ctx.shadowColor = c1;
-        ctx.shadowBlur = 5 * g;
-      }
+      if (!isMobile) { ctx.shadowColor = c1; ctx.shadowBlur = 5 * g; }
       ctx.globalAlpha = g * 0.65;
       ctx.beginPath(); ctx.arc(cs(a) * rr, sn(a) * rr, 1.6 + g * 0.6, 0, TAU); ctx.fill();
     }
     ctx.restore();
   }
 
-  const rcMain = document.getElementById('badgeRingCanvas');
-  const pcMain = document.getElementById('badgePipCanvas');
-  const rcModal = document.getElementById('aviModalRing');
-  const pcModal = document.getElementById('aviModalPip');
-
-  const ctxMainRing = setupCanvas(rcMain, 92, 92);
-  const ctxMainPip = setupCanvas(pcMain, 30, 30);
+  // DYNAMIC LOOKUP
+  let ctxMainRing = null, ctxMainPip = null;
   let ctxModalRing = null, ctxModalPip = null;
 
   function globalFrame(ts) {
@@ -804,34 +785,55 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
     if (dt > 0.1) dt = 0.016;
     lastTs = ts;
     ringT += dt * 60; pipT += dt;
+
+    // Refresh main canvases
+    const rcMain = document.getElementById('badgeRingCanvas');
+    const pcMain = document.getElementById('badgePipCanvas');
+    if (rcMain && !ctxMainRing) ctxMainRing = setupCanvas(rcMain, 92, 92);
+    if (pcMain && !ctxMainPip) ctxMainPip = setupCanvas(pcMain, 30, 30);
+    
     drawRing(ctxMainRing, ringT, 92, 92, 38);
     drawClownfish(ctxMainPip, pipT, 30, 30);
+
+    // Refresh modal canvases
     const modal = document.getElementById('aviModal');
-    if (modal && modal.style.display === 'flex') {
-      if (!ctxModalRing) ctxModalRing = setupCanvas(rcModal, 180, 180);
-      if (!ctxModalPip) ctxModalPip = setupCanvas(pcModal, 52, 52);
+    if (modal && (modal.style.display === 'flex' || modal.style.opacity === '1')) {
+      const rcModal = document.getElementById('aviModalRing');
+      const pcModal = document.getElementById('aviModalPip');
+      if (rcModal && !ctxModalRing) ctxModalRing = setupCanvas(rcModal, 180, 180);
+      if (pcModal && !ctxModalPip) ctxModalPip = setupCanvas(pcModal, 52, 52);
       drawRing(ctxModalRing, ringT, 180, 180, 75);
       drawClownfish(ctxModalPip, pipT, 52, 52);
-    } else { ctxModalRing = null; ctxModalPip = null; }
+    } else {
+      ctxModalRing = null; ctxModalPip = null;
+    }
+
     requestAnimationFrame(globalFrame);
   }
   requestAnimationFrame(globalFrame);
 
   window.openAviModal = function() {
     const m = document.getElementById('aviModal'), box = document.getElementById('aviModalBox');
+    if(!m) return;
     m.style.display = 'flex';
     document.getElementById('aviModalImg').src = customAviSrc || DEFAULT_SRC;
     requestAnimationFrame(() => { m.style.opacity = '1'; box.style.transform = 'scale(1) translateY(0)'; });
-    document.getElementById('aviImg').style.filter = 'brightness(0.3) saturate(0.2)';
-    document.getElementById('aviDarkOverlay').style.background = 'rgba(0,0,0,0.62)';
+    const img = document.getElementById('aviImg'); if(img) img.style.filter = 'brightness(0.3) saturate(0.2)';
+    const ov = document.getElementById('aviDarkOverlay'); if(ov) ov.style.background = 'rgba(0,0,0,0.62)';
   };
   window.closeAviModal = function() {
     const m = document.getElementById('aviModal'), box = document.getElementById('aviModalBox');
+    if(!m) return;
     m.style.opacity = '0'; box.style.transform = 'scale(0.88) translateY(18px)';
     setTimeout(() => { m.style.display = 'none'; }, 320);
-    document.getElementById('aviImg').style.filter = ''; document.getElementById('aviDarkOverlay').style.background = 'rgba(0,0,0,0)';
+    const img = document.getElementById('aviImg'); if(img) img.style.filter = '';
+    const ov = document.getElementById('aviDarkOverlay'); if(ov) ov.style.background = 'rgba(0,0,0,0)';
   };
-  document.getElementById('aviModal').addEventListener('click', function(e) { if (e.target === this) window.closeAviModal(); });
+
+  // Re-attach listeners once DOM is ready if needed, or just define globals
+  document.addEventListener('click', function(e) {
+    if (e.target && e.target.id === 'aviModal') window.closeAviModal();
+  });
 
   window.handleAviUpload = function(e) {
     const file = e.target.files[0]; if (!file) return; const reader = new FileReader();
@@ -839,18 +841,18 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
       customAviSrc = ev.target.result;
       const mi = document.getElementById('aviModalImg');
       if (mi) { mi.style.opacity = '0'; setTimeout(() => { mi.src = customAviSrc; mi.style.opacity = '1'; }, 150); }
-      document.getElementById('aviImg').src = customAviSrc;
-      document.getElementById('aviUploadHint').textContent = '✓ Photo loaded!';
-      document.getElementById('aviResetRow').style.display = 'block';
+      const si = document.getElementById('aviImg'); if(si) si.src = customAviSrc;
+      const hnt = document.getElementById('aviUploadHint'); if(hnt) hnt.textContent = '✓ Photo loaded!';
+      const rst = document.getElementById('aviResetRow'); if(rst) rst.style.display = 'block';
     };
     reader.readAsDataURL(file);
   };
   window.resetAviPhoto = function() {
     customAviSrc = null; const mi = document.getElementById('aviModalImg');
     if (mi) { mi.style.opacity = '0'; setTimeout(() => { mi.src = DEFAULT_SRC; mi.style.opacity = '1'; }, 150); }
-    document.getElementById('aviImg').src = DEFAULT_SRC;
-    document.getElementById('aviUploadHint').textContent = 'jpg, png, gif · stays local';
-    document.getElementById('aviResetRow').style.display = 'none';
+    const si = document.getElementById('aviImg'); if(si) si.src = DEFAULT_SRC;
+    const hnt = document.getElementById('aviUploadHint'); if(hnt) hnt.textContent = 'jpg, png, gif · stays local';
+    const rst = document.getElementById('aviResetRow'); if(rst) rst.style.display = 'none';
   };
 })();
 </script>
