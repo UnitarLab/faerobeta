@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Page not found · Faero</title>
+
+<!-- A 404 must never be indexed. Vercel serves this file with a real 404
+     status, which is the part that actually matters to crawlers, but the
+     meta tag covers the case where it is reached some other way. -->
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#1565C0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D1B2A" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+
+<!-- Everything below is inline on purpose. A 404 is the one page that has to
+     render when something is already wrong — a missing stylesheet, a bad
+     deploy, a service worker serving stale assets. It depends on nothing. -->
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+
+  :root {
+    --sky-top:    #4A9BE8;
+    --sky-bottom: #93C9F5;
+    --card:       #FFFFFF;
+    --ink:        #0D2137;
+    --ink-soft:   #4A6178;
+    --line:       rgba(13, 33, 55, .14);
+    --accent:     #1565C0;
+    --accent-ink: #FFFFFF;
+    --bar:        linear-gradient(180deg, #3C8FE0 0%, #1565C0 55%, #0F4C93 100%);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --sky-top:    #0B1929;
+      --sky-bottom: #14304C;
+      --card:       #12233A;
+      --ink:        #E8F1FA;
+      --ink-soft:   #9DB4CC;
+      --line:       rgba(232, 241, 250, .16);
+      --accent:     #4A9BE8;
+      --accent-ink: #06121F;
+      --bar:        linear-gradient(180deg, #1B4A7A 0%, #123458 55%, #0C2440 100%);
+    }
+  }
+
+  html, body { height: 100%; }
+
+  body {
+    margin: 0;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-bottom) 100%);
+    font: 16px/1.55 "Segoe UI", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* The dialog is deliberately shaped like an OS window: this site IS a
+     desktop, so an error that looks like a system dialog reads as part of
+     the product rather than as the hosting provider's default page. */
+  .dialog {
+    width: min(560px, 100%);
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 18px 50px rgba(6, 20, 36, .30), 0 2px 6px rgba(6, 20, 36, .18);
+    animation: rise .32s cubic-bezier(.2, .8, .3, 1) both;
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(10px) scale(.985); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* Anyone who sets "reduce motion" gets no animation at all. */
+  @media (prefers-reduced-motion: reduce) {
+    .dialog { animation: none; }
+    * { transition: none !important; }
+  }
+
+  .titlebar {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 12px;
+    background: var(--bar);
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: .2px;
+  }
+
+  .dot { width: 11px; height: 11px; border-radius: 50%; background: rgba(255,255,255,.55); flex: none; }
+  .dot.close { background: #FF6B5E; }
+
+  .titlebar .spacer { flex: 1; }
+
+  .body { padding: 26px 26px 22px; }
+
+  .code {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .16em;
+    color: var(--accent);
+    margin: 0 0 6px;
+  }
+
+  h1 { margin: 0 0 10px; font-size: 25px; line-height: 1.22; letter-spacing: -.015em; }
+
+  p { margin: 0 0 18px; color: var(--ink-soft); }
+
+  .path {
+    font-family: "Cascadia Code", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 13px;
+    background: rgba(21, 101, 192, .09);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 7px 10px;
+    margin: 0 0 20px;
+    color: var(--ink);
+    /* A long or hostile URL must not stretch the dialog or escape the box. */
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+  a.btn {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    background: transparent;
+    transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+  }
+
+  a.btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(6,20,36,.14); }
+  a.btn:active { transform: none; }
+
+  a.btn.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  a.btn:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .foot {
+    margin: 20px 0 0;
+    padding-top: 15px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  .foot a { color: var(--accent); }
+</style>
+</head>
+<body>
+
+  <main class="dialog" role="alertdialog" aria-labelledby="t404" aria-describedby="d404">
+
+    <div class="titlebar">
+      <span class="dot close" aria-hidden="true"></span>
+      <span class="dot" aria-hidden="true"></span>
+      <span class="dot" aria-hidden="true"></span>
+      <span class="spacer"></span>
+      <span>faero</span>
+      <span class="spacer"></span>
+    </div>
+
+    <div class="body">
+      <p class="code">ERROR 404</p>
+      <h1 id="t404">This page isn't here.</h1>
+      <p id="d404">
+        The link may be out of date, or the address may have a typo in it.
+        Nothing is broken on your end.
+      </p>
+
+      <!-- Filled in by script. Static fallback text so the box is never empty
+           and never shows an unresolved placeholder if script does not run. -->
+      <p class="path" id="path">The requested address could not be found.</p>
+
+      <div class="actions">
+        <a class="btn primary" href="/">Back to the desktop</a>
+        <a class="btn" href="/faero_v1_launch.html">Open Faero</a>
+      </div>
+
+      <p class="foot">
+        Think this page should exist? Tell us at
+        <a href="mailto:contact@unitar.app?subject=Broken%20link%20on%20faero.net">contact@unitar.app</a>.
+      </p>
+    </div>
+
+  </main>
+
+<script>
+  // Show the address that failed, so a person reporting it can copy the exact
+  // thing. Written with textContent, never innerHTML: the path is attacker-
+  // controlled (anyone can craft a URL), and building HTML from it would make
+  // this page a reflected-XSS hole — on the one page guaranteed to be easy to
+  // get a stranger to visit.
+  (function () {
+    try {
+      var el = document.getElementById('path');
+      var p = window.location.pathname + window.location.search;
+      if (p && p !== '/') {
+        el.textContent = p.length > 180 ? p.slice(0, 180) + '…' : p;
+      }
+    } catch (e) {
+      /* Leave the static fallback in place. */
+    }
+  })();
+</script>
+
+</body>
+</html>

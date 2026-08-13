@@ -19,7 +19,12 @@
 <meta property="og:site_name"    content="Faero">
 <meta property="og:title"        content="FAERO — Our Promised Future">
 <meta property="og:description"  content="A solarpunk social commons. Music, mutual aid, repair, gardening, solar.">
-<meta property="og:url"          content="https://faero.net/">
+<!-- og:url is the app's OWN address, not the bare domain. It used to be
+     "https://faero.net/" and that was correct when a rewrite made / serve this
+     file. It no longer does: / is the faero OS desktop, a different page. Left
+     as-is, every share of this app previewed — and linked to — the desktop. -->
+<meta property="og:url"          content="https://faero.net/faero_v1_launch.html">
+<link rel="canonical"            href="https://faero.net/faero_v1_launch.html">
 <!-- Crawlers do not reliably render SVG, so the share card is a real JPEG. -->
 <meta property="og:image"        content="https://faero.net/og-card.jpg">
 <meta property="og:image:type"   content="image/jpeg">
@@ -5391,7 +5396,7 @@ body.has-rls-warning { padding-top:72px; }
             <button class="compose-post">Post</button>
           </div>
           <div id="compose-photo-preview" style="display:none;margin-top:8px;position:relative;text-align:center;background:rgba(0,0,0,0.03);border-radius:12px;overflow:hidden">
-            <img id="compose-photo-img" style="max-width:100%;max-height:520px;height:auto;width:auto;display:block;margin:0 auto;border-radius:12px">
+            <img id="compose-photo-img" alt="Preview of the photo attached to your post" style="max-width:100%;max-height:520px;height:auto;width:auto;display:block;margin:0 auto;border-radius:12px">
             <button onclick="composeRemovePhoto()" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.55);border:none;color:#fff;width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;line-height:1">×</button>
           </div>
           <div id="compose-place-row" style="display:none;margin-top:8px;align-items:center;gap:7px">
@@ -7683,6 +7688,10 @@ var FAERO_TOS_VERSION = '2026-08-09';
    Regenerate with `python build_legal.py` after editing either document. */
 var FAERO_TOS_URL     = 'terms.html';
 var FAERO_PRIVACY_URL = 'privacy.html';
+// Kept next to the legal URLs, and identical to the address named in
+// privacy.html and terms.html. If it changes it must change in all three, or
+// the policy promises a contact route that does not reach anyone.
+var FAERO_CONTACT_EMAIL = 'contact@unitar.app';
 var FAERO_OPERATOR    = 'Unitar LLC';
 
 function faeroInjectAuthModal() {
@@ -7754,7 +7763,12 @@ function faeroInjectAuthModal() {
       <div class="fam-hint">
         Faero is operated by ${FAERO_OPERATOR} ·
         <a href="${FAERO_TOS_URL}" target="_blank" rel="noopener">terms</a> ·
-        <a href="${FAERO_PRIVACY_URL}" target="_blank" rel="noopener">privacy</a>
+        <a href="${FAERO_PRIVACY_URL}" target="_blank" rel="noopener">privacy</a> ·
+        <!-- A reachable human, on the sign-in screen specifically. The privacy
+             policy promises this address for data and deletion requests, and
+             someone locked out of their account cannot reach it from inside
+             the app — this is the one screen they can still see. -->
+        <a href="mailto:${FAERO_CONTACT_EMAIL}">contact</a>
       </div>
     </div>`;
   document.body.appendChild(el);

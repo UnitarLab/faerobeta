@@ -1,5 +1,33 @@
 # What to actually upload
 
+> ## 🚨 Blocker: the apex domain does not serve
+>
+> `https://faero.net/` fails to connect — TLS never completes. `www.faero.net`
+> is fine and serves the desktop correctly.
+>
+> **Cause.** The apex has two A records:
+>
+> | Record | Points at | Verdict |
+> |---|---|---|
+> | `216.198.79.1` | Vercel | correct |
+> | `162.255.119.204` | Namecheap parking | **stale — delete this one** |
+>
+> DNS round-robins between them, so roughly half of all requests land on a
+> parking host that has no certificate for `faero.net`, and the browser aborts
+> before any page is served. It looks intermittent, which is why it is easy to
+> dismiss as "works for me".
+>
+> **Fix.** Delete the `162.255.119.204` A record at the registrar. Nothing in
+> this repo needs to change.
+>
+> **Why it blocks launch.** The canonical tags, `og:`/`twitter:` tags,
+> `sitemap.xml`, `robots.txt` and the Supabase auth redirect allowlist all name
+> the apex. Ship before fixing it and you point every crawler, every share
+> preview and every password-reset link at a host that does not answer.
+>
+> Verify with `curl -I https://faero.net/` — it must return a status line, not
+> `Could not connect`.
+
 This folder is a workspace. It holds ~30 HTML files, but **only a handful are
 the live app**. If you upload the whole folder, you publish all of it — old
 prototypes, experiments, and an internal ops console — on the same domain,

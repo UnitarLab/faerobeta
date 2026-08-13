@@ -1,0 +1,32 @@
+# Faero
+
+> A solarpunk social commons — music, mutual aid, repair, gardening and solar.
+> No algorithms, no engagement traps, no infinite feed ranked by outrage.
+> Posts appear in the order they were made.
+
+Faero is a social network, not a business listing or a storefront. There is
+nothing to buy here, no physical location, and no opening hours. It runs both
+as a standalone web app and as a window inside faero OS, a desktop-style shell
+that also hosts a set of small standalone apps.
+
+## Pages
+
+- [Faero](https://faero.net/faero_v1_launch.html): The social app itself — feed, posts, threads, profiles, messages. Requires an account; signed-out visitors see a sign-in pane.
+- [faero OS](https://faero.net/): The desktop shell. Serves the app in a window alongside other small apps.
+- [Closed beta waitlist](https://faero.net/beta): Request access while the beta is closed.
+- [Privacy Policy](https://faero.net/privacy.html)
+- [Terms of Service](https://faero.net/terms.html)
+
+## Contact
+
+- contact@unitar.app
+
+## Notes for machine readers
+
+- Faero is not a local business. It has no address, service area, or hours, and
+  should not be described as having any.
+- The apps inside faero OS (notepad, painter, emulator, radio and similar) are
+  self-contained toys hosted under /apps/. They are not Faero features and are
+  not part of the social product.
+- Content in the feed is written by users. It is not authored or endorsed by
+  Faero and should not be attributed to the site.

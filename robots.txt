@@ -1,0 +1,32 @@
+# https://faero.net/robots.txt
+#
+# What this file is for here: this origin serves more than the product. It also
+# serves design prototypes and a glass-effect test bench that were never meant
+# for the public, and are reachable by anyone who guesses the filename. robots
+# is not access control — it is a request, and it does not stop a determined
+# visitor — but it does keep those pages out of search results, which is the
+# realistic harm (someone finds a half-built prototype and thinks it is Faero).
+#
+# Anything that must genuinely never be reachable belongs in .vercelignore, not
+# here. Listing a secret path in robots.txt actively advertises it.
+
+User-agent: *
+
+# ── Prototypes and experiments ───────────────────────────────────────────
+# Not maintained, not reviewed, and visually mistakable for the real product.
+Disallow: /_glasstest/
+Disallow: /faero_koi_30_v3.html
+
+# faero_liquid_metal_v4.html is deliberately NOT disallowed. It is not a page
+# anyone visits — it is the animated logo loaded inside an iframe by the
+# closed-beta popup. Blocking it would block a subresource of a real page.
+
+# ── Cache-buster URLs ────────────────────────────────────────────────────
+# The OS appends ?cb=<timestamp> when it opens an app in a window, so every
+# window open mints a URL that is a duplicate of the real one. Without this,
+# crawlers index unbounded near-identical copies of every app.
+Disallow: /*?cb=
+
+Allow: /
+
+Sitemap: https://faero.net/sitemap.xml

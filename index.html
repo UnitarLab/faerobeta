@@ -6,24 +6,46 @@
   <meta name="description" content="A real internet social OS. Your desktop, your world. Glass, gradients and a future we all dreamed of. Join the closed beta now.">
   <meta name="theme-color" content="#1a88d4">
 
+  <!-- Canonical. Without this, the desktop is reachable on both faero.net and
+       faerobeta.vercel.app, and search engines treat two domains serving byte-
+       identical pages as duplicates — splitting ranking between them and
+       picking a winner themselves, often the vercel.app one. This names the
+       brand domain as the real address and makes the preview deploy point home.
+
+       ⚠ These URLs use the APEX domain, faero.net, matching the app, the legal
+       pages and the Supabase auth redirect allowlist. At time of writing the
+       apex does not serve: it has a stale parking A record (162.255.119.204)
+       alongside the Vercel one (216.198.79.1), so TLS fails. www.faero.net is
+       fine. Removing that one DNS record fixes it. Until it is removed, these
+       tags point at a host that does not answer — see DEPLOY.md. -->
+  <link rel="canonical" href="https://faero.net/">
+
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://faerobeta.vercel.app/">
+  <meta property="og:url" content="https://faero.net/">
+  <meta property="og:site_name" content="Faero">
   <meta property="og:title" content="faero OS — Our Promised Future">
   <meta property="og:description" content="A real internet social OS. Your desktop, your world. Glass, gradients and a future we all dreamed of. Join the closed beta now.">
-  <meta property="og:image" content="https://faerobeta.vercel.app/preview.png">
+  <meta property="og:image" content="https://faero.net/preview.png">
+  <meta property="og:image:alt" content="The faero OS desktop — a glass-and-gradient social operating system.">
 
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://faerobeta.vercel.app/">
-  <meta property="twitter:title" content="faero OS — Our Promised Future">
-  <meta property="twitter:description" content="A real internet social OS. Your desktop, your world. Glass, gradients and a future we all dreamed of. Join the closed beta now.">
-  <meta property="twitter:image" content="https://faerobeta.vercel.app/preview.png">
+  <!-- Twitter. These are name=, not property=: the twitter:* tags are plain
+       meta names, and while crawlers have historically tolerated property=,
+       name= is what the spec asks for. -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="faero OS — Our Promised Future">
+  <meta name="twitter:description" content="A real internet social OS. Your desktop, your world. Glass, gradients and a future we all dreamed of. Join the closed beta now.">
+  <meta name="twitter:image" content="https://faero.net/preview.png">
+  <meta name="twitter:image:alt" content="The faero OS desktop — a glass-and-gradient social operating system.">
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>faero OS</title>
   <link rel="icon" type="image/webp" href="favicon.webp">
-  <meta name="description" content="faero â€” A retro-internet social OS. Your desktop, your world.">
+  <!-- A duplicate description meta tag used to sit here. Two of them on one
+       page is not additive — crawlers take the first and discard the rest, so
+       it never had any effect, and its text was mojibake ("faero â€”") from a
+       bad encoding round-trip. Removed rather than fixed: the one in the head
+       above is correct. -->
   <style>
     /* ============================================================
    AERONET OS â€” THEME TOKENS
