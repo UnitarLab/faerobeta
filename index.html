@@ -2989,9 +2989,13 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
 
       /* â”€â”€ WINDOW FACTORY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
       const openApp = (appId, extraData = {}) => {
-        // If already open, focus it
+        // If already open, restore (if minimized) then focus
         const existing = Object.values(windows).find(w => w.appId === appId);
-        if (existing) { focusWindow(existing.id); return; }
+        if (existing) {
+          if (existing.minimized) restoreWindow(existing.id);
+          else focusWindow(existing.id);
+          return;
+        }
 
         const app = APPS[appId];
         if (!app) return;
