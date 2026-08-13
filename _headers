@@ -1,0 +1,35 @@
+# Netlify / Cloudflare Pages equivalent of the "headers" block in vercel.json.
+# Each host reads only its own file, so both can sit here harmlessly.
+# Keep the two in sync if you change anything below.
+#
+# NOTE: there is deliberately no _redirects file in this repo. The domain root
+# is the faero OS desktop (index.html), which every host serves at "/" without
+# help. The social app is a window inside that OS and is also reachable directly at
+# /faero_v1_launch.html. An earlier copy of this config came from the
+# standalone-app repo and rewrote "/" to the social app — that would have
+# replaced the desktop with the app.
+
+/*
+  Content-Security-Policy: frame-ancestors 'self'
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Permissions-Policy: geolocation=(), payment=(), usb=(), interest-cohort=()
+
+# SAMEORIGIN / 'self' rather than DENY / 'none' on purpose: the OS frames the
+# social app same-origin, and DENY blocks that too. SAMEORIGIN still stops
+# third-party clickjacking.
+#
+# camera and microphone are intentionally NOT locked down — the Disposable
+# and Calendar/stampcam apps use getUserMedia, and the OS grants them via the
+# iframe allow= attribute. Blocking them here would kill both apps.
+
+/faero_v1_launch.html
+  Cache-Control: no-cache, must-revalidate
+
+/
+  Cache-Control: no-cache, must-revalidate
+
+/sw.js
+  Cache-Control: no-cache, no-store, must-revalidate

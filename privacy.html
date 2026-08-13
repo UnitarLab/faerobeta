@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Privacy Policy · Faero</title>
+<meta name="description" content="Privacy Policy for Faero, operated by Unitar LLC.">
+<meta name="theme-color" content="#1565C0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D1B2A" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="index,follow">
+<link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --leaf:#1565C0; --leaf2:#1976D2; --leaf3:#64B5F6; --sun:#00BCD4;
+  --bg:#E3F2FD; --bg2:#BBDEFB; --paper:#F7FBFF;
+  --text:#0D1B2A; --text2:#1A3A5C; --text3:#4A7FA5; --border:#BBDEFB;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:#0B1622; --bg2:#122234; --paper:#101E2E;
+    --text:#E8F1FA; --text2:#B8CFE4; --text3:#7C9DBC; --border:#1E3A52;
+  }
+}
+* { box-sizing:border-box; }
+body {
+  margin:0; background:var(--bg); color:var(--text);
+  font:400 16px/1.7 'Exo 2', system-ui, sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.topbar {
+  position:sticky; top:0; z-index:10;
+  display:flex; align-items:center; gap:12px;
+  padding:12px 20px;
+  background:linear-gradient(180deg, var(--leaf2), var(--leaf));
+  box-shadow:0 2px 14px rgba(13,27,42,.22);
+}
+.brand {
+  display:inline-flex; align-items:center; gap:8px;
+  color:#fff; font-weight:800; letter-spacing:.06em; font-size:15px;
+  text-decoration:none;
+}
+.brand img { width:26px; height:26px; border-radius:50%; }
+.back {
+  margin-left:auto; color:#fff; text-decoration:none; font-size:13.5px;
+  font-weight:600; padding:6px 13px; border-radius:999px;
+  border:1px solid rgba(255,255,255,.45); white-space:nowrap;
+}
+.back:hover { background:rgba(255,255,255,.16); }
+
+main {
+  max-width:820px; margin:0 auto; padding:30px 22px 90px;
+}
+.doc {
+  background:var(--paper); border:1px solid var(--border);
+  border-radius:16px; padding:34px 38px 42px;
+  box-shadow:0 4px 30px rgba(21,101,192,.09);
+}
+h1 { font-size:30px; font-weight:800; line-height:1.25; margin:0 0 6px; letter-spacing:-.01em; }
+h2 {
+  font-size:21px; font-weight:700; margin:38px 0 12px; padding-top:14px;
+  border-top:1px solid var(--border); scroll-margin-top:70px;
+}
+h3 { font-size:16.5px; font-weight:700; margin:24px 0 8px; color:var(--text2); scroll-margin-top:70px; }
+p { margin:0 0 14px; color:var(--text2); }
+strong { color:var(--text); font-weight:700; }
+a { color:var(--leaf); }
+a:hover { text-decoration:none; }
+ul, ol { margin:0 0 16px; padding-left:22px; color:var(--text2); }
+li { margin-bottom:7px; }
+hr { border:none; border-top:1px solid var(--border); margin:26px 0; }
+blockquote {
+  margin:0 0 18px; padding:13px 18px;
+  background:rgba(0,188,212,.09); border-left:4px solid var(--sun);
+  border-radius:0 10px 10px 0; color:var(--text2);
+}
+blockquote p:last-child { margin-bottom:0; }
+code {
+  font-family:ui-monospace, 'Space Mono', monospace; font-size:.88em;
+  background:var(--bg2); padding:2px 6px; border-radius:5px; color:var(--text);
+}
+.table-wrap { overflow-x:auto; margin:0 0 18px; }
+table { border-collapse:collapse; width:100%; font-size:14.5px; min-width:440px; }
+th, td { text-align:left; padding:9px 12px; border-bottom:1px solid var(--border); vertical-align:top; }
+th { background:var(--bg2); font-weight:700; color:var(--text); white-space:nowrap; }
+td { color:var(--text2); }
+.meta {
+  display:flex; flex-wrap:wrap; gap:8px; margin:0 0 22px;
+}
+.chip {
+  font-size:12px; font-weight:600; padding:4px 11px; border-radius:999px;
+  background:var(--bg2); color:var(--text2);
+}
+.toc {
+  background:var(--bg); border:1px solid var(--border);
+  border-radius:12px; padding:16px 20px; margin:0 0 26px;
+}
+.toc-title { font-size:12px; font-weight:700; text-transform:uppercase;
+  letter-spacing:.07em; color:var(--text3); margin-bottom:8px; }
+.toc ol { margin:0; padding-left:20px; }
+.toc li { margin-bottom:4px; }
+footer {
+  max-width:820px; margin:0 auto; padding:0 22px 50px;
+  color:var(--text3); font-size:13px; text-align:center;
+}
+footer a { color:var(--text3); }
+@media (max-width:620px) {
+  body { font-size:15.5px; }
+  .doc { padding:24px 20px 30px; border-radius:14px; }
+  main { padding:18px 12px 70px; }
+  h1 { font-size:25px; }
+  h2 { font-size:19px; }
+}
+@media print {
+  .topbar, .back, footer { display:none; }
+  body { background:#fff; }
+  .doc { border:none; box-shadow:none; padding:0; }
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="faero_v1_launch.html">
+    <img src="icons/icon.svg" alt="">FAERO
+  </a>
+  <a class="back" href="faero_v1_launch.html">&larr; Back to Faero</a>
+</header>
+<main>
+  <article class="doc">
+<h1 id="faero-privacy-policy">Faero Privacy Policy</h1>
+<p><strong>Effective Date:</strong> August 9, 2026 <strong>Last Updated:</strong> August 9, 2026 <strong>Version:</strong> 1.0 (Beta)</p>
+<p><strong>Contact:</strong> contact@unitar.app</p>
+<hr>
+<blockquote><p><strong>Beta Notice:</strong> Faero is in active beta. This policy describes how the platform handles personal data today. If it changes materially, you'll be asked to review it the next time you sign in.</p></blockquote>
+<hr>
+<h2 id="table-of-contents">Table of Contents</h2><div class="toc"><div class="toc-title">Contents</div><ol>
+<li><a href="#1-the-short-version">The short version</a></li>
+<li><a href="#2-who-we-are">Who we are</a></li>
+<li><a href="#3-what-we-collect">What we collect</a></li>
+<li><a href="#4-what-we-do-not-collect">What we do <em>not</em> collect</a></li>
+<li><a href="#5-why-we-process-it-legal-bases">Why we process it (legal bases)</a></li>
+<li><a href="#6-who-else-sees-your-data">Who else sees your data</a></li>
+<li><a href="#7-cookies-and-local-storage">Cookies and local storage</a></li>
+<li><a href="#8-how-long-we-keep-things">How long we keep things</a></li>
+<li><a href="#9-your-rights">Your rights</a></li>
+<li><a href="#10-deleting-your-account">Deleting your account</a></li>
+<li><a href="#11-security">Security</a></li>
+<li><a href="#12-children">Children</a></li>
+<li><a href="#13-international-transfers">International transfers</a></li>
+<li><a href="#14-changes-to-this-policy">Changes to this policy</a></li>
+</ol></div>
+<hr>
+<h2 id="1-the-short-version">1. The short version</h2>
+<ul>
+<li>We collect the minimum needed to run a social platform: your email, your</li>
+</ul>
+<p>profile, and the things you post.</p>
+<ul>
+<li>**We do not sell your data. We do not run ads. We do not track you across</li>
+</ul>
+<p>other websites.** There is no advertising pixel, no data broker, no behavioural profile being built about you.</p>
+<ul>
+<li>There is no algorithmic feed ranking your friends by engagement. Posts are</li>
+</ul>
+<p>shown newest-first.</p>
+<ul>
+<li>You can export everything you've made as JSON, and you can delete your</li>
+</ul>
+<p>account yourself from Settings → Account.</p>
+<hr>
+<h2 id="2-who-we-are">2. Who we are</h2>
+<p>Faero is an independent, small-scale social platform operated by <strong>Unitar LLC</strong>. For the purposes of the UK GDPR and EU GDPR, Unitar LLC is the <strong>data controller</strong> for personal data processed on the platform.</p>
+<p>Questions, requests, or complaints: <strong>contact@unitar.app</strong></p>
+<hr>
+<h2 id="3-what-we-collect">3. What we collect</h2>
+<h3 id="31-information-you-give-us">3.1 Information you give us</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>Data</th>
+<th>Where it comes from</th>
+<th>Why</th>
+</tr></thead><tbody>
+<tr><td>Email address</td><td>Sign-up</td><td>Authentication, password reset, essential service notices</td></tr>
+<tr><td>Password</td><td>Sign-up</td><td>Stored only as a salted hash by our auth provider — we never see it</td></tr>
+<tr><td>Display name, username</td><td>Sign-up / profile</td><td>Identifying you to others</td></tr>
+<tr><td>Bio, location, website, tags, avatar, banner</td><td>Profile editor</td><td>Shown on your public profile</td></tr>
+<tr><td>Posts, replies, messages, guestbook notes</td><td>You writing them</td><td>The platform itself</td></tr>
+<tr><td>Images you upload</td><td>Compose / profile editor</td><td>Displaying your content</td></tr>
+<tr><td>Commons you join and create</td><td>Your actions</td><td>Group membership</td></tr>
+<tr><td>Terms acceptance + age confirmation</td><td>Sign-up</td><td>Legal record that consent was given</td></tr>
+</tbody></table></div>
+<h3 id="32-information-generated-by-using-faero">3.2 Information generated by using Faero</h3>
+<ul>
+<li><strong>Likes, follows, bookmarks, blocks and mutes</strong> — needed to make those</li>
+</ul>
+<p>features work.</p>
+<ul>
+<li><strong>Reports you file</strong> — retained so moderators can act on them.</li>
+<li><strong>Timestamps</strong> — when things were created.</li>
+<li><strong>Moderation records</strong> — if you are banned, the reason and duration.</li>
+</ul>
+<h3 id="33-technical-information">3.3 Technical information</h3>
+<ul>
+<li><strong>Error reports.</strong> If something crashes, the app records the error message,</li>
+</ul>
+<p>the page you were on, your browser's user-agent string, and your user ID if you're signed in. This is kept in your own browser's memory by default and is only transmitted if a collector endpoint is configured, in which case it is used solely to fix bugs.</p>
+<ul>
+<li><strong>Server logs.</strong> Our hosting and database provider records standard request</li>
+</ul>
+<p>logs, which include IP addresses, for security and abuse prevention.</p>
+<hr>
+<h2 id="4-what-we-do-not-collect">4. What we do <em>not</em> collect</h2>
+<p>To be explicit, Faero does <strong>not</strong>:</p>
+<ul>
+<li>Sell, rent, or trade personal data to anyone, for any purpose.</li>
+<li>Serve advertising or embed advertising trackers.</li>
+<li>Build cross-site behavioural profiles or use third-party analytics tags.</li>
+<li>Read your direct messages for advertising, training, or profiling.</li>
+<li>Require your real name, phone number, date of birth, or government ID.</li>
+<li>Access your contacts, camera roll (beyond files you explicitly pick),</li>
+</ul>
+<p>microphone, or precise location.</p>
+<hr>
+<h2 id="5-why-we-process-it-legal-bases">5. Why we process it (legal bases)</h2>
+<p>Under GDPR Article 6, we rely on:</p>
+<ul>
+<li><strong>Contract</strong> — to give you the service you signed up for: your account,</li>
+</ul>
+<p>profile, feed, messages, and commons.</p>
+<ul>
+<li><strong>Legitimate interests</strong> — keeping the platform secure, preventing spam and</li>
+</ul>
+<p>abuse, moderating reported content, and fixing bugs. We've considered your rights and these are narrow, expected uses.</p>
+<ul>
+<li><strong>Consent</strong> — for anything optional, such as choosing to upload an avatar.</li>
+</ul>
+<p>You can withdraw consent by removing the content.</p>
+<ul>
+<li><strong>Legal obligation</strong> — where we must retain or disclose something by law.</li>
+</ul>
+<hr>
+<h2 id="6-who-else-sees-your-data">6. Who else sees your data</h2>
+<h3 id="61-other-users">6.1 Other users</h3>
+<p>Your profile, posts, replies, commons memberships, and guestbook entries are <strong>public</strong> — visible to anyone on the internet, signed in or not. Direct messages are visible to the participants in that conversation. Blocks and mutes are private to you; the other person is not notified.</p>
+<h3 id="62-processors-we-use">6.2 Processors we use</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>Provider</th>
+<th>What it handles</th>
+<th>Where</th>
+</tr></thead><tbody>
+<tr><td><strong>Supabase</strong></td><td>Database, authentication, realtime, transactional email</td><td>EU/US datacentres</td></tr>
+<tr><td><strong>Cloudinary</strong></td><td>Image hosting and delivery</td><td>Global CDN</td></tr>
+<tr><td><strong>Google Fonts</strong></td><td>Web font files</td><td>Global CDN — your IP is visible to Google when fonts load</td></tr>
+<tr><td><strong>jsDelivr</strong></td><td>The Supabase JavaScript client library</td><td>Global CDN</td></tr>
+</tbody></table></div>
+<p>These are processors acting on our instructions, except Google Fonts and jsDelivr, which are simple asset requests made by your browser.</p>
+<h3 id="63-legal-disclosure">6.3 Legal disclosure</h3>
+<p>We may disclose data if we are legally compelled to, or where it is genuinely necessary to prevent imminent harm. We will tell you unless we are legally prohibited from doing so.</p>
+<hr>
+<h2 id="7-cookies-and-local-storage">7. Cookies and local storage</h2>
+<p>Faero sets <strong>no advertising or analytics cookies</strong>.</p>
+<ul>
+<li><strong>Authentication tokens</strong> are stored in your browser's local storage by the</li>
+</ul>
+<p>auth provider. Without them you cannot stay signed in. These are strictly necessary.</p>
+<ul>
+<li><strong>Preferences</strong> — your chosen theme, palette, font, glass level, nav style,</li>
+</ul>
+<p>and accessibility toggles — are stored locally in your browser under keys beginning <code>faero-</code>. They never leave your device.</p>
+<ul>
+<li><strong>Service worker cache</strong> — the app caches its own files so it opens offline.</li>
+</ul>
+<p>It never caches API responses or your content.</p>
+<p>Clearing your browser storage signs you out and resets your preferences.</p>
+<hr>
+<h2 id="8-how-long-we-keep-things">8. How long we keep things</h2>
+<ul>
+<li><strong>Your content</strong> — until you delete it, or until you delete your account.</li>
+<li><strong>Account record</strong> — until deletion is requested.</li>
+<li><strong>Deleted accounts</strong> — content is erased immediately; the login record is</li>
+</ul>
+<p>removed within 30 days.</p>
+<ul>
+<li><strong>Moderation and ban records</strong> — retained while the ban is active and for a</li>
+</ul>
+<p>reasonable period afterwards to prevent evasion.</p>
+<ul>
+<li><strong>Reports</strong> — retained after resolution so patterns of behaviour remain</li>
+</ul>
+<p>visible to moderators.</p>
+<ul>
+<li><strong>Error reports</strong> — 90 days.</li>
+</ul>
+<hr>
+<h2 id="9-your-rights">9. Your rights</h2>
+<p>If you're in the UK, EU, or a jurisdiction with comparable law, you have the right to:</p>
+<ul>
+<li><strong>Access</strong> the personal data we hold about you.</li>
+<li><strong>Portability</strong> — receive it in a machine-readable format.</li>
+</ul>
+<p><em>Settings → Account → Download my data</em> gives you a JSON export instantly.</p>
+<ul>
+<li><strong>Rectification</strong> — correct anything wrong, via the profile editor.</li>
+<li><strong>Erasure</strong> — delete your account and content.</li>
+</ul>
+<p><em>Settings → Account → Delete my account.</em></p>
+<ul>
+<li><strong>Restriction</strong> and <strong>objection</strong> — ask us to stop certain processing.</li>
+<li><strong>Withdraw consent</strong> at any time, where consent is the basis.</li>
+<li><strong>Complain</strong> to your data protection authority. In the UK that is the ICO</li>
+</ul>
+<p>(ico.org.uk); in the EU, your national supervisory authority.</p>
+<p>Most of these you can exercise yourself in the app, immediately, without asking us. For anything else, email <strong>contact@unitar.app</strong> — we'll respond within 30 days.</p>
+<p>California residents have equivalent rights under the CCPA/CPRA, including the right to know, delete, and correct. <strong>We do not sell or share personal information as those terms are defined by the CCPA</strong>, so there is nothing to opt out of.</p>
+<hr>
+<h2 id="10-deleting-your-account">10. Deleting your account</h2>
+<p>Go to <strong>Settings → Account → Danger zone → Delete my account</strong> and confirm by typing your username.</p>
+<p>When you do:</p>
+<ol>
+<li>Your posts, replies, likes, follows, messages, guestbook entries, bookmarks,</li>
+</ol>
+<p>blocks, and commons memberships are deleted immediately.</p>
+<ol>
+<li>Your profile is anonymised — name, bio, avatar, banner, location, website</li>
+</ol>
+<p>and tags are erased.</p>
+<ol>
+<li>Your login record is removed, freeing your email address for reuse.</li>
+</ol>
+<p><strong>What can survive:</strong> replies other people wrote to your posts may remain as orphaned entries in their own threads, and messages you sent that other people still hold copies of in their conversations. Moderation records of a ban may be retained. We cannot recall content others have already screenshotted, quoted, or archived off-platform.</p>
+<p>Deletion is irreversible. Export your data first if you want a copy.</p>
+<hr>
+<h2 id="11-security">11. Security</h2>
+<ul>
+<li>All traffic is served over HTTPS.</li>
+<li>Passwords are hashed by the auth provider; we never store or see plaintext.</li>
+<li>Database access is governed by row-level security policies, so one account</li>
+</ul>
+<p>cannot read another's private data.</p>
+<ul>
+<li>Uploads are restricted to images, validated by file signature, and size-capped.</li>
+<li>Rate limits apply to posting, replying, and messaging to blunt spam.</li>
+</ul>
+<p>No system is perfectly secure. Faero is a small beta project run by a small team — please don't store anything on it that would be catastrophic to leak. If you find a vulnerability, email <strong>contact@unitar.app</strong> and we'll credit you if you'd like.</p>
+<hr>
+<h2 id="12-children">12. Children</h2>
+<p>Faero is not intended for children under 13, and we don't knowingly collect their data. In the EU and UK, where the digital age of consent is 16 in some member states, users under that age need a parent or guardian's consent.</p>
+<p>If you believe a child under 13 has an account, email <strong>contact@unitar.app</strong> and we will delete it promptly.</p>
+<hr>
+<h2 id="13-international-transfers">13. International transfers</h2>
+<p>Our providers operate globally, so your data may be processed outside your home country, including in the United States. Where data leaves the UK/EEA, transfers rely on the providers' Standard Contractual Clauses and equivalent safeguards.</p>
+<hr>
+<h2 id="14-changes-to-this-policy">14. Changes to this policy</h2>
+<p>If we change this policy in a way that materially affects you, we'll bump the version, and you'll be asked to review and accept it the next time you sign in. Minor clarifications will just update the "Last Updated" date above.</p>
+<hr>
+<p><em>Faero is a solarpunk commons. We think the ordinary business model of social media — surveillance, ranking, and resale — is a bad deal for everyone in it. This policy is our attempt to write down that we're not doing it.</em></p>
+  </article>
+</main>
+<footer>
+  Faero is operated by <strong>Unitar LLC</strong> &middot;
+  <a href="terms.html">Terms</a> &middot;
+  <a href="privacy.html">Privacy</a> &middot;
+  <a href="mailto:contact@unitar.app">Contact</a>
+</footer>
+</body>
+</html>

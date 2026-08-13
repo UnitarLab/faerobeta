@@ -1,0 +1,591 @@
+.profile-native {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.profile-native__avatar-system {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 2px;
+}
+
+.profile-native__avatar-canvas-wrap,
+.profile-native__avatar-canvas-wrap canvas,
+.profile-native__avatar-inner,
+.profile-native__avatar-inner img {
+  border-radius: 50%;
+}
+
+.profile-native__avatar-inner {
+  font: 900 28px var(--font-body);
+}
+
+.profile-native__avatar-online {
+  top: -2px !important;
+  left: -2px !important;
+  right: auto !important;
+  bottom: auto !important;
+}
+
+.profile-native__yt-player {
+  border-radius: calc(var(--ui-radius) - 8px);
+  border: 1px solid rgba(144,202,249,0.4);
+  background: linear-gradient(135deg, #1565C0 0%, #0a4a9c 50%, #00838f 100%);
+  color: #fff;
+  padding: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-native__yt-player::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,.04) 10px, rgba(255,255,255,.04) 11px);
+}
+
+.profile-native__yt-player > * {
+  position: relative;
+  z-index: 1;
+}
+
+.profile-native__yt-hidden {
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.profile-native__yt-now {
+  font: 800 8px 'Space Mono', monospace;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.64);
+  margin-bottom: 8px;
+}
+
+.profile-native__yt-title {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.profile-native__yt-artist {
+  margin-top: 2px;
+  font-size: 11px;
+  color: rgba(255,255,255,.78);
+}
+
+.profile-native__yt-status {
+  margin-top: 8px;
+  font: 700 9px 'Space Mono', monospace;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.62);
+}
+
+.profile-native__yt-progress {
+  margin-top: 10px;
+  height: 4px;
+  border-radius: 4px;
+  background: rgba(255,255,255,.18);
+  overflow: hidden;
+}
+
+.profile-native__yt-progress-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--sun2), var(--sun));
+}
+
+.profile-native__yt-time {
+  margin-top: 5px;
+  display: flex;
+  justify-content: space-between;
+  font: 400 9px 'Space Mono', monospace;
+  color: rgba(255,255,255,.62);
+}
+
+.profile-native__yt-controls {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.profile-native__yt-btn {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,.12);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-native__yt-btn--main {
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,.94);
+  color: var(--leaf);
+}
+
+.profile-native__yt-player--music {
+  padding: 14px 16px;
+  border: 1px solid rgba(0,0,0,0.28);
+  background: linear-gradient(180deg, #4f4f4f 0%, #1f1f1f 48%, #4c4c4c 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.18);
+}
+
+.profile-native__yt-player--music::before {
+  display: none;
+}
+
+.profile-native__yt-player--music .profile-native__yt-title {
+  font-size: 20px;
+  line-height: 1.1;
+}
+
+.profile-native__yt-player--music .profile-native__yt-artist {
+  font-size: 13px;
+  color: rgba(255,255,255,.86);
+}
+
+.profile-native__yt-player--music .profile-native__yt-status,
+.profile-native__yt-player--music .profile-native__yt-time {
+  color: rgba(255,255,255,.72);
+}
+
+.profile-native__yt-player--music .profile-native__yt-progress {
+  margin-top: 8px;
+  height: 5px;
+  background: rgba(255,255,255,.2);
+}
+
+.profile-native__conn-mini {
+  background: linear-gradient(180deg, rgba(187,222,251,.62), rgba(144,202,249,.34));
+  border: 1px solid rgba(144,202,249,.55);
+  border-radius: calc(var(--ui-radius) - 8px);
+  overflow: hidden;
+  padding: 12px 10px 10px;
+}
+
+.profile-native__conn-svg {
+  width: 100%;
+  height: 140px;
+  display: block;
+}
+
+.profile-native__conn-svg line {
+  stroke: rgba(21,101,192,.28);
+  stroke-width: 1.2;
+}
+
+.profile-native__conn-svg text {
+  fill: #fff;
+  font-family: var(--font-body);
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.profile-native__conn-node {
+  opacity: .88;
+}
+
+.profile-native__conn-node--core { fill: #0d5ca8; }
+.profile-native__conn-node--green { fill: #2e7d32; }
+.profile-native__conn-node--blue { fill: #1565C0; }
+.profile-native__conn-node--clay { fill: #0277BD; }
+.profile-native__conn-node--leaf { fill: #1976D2; }
+.profile-native__conn-node--teal { fill: #00838f; }
+
+.profile-native__post {
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--glass);
+  box-shadow: var(--shadow);
+}
+
+.profile-native__post {
+  overflow: hidden;
+}
+
+.profile-native__post-head {
+  display: flex;
+  gap: 11px;
+  padding: 14px 16px 0;
+}
+
+.profile-native__post-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.profile-native__post-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: calc(var(--ui-radius) - 8px);
+  background: linear-gradient(135deg, var(--leaf2), var(--sun));
+  font-size: 18px;
+}
+
+.profile-native__post-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.profile-native__post-sub {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+.profile-native__post-copy {
+  padding: 10px 16px;
+  font-size: 13px;
+  line-height: 1.72;
+  color: var(--text2);
+}
+
+.profile-native__post-media {
+  margin: 0 16px 12px;
+  height: 190px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: linear-gradient(135deg, var(--bg2), var(--bg3));
+}
+
+.profile-native__post-tags,
+.profile-native__post-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.profile-native__post-tags {
+  padding: 0 16px 12px;
+}
+
+.profile-native__post-chip {
+  padding: 3px 9px;
+  border-radius: var(--ui-chip-radius);
+  background: rgba(2,119,189,.08);
+  color: var(--clay);
+  font-size: 11px;
+}
+
+.profile-native__post-actions {
+  padding: 10px 16px 12px;
+  border-top: 1px solid rgba(144,202,249,0.28);
+}
+
+.profile-native__post-action {
+  padding: 5px 9px;
+  border-radius: var(--ui-chip-radius);
+  color: var(--text3);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ── Music View — faero design system ── */
+
+.profile-native__music-shell {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--glass);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+}
+
+.profile-native__music-brandbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+}
+
+.profile-native__music-brand {
+  font: 900 36px/1 'Lora', Georgia, serif;
+  letter-spacing: -1.5px;
+  color: var(--leaf);
+  text-transform: lowercase;
+}
+
+.profile-native__music-grid {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 18px;
+  padding: 14px;
+  align-items: start;
+}
+
+.profile-native__music-left,
+.profile-native__music-right {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.profile-native__music-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--glass);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.profile-native__music-card--profile {
+  padding: 20px 16px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 7px;
+  overflow: visible;
+}
+
+.profile-native__music-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 7px 12px;
+  background: linear-gradient(180deg, var(--leaf3), var(--leaf2));
+  border-bottom: 1px solid var(--border);
+  border-radius: 14px 14px 0 0;
+  color: #fff;
+  font: 700 10px 'Space Mono', monospace;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.profile-native__music-head span {
+  font-weight: 400;
+  font-size: 9px;
+  opacity: 0.75;
+}
+
+.profile-native__music-name {
+  font: 700 20px/1.15 'Lora', Georgia, serif;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+
+.profile-native__music-genre {
+  font: 400 11.5px/1.5 var(--font-body);
+  color: var(--text3);
+  font-style: italic;
+}
+
+.profile-native__music-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.profile-native__music-avatar .profile-native__avatar-system {
+  width: 80px;
+  height: 80px;
+}
+
+.profile-native__music-avatar .profile-native__avatar-inner {
+  font-size: 36px;
+}
+
+.profile-native__music-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font: 400 11px var(--font-body);
+  color: var(--text3);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.profile-native__music-online {
+  color: #2d9a2d;
+  font-weight: 700;
+}
+
+.profile-native__music-table {
+  display: grid;
+  grid-template-columns: 108px minmax(0, 1fr);
+}
+
+.profile-native__music-table > div {
+  padding: 6px 10px;
+  border-top: 1px solid var(--border);
+  font: 400 12px/1.5 var(--font-body);
+  color: var(--text2);
+}
+
+.profile-native__music-row-label {
+  background: var(--bg2);
+  color: var(--text3);
+  font: 700 9px 'Space Mono', monospace;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.profile-native__music-player-wrap {
+  padding: 10px;
+  background: linear-gradient(180deg, var(--bg2), var(--glass));
+}
+
+.profile-native__music-player-shell {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg2);
+  overflow: hidden;
+}
+
+.profile-native__music-player-top {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+}
+
+.profile-native__music-player-art {
+  min-height: 132px;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.12), transparent 52%),
+    linear-gradient(180deg, #050505, #1a1032 52%, #0a0a0a);
+  position: relative;
+}
+
+.profile-native__music-player-art-badge {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  color: #fff;
+  font: 900 26px/1 'Lora', Georgia, serif;
+  letter-spacing: -1px;
+  text-transform: lowercase;
+}
+
+.profile-native__music-controls-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.profile-native__music-controls-row .profile-native__yt-btn {
+  width: 34px;
+  height: 34px;
+  background: linear-gradient(180deg, var(--bg), var(--bg2));
+  color: var(--leaf);
+  border: 1px solid var(--border);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
+}
+
+.profile-native__music-controls-row .profile-native__yt-btn--main {
+  width: 44px;
+  height: 44px;
+}
+
+.profile-native__music-track-panel {
+  max-width: 320px;
+}
+
+.profile-native__music-playlist {
+  max-height: 290px;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-top: 8px;
+}
+
+.profile-native__music-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  text-align: left;
+  border: 0;
+  border-top: 1px solid var(--border);
+  padding: 10px 12px;
+  background: var(--glass);
+  cursor: pointer;
+}
+
+.profile-native__music-row:nth-child(even) {
+  background: var(--bg2);
+}
+
+.profile-native__music-row.is-active {
+  background: linear-gradient(180deg, rgba(100,181,246,0.14), rgba(21,101,192,0.06));
+  border-color: var(--leaf3);
+}
+
+.profile-native__music-row-copy {
+  min-width: 0;
+}
+
+.profile-native__music-row-title {
+  font: 700 13px var(--font-body);
+  color: var(--text);
+}
+
+.profile-native__music-row-artist {
+  margin-top: 2px;
+  font: 400 11px 'Space Mono', monospace;
+  color: var(--text3);
+}
+
+.profile-native__music-row-plays {
+  flex-shrink: 0;
+  font: 700 10px 'Space Mono', monospace;
+  color: var(--text3);
+}
+
+.profile-native__music-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 8px 2px 0;
+  font: 400 11px 'Space Mono', monospace;
+  color: var(--text3);
+  text-transform: lowercase;
+}
+
+.profile-native__music-tab--active {
+  color: var(--leaf);
+  font-weight: 700;
+}
+
+.profile-native__music-about {
+  padding: 12px;
+  font: 400 13px/1.68 var(--font-body);
+  color: var(--text2);
+}
+
+@media (max-width: 1100px) {
+  .profile-native__music-grid,
+  .profile-native__music-player-top {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-native__music-tabs {
+    gap: 8px;
+  }
+
+  .profile-native__music-table {
+    grid-template-columns: 1fr;
+  }
+}

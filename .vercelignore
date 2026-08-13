@@ -1,0 +1,56 @@
+# Files that exist in the repo but must never be served on the public domain.
+# Vercel deploys the whole repo by default, so without this file every path
+# below is fetchable by anyone who guesses the URL. Nothing here is linked
+# from the site — that is not protection; unlinked is not unpublished.
+#
+# Keep in sync with the "Do not upload these" table in DEPLOY.md.
+
+# ── NOT ignored: beta/ ───────────────────────────────────────────────────
+# beta/ is deliberately NOT listed here. It is the closed-beta waitlist page
+# at /beta, it is still linked from the desktop splash, and it stays live.
+#
+# One thing to confirm about it, though. It carries a live publishable key for
+# Supabase project pvqxsgqqlupldroooyhy — a DIFFERENT project from the app
+# (fifnkgpxtnmjycxkkqhz), and one that never received the RLS migrations in
+# sql/. It writes signup email / name / tiktok into a `waitlist` table.
+# Anonymous SELECT there returns 200 with zero rows, which from outside is
+# indistinguishable from an empty table, because Supabase filters rows rather
+# than refusing the request. Check in the dashboard that `waitlist` has SELECT
+# restricted to staff. If it does not, every signup email is readable by
+# anyone who reads the page source for that key.
+
+# ── Server-side code ─────────────────────────────────────────────────────
+# No secrets are hardcoded in these (verified: only Deno.env.get names), so
+# this is not a credential leak. But the migrations spell out every RLS policy
+# on the database, and there is no reason to hand that map out.
+sql/
+supabase/
+
+# ── Local build tooling ──────────────────────────────────────────────────
+patch*.py
+build_legal.py
+_devserver.py
+_rasterize.html
+.claude/
+
+# ── Design experiments and prototypes ────────────────────────────────────
+# Not maintained, not security-reviewed, and some talk to a live database.
+_glasstest/
+faero_koi_30_v3.html
+
+# NOT ignored: faero_liquid_metal_v4.html. It looks like a prototype and was
+# listed here, but index.html:3828 loads it as the animated logo inside the
+# closed-beta popup (<iframe id="beta-logo-frame">). Ignoring it deploys an
+# index.html that references a file the deployment does not contain, so the
+# popup renders with an empty hole where the logo is — and only in production,
+# never locally, since locally the file is right there. Before removing it from
+# the deploy, remove the iframe that needs it.
+
+# ── Source documents ─────────────────────────────────────────────────────
+# privacy.html / terms.html are the rendered pages and DO ship. These are the
+# markdown they are generated from.
+PRIVACY_POLICY.md
+TERMS_OF_SERVICE.md
+DEPLOY.md
+BETA_LAUNCH_CHECKLIST.md
+README.md

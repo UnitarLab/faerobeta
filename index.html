@@ -2937,7 +2937,17 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
 
       /* â”€â”€ APP REGISTRY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
       const APPS = {
-        faero: { title: 'faero', icon: '&#127760;', file: 'apps/faero.html', w: 1320, h: 840, minW: 700, minH: 500 },
+        /* The real, Supabase-backed social app — not apps/faero.html, which was a
+           mock with no backend. Lives at the repo root, not under apps/, because it
+           is ALSO a standalone public page: its Supabase auth redirect URLs, PWA
+           start_url and legal links are all registered against /faero_v1_launch.html.
+           Moving it under apps/ would break password reset and email confirmation. */
+        /* maximized: opens full-screen. It is a real social feed, not a utility —
+           at the windowed 1320x840 it letterboxes badly on laptop screens. Set here
+           on the app rather than at each openApp('faero') call site so every entry
+           point (icon, Start menu, dock, right-click, postMessage) behaves the same.
+           The window is still a normal window: restore/resize work as usual. */
+        faero: { title: 'faero', icon: '&#127760;', file: 'faero_v1_launch.html', w: 1320, h: 840, minW: 700, minH: 500, maximized: true },
         photobooth: { title: 'Disposable', icon: 'icons/photo.svg', file: 'apps/photobooth.html', w: 1032, h: 768, minW: 640, minH: 480 },
         winamp: { title: 'Winamp', icon: '&#9836;', file: 'apps/winamp.html', w: 528, h: 480, minW: 280, minH: 340 },
         chat: { title: 'Chat', icon: 'icons/chat.svg', file: 'apps/chat.html', w: 864, h: 648, minW: 500, minH: 400 },
@@ -3020,8 +3030,8 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
         windows[id] = winObj;
         addToTaskbar(id, app);
 
-        // Auto-maximize if requested
-        if (extraData && extraData.maximized) {
+        // Auto-maximize if requested per-call, or if the app always opens maximized.
+        if ((extraData && extraData.maximized) || app.maximized) {
           toggleMaximize(id);
         } else {
           focusWindow(id);
@@ -3260,7 +3270,12 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
             if (!e.shiftKey) selectedIcons.clear();
             selectedIcons.add(id);
             $$('.desktop-icon').forEach(el => el.classList.toggle('selected', selectedIcons.has(el.dataset.appId)));
-            if (id === 'faero') { showBetaPopup(); } else if (id === 'winamp') { window.postMessage({ type: 'LAUNCH_WEBAMP' }, '*'); } else { openApp(id); }
+            // 'faero' used to be special-cased here to showBetaPopup(), so the icon
+            // advertised the waitlist instead of opening anything — the app was
+            // unreachable from the desktop even after it shipped. It now opens like
+            // every other app; access control is the app's own job (it has real auth,
+            // and signed-out visitors get its sign-in pane, not a broken window).
+            if (id === 'winamp') { window.postMessage({ type: 'LAUNCH_WEBAMP' }, '*'); } else { openApp(id); }
           });
 
           // Drag
@@ -4048,9 +4063,25 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
       const p = document.getElementById('beta-popup');
       if (p) { p.classList.add('dismissed'); setTimeout(() => { p.style.display = 'none'; p.classList.remove('dismissed'); }, 420); }
     }
-    // Show popup shortly after desktop loads on desktop only
+    // The closed-beta splash is HIDDEN BY DEFAULT — it no longer auto-opens.
+    // Nothing about it has been deleted: the markup, the styles, the logo frame
+    // and the waitlist link to faero.net/beta are all still here and still work.
+    // Only the automatic "throw a modal over the desktop on load" behaviour is off,
+    // because the app it was gating is now open to visitors from the desktop icon.
+    //
+    // It is still reachable three ways, so it can come back without a rewrite:
+    //   - showBetaPopup()               — global, e.g. from a Start-menu item
+    //   - ?beta=1 on the desktop URL    — a shareable link for inviting people
+    //   - restore the auto-show by uncommenting the block below
+    //
+    // To auto-show it again, once per visitor:
+    // document.addEventListener('DOMContentLoaded', () => {
+    //   if (window.innerWidth > 767 && !AeroStorage.get('betaSplashSeen', false)) {
+    //     setTimeout(() => { showBetaPopup(); AeroStorage.set('betaSplashSeen', true); }, 900);
+    //   }
+    // });
     document.addEventListener('DOMContentLoaded', () => {
-      if (window.innerWidth > 767) {
+      if (new URLSearchParams(location.search).get('beta') === '1') {
         setTimeout(showBetaPopup, 900);
       }
     });

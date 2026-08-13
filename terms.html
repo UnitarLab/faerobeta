@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Terms of Service · Faero</title>
+<meta name="description" content="Terms of Service for Faero, operated by Unitar LLC.">
+<meta name="theme-color" content="#1565C0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D1B2A" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="index,follow">
+<link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --leaf:#1565C0; --leaf2:#1976D2; --leaf3:#64B5F6; --sun:#00BCD4;
+  --bg:#E3F2FD; --bg2:#BBDEFB; --paper:#F7FBFF;
+  --text:#0D1B2A; --text2:#1A3A5C; --text3:#4A7FA5; --border:#BBDEFB;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:#0B1622; --bg2:#122234; --paper:#101E2E;
+    --text:#E8F1FA; --text2:#B8CFE4; --text3:#7C9DBC; --border:#1E3A52;
+  }
+}
+* { box-sizing:border-box; }
+body {
+  margin:0; background:var(--bg); color:var(--text);
+  font:400 16px/1.7 'Exo 2', system-ui, sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.topbar {
+  position:sticky; top:0; z-index:10;
+  display:flex; align-items:center; gap:12px;
+  padding:12px 20px;
+  background:linear-gradient(180deg, var(--leaf2), var(--leaf));
+  box-shadow:0 2px 14px rgba(13,27,42,.22);
+}
+.brand {
+  display:inline-flex; align-items:center; gap:8px;
+  color:#fff; font-weight:800; letter-spacing:.06em; font-size:15px;
+  text-decoration:none;
+}
+.brand img { width:26px; height:26px; border-radius:50%; }
+.back {
+  margin-left:auto; color:#fff; text-decoration:none; font-size:13.5px;
+  font-weight:600; padding:6px 13px; border-radius:999px;
+  border:1px solid rgba(255,255,255,.45); white-space:nowrap;
+}
+.back:hover { background:rgba(255,255,255,.16); }
+
+main {
+  max-width:820px; margin:0 auto; padding:30px 22px 90px;
+}
+.doc {
+  background:var(--paper); border:1px solid var(--border);
+  border-radius:16px; padding:34px 38px 42px;
+  box-shadow:0 4px 30px rgba(21,101,192,.09);
+}
+h1 { font-size:30px; font-weight:800; line-height:1.25; margin:0 0 6px; letter-spacing:-.01em; }
+h2 {
+  font-size:21px; font-weight:700; margin:38px 0 12px; padding-top:14px;
+  border-top:1px solid var(--border); scroll-margin-top:70px;
+}
+h3 { font-size:16.5px; font-weight:700; margin:24px 0 8px; color:var(--text2); scroll-margin-top:70px; }
+p { margin:0 0 14px; color:var(--text2); }
+strong { color:var(--text); font-weight:700; }
+a { color:var(--leaf); }
+a:hover { text-decoration:none; }
+ul, ol { margin:0 0 16px; padding-left:22px; color:var(--text2); }
+li { margin-bottom:7px; }
+hr { border:none; border-top:1px solid var(--border); margin:26px 0; }
+blockquote {
+  margin:0 0 18px; padding:13px 18px;
+  background:rgba(0,188,212,.09); border-left:4px solid var(--sun);
+  border-radius:0 10px 10px 0; color:var(--text2);
+}
+blockquote p:last-child { margin-bottom:0; }
+code {
+  font-family:ui-monospace, 'Space Mono', monospace; font-size:.88em;
+  background:var(--bg2); padding:2px 6px; border-radius:5px; color:var(--text);
+}
+.table-wrap { overflow-x:auto; margin:0 0 18px; }
+table { border-collapse:collapse; width:100%; font-size:14.5px; min-width:440px; }
+th, td { text-align:left; padding:9px 12px; border-bottom:1px solid var(--border); vertical-align:top; }
+th { background:var(--bg2); font-weight:700; color:var(--text); white-space:nowrap; }
+td { color:var(--text2); }
+.meta {
+  display:flex; flex-wrap:wrap; gap:8px; margin:0 0 22px;
+}
+.chip {
+  font-size:12px; font-weight:600; padding:4px 11px; border-radius:999px;
+  background:var(--bg2); color:var(--text2);
+}
+.toc {
+  background:var(--bg); border:1px solid var(--border);
+  border-radius:12px; padding:16px 20px; margin:0 0 26px;
+}
+.toc-title { font-size:12px; font-weight:700; text-transform:uppercase;
+  letter-spacing:.07em; color:var(--text3); margin-bottom:8px; }
+.toc ol { margin:0; padding-left:20px; }
+.toc li { margin-bottom:4px; }
+footer {
+  max-width:820px; margin:0 auto; padding:0 22px 50px;
+  color:var(--text3); font-size:13px; text-align:center;
+}
+footer a { color:var(--text3); }
+@media (max-width:620px) {
+  body { font-size:15.5px; }
+  .doc { padding:24px 20px 30px; border-radius:14px; }
+  main { padding:18px 12px 70px; }
+  h1 { font-size:25px; }
+  h2 { font-size:19px; }
+}
+@media print {
+  .topbar, .back, footer { display:none; }
+  body { background:#fff; }
+  .doc { border:none; box-shadow:none; padding:0; }
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="faero_v1_launch.html">
+    <img src="icons/icon.svg" alt="">FAERO
+  </a>
+  <a class="back" href="faero_v1_launch.html">&larr; Back to Faero</a>
+</header>
+<main>
+  <article class="doc">
+<h1 id="faero-terms-of-service">Faero Terms of Service</h1>
+<p><strong>Effective Date:</strong> August 9, 2026 <strong>Last Updated:</strong> August 9, 2026 <strong>Version:</strong> 2026-08-09 (Beta)</p>
+<hr>
+<blockquote><p><strong>Beta Notice:</strong> Faero is currently in active beta development. Features, functionality, and these Terms may change as the platform evolves. Continued use after any update constitutes acceptance of the revised Terms.</p></blockquote>
+<hr>
+<h2 id="table-of-contents">Table of Contents</h2><div class="toc"><div class="toc-title">Contents</div><ol>
+<li><a href="#1-acceptance-of-terms">Acceptance of Terms</a></li>
+<li><a href="#2-eligibility">Eligibility</a></li>
+<li><a href="#3-description-of-service">Description of Service</a></li>
+<li><a href="#4-user-accounts">User Accounts</a></li>
+<li><a href="#5-user-content">User Content</a></li>
+<li><a href="#6-prohibited-conduct">Prohibited Conduct</a></li>
+<li><a href="#7-intellectual-property">Intellectual Property</a></li>
+<li><a href="#8-privacy--data">Privacy &amp; Data</a></li>
+<li><a href="#9-digital-millennium-copyright-act-dmca">Digital Millennium Copyright Act (DMCA)</a></li>
+<li><a href="#10-third-party-services--links">Third-Party Services &amp; Links</a></li>
+<li><a href="#11-disclaimers">Disclaimers</a></li>
+<li><a href="#12-limitation-of-liability">Limitation of Liability</a></li>
+<li><a href="#13-indemnification">Indemnification</a></li>
+<li><a href="#14-termination">Termination</a></li>
+<li><a href="#15-governing-law--dispute-resolution">Governing Law &amp; Dispute Resolution</a></li>
+<li><a href="#16-modifications-to-these-terms">Modifications to These Terms</a></li>
+<li><a href="#17-miscellaneous">Miscellaneous</a></li>
+<li><a href="#18-contact-information">Contact Information</a></li>
+</ol></div>
+<hr>
+<h2 id="1-acceptance-of-terms">1. Acceptance of Terms</h2>
+<p>By accessing or using Faero ("the Platform," "Service," "we," "us," or "our"), operated by Unitar LLC, you ("User," "you") agree to be bound by these Terms of Service ("Terms"), our Privacy Policy, and any additional guidelines or policies incorporated herein by reference.</p>
+<p><strong>If you do not agree to these Terms, you must immediately stop using the Platform.</strong></p>
+<p>These Terms constitute a legally binding agreement between you and Unitar LLC. Your continued use of the Platform after any modifications to these Terms constitutes acceptance of those changes.</p>
+<hr>
+<h2 id="2-eligibility">2. Eligibility</h2>
+<h3 id="21-age-requirements">2.1 Age Requirements</h3>
+<p>You must be at least <strong>13 years of age</strong> to use Faero. If you are between 13 and 18 years old (or the applicable age of majority in your jurisdiction), you may only use the Platform with the consent and supervision of a parent or legal guardian who agrees to be bound by these Terms on your behalf.</p>
+<p><strong>We do not knowingly collect or solicit personal information from children under 13.</strong> If we discover that a child under 13 has provided personal information, we will promptly delete such information. If you believe a child under 13 has used our Platform, please contact us immediately at contact@unitar.app.</p>
+<h3 id="22-capacity">2.2 Capacity</h3>
+<p>By using Faero, you represent and warrant that:</p>
+<ul>
+<li>You have the legal capacity to enter into a binding agreement</li>
+<li>You are not prohibited from using the Platform under applicable law</li>
+<li>You have not been previously banned or suspended from the Platform</li>
+</ul>
+<hr>
+<h2 id="3-description-of-service">3. Description of Service</h2>
+<p>Faero is a social media platform that allows users to:</p>
+<ul>
+<li>Create and customize personal profiles with avatars, badges, and seasonal cosmetics</li>
+<li>Post content including status updates, images, videos, music, and links</li>
+<li>Interact with other users' content via reactions and comments</li>
+<li>Explore content via curated and algorithmic feeds</li>
+<li>Customize their experience through themes and visual settings</li>
+</ul>
+<h3 id="31-beta-status">3.1 Beta Status</h3>
+<p>Faero is currently in <strong>beta</strong>. This means:</p>
+<ul>
+<li>Features may be added, modified, or removed at any time without notice</li>
+<li>The Service may be interrupted, suspended, or discontinued</li>
+<li>Bugs, errors, and instability may occur</li>
+<li>We offer no guarantee of uptime, data retention, or feature continuity during the beta period</li>
+</ul>
+<h3 id="32-how-your-data-is-stored">3.2 How Your Data Is Stored</h3>
+<p>Faero stores your account and content <strong>on our servers</strong>. Specifically:</p>
+<ul>
+<li>Your account, profile, posts, replies, messages, commons memberships and</li>
+</ul>
+<p>moderation records are stored in our hosted database (Supabase).</p>
+<ul>
+<li>Images you upload are stored and delivered by our image host (Cloudinary).</li>
+<li>Only your <strong>display preferences</strong> — theme, palette, font, glass level, and</li>
+</ul>
+<p>accessibility toggles — are stored locally in your browser. Clearing your browser storage resets those preferences and signs you out; it does <strong>not</strong> delete your account or your content.</p>
+<ul>
+<li>Your content is synced across every device you sign in on.</li>
+</ul>
+<p>Because Faero is in beta, we offer <strong>no guarantee of uptime, backup, or data retention</strong>. Keep your own copy of anything you would be upset to lose — <em>Settings → Account → Download my data</em> exports everything as JSON at any time.</p>
+<p>For the full detail of what we collect and why, see the <a href="privacy.html">Privacy Policy</a>.</p>
+<hr>
+<h2 id="4-user-accounts">4. User Accounts</h2>
+<h3 id="41-account-creation">4.1 Account Creation</h3>
+<p>Currently, Faero operates as a local-profile system. You are responsible for:</p>
+<ul>
+<li>The accuracy of any profile information you provide</li>
+<li>Maintaining the security of your local device and browser</li>
+<li>All activity that occurs under your profile</li>
+</ul>
+<h3 id="42-username-identity">4.2 Username &amp; Identity</h3>
+<ul>
+<li>You may not impersonate any real person, organization, or other Faero user</li>
+<li>You may not create a username or display name that is defamatory, obscene, or otherwise violates these Terms</li>
+<li>We reserve the right to require you to change a username or handle at our discretion</li>
+</ul>
+<h3 id="43-account-security">4.3 Account Security</h3>
+<p>You are solely responsible for maintaining the confidentiality of any credentials or access to your local profile. Notify us immediately if you suspect unauthorized use of your account.</p>
+<hr>
+<h2 id="5-user-content">5. User Content</h2>
+<h3 id="51-your-content">5.1 Your Content</h3>
+<p>"User Content" means any content you post, upload, share, or otherwise make available through the Platform, including but not limited to: text, images, video, audio, links, profile information, avatars, and comments.</p>
+<h3 id="52-license-grant-to-faero">5.2 License Grant to Faero</h3>
+<p>By submitting User Content to Faero, you grant Unitar LLC a <strong>worldwide, non-exclusive, royalty-free, sublicensable, and transferable license</strong> to use, reproduce, modify, adapt, publish, translate, distribute, display, and perform your User Content in connection with operating, improving, and promoting the Platform.</p>
+<p>This license exists only for as long as you maintain your content on the Platform and terminates when you delete your content, subject to reasonable technical and backup retention periods.</p>
+<h3 id="53-you-retain-ownership">5.3 You Retain Ownership</h3>
+<p>You retain all ownership rights in your User Content. The license above does not transfer ownership to us.</p>
+<h3 id="54-your-representations">5.4 Your Representations</h3>
+<p>By posting User Content, you represent and warrant that:</p>
+<ul>
+<li>You own or have all necessary rights, licenses, and permissions to post the content</li>
+<li>The content does not infringe any third party's intellectual property, privacy, publicity, or other rights</li>
+<li>The content does not violate any applicable law or regulation</li>
+<li>You have obtained any necessary consents from individuals depicted in the content</li>
+</ul>
+<h3 id="55-content-moderation">5.5 Content Moderation</h3>
+<p>We reserve the right (but not the obligation) to review, monitor, remove, or refuse any User Content at our sole discretion, at any time, for any or no reason, without notice or liability to you.</p>
+<hr>
+<h2 id="6-prohibited-conduct">6. Prohibited Conduct</h2>
+<p>You agree not to use Faero to:</p>
+<h3 id="61-illegal-harmful-content">6.1 Illegal &amp; Harmful Content</h3>
+<ul>
+<li>Post, share, or distribute child sexual abuse material (CSAM) or any content that sexually exploits minors — <strong>this is a zero-tolerance policy and will be reported to law enforcement and the National Center for Missing &amp; Exploited Children (NCMEC)</strong></li>
+<li>Facilitate, promote, or engage in illegal activity of any kind</li>
+<li>Post content that constitutes harassment, stalking, threats, or incitement to violence</li>
+<li>Defame, libel, or make false factual claims about any person or entity</li>
+</ul>
+<h3 id="62-intellectual-property-violations">6.2 Intellectual Property Violations</h3>
+<ul>
+<li>Post content that infringes copyrights, trademarks, patents, or other intellectual property rights</li>
+<li>Reproduce, redistribute, or scrape content from the Platform without authorization</li>
+</ul>
+<h3 id="63-privacy-violations">6.3 Privacy Violations</h3>
+<ul>
+<li>Post personally identifiable information about another person without their consent ("doxxing")</li>
+<li>Record, capture, or distribute private communications without consent</li>
+<li>Violate the privacy rights of any individual</li>
+</ul>
+<h3 id="64-platform-integrity">6.4 Platform Integrity</h3>
+<ul>
+<li>Attempt to reverse-engineer, decompile, or extract source code from the Platform</li>
+<li>Use automated scripts, bots, or scrapers to access or interact with the Platform</li>
+<li>Attempt to gain unauthorized access to any part of the Platform or its infrastructure</li>
+<li>Introduce malware, viruses, or any malicious code into the Platform</li>
+<li>Manipulate, spoof, or falsify any data, metrics, or user interactions</li>
+</ul>
+<h3 id="65-spam-manipulation">6.5 Spam &amp; Manipulation</h3>
+<ul>
+<li>Post unsolicited commercial messages, spam, or chain letters</li>
+<li>Create fake or duplicate profiles to manipulate engagement</li>
+<li>Artificially inflate or deflate any engagement metrics</li>
+</ul>
+<h3 id="66-impersonation-fraud">6.6 Impersonation &amp; Fraud</h3>
+<ul>
+<li>Impersonate any individual, organization, or entity</li>
+<li>Misrepresent your affiliation with any person or organization</li>
+<li>Engage in phishing, social engineering, or fraudulent activity</li>
+</ul>
+<hr>
+<h2 id="7-intellectual-property">7. Intellectual Property</h2>
+<h3 id="71-our-property">7.1 Our Property</h3>
+<p>The Platform, including its design, software, graphics, user interface, logos, trademarks, and all original content created by Unitar LLC, is owned by or licensed to Unitar LLC and is protected by applicable intellectual property laws.</p>
+<p>These Terms do not grant you any right, title, or interest in the Platform beyond the limited license to use it as expressly described herein.</p>
+<h3 id="72-trademarks">7.2 Trademarks</h3>
+<p>"Faero," the Faero logo, and related marks are trademarks of Unitar LLC. You may not use these marks without our prior written permission.</p>
+<h3 id="73-feedback">7.3 Feedback</h3>
+<p>If you provide us with feedback, suggestions, or ideas about the Platform ("Feedback"), you grant us a perpetual, irrevocable, worldwide, royalty-free license to use and incorporate that Feedback without any obligation to you.</p>
+<hr>
+<h2 id="8-privacy-data">8. Privacy &amp; Data</h2>
+<h3 id="81-privacy-policy">8.1 Privacy Policy</h3>
+<p>Your use of Faero is also governed by our Privacy Policy, which is incorporated into these Terms by reference. By using Faero, you consent to the data practices described therein.</p>
+<h3 id="82-current-data-practices">8.2 Current Data Practices</h3>
+<p>As described in Section 3.2:</p>
+<ul>
+<li><strong>Your account and content are stored on our servers</strong>, not only in your browser</li>
+<li>We collect the minimum needed to operate the Platform — see the Privacy Policy</li>
+<li>We do <strong>not</strong> use cookies or tags for advertising, tracking, or analytics</li>
+<li>We do <strong>not</strong> sell, rent, or trade your data to third parties</li>
+<li>We do <strong>not</strong> read your direct messages for advertising, training, or profiling</li>
+</ul>
+<h3 id="83-third-party-fonts">8.3 Third-Party Fonts</h3>
+<p>The Platform currently loads fonts from Google Fonts (fonts.googleapis.com). Google's use of data from this service is governed by <a href="https://policies.google.com/privacy">Google's Privacy Policy</a>. This is a current beta implementation detail subject to change.</p>
+<h3 id="84-future-data-collection">8.4 Future Data Collection</h3>
+<p>When Faero transitions from local-only to server-connected features, we will update this section and our Privacy Policy accordingly, and provide you with appropriate notice and consent mechanisms.</p>
+<h3 id="85-gdpr-european-users">8.5 GDPR (European Users)</h3>
+<p>If you are located in the European Economic Area (EEA), UK, or Switzerland, you have rights under applicable data protection laws including the right to access, correct, delete, restrict processing of, and port your personal data. Most of these you can exercise yourself, immediately, inside the app: <em>Settings → Account → Download my data</em> for access and portability, the profile editor for correction, and <em>Settings → Account → Delete my account</em> for erasure. For anything else, contact us at contact@unitar.app and we will respond within 30 days.</p>
+<h3 id="86-ccpa-california-users">8.6 CCPA (California Users)</h3>
+<p>If you are a California resident, you have rights under the California Consumer Privacy Act. In the current beta, we do not collect personal information on our servers. For any questions about your rights under CCPA, contact us at contact@unitar.app.</p>
+<hr>
+<h2 id="9-digital-millennium-copyright-act-dmca">9. Digital Millennium Copyright Act (DMCA)</h2>
+<p>We respect intellectual property rights and comply with the Digital Millennium Copyright Act (17 U.S.C. § 512).</p>
+<h3 id="91-copyright-infringement-claims">9.1 Copyright Infringement Claims</h3>
+<p>If you believe content on Faero infringes your copyright, send a written notice to our designated agent containing:</p>
+<ol>
+<li>Your physical or electronic signature</li>
+<li>Identification of the copyrighted work claimed to have been infringed</li>
+<li>Identification of the allegedly infringing material and its location on the Platform</li>
+<li>Your contact information (address, phone number, email)</li>
+<li>A statement that you have a good-faith belief the use is not authorized by the copyright owner, its agent, or law</li>
+<li>A statement, under penalty of perjury, that the information in your notice is accurate and you are authorized to act on behalf of the copyright owner</li>
+</ol>
+<p><strong>DMCA Contact:</strong> contact@unitar.app <strong>Subject Line:</strong> DMCA Takedown Notice</p>
+<h3 id="92-counter-notifications">9.2 Counter-Notifications</h3>
+<p>If you believe content was removed due to a mistaken or misidentified claim, you may file a counter-notification with the information required by 17 U.S.C. § 512(g)(3).</p>
+<h3 id="93-repeat-infringers">9.3 Repeat Infringers</h3>
+<p>We will terminate the accounts of users who are determined to be repeat copyright infringers in appropriate circumstances.</p>
+<hr>
+<h2 id="10-third-party-services-links">10. Third-Party Services &amp; Links</h2>
+<p>The Platform may contain links to third-party websites, services, or content. We do not endorse, control, or take responsibility for any third-party content, privacy practices, or terms of service. Your interactions with third-party services are governed solely by those services' own terms and policies.</p>
+<hr>
+<h2 id="11-disclaimers">11. Disclaimers</h2>
+<h3 id="111-as-is-service">11.1 As-Is Service</h3>
+<p><strong>THE PLATFORM IS PROVIDED "AS IS" AND "AS AVAILABLE," WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, ACCURACY, RELIABILITY, OR THAT THE SERVICE WILL BE UNINTERRUPTED, ERROR-FREE, OR FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS.</strong></p>
+<h3 id="112-beta-disclaimer">11.2 Beta Disclaimer</h3>
+<p><strong>AS A BETA PRODUCT, FAERO IS EXPERIMENTAL SOFTWARE. WE MAKE NO GUARANTEES REGARDING STABILITY, DATA PRESERVATION, FEATURE AVAILABILITY, OR CONTINUITY OF SERVICE. YOU USE THE BETA AT YOUR OWN RISK AND SHOULD NOT RELY ON IT FOR CRITICAL OR IRREPLACEABLE DATA.</strong></p>
+<h3 id="113-user-content-disclaimer">11.3 User Content Disclaimer</h3>
+<p>We do not endorse, guarantee, or take responsibility for the accuracy, completeness, or reliability of any User Content posted on the Platform. You access and rely on User Content at your own risk.</p>
+<hr>
+<h2 id="12-limitation-of-liability">12. Limitation of Liability</h2>
+<p><strong>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, ANTIGRAVITY KODE AND ITS OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, AND LICENSORS SHALL NOT BE LIABLE FOR ANY:</strong></p>
+<ul>
+<li><strong>INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, PUNITIVE, OR EXEMPLARY DAMAGES</strong></li>
+<li><strong>LOSS OF PROFITS, REVENUE, DATA, GOODWILL, OR OTHER INTANGIBLE LOSSES</strong></li>
+<li><strong>DAMAGES ARISING FROM YOUR USE OF OR INABILITY TO USE THE SERVICE</strong></li>
+<li><strong>DAMAGES ARISING FROM UNAUTHORIZED ACCESS TO OR ALTERATION OF YOUR DATA</strong></li>
+<li><strong>DAMAGES ARISING FROM ANY USER CONTENT OR CONDUCT OF ANY THIRD PARTY</strong></li>
+</ul>
+<p><strong>EVEN IF WE HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.</strong></p>
+<p><strong>OUR TOTAL LIABILITY TO YOU FOR ALL CLAIMS ARISING OUT OF OR RELATING TO THESE TERMS OR THE PLATFORM SHALL NOT EXCEED THE GREATER OF (A) THE AMOUNT YOU PAID US IN THE 12 MONTHS PRIOR TO THE CLAIM, OR (B) $100 USD.</strong></p>
+<p>Some jurisdictions do not allow the exclusion of certain warranties or limitation of liability, so some of the above limitations may not apply to you.</p>
+<hr>
+<h2 id="13-indemnification">13. Indemnification</h2>
+<p>You agree to defend, indemnify, and hold harmless Unitar LLC and its officers, directors, employees, agents, and licensors from and against any claims, damages, liabilities, costs, and expenses (including reasonable legal fees) arising from:</p>
+<ul>
+<li>Your use of or access to the Platform</li>
+<li>Your User Content</li>
+<li>Your violation of these Terms</li>
+<li>Your violation of any rights of a third party</li>
+<li>Your violation of any applicable laws or regulations</li>
+</ul>
+<p>We reserve the right to assume exclusive control of any matter subject to indemnification by you, in which case you agree to cooperate with our defense.</p>
+<hr>
+<h2 id="14-termination">14. Termination</h2>
+<h3 id="141-our-rights">14.1 Our Rights</h3>
+<p>We may suspend or terminate your access to the Platform at any time, for any reason, with or without notice, including for violation of these Terms. In cases of serious violations (such as CSAM or threats of violence), termination will be immediate.</p>
+<h3 id="142-effect-of-termination">14.2 Effect of Termination</h3>
+<p>Upon termination:</p>
+<ul>
+<li>Your right to use the Platform immediately ceases</li>
+<li>Sections of these Terms that by their nature should survive (including but not limited to Sections 5.2, 7, 11, 12, 13, 15) shall survive termination</li>
+</ul>
+<h3 id="143-your-right-to-stop">14.3 Your Right to Stop</h3>
+<p>You may stop using the Platform at any time. To erase your account and everything in it, go to <strong>Settings → Account → Delete my account</strong>. Your posts, replies, likes, follows, messages, guestbook entries, bookmarks and commons memberships are deleted immediately, your profile is anonymised, and your login record is removed within 30 days. This is irreversible — export your data first if you want a copy.</p>
+<hr>
+<h2 id="15-governing-law-dispute-resolution">15. Governing Law &amp; Dispute Resolution</h2>
+<h3 id="151-governing-law">15.1 Governing Law</h3>
+<p>These Terms shall be governed by and construed in accordance with the laws of the jurisdiction in which Unitar LLC operates, without regard to its conflict of law provisions.</p>
+<h3 id="152-informal-resolution">15.2 Informal Resolution</h3>
+<p>Before initiating any formal legal proceeding, you agree to first contact us at contact@unitar.app and attempt to resolve the dispute informally. We will attempt to resolve the dispute within 30 days of receiving your notice.</p>
+<h3 id="153-dispute-resolution">15.3 Dispute Resolution</h3>
+<p>If informal resolution fails, disputes arising out of or relating to these Terms or the Platform shall be resolved through binding arbitration, except that either party may bring claims in small claims court if applicable. <strong>You waive any right to participate in class-action lawsuits or class-wide arbitration.</strong></p>
+<h3 id="154-exceptions">15.4 Exceptions</h3>
+<p>Notwithstanding the above, either party may seek emergency injunctive relief in a court of competent jurisdiction where necessary to prevent irreparable harm, including in cases of intellectual property infringement.</p>
+<hr>
+<h2 id="16-modifications-to-these-terms">16. Modifications to These Terms</h2>
+<p>We may update these Terms at any time. When we do:</p>
+<ul>
+<li>We will update the "Last Updated" date at the top of this document</li>
+<li>For material changes, we will provide notice within the Platform or by other reasonable means</li>
+<li>Your continued use of the Platform after the effective date of the updated Terms constitutes your acceptance</li>
+</ul>
+<p>If you do not agree to any updated Terms, you must stop using the Platform.</p>
+<hr>
+<h2 id="17-miscellaneous">17. Miscellaneous</h2>
+<h3 id="171-entire-agreement">17.1 Entire Agreement</h3>
+<p>These Terms, together with the Privacy Policy and any other agreements incorporated herein, constitute the entire agreement between you and Unitar LLC regarding your use of the Platform and supersede all prior agreements.</p>
+<h3 id="172-severability">17.2 Severability</h3>
+<p>If any provision of these Terms is found to be invalid or unenforceable, the remaining provisions shall continue in full force and effect, and the invalid provision shall be modified to the minimum extent necessary to make it enforceable.</p>
+<h3 id="173-no-waiver">17.3 No Waiver</h3>
+<p>Our failure to enforce any provision of these Terms shall not be deemed a waiver of that provision or our right to enforce it in the future.</p>
+<h3 id="174-assignment">17.4 Assignment</h3>
+<p>You may not assign or transfer your rights or obligations under these Terms without our prior written consent. We may assign our rights and obligations freely.</p>
+<h3 id="175-force-majeure">17.5 Force Majeure</h3>
+<p>We shall not be liable for any failure or delay in performance resulting from circumstances beyond our reasonable control, including natural disasters, acts of government, internet outages, or third-party service failures.</p>
+<h3 id="176-no-third-party-beneficiaries">17.6 No Third-Party Beneficiaries</h3>
+<p>These Terms do not create any third-party beneficiary rights.</p>
+<hr>
+<h2 id="18-contact-information">18. Contact Information</h2>
+<p>For questions, concerns, DMCA notices, or any other inquiries regarding these Terms:</p>
+<p><strong>Unitar LLC — Faero Platform</strong> <strong>Email:</strong> contact@unitar.app <strong>Subject:</strong> Faero ToS Inquiry</p>
+<p>We aim to respond to all inquiries within <strong>5 business days</strong>.</p>
+<hr>
+<p><em>© 2026 Unitar LLC. All rights reserved.</em> <em>Faero is a trademark of Unitar LLC.</em></p>
+  </article>
+</main>
+<footer>
+  Faero is operated by <strong>Unitar LLC</strong> &middot;
+  <a href="terms.html">Terms</a> &middot;
+  <a href="privacy.html">Privacy</a> &middot;
+  <a href="mailto:contact@unitar.app">Contact</a>
+</footer>
+</body>
+</html>

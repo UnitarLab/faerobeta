@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "faero-os",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8910"],
+      "port": 8910
+    }
+  ]
+}

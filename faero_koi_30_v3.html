@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>FÆRO — Koi · 30 Variations</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Raleway:wght@200;300;400;600&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#010810;color:#e8f6ff;font-family:'Raleway',sans-serif;min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 50% -5%,rgba(0,120,220,.12) 0%,transparent 55%),radial-gradient(ellipse 50% 40% at 0% 50%,rgba(0,200,255,.05) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 50%,rgba(0,255,180,.04) 0%,transparent 60%),radial-gradient(ellipse 70% 40% at 50% 100%,rgba(0,40,120,.2) 0%,transparent 65%);pointer-events:none;z-index:0;}
+  body::after{content:'';position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#00d4ff,#00ff9d,#7ec8ff,transparent);animation:shtop 5s ease-in-out infinite;z-index:300;}
+  @keyframes shtop{0%,100%{opacity:.2}50%{opacity:.9}}
+
+  .hero{text-align:center;padding:48px 20px 24px;position:relative;z-index:1;}
+  .hero-bubbles{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+  .bubble{position:absolute;border-radius:50%;border:1px solid rgba(0,212,255,.15);animation:rise linear infinite;}
+  @keyframes rise{0%{transform:translateY(100%) scale(.4);opacity:0}10%{opacity:.8}90%{opacity:.2}100%{transform:translateY(-120%) scale(1.3);opacity:0}}
+  .logo{font-family:'Cinzel',serif;font-size:48px;font-weight:900;letter-spacing:14px;color:#fff;text-shadow:0 0 28px rgba(0,212,255,.9),0 0 60px rgba(0,212,255,.35),0 0 110px rgba(0,150,255,.18);}
+  .logo span{color:#00d4ff;text-shadow:0 0 18px #00d4ff,0 0 45px rgba(0,212,255,.55);}
+  .subtitle{font-size:11px;letter-spacing:5px;color:rgba(0,212,255,.45);text-transform:uppercase;margin-top:8px;font-weight:300;}
+  .wave-line{width:280px;height:18px;margin:14px auto 0;overflow:hidden;}
+  .wave-line svg{width:100%;height:100%;}
+
+  /* ── ANIMAL SWITCHER ─────────────────────────────────────────────────── */
+  .animal-bar{
+    display:flex;justify-content:center;align-items:center;gap:10px;
+    padding:12px 20px 0;position:relative;z-index:1;
+  }
+  .animal-btn{
+    display:flex;align-items:center;gap:7px;
+    padding:7px 18px;border-radius:24px;
+    font-size:11px;font-family:'Cinzel',serif;letter-spacing:1.5px;
+    cursor:pointer;border:1px solid rgba(0,212,255,.25);
+    background:rgba(0,212,255,.04);
+    color:rgba(150,210,255,.6);
+    transition:all .3s;text-transform:uppercase;
+  }
+  .animal-btn canvas{border-radius:50%;background:transparent;}
+  .animal-btn.active{
+    border-color:rgba(0,212,255,.6);
+    background:rgba(0,212,255,.12);
+    color:#00d4ff;
+    box-shadow:0 0 14px rgba(0,212,255,.2);
+  }
+  .animal-btn:hover:not(.active){border-color:rgba(0,212,255,.4);color:rgba(200,240,255,.8);}
+
+  /* ── NAV ─────────────────────────────────────────────────────────────── */
+  .filter-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:14px 20px;background:rgba(1,8,16,.88);border-bottom:1px solid rgba(0,212,255,.1);position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);}
+  .flt-btn{padding:5px 14px;border-radius:20px;font-size:10px;font-family:'Cinzel',serif;letter-spacing:1px;cursor:pointer;border:1px solid rgba(74,184,232,.3);background:transparent;transition:all .3s;text-transform:uppercase;color:#4ab8e8;}
+  .flt-btn.active,.flt-btn:hover{filter:brightness(1.7);transform:scale(1.05);background:rgba(0,212,255,.06);}
+
+  /* ── SECTIONS ────────────────────────────────────────────────────────── */
+  .section{padding:32px 20px;max-width:1200px;margin:0 auto;position:relative;z-index:1;}
+  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:24px;padding-bottom:10px;border-bottom:1px solid rgba(0,212,255,.08);}
+  .section-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .section-title{font-family:'Cinzel',serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;}
+  .section-desc{font-size:11px;color:rgba(120,180,220,.4);letter-spacing:1px;font-weight:300;}
+
+  /* ── CARDS ───────────────────────────────────────────────────────────── */
+  .badge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:20px;}
+  .badge-card{display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px 8px 16px;border-radius:18px;background:rgba(4,15,30,.65);border:1px solid rgba(0,150,220,.1);cursor:pointer;transition:all .35s;position:relative;overflow:hidden;}
+  .badge-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 55% at 50% 0%,rgba(0,212,255,.035) 0%,transparent 70%);pointer-events:none;}
+  .badge-card:hover{transform:translateY(-5px);border-color:rgba(0,212,255,.28);background:rgba(7,22,40,.88);}
+
+  .badge-name{font-family:'Cinzel',serif;font-size:8px;letter-spacing:1.5px;text-align:center;text-transform:uppercase;color:rgba(160,215,255,.6);}
+  .badge-label{font-size:9px;color:rgba(80,130,180,.4);text-align:center;letter-spacing:.5px;font-weight:300;}
+  .color-tag{font-size:8px;letter-spacing:.8px;text-align:center;opacity:.45;font-weight:300;margin-top:-4px;}
+
+  /* ── AVATAR ──────────────────────────────────────────────────────────── */
+  .avi-wrap{position:relative;width:92px;height:92px;}
+  canvas.ring-canvas{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:1;}
+  .avi-img{width:62px;height:62px;border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);object-fit:cover;object-position:center 40%;z-index:2;background:#081828;}
+  canvas.pip-canvas{position:absolute;bottom:0;right:0;z-index:10;border-radius:50%;border:2px solid rgba(0,0,0,.55);}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-bubbles" id="heroBubbles"></div>
+  <div class="logo">F<span>Æ</span>RO</div>
+  <div class="subtitle">koi collection · 30 arctic variations</div>
+  <div class="wave-line"><svg viewBox="0 0 280 18" preserveAspectRatio="none"><path id="wavePath" d="" stroke="rgba(0,212,255,.4)" stroke-width="1.4" fill="none"/></svg></div>
+</div>
+
+<!-- Animal switcher -->
+<div class="animal-bar" id="animalBar"></div>
+
+<div class="filter-nav" id="filterNav"></div>
+<div id="main"></div>
+
+<script>
+const TAU=Math.PI*2,sn=Math.sin,cs=Math.cos;
+
+// ═══════════════════════════════════════════════════════════════
+// HERO WAVE
+// ═══════════════════════════════════════════════════════════════
+let wt=0;
+(function aw(){wt+=.04;let d='M 0 9';for(let i=0;i<=280;i+=3){const y=9+sn(i*.042+wt)*3.5+sn(i*.026-wt*.7)*2;d+=` L ${i} ${y}`;}document.getElementById('wavePath').setAttribute('d',d);requestAnimationFrame(aw);})();
+
+// bubbles
+const hb=document.getElementById('heroBubbles');
+for(let i=0;i<18;i++){const b=document.createElement('div');b.className='bubble';const sz=3+Math.random()*14;b.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;bottom:0;animation-duration:${5+Math.random()*8}s;animation-delay:${Math.random()*7}s;`;hb.appendChild(b);}
+
+// ═══════════════════════════════════════════════════════════════
+// PIP DRAWING HELPERS
+// ═══════════════════════════════════════════════════════════════
+function pipBg(ctx, W, H) {
+  // Water gradient background — deep teal to navy
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(W/2,H/2,W/2-0.5,0,TAU);
+  ctx.clip();
+  const bg=ctx.createRadialGradient(W/2,H*.3,1,W/2,H/2,W/2);
+  bg.addColorStop(0,'#0d3a5c');
+  bg.addColorStop(0.5,'#072540');
+  bg.addColorStop(1,'#020d1e');
+  ctx.fillStyle=bg;
+  ctx.fillRect(0,0,W,H);
+  // subtle caustic shimmer lines
+  for(let i=0;i<3;i++){
+    ctx.strokeStyle=`rgba(0,180,255,${0.05+i*0.02})`;
+    ctx.lineWidth=1;
+    ctx.beginPath();
+    ctx.moveTo(i*8+2,H*.2);
+    ctx.quadraticCurveTo(W*.5+sn(Date.now()*.001+i)*4, H*.5, W-i*4-2, H*.8);
+    ctx.stroke();
+  }
+  // don't restore — caller draws inside clip
+}
+function pipEnd(ctx){ctx.restore();}
+
+// ═══════════════════════════════════════════════════════════════
+// ANIMAL 1: CLOWNFISH  (flat cartoon style, orange/white/navy)
+// ═══════════════════════════════════════════════════════════════
+function drawClownfish(canvas, t) {
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  pipBg(ctx,W,H);
+
+  const cx=W/2, cy=H/2;
+  const sw=sn(t*1.1)*2.2; // gentle swim sway
+  const tilt=sn(t*1.1)*0.07;
+
+  ctx.save();
+  ctx.translate(cx+sw, cy+sn(t*0.9)*1.2);
+  ctx.rotate(tilt);
+
+  // ─ TAIL ─────────────────────────────────────────────────────
+  const tb=sn(t*2.2)*0.32;
+  ctx.save();
+  ctx.rotate(tb);
+  // tail upper lobe
+  ctx.beginPath();
+  ctx.moveTo(-7,0);
+  ctx.bezierCurveTo(-9,-3,-13,-7,-12,-3);
+  ctx.bezierCurveTo(-11,-1,-9,0,-7,0);
+  ctx.fillStyle='#e8732a';
+  ctx.fill();
+  // tail lower lobe
+  ctx.beginPath();
+  ctx.moveTo(-7,0);
+  ctx.bezierCurveTo(-9,3,-13,7,-12,3);
+  ctx.bezierCurveTo(-11,1,-9,0,-7,0);
+  ctx.fillStyle='#d0601a';
+  ctx.fill();
+  // navy outline around whole tail
+  ctx.beginPath();
+  ctx.moveTo(-7,0);
+  ctx.bezierCurveTo(-9,-3,-13,-7,-12,-3);
+  ctx.bezierCurveTo(-11,-1,-9,0,-7,0);
+  ctx.bezierCurveTo(-9,0,-11,1,-12,3);
+  ctx.bezierCurveTo(-13,7,-9,3,-7,0);
+  ctx.strokeStyle='#1a2e5a';
+  ctx.lineWidth=1.1;
+  ctx.stroke();
+  // white stripe hint on tail base
+  ctx.beginPath();
+  ctx.moveTo(-7,-1.5);
+  ctx.lineTo(-9,0);
+  ctx.lineTo(-7,1.5);
+  ctx.fillStyle='rgba(220,235,255,0.3)';
+  ctx.fill();
+  ctx.restore();
+
+  // ─ MAIN BODY ────────────────────────────────────────────────
+  // Bold, rounded body — flat cartoon style
+  ctx.beginPath();
+  ctx.moveTo(9, 0);
+  ctx.bezierCurveTo(9,-8,  3,-10, -3,-8);
+  ctx.bezierCurveTo(-7,-6, -9,-3, -9, 0);
+  ctx.bezierCurveTo(-9, 3, -7, 6, -3, 8);
+  ctx.bezierCurveTo( 3,10,  9, 8,  9, 0);
+  ctx.fillStyle='#e8732a';
+  ctx.fill();
+  ctx.strokeStyle='#1a2e5a';
+  ctx.lineWidth=1.3;
+  ctx.stroke();
+
+  // ─ WHITE BANDS (3 flat stripes, like clownfish) ─────────────
+  // Band near head
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(4,-9,4,18);
+  // clip to body shape
+  ctx.clip();
+  ctx.beginPath();
+  ctx.ellipse(6, 0, 4.5, 9, 0, 0, TAU);
+  ctx.fillStyle='#c8dcf0';
+  ctx.fill();
+  ctx.strokeStyle='#1a2e5a';
+  ctx.lineWidth=1;
+  ctx.stroke();
+  ctx.restore();
+
+  // Band mid-body
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(-3,-9,4,18);
+  ctx.clip();
+  ctx.beginPath();
+  ctx.ellipse(-1, 0, 3.5, 8.5, 0, 0, TAU);
+  ctx.fillStyle='#c8dcf0';
+  ctx.fill();
+  ctx.strokeStyle='#1a2e5a';
+  ctx.lineWidth=1;
+  ctx.stroke();
+  ctx.restore();
+
+  // Band near tail
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(-9,-6,3.5,12);
+  ctx.clip();
+  ctx.beginPath();
+  ctx.ellipse(-7.5, 0, 2.5, 6, 0, 0, TAU);
+  ctx.fillStyle='#c8dcf0';
+  ctx.fill();
+  ctx.strokeStyle='#1a2e5a';
+  ctx.lineWidth=0.8;
+  ctx.stroke();
+  ctx.restore();
+
+  // ─ ORANGE fill between/over bands ───────────────────────────
+  // Thin orange lines between white stripes (reinforce the orange sections)
+  // Left orange section
+  ctx.beginPath();
+  ctx.arc(-5, 0, 2.5, -Math.PI*.7, Math.PI*.7);
+  ctx.strokeStyle='#e8732a';
+  ctx.lineWidth=2;
+  ctx.stroke();
+
+  // ─ DORSAL FIN (top, wide cartoon style) ─────────────────────
+  const df=sn(t*1.5)*0.12;
+  ctx.save();
+  ctx.translate(0,-9);
+  ctx.rotate(df);
+  ctx.beginPath();
+  ctx.moveTo(-4,0);
+  ctx.bezierCurveTo(-3,-6, 2,-9, 7,-7);
+  ctx.bezierCurveTo(8,-4, 5,-1, 4,0);
+  ctx.fillStyle='#d96020';
+  ctx.fill();
+  ctx.strokeStyle='#1a2e5a';
+  ctx.lineWidth=1;
+  ctx.stroke();
+  // fin rays
+  for(let i=0;i<3;i++){
+    ctx.beginPath();
+    ctx.moveTo(-1+i*3,0);
+    ctx.lineTo(-1+i*2.5,-4-i*.5);
+    ctx.strokeStyle='rgba(30,46,90,0.3)';
+    ctx.lineWidth=0.6;
+    ctx.stroke();
+  }
+  ctx.restore();
+
+  // ─ PECTORAL FIN (right side, fan shape) ─────────────────────
+  const pf=sn(t*1.9)*0.28;
+  ctx.save();
+  ctx.translate(4,3);
+  ctx.rotate(pf);
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.bezierCurveTo(2,3,5,7,3,9);
+  ctx.bezierCurveTo(1,9,-1,5,-1,2);
+  ctx.closePath();
+  ctx.fillStyle='#d96020';
+  ctx.fill();
+  ctx.strokeStyle='#1a2e5a';
+  ctx.lineWidth=0.8;
+  ctx.stroke();
+  // rays
+  ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(2,6);ctx.strokeStyle='rgba(30,46,90,0.25)';ctx.lineWidth=0.5;ctx.stroke();
+  ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(0,7);ctx.stroke();
+  ctx.restore();
+
+  // ─ ANAL FIN (bottom small) ───────────────────────────────────
+  ctx.save();
+  ctx.translate(-3,8);
+  ctx.rotate(sn(t*2)*0.08);
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.bezierCurveTo(1,3,4,4,5,2);
+  ctx.bezierCurveTo(4,0,2,0,0,0);
+  ctx.fillStyle='#d06018';
+  ctx.fill();
+  ctx.strokeStyle='#1a2e5a';
+  ctx.lineWidth=0.7;
+  ctx.stroke();
+  ctx.restore();
+
+  // ─ HEAD CIRCLE ───────────────────────────────────────────────
+  ctx.beginPath();
+  ctx.ellipse(8, 0, 4.5, 5.5, 0, 0, TAU);
+  ctx.fillStyle='#e87830';
+  ctx.fill();
+  ctx.strokeStyle='#1a2e5a';
+  ctx.lineWidth=1.3;
+  ctx.stroke();
+
+  // head highlight (top-left brightness)
+  const hg=ctx.createRadialGradient(9,-2,0.5,8,-1,5);
+  hg.addColorStop(0,'rgba(255,210,130,0.55)');
+  hg.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.beginPath();
+  ctx.ellipse(8,0,4.5,5.5,0,0,TAU);
+  ctx.fillStyle=hg;
+  ctx.fill();
+
+  // ─ EYE ───────────────────────────────────────────────────────
+  // Large cartoon eye
+  ctx.beginPath();
+  ctx.arc(10,-1.5,2.3,0,TAU);
+  ctx.fillStyle='#f5c842'; // yellow-gold iris
+  ctx.fill();
+  ctx.strokeStyle='#1a2e5a';
+  ctx.lineWidth=1;
+  ctx.stroke();
+  // pupil
+  ctx.beginPath();
+  ctx.arc(10.4,-1.5,1.1,0,TAU);
+  ctx.fillStyle='#0d0000';
+  ctx.fill();
+  // eye shine
+  ctx.beginPath();
+  ctx.arc(11,-2.1,0.5,0,TAU);
+  ctx.fillStyle='rgba(255,255,255,0.95)';
+  ctx.fill();
+
+  ctx.restore(); // swim
+  pipEnd(ctx);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ANIMAL 2: DOLPHIN  (grey/blue, sleek, jumping arc)
+// ═══════════════════════════════════════════════════════════════
+function drawDolphin(canvas, t) {
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  pipBg(ctx,W,H);
+
+  const cx=W/2, cy=H/2;
+  // gentle arc bob + tilt
+  const bob=sn(t*1.0)*2.5;
+  const tilt=-0.18+sn(t*0.9)*0.1; // slight upward nose
+
+  ctx.save();
+  ctx.translate(cx+sn(t*0.7)*2, cy+bob);
+  ctx.rotate(tilt);
+
+  // ─ FLUKES (tail) ─────────────────────────────────────────────
+  const fc=sn(t*2.0)*0.3;
+  ctx.save();
+  ctx.translate(-11,0);
+  ctx.rotate(fc);
+  // upper fluke
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.bezierCurveTo(-2,-2,-6,-5,-6,-2);
+  ctx.bezierCurveTo(-5,0,-2,0,0,0);
+  ctx.fillStyle='#5588bb';
+  ctx.fill();
+  // lower fluke
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.bezierCurveTo(-2,2,-6,5,-6,2);
+  ctx.bezierCurveTo(-5,0,-2,0,0,0);
+  ctx.fillStyle='#4477aa';
+  ctx.fill();
+  ctx.strokeStyle='#1a3055';
+  ctx.lineWidth=0.9;
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.bezierCurveTo(-2,-2,-6,-5,-6,-2);
+  ctx.bezierCurveTo(-5,0,-2,0,0,0);
+  ctx.bezierCurveTo(-2,0,-5,0,-6,2);
+  ctx.bezierCurveTo(-6,5,-2,2,0,0);
+  ctx.stroke();
+  ctx.restore();
+
+  // ─ BODY ──────────────────────────────────────────────────────
+  // Sleek torpedo body
+  ctx.beginPath();
+  ctx.moveTo(11,0); // snout tip
+  ctx.bezierCurveTo(11,-3,  7,-8, -2,-7);
+  ctx.bezierCurveTo(-8,-6, -12,-3, -12, 0);
+  ctx.bezierCurveTo(-12, 3, -8, 5, -2, 6);
+  ctx.bezierCurveTo( 7, 7,  11, 3,  11, 0);
+  ctx.fillStyle='#6699cc';
+  ctx.fill();
+  ctx.strokeStyle='#1a3055';
+  ctx.lineWidth=1.2;
+  ctx.stroke();
+
+  // lighter belly
+  ctx.beginPath();
+  ctx.moveTo(9,1);
+  ctx.bezierCurveTo(7,4, -2,6, -10,3);
+  ctx.bezierCurveTo(-10,3,-8,5,-2,6);
+  ctx.bezierCurveTo(7,7,11,3,11,0);
+  ctx.bezierCurveTo(11,0,10,0.5,9,1);
+  ctx.fillStyle='rgba(200,230,255,0.4)';
+  ctx.fill();
+
+  // ─ DORSAL FIN ────────────────────────────────────────────────
+  ctx.save();
+  ctx.translate(1,-7);
+  ctx.rotate(sn(t*1.2)*0.06);
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.bezierCurveTo(1,-5, 4,-7, 5,-5);
+  ctx.bezierCurveTo(4,-2, 2,-1, 0,0);
+  ctx.fillStyle='#5588bb';
+  ctx.fill();
+  ctx.strokeStyle='#1a3055';
+  ctx.lineWidth=0.9;
+  ctx.stroke();
+  ctx.restore();
+
+  // ─ PECTORAL FLIPPER ──────────────────────────────────────────
+  ctx.save();
+  ctx.translate(5,2);
+  ctx.rotate(sn(t*1.6)*0.2);
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.bezierCurveTo(1,4,4,7,3,8);
+  ctx.bezierCurveTo(1,8,-1,5,-1,2);
+  ctx.closePath();
+  ctx.fillStyle='#5588bb';
+  ctx.fill();
+  ctx.strokeStyle='#1a3055';
+  ctx.lineWidth=0.8;
+  ctx.stroke();
+  ctx.restore();
+
+  // ─ BEAK / SNOUT ──────────────────────────────────────────────
+  ctx.beginPath();
+  ctx.moveTo(11,0);
+  ctx.bezierCurveTo(12,-1,14,-1.5,13,0);
+  ctx.bezierCurveTo(14,1.5,12,1,11,0);
+  ctx.fillStyle='#7aabcc';
+  ctx.fill();
+  ctx.strokeStyle='#1a3055';
+  ctx.lineWidth=1;
+  ctx.stroke();
+
+  // smile line
+  ctx.beginPath();
+  ctx.moveTo(11,0.5);
+  ctx.quadraticCurveTo(12.5,1.2,13,0.5);
+  ctx.strokeStyle='#1a3055';
+  ctx.lineWidth=0.7;
+  ctx.stroke();
+
+  // ─ EYE ───────────────────────────────────────────────────────
+  ctx.beginPath();
+  ctx.arc(9,-2,1.8,0,TAU);
+  ctx.fillStyle='#fff';
+  ctx.fill();
+  ctx.strokeStyle='#1a3055';
+  ctx.lineWidth=0.8;
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(9.3,-2,1,0,TAU);
+  ctx.fillStyle='#0a0f18';
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(9.7,-2.4,0.4,0,TAU);
+  ctx.fillStyle='rgba(255,255,255,0.9)';
+  ctx.fill();
+
+  // water splash droplet under fin
+  const splashA=sn(t*2)*0.5+0.5;
+  ctx.globalAlpha=splashA*0.5;
+  ctx.beginPath();
+  ctx.arc(0,7,1+splashA,0,TAU);
+  ctx.fillStyle='#88ccff';
+  ctx.fill();
+  ctx.globalAlpha=1;
+
+  ctx.restore();
+  pipEnd(ctx);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ANIMAL 3: REGAL BLUE TANG (Dory style — cobalt blue, yellow tail)
+// ═══════════════════════════════════════════════════════════════
+function drawBlueTang(canvas, t) {
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  pipBg(ctx,W,H);
+
+  const cx=W/2, cy=H/2;
+  const sw=sn(t*1.05)*2.4;
+  const tilt=sn(t*1.05)*0.09;
+
+  ctx.save();
+  ctx.translate(cx+sw, cy+sn(t*0.85)*1.3);
+  ctx.rotate(tilt);
+
+  // ─ TAIL FAN ──────────────────────────────────────────────────
+  const tb=sn(t*2.3)*0.35;
+  ctx.save();
+  ctx.rotate(tb);
+  // upper tail lobe — yellow
+  ctx.beginPath();
+  ctx.moveTo(-8,0);
+  ctx.bezierCurveTo(-10,-2,-14,-6,-13,-3);
+  ctx.bezierCurveTo(-12,-1,-10,0,-8,0);
+  ctx.fillStyle='#f5c020';
+  ctx.fill();
+  // lower tail lobe — yellow
+  ctx.beginPath();
+  ctx.moveTo(-8,0);
+  ctx.bezierCurveTo(-10,2,-14,6,-13,3);
+  ctx.bezierCurveTo(-12,1,-10,0,-8,0);
+  ctx.fillStyle='#e8aa10';
+  ctx.fill();
+  // outline
+  ctx.beginPath();
+  ctx.moveTo(-8,0);
+  ctx.bezierCurveTo(-10,-2,-14,-6,-13,-3);
+  ctx.bezierCurveTo(-12,-1,-10,0,-8,0);
+  ctx.bezierCurveTo(-10,0,-12,1,-13,3);
+  ctx.bezierCurveTo(-14,6,-10,2,-8,0);
+  ctx.strokeStyle='#1a2e5a';
+  ctx.lineWidth=1;
+  ctx.stroke();
+  ctx.restore();
+
+  // ─ BODY — oval, cobalt blue ───────────────────────────────────
+  ctx.beginPath();
+  ctx.moveTo(9,0);
+  ctx.bezierCurveTo(9,-9, 1,-12, -4,-9);
+  ctx.bezierCurveTo(-8,-7,-10,-4,-10,0);
+  ctx.bezierCurveTo(-10, 4,-8, 7,-4, 9);
+  ctx.bezierCurveTo( 1,12,  9, 9,  9, 0);
+  ctx.fillStyle='#1a5ec8';
+  ctx.fill();
+  ctx.strokeStyle='#0d2255';
+  ctx.lineWidth=1.3;
+  ctx.stroke();
+
+  // lighter blue body gradient (cartoon highlight)
+  const bodyHL=ctx.createRadialGradient(2,-4,1,0,-2,10);
+  bodyHL.addColorStop(0,'rgba(80,160,255,0.5)');
+  bodyHL.addColorStop(1,'rgba(0,30,140,0)');
+  ctx.beginPath();
+  ctx.moveTo(9,0);
+  ctx.bezierCurveTo(9,-9,1,-12,-4,-9);
+  ctx.bezierCurveTo(-8,-7,-10,-4,-10,0);
+  ctx.bezierCurveTo(-10,4,-8,7,-4,9);
+  ctx.bezierCurveTo(1,12,9,9,9,0);
+  ctx.fillStyle=bodyHL;
+  ctx.fill();
+
+  // ─ YELLOW accent stripe along body ───────────────────────────
+  ctx.beginPath();
+  ctx.moveTo(-1,-9.5);
+  ctx.bezierCurveTo(-2,-10,-5,-9,-6,-7);
+  ctx.bezierCurveTo(-7,-5,-7,-3,-6,-1);
+  ctx.bezierCurveTo(-5,1,-4,2,-3,3);
+  ctx.bezierCurveTo(-2,4,-1,5,0,7);
+  ctx.bezierCurveTo(0.5,8,1,9,2,9.5);
+  ctx.lineWidth=2.2;
+  ctx.strokeStyle='rgba(245,192,20,0.7)';
+  ctx.lineCap='round';
+  ctx.stroke();
+
+  // ─ DORSAL FIN (tall, blue tang) ──────────────────────────────
+  const dft=sn(t*1.4+0.3)*0.11;
+  ctx.save();
+  ctx.translate(0,-10);
+  ctx.rotate(dft);
+  ctx.beginPath();
+  ctx.moveTo(-5,0);
+  ctx.bezierCurveTo(-4,-5, 1,-8, 6,-6);
+  ctx.bezierCurveTo(7,-3,  5,-1, 4, 0);
+  ctx.fillStyle='#1a5ec8';
+  ctx.fill();
+  ctx.strokeStyle='#0d2255';
+  ctx.lineWidth=1;
+  ctx.stroke();
+  for(let i=0;i<3;i++){ctx.beginPath();ctx.moveTo(-2+i*3,0);ctx.lineTo(-3+i*2.5,-4-i*.4);ctx.strokeStyle='rgba(13,34,85,0.3)';ctx.lineWidth=0.6;ctx.stroke();}
+  ctx.restore();
+
+  // ─ ANAL FIN (bottom) ──────────────────────────────────────────
+  ctx.save();
+  ctx.translate(-2,9);
+  ctx.rotate(sn(t*1.4)*0.08);
+  ctx.beginPath();
+  ctx.moveTo(-3,0);
+  ctx.bezierCurveTo(-2,3,2,4,4,2);
+  ctx.bezierCurveTo(3,0,0,0,-3,0);
+  ctx.fillStyle='#1a5ec8';
+  ctx.fill();
+  ctx.strokeStyle='#0d2255';
+  ctx.lineWidth=0.8;
+  ctx.stroke();
+  ctx.restore();
+
+  // ─ PECTORAL FIN ──────────────────────────────────────────────
+  const pft=sn(t*2.0)*0.28;
+  ctx.save();
+  ctx.translate(4,2);
+  ctx.rotate(pft);
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.bezierCurveTo(2,3,5,7,3,8);
+  ctx.bezierCurveTo(1,8,-1,5,-1,2);
+  ctx.closePath();
+  ctx.fillStyle='rgba(30,100,210,0.8)';
+  ctx.fill();
+  ctx.strokeStyle='#0d2255';
+  ctx.lineWidth=0.8;
+  ctx.stroke();
+  ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(2,6);ctx.strokeStyle='rgba(13,34,85,0.25)';ctx.lineWidth=0.5;ctx.stroke();
+  ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(0,7);ctx.stroke();
+  ctx.restore();
+
+  // ─ HEAD ──────────────────────────────────────────────────────
+  ctx.beginPath();
+  ctx.ellipse(8,0,4.5,6,0,0,TAU);
+  ctx.fillStyle='#1e6ed0';
+  ctx.fill();
+  ctx.strokeStyle='#0d2255';
+  ctx.lineWidth=1.2;
+  ctx.stroke();
+
+  // ─ MOUTH (small, rounded) ─────────────────────────────────────
+  ctx.beginPath();
+  ctx.arc(12,1.5,1,Math.PI*.3,Math.PI*1.1);
+  ctx.strokeStyle='#0d2255';
+  ctx.lineWidth=0.8;
+  ctx.stroke();
+
+  // ─ EYE ───────────────────────────────────────────────────────
+  ctx.beginPath();
+  ctx.arc(10,-1.8,2.2,0,TAU);
+  ctx.fillStyle='#fff';
+  ctx.fill();
+  ctx.strokeStyle='#0d2255';
+  ctx.lineWidth=0.9;
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(10.3,-1.8,1.1,0,TAU);
+  ctx.fillStyle='#06060e';
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(10.9,-2.3,0.45,0,TAU);
+  ctx.fillStyle='rgba(255,255,255,0.92)';
+  ctx.fill();
+
+  ctx.restore();
+  pipEnd(ctx);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// FRAME RING RENDERER
+// ═══════════════════════════════════════════════════════════════
+function drawFrame(canvas, variant, t) {
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const cx=W/2,cy=H/2;
+  const [c1,c2,c3]=variant.palette;
+  const R=38;
+  ctx.save();
+  ctx.translate(cx,cy);
+
+  switch(variant.shape){
+    case 'icebreaker':{
+      const rot=t*0.018;
+      ctx.save();ctx.rotate(rot);
+      ctx.beginPath();
+      for(let i=0;i<=8;i++){const a=i/8*TAU-Math.PI/8;const r=R+sn(a*4+t*.05)*1.8;i===0?ctx.moveTo(cs(a)*r,sn(a)*r):ctx.lineTo(cs(a)*r,sn(a)*r);}
+      ctx.closePath();ctx.strokeStyle=c1;ctx.lineWidth=2.5;ctx.shadowColor=c1;ctx.shadowBlur=14;ctx.stroke();
+      ctx.rotate(-rot*2.2+Math.PI/6);
+      ctx.beginPath();
+      for(let i=0;i<=6;i++){const a=i/6*TAU;const r=R-8+sn(a*3+t*.07)*1.4;i===0?ctx.moveTo(cs(a)*r,sn(a)*r):ctx.lineTo(cs(a)*r,sn(a)*r);}
+      ctx.closePath();ctx.strokeStyle=c2;ctx.lineWidth=1.3;ctx.shadowColor=c2;ctx.shadowBlur=8;ctx.stroke();
+      ctx.restore();
+      ctx.save();ctx.rotate(-rot*.6);
+      for(let i=0;i<16;i++){const a=i/16*TAU;const main=i%4===0;const len=main?7:3.5;ctx.strokeStyle=main?c1:c3;ctx.lineWidth=main?1.6:.8;ctx.shadowColor=c1;ctx.shadowBlur=main?7:2;ctx.globalAlpha=.55+sn(t*.06+i*.8)*.38;ctx.beginPath();ctx.moveTo(cs(a)*(R+1),sn(a)*(R+1));ctx.lineTo(cs(a)*(R+1+len),sn(a)*(R+1+len));ctx.stroke();}
+      ctx.globalAlpha=1;ctx.restore();
+      const pg=sn(t*.08)*.4+.6;ctx.strokeStyle=c1;ctx.lineWidth=1;ctx.shadowColor=c1;ctx.shadowBlur=18*pg;ctx.globalAlpha=pg*.28;ctx.beginPath();ctx.arc(0,0,R+11,0,TAU);ctx.stroke();ctx.globalAlpha=1;
+      break;
+    }
+    case 'frozen_tide':{
+      for(let j=0;j<3;j++){
+        const pulse=sn(t*.06+j*.9)*.5+.5;
+        ctx.beginPath();
+        for(let i=0;i<=180;i++){const a=i/180*TAU;const rr=(R-j*5)+sn(a*4+t*.035*(j+1))*2.8+sn(a*6-t*.028)*1.8+cs(a*8+t*.02)*1;i===0?ctx.moveTo(cs(a)*rr,sn(a)*rr):ctx.lineTo(cs(a)*rr,sn(a)*rr);}
+        ctx.closePath();ctx.strokeStyle=j===0?c1:j===1?c2:c3;ctx.lineWidth=j===0?2.6:j===1?1.5:.9;ctx.shadowColor=j===0?c1:c2;ctx.shadowBlur=(11-j*3)*(pulse*.4+.6);ctx.globalAlpha=.65+pulse*.3;ctx.stroke();ctx.globalAlpha=1;
+      }
+      for(let i=0;i<12;i++){const a=i/12*TAU+t*.022*(i%2?1:-.5);const rr=R+sn(i*1.4+t*.08)*3.5;const g=sn(t*.1+i*.55)*.5+.5;ctx.fillStyle=c1;ctx.shadowColor=c1;ctx.shadowBlur=5*g;ctx.globalAlpha=g*.65;ctx.beginPath();ctx.arc(cs(a)*rr,sn(a)*rr,1.6+g*.6,0,TAU);ctx.fill();ctx.globalAlpha=1;}
+      break;
+    }
+    case 'ice_crystal':{
+      const rot=t*0.013;ctx.save();ctx.rotate(rot);
+      ctx.beginPath();ctx.arc(0,0,R,0,TAU);ctx.strokeStyle=c1;ctx.lineWidth=1.8;ctx.shadowColor=c1;ctx.shadowBlur=12;ctx.globalAlpha=.45+sn(t*.06)*.3;ctx.stroke();ctx.globalAlpha=1;
+      for(let arm=0;arm<6;arm++){
+        ctx.save();ctx.rotate(arm/6*TAU);const L=R-5;
+        ctx.strokeStyle=c1;ctx.lineWidth=1.6;ctx.shadowColor=c1;ctx.shadowBlur=9;ctx.globalAlpha=.72+sn(t*.055+arm)*.24;
+        ctx.beginPath();ctx.moveTo(0,-8);ctx.lineTo(0,-L);ctx.stroke();
+        [.42,.63,.82].forEach((frac,bi)=>{
+          const bY=-L*frac;const bLen=4.5-bi*.8+sn(t*.09+arm+bi)*1.2;
+          ctx.strokeStyle=bi===0?c1:bi===1?c2:c3;ctx.lineWidth=bi===0?1.2:.9;ctx.shadowColor=bi===0?c1:c2;ctx.shadowBlur=6-bi*1.5;ctx.globalAlpha=.6+sn(t*.07+bi*1.1)*.3;
+          [-1,1].forEach(sign=>{ctx.beginPath();ctx.moveTo(0,bY);ctx.lineTo(sign*bLen,bY+bLen*.65);ctx.stroke();});
+        });
+        ctx.globalAlpha=1;ctx.restore();
+      }
+      ctx.rotate(-rot*2.5);
+      for(let i=0;i<6;i++){const a=i/6*TAU;const rr=R-11+sn(t*.08+i)*2;ctx.fillStyle=c2;ctx.shadowColor=c2;ctx.shadowBlur=9;ctx.globalAlpha=(sn(t*.1+i)*.4+.55)*.65;ctx.beginPath();ctx.arc(cs(a)*rr,sn(a)*rr,2.2,0,TAU);ctx.fill();ctx.globalAlpha=1;}
+      ctx.restore();
+      break;
+    }
+    case 'white_ice':{
+      for(let layer=0;layer<3;layer++){
+        const spd=1+layer*.45;const rBase=R-layer*5;
+        ctx.beginPath();
+        for(let i=0;i<=220;i++){const a=i/220*TAU;const rr=rBase+sn(a*3+t*.04*spd)*3.2+sn(a*5-t*.032*spd)*2.2+cs(a*7+t*.025*spd)*1.5+sn(a*9-t*.018*spd)*.8;i===0?ctx.moveTo(cs(a)*rr,sn(a)*rr):ctx.lineTo(cs(a)*rr,sn(a)*rr);}
+        ctx.closePath();const pulse=sn(t*.07+layer*.9)*.3+.7;ctx.strokeStyle=layer===0?c1:layer===1?c2:c3;ctx.lineWidth=layer===0?2.8:layer===1?1.5:.9;ctx.shadowColor=layer===0?c1:c2;ctx.shadowBlur=(13-layer*3)*pulse;ctx.globalAlpha=.65+pulse*.28;ctx.stroke();ctx.globalAlpha=1;
+      }
+      for(let i=0;i<10;i++){const a=i/10*TAU+t*.016*(i%2?1:-.65);const rr=R+2+sn(t*.09+i*.85)*4.5;const g=sn(t*.13+i)*.45+.55;ctx.fillStyle=c1;ctx.shadowColor=c1;ctx.shadowBlur=8*g;ctx.globalAlpha=g*.6;ctx.beginPath();ctx.arc(cs(a)*rr,sn(a)*rr,2+g*.9,0,TAU);ctx.fill();ctx.globalAlpha=1;}
+      break;
+    }
+  }
+  ctx.restore();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ANIMAL SWITCHER STATE
+// ═══════════════════════════════════════════════════════════════
+const ANIMALS = [
+  { id:'clownfish', label:'Clownfish', draw:drawClownfish },
+  { id:'dolphin',   label:'Dolphin',   draw:drawDolphin  },
+  { id:'bluetang',  label:'Blue Tang', draw:drawBlueTang },
+];
+let currentAnimal = 0;
+
+// ═══════════════════════════════════════════════════════════════
+// VARIANTS
+// ═══════════════════════════════════════════════════════════════
+const VARIANTS=[
+  {name:'Arctic Blue',    label:'Icebreaker I',    group:'blues',      shape:'icebreaker',  palette:['#00d4ff','#006aff','#aaccff']},
+  {name:'Polar Depths',   label:'Frozen Tide I',   group:'blues',      shape:'frozen_tide', palette:['#4488ff','#0033cc','#99bbff']},
+  {name:'Ice Storm',      label:'Ice Crystal I',   group:'blues',      shape:'ice_crystal', palette:['#33aaff','#0055ff','#88ccff']},
+  {name:'White Drift',    label:'White Ice I',     group:'blues',      shape:'white_ice',   palette:['#88bbff','#0066ff','#cce0ff']},
+  {name:'Cerulean Field', label:'Icebreaker II',   group:'blues',      shape:'icebreaker',  palette:['#0099ff','#003399','#55aaff']},
+  {name:'Snow Tide',      label:'Frozen Tide II',  group:'blue+white', shape:'frozen_tide', palette:['#ffffff','#aaddff','#3399ff']},
+  {name:'Glacier Edge',   label:'Icebreaker III',  group:'blue+white', shape:'icebreaker',  palette:['#ddf0ff','#77bbff','#2266ff']},
+  {name:'Crystal Shore',  label:'Ice Crystal II',  group:'blue+white', shape:'ice_crystal', palette:['#eef8ff','#88bbff','#2266ff']},
+  {name:'Floe Break',     label:'White Ice II',    group:'blue+white', shape:'white_ice',   palette:['#ffffff','#88ccff','#1155ee']},
+  {name:'Frost Bloom',    label:'Icebreaker IV',   group:'blue+white', shape:'icebreaker',  palette:['#ccecff','#55aaff','#0044dd']},
+  {name:'Reef Crest',     label:'Frozen Tide III', group:'blue+green', shape:'frozen_tide', palette:['#00d4ff','#00ff9d','#009988']},
+  {name:'Kelp Stream',    label:'Ice Crystal III', group:'blue+green', shape:'ice_crystal', palette:['#33ffcc','#0099ff','#007755']},
+  {name:'Biolume',        label:'White Ice III',   group:'blue+green', shape:'white_ice',   palette:['#00ffaa','#0077ff','#00bb88']},
+  {name:'Tidal Green',    label:'Icebreaker V',    group:'blue+green', shape:'icebreaker',  palette:['#44ffcc','#0066cc','#00aa77']},
+  {name:'Melt Season',    label:'Frozen Tide IV',  group:'blue+green', shape:'frozen_tide', palette:['#00eebb','#3399ff','#007766']},
+  {name:'Polar Pearl',    label:'Ice Crystal IV',  group:'white+blue', shape:'ice_crystal', palette:['#f0faff','#ccefff','#4488ff']},
+  {name:'Pure Ice',       label:'White Ice IV',    group:'white+blue', shape:'white_ice',   palette:['#ffffff','#bbddff','#3377ff']},
+  {name:'Iceberg Cap',    label:'Icebreaker VI',   group:'white+blue', shape:'icebreaker',  palette:['#eeffff','#aaddff','#1166ff']},
+  {name:'White Current',  label:'Frozen Tide V',   group:'white+blue', shape:'frozen_tide', palette:['#f5f9ff','#99ccff','#2255ff']},
+  {name:'Snow Crystal',   label:'Ice Crystal V',   group:'white+blue', shape:'ice_crystal', palette:['#ddeeff','#88bbff','#1155ee']},
+  {name:'Aqua Shelf',     label:'White Ice V',     group:'ice+teal',   shape:'white_ice',   palette:['#00e5cc','#00aaff','#007766']},
+  {name:'Teal Cascade',   label:'Icebreaker VII',  group:'ice+teal',   shape:'icebreaker',  palette:['#00ccbb','#0088ee','#005544']},
+  {name:'Mint Flow',      label:'Frozen Tide VI',  group:'ice+teal',   shape:'frozen_tide', palette:['#55ffdd','#00aaff','#009977']},
+  {name:'Jade Tide',      label:'Ice Crystal VI',  group:'ice+teal',   shape:'ice_crystal', palette:['#22ddcc','#1177ff','#006655']},
+  {name:'Seafoam Ring',   label:'White Ice VI',    group:'ice+teal',   shape:'white_ice',   palette:['#aafff0','#33aaff','#00aa88']},
+  {name:'Aurora Pale',    label:'Icebreaker VIII', group:'glacier',    shape:'icebreaker',  palette:['#ccffee','#88ccff','#33aa88']},
+  {name:'Glacier Mint',   label:'Frozen Tide VII', group:'glacier',    shape:'frozen_tide', palette:['#bbffee','#77bbff','#22aa77']},
+  {name:'Frost Green',    label:'Ice Crystal VII', group:'glacier',    shape:'ice_crystal', palette:['#ddffee','#99ccff','#44bb88']},
+  {name:'Cool Aquifer',   label:'White Ice VII',   group:'glacier',    shape:'white_ice',   palette:['#eeffee','#aaddff','#55cc99']},
+  {name:'Pale Tide',      label:'Icebreaker IX',   group:'glacier',    shape:'icebreaker',  palette:['#f0fff8','#bbddff','#55ccaa']},
+];
+
+// ═══════════════════════════════════════════════════════════════
+// ANIMATION STATE
+// ═══════════════════════════════════════════════════════════════
+const ringSlots=[], pipSlots=[], ringTimes={}, pipTimes={};
+let hoveredIdx={};
+
+// ═══════════════════════════════════════════════════════════════
+// FILTER
+// ═══════════════════════════════════════════════════════════════
+const GROUPS={
+  'All':VARIANTS.map((_,i)=>i),
+  'Blues':VARIANTS.map((v,i)=>v.group==='blues'?i:-1).filter(i=>i>=0),
+  'Blue+White':VARIANTS.map((v,i)=>v.group==='blue+white'?i:-1).filter(i=>i>=0),
+  'Blue+Green':VARIANTS.map((v,i)=>v.group==='blue+green'?i:-1).filter(i=>i>=0),
+  'White+Blue':VARIANTS.map((v,i)=>v.group==='white+blue'?i:-1).filter(i=>i>=0),
+  'Ice+Teal':VARIANTS.map((v,i)=>v.group==='ice+teal'?i:-1).filter(i=>i>=0),
+  'Glacier':VARIANTS.map((v,i)=>v.group==='glacier'?i:-1).filter(i=>i>=0),
+};
+const SHAPE_GROUPS={
+  'Icebreaker':VARIANTS.map((v,i)=>v.shape==='icebreaker'?i:-1).filter(i=>i>=0),
+  'Frozen Tide':VARIANTS.map((v,i)=>v.shape==='frozen_tide'?i:-1).filter(i=>i>=0),
+  'Ice Crystal':VARIANTS.map((v,i)=>v.shape==='ice_crystal'?i:-1).filter(i=>i>=0),
+  'White Ice':VARIANTS.map((v,i)=>v.shape==='white_ice'?i:-1).filter(i=>i>=0),
+};
+
+function applyFilter(indices){
+  document.querySelectorAll('.badge-card').forEach(card=>{card.style.display=indices.includes(parseInt(card.dataset.idx))?'':'none';});
+  document.querySelectorAll('.section').forEach(sec=>{const vis=[...sec.querySelectorAll('.badge-card')].some(c=>c.style.display!=='none');sec.style.display=vis?'':'none';});
+}
+
+// ═══════════════════════════════════════════════════════════════
+// BUILD ANIMAL SWITCHER
+// ═══════════════════════════════════════════════════════════════
+function buildAnimalBar() {
+  const bar = document.getElementById('animalBar');
+  ANIMALS.forEach((animal, ai) => {
+    const btn = document.createElement('button');
+    btn.className = 'animal-btn' + (ai===0?' active':'');
+    btn.dataset.ai = ai;
+
+    // mini preview canvas in button
+    const previewCvs = document.createElement('canvas');
+    previewCvs.width = 28; previewCvs.height = 28;
+    previewCvs.style.cssText = 'border-radius:50%;border:1px solid rgba(0,212,255,0.3);';
+    btn.appendChild(previewCvs);
+
+    const label = document.createElement('span');
+    label.textContent = animal.label;
+    btn.appendChild(label);
+
+    btn.onclick = () => {
+      currentAnimal = ai;
+      document.querySelectorAll('.animal-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+    };
+    bar.appendChild(btn);
+
+    // animate preview
+    let pt=Math.random()*TAU;
+    (function previewLoop(){
+      pt+=0.025;
+      animal.draw(previewCvs,pt);
+      requestAnimationFrame(previewLoop);
+    })();
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// BUILD BADGES
+// ═══════════════════════════════════════════════════════════════
+function buildFilter(){
+  const nav=document.getElementById('filterNav');
+  Object.entries(GROUPS).forEach(([name,indices])=>{
+    const b=document.createElement('button');b.className='flt-btn'+(name==='All'?' active':'');b.textContent=name;b.onclick=()=>{document.querySelectorAll('.flt-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');applyFilter(indices);};nav.appendChild(b);
+  });
+  const sep=document.createElement('span');sep.style.cssText='width:1px;background:rgba(0,212,255,.2);height:20px;align-self:center;';nav.appendChild(sep);
+  Object.entries(SHAPE_GROUPS).forEach(([name,indices])=>{
+    const b=document.createElement('button');b.className='flt-btn';b.style.cssText='color:#00ff9d;border-color:rgba(0,255,157,.3);';b.textContent=name;b.onclick=()=>{document.querySelectorAll('.flt-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');applyFilter(indices);};nav.appendChild(b);
+  });
+}
+
+const KOI_IMG='https://images2.alphacoders.com/941/thumb-1920-941898.jpg';
+
+function buildBadges(){
+  const main=document.getElementById('main');
+  const sections=[
+    {shape:'icebreaker',title:'Icebreaker',color:'#7ec8ff',desc:'Polygon frames — geometric precision'},
+    {shape:'frozen_tide',title:'Frozen Tide',color:'#00d4ff',desc:'Layered wave rings — concentric motion'},
+    {shape:'ice_crystal',title:'Ice Crystal',color:'#aaf0ff',desc:'Six-arm snowflake — crystalline symmetry'},
+    {shape:'white_ice',title:'White Ice',color:'#00ff9d',desc:'Organic blob rings — fluid and alive'},
+  ];
+  sections.forEach(({shape,title,color,desc})=>{
+    const sec=document.createElement('div');sec.className='section';sec.dataset.shape=shape;
+    sec.innerHTML=`<div class="section-header"><div class="section-dot" style="background:${color};box-shadow:0 0 10px ${color};"></div><div><div class="section-title" style="color:${color}">${title}</div><div class="section-desc">${desc}</div></div></div>`;
+    const grid=document.createElement('div');grid.className='badge-grid';
+
+    VARIANTS.forEach((variant,idx)=>{
+      if(variant.shape!==shape)return;
+      const card=document.createElement('div');card.className='badge-card';card.dataset.idx=idx;
+      const wrap=document.createElement('div');wrap.className='avi-wrap';
+
+      const rc=document.createElement('canvas');rc.className='ring-canvas';rc.width=92;rc.height=92;wrap.appendChild(rc);
+
+      const img=document.createElement('img');img.className='avi-img';img.src=KOI_IMG;img.alt='koi';wrap.appendChild(img);
+
+      const pc=document.createElement('canvas');pc.className='pip-canvas';pc.width=30;pc.height=30;
+      pc.style.boxShadow=`0 0 8px ${variant.palette[0]}99,0 0 2px rgba(0,0,0,0.8)`;
+      wrap.appendChild(pc);
+
+      card.appendChild(wrap);
+      const ne=document.createElement('div');ne.className='badge-name';ne.style.color=variant.palette[0];ne.textContent=variant.name;card.appendChild(ne);
+      const le=document.createElement('div');le.className='badge-label';le.textContent=variant.label;card.appendChild(le);
+      const ct=document.createElement('div');ct.className='color-tag';ct.style.color=variant.palette[1];ct.textContent=variant.group.replace('+',' · ');card.appendChild(ct);
+
+      grid.appendChild(card);
+      ringTimes[idx]=Math.random()*100;
+      pipTimes[idx]=Math.random()*TAU;
+      ringSlots.push({canvas:rc,variant,idx});
+      pipSlots.push({canvas:pc,idx});
+
+      card.addEventListener('mouseenter',()=>{hoveredIdx[idx]=true;card.style.boxShadow=`0 0 30px ${variant.palette[0]}25,0 10px 40px rgba(0,0,0,.5)`;});
+      card.addEventListener('mouseleave',()=>{hoveredIdx[idx]=false;card.style.boxShadow='';});
+    });
+    sec.appendChild(grid);main.appendChild(sec);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MAIN LOOP
+// ═══════════════════════════════════════════════════════════════
+let lastT=null;
+function loop(ts){
+  if(!lastT)lastT=ts;
+  const dt=Math.min((ts-lastT)/1000,.05);lastT=ts;
+
+  ringSlots.forEach(({canvas,variant,idx})=>{ringTimes[idx]+=dt*60;drawFrame(canvas,variant,ringTimes[idx]);});
+
+  const drawFn = ANIMALS[currentAnimal].draw;
+  pipSlots.forEach(({canvas,idx})=>{
+    const speed=hoveredIdx[idx]?1.8:1;
+    pipTimes[idx]+=dt*speed;
+    drawFn(canvas,pipTimes[idx]);
+  });
+
+  requestAnimationFrame(loop);
+}
+
+buildAnimalBar();
+buildFilter();
+buildBadges();
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

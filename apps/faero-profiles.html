@@ -1,0 +1,2646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAERO — Profile Themes</title>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=Orbitron:wght@400;700;900&family=Courier+Prime:wght@400;700&family=Exo+2:wght@300;400;700;900&family=Tahoma&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #1a1a2e; font-family: 'Tahoma', sans-serif; }
+
+  /* THEME SELECTOR */
+  #theme-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+    background: #0d0d0d;
+    border-bottom: 2px solid #333;
+    display: flex; align-items: center; gap: 0;
+    overflow-x: auto; padding: 0;
+  }
+  #theme-bar .logo {
+    padding: 8px 16px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900; font-size: 13px;
+    color: #fff; background: #222;
+    border-right: 2px solid #444;
+    white-space: nowrap; letter-spacing: 3px;
+  }
+  #theme-bar button {
+    padding: 8px 12px;
+    font-size: 10px; font-family: 'Courier Prime', monospace; font-weight: 700;
+    border: none; cursor: pointer;
+    border-right: 1px solid #333;
+    background: #111; color: #888;
+    transition: all 0.2s; white-space: nowrap;
+    letter-spacing: 1px;
+  }
+  #theme-bar button:hover { background: #222; color: #ccc; }
+  #theme-bar button.active { background: #333; color: #fff; }
+
+  .theme-page { display: none; padding-top: 38px; min-height: 100vh; }
+  .theme-page.active { display: block; }
+
+  /* ===================== THEME 1: THE FACEBOOK (2005) ===================== */
+  #t1 {
+    background: #6d84b4;
+    font-family: 'Lucida Grande', Tahoma, sans-serif;
+    font-size: 11px;
+  }
+  .t1-header {
+    background: linear-gradient(180deg, #8099c2 0%, #6d84b4 60%, #4a6296 100%);
+    padding: 6px 10px 0;
+    display: flex; justify-content: space-between; align-items: flex-end;
+    border-bottom: 2px solid #3b5998;
+  }
+  .t1-logo {
+    font-family: 'Georgia', serif;
+    font-size: 28px; font-weight: bold;
+    color: #fff; letter-spacing: -1px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  }
+  .t1-logo span { color: #d8dfea; }
+  .t1-nav { display: flex; gap: 12px; padding-bottom: 6px; }
+  .t1-nav a { color: #d8dfea; text-decoration: none; font-size: 11px; }
+  .t1-nav a:hover { text-decoration: underline; }
+  .t1-body { display: flex; gap: 0; padding: 0; }
+  .t1-sidebar {
+    width: 140px; min-width: 140px;
+    background: #8b9dc3; padding: 6px;
+    border-right: 1px solid #6d84b4;
+  }
+  .t1-search { margin-bottom: 8px; }
+  .t1-search input {
+    width: 100%; padding: 2px 4px; font-size: 11px;
+    border: 1px solid #4a6296; background: #fff;
+  }
+  .t1-search button {
+    margin-top: 2px; padding: 1px 8px; font-size: 10px;
+    background: #e8eef7; border: 1px solid #9baac8; cursor: pointer;
+  }
+  .t1-sidebar-links { margin-top: 8px; }
+  .t1-sidebar-links a {
+    display: block; color: #3b5998; font-size: 11px;
+    text-decoration: none; padding: 1px 0;
+  }
+  .t1-sidebar-links a:hover { text-decoration: underline; }
+  .t1-main { flex: 1; padding: 6px; }
+  .t1-breadcrumb {
+    background: #d8dfea; border-bottom: 1px solid #9baac8;
+    padding: 3px 8px; font-size: 11px; color: #3b5998;
+    margin-bottom: 6px;
+  }
+  .t1-content { display: flex; gap: 6px; }
+  .t1-left { width: 220px; }
+  .t1-right { flex: 1; }
+  .t1-box {
+    background: #fff; border: 1px solid #9baac8;
+    margin-bottom: 6px;
+  }
+  .t1-box-header {
+    background: linear-gradient(180deg, #6d84b4, #4a6296);
+    color: #fff; font-weight: bold; font-size: 11px;
+    padding: 2px 6px;
+  }
+  .t1-box-body { padding: 6px; }
+  .t1-avatar {
+    width: 100%; height: 160px; background: #c8d0e7;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid #9baac8; overflow: hidden;
+  }
+  .t1-avatar-inner {
+    width: 80px; height: 100px; background: #8899bb;
+    border-radius: 4px; display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 32px;
+  }
+  .t1-btn {
+    display: block; width: 100%; text-align: center;
+    background: linear-gradient(180deg, #e8eef7, #d8dfea);
+    border: 1px solid #9baac8; color: #3b5998;
+    padding: 3px 0; margin-bottom: 3px; cursor: pointer;
+    font-size: 11px; text-decoration: none;
+  }
+  .t1-btn:hover { background: #d8dfea; }
+  .t1-info-row { display: flex; margin-bottom: 2px; }
+  .t1-info-label { font-weight: bold; width: 110px; color: #333; }
+  .t1-info-val { color: #3b5998; }
+  .t1-info-val.plain { color: #333; }
+  .t1-section-title { font-weight: bold; color: #333; margin: 6px 0 3px; border-bottom: 1px solid #9baac8; padding-bottom: 2px; }
+  .t1-friends-grid { display: flex; gap: 4px; flex-wrap: wrap; }
+  .t1-friend-thumb {
+    width: 40px; height: 40px; background: #8899bb;
+    border: 1px solid #9baac8; display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 14px; border-radius: 2px;
+  }
+  .t1-ad {
+    background: linear-gradient(135deg, #003366, #003399);
+    padding: 8px; color: #fff; font-size: 10px;
+    text-align: center; margin-top: 6px;
+    border: 2px solid #6699cc;
+  }
+  .t1-ad strong { font-size: 16px; display: block; color: #ffcc00; }
+
+  /* ===================== THEME 2: iTunes 2004 ===================== */
+  #t2 {
+    background: #d4d0c8;
+    font-family: 'Lucida Grande', Tahoma, sans-serif;
+    font-size: 11px;
+  }
+  .t2-window {
+    max-width: 860px; margin: 10px auto;
+    border: 1px solid #999; border-radius: 8px 8px 0 0;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  .t2-titlebar {
+    background: linear-gradient(180deg, #ebebeb 0%, #c6c6c6 100%);
+    padding: 6px 10px; display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid #999;
+  }
+  .t2-dots { display: flex; gap: 6px; }
+  .t2-dot { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.2); }
+  .t2-dot.red { background: radial-gradient(circle at 4px 4px, #ff6b6b, #cc0000); }
+  .t2-dot.yellow { background: radial-gradient(circle at 4px 4px, #ffdd57, #cc8800); }
+  .t2-dot.green { background: radial-gradient(circle at 4px 4px, #69d44b, #228b00); }
+  .t2-title-text { flex: 1; text-align: center; font-size: 12px; font-weight: bold; color: #333; }
+  .t2-apple { font-size: 18px; }
+  .t2-controls-bar {
+    background: linear-gradient(180deg, #f5f5f5, #e0e0e0);
+    padding: 6px 10px; display: flex; align-items: center; gap: 10px;
+    border-bottom: 1px solid #bbb;
+  }
+  .t2-transport { display: flex; gap: 4px; }
+  .t2-transport button {
+    background: linear-gradient(180deg, #e8e8e8, #c8c8c8);
+    border: 1px solid #999; border-radius: 50%; width: 24px; height: 24px;
+    cursor: pointer; font-size: 9px; display: flex; align-items: center; justify-content: center;
+    color: #444;
+  }
+  .t2-progress-bar {
+    flex: 1; height: 6px; background: #bbb; border-radius: 3px;
+    border: 1px inset #999; position: relative;
+  }
+  .t2-progress-fill { height: 100%; width: 35%; background: linear-gradient(180deg, #b0d0ff, #5588cc); border-radius: 3px; }
+  .t2-search-box {
+    background: #fff; border: 1px solid #999; border-radius: 10px;
+    padding: 2px 8px; font-size: 10px; width: 120px;
+  }
+  .t2-body { display: flex; }
+  .t2-sidebar {
+    width: 160px; background: linear-gradient(180deg, #ddd, #ccc);
+    border-right: 1px solid #aaa; padding: 4px 0;
+  }
+  .t2-sidebar-section { padding: 2px 8px; color: #666; font-size: 10px; font-weight: bold; text-transform: uppercase; margin-top: 6px; }
+  .t2-sidebar-item {
+    padding: 2px 8px 2px 20px; display: flex; align-items: center; gap: 6px;
+    font-size: 11px; color: #333; cursor: pointer;
+  }
+  .t2-sidebar-item:hover { background: rgba(0,0,0,0.05); }
+  .t2-sidebar-item.active { background: linear-gradient(180deg, #4477cc, #2255aa); color: #fff; }
+  .t2-sidebar-icon { font-size: 12px; }
+  .t2-main { flex: 1; background: #f5f5f5; }
+  .t2-banner {
+    display: flex; gap: 2px; background: #222; padding: 2px;
+  }
+  .t2-banner-item {
+    flex: 1; height: 80px; overflow: hidden; position: relative;
+    display: flex; align-items: flex-end;
+  }
+  .t2-banner-item .overlay {
+    position: absolute; inset: 0;
+    display: flex; align-items: flex-end;
+    padding: 6px;
+  }
+  .t2-banner-item:nth-child(1) { background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); }
+  .t2-banner-item:nth-child(2) { background: linear-gradient(135deg, #2d5016, #4a7c2f, #6aaa45); }
+  .t2-banner-item:nth-child(3) { background: linear-gradient(135deg, #4a1a1a, #8b3a3a, #cc6666); }
+  .t2-banner-label { color: #fff; font-size: 10px; font-weight: bold; text-shadow: 1px 1px 2px #000; }
+  .t2-store-body { display: flex; padding: 6px; gap: 8px; }
+  .t2-store-nav { width: 120px; }
+  .t2-store-nav select {
+    width: 100%; padding: 2px; font-size: 10px; margin-bottom: 4px;
+    background: linear-gradient(180deg, #fff, #e8e8e8);
+    border: 1px solid #aaa; border-radius: 4px;
+  }
+  .t2-nav-link { display: block; color: #0000cc; font-size: 10px; padding: 1px 0; text-decoration: none; cursor: pointer; }
+  .t2-nav-link:hover { text-decoration: underline; }
+  .t2-store-center { flex: 1; }
+  .t2-section-bar {
+    background: linear-gradient(180deg, #6699cc, #4477aa);
+    color: #fff; font-weight: bold; font-size: 10px;
+    padding: 2px 6px; margin-bottom: 4px;
+    display: flex; justify-content: space-between;
+  }
+  .t2-album-grid { display: flex; gap: 6px; margin-bottom: 8px; }
+  .t2-album {
+    text-align: center; width: 70px;
+  }
+  .t2-album-art {
+    width: 70px; height: 70px; margin-bottom: 2px;
+    border: 1px solid #ccc; display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .t2-album-art:nth-child(1) { background: linear-gradient(135deg, #ff9966, #cc3300); }
+  .t2-album-art:nth-child(1) { background: linear-gradient(135deg, #9966ff, #330099); }
+  .t2-album-title { font-size: 9px; color: #333; line-height: 1.2; }
+  .t2-profile-card {
+    background: linear-gradient(180deg, #e8f0ff, #d0e0ff);
+    border: 1px solid #aabbdd; border-radius: 6px;
+    padding: 10px; margin: 6px;
+  }
+  .t2-profile-header { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 8px; }
+  .t2-avatar2 {
+    width: 60px; height: 60px; border-radius: 4px;
+    border: 2px solid #8899bb;
+    background: linear-gradient(135deg, #8899bb, #5566aa);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 24px;
+  }
+  .t2-username { font-size: 16px; font-weight: bold; color: #1a3366; }
+  .t2-handle { color: #6677aa; font-size: 11px; }
+  .t2-top-songs { width: 160px; }
+  .t2-top-header { background: linear-gradient(180deg, #5588cc, #2255aa); color: #fff; padding: 2px 6px; font-weight: bold; font-size: 10px; margin-bottom: 3px; }
+  .t2-song-item { padding: 2px 0; border-bottom: 1px solid #ddd; font-size: 10px; display: flex; gap: 4px; }
+  .t2-song-num { color: #888; width: 14px; }
+  .t2-song-name { color: #0000cc; flex: 1; }
+  .t2-statusbar {
+    background: linear-gradient(180deg, #d0d0d0, #c0c0c0);
+    border-top: 1px solid #999; padding: 3px 8px;
+    display: flex; justify-content: space-between; font-size: 9px; color: #555;
+  }
+
+  /* ===================== THEME 3: Windows XP ===================== */
+  #t3 {
+    background: #3a6ea5;
+    font-family: Tahoma, 'Lucida Sans Unicode', sans-serif;
+    font-size: 11px;
+  }
+  .t3-desktop {
+    min-height: calc(100vh - 38px);
+    background: #3a6ea5;
+    padding: 10px;
+    position: relative;
+  }
+  .t3-window {
+    background: #ece9d8;
+    border: 1px solid #003c74;
+    border-radius: 6px 6px 0 0;
+    box-shadow: 3px 3px 10px rgba(0,0,0,0.4);
+    max-width: 780px; margin: 0 auto;
+    overflow: hidden;
+  }
+  .t3-titlebar {
+    background: linear-gradient(180deg, #0078d7 0%, #0078d7 40%, #004ebd 60%, #003c74 100%);
+    padding: 3px 6px;
+    display: flex; align-items: center; gap: 6px;
+    border-radius: 5px 5px 0 0;
+  }
+  .t3-titlebar-icon { font-size: 14px; }
+  .t3-titlebar-text { flex: 1; color: #fff; font-size: 12px; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+  .t3-titlebar-btns { display: flex; gap: 2px; }
+  .t3-xp-btn {
+    width: 21px; height: 21px; border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.3);
+    cursor: pointer; font-size: 10px; font-weight: bold;
+    display: flex; align-items: center; justify-content: center; color: #fff;
+  }
+  .t3-xp-btn.min { background: linear-gradient(180deg, #7fbcff, #3d88df); }
+  .t3-xp-btn.max { background: linear-gradient(180deg, #7fbcff, #3d88df); }
+  .t3-xp-btn.close { background: linear-gradient(180deg, #ff7070, #cc0000); }
+  .t3-menubar {
+    background: #ece9d8; border-bottom: 1px solid #aaa;
+    padding: 2px 4px; display: flex; gap: 0;
+  }
+  .t3-menu-item { padding: 2px 8px; font-size: 11px; cursor: pointer; border-radius: 2px; }
+  .t3-menu-item:hover { background: #316ac5; color: #fff; }
+  .t3-toolbar {
+    background: linear-gradient(180deg, #f5f3ee, #dbd8cc);
+    border-bottom: 1px solid #ccc; padding: 3px 6px;
+    display: flex; gap: 8px; align-items: center;
+  }
+  .t3-tool-btn {
+    background: linear-gradient(180deg, #fff, #e4e0d8);
+    border: 1px solid #c0bdb3; padding: 2px 8px; font-size: 10px;
+    cursor: pointer; border-radius: 2px;
+  }
+  .t3-tool-btn:hover { background: #c5d9ef; border-color: #316ac5; }
+  .t3-address {
+    flex: 1; background: #fff; border: 1px solid #999;
+    padding: 2px 6px; font-size: 11px; color: #333;
+  }
+  .t3-body { display: flex; min-height: 500px; }
+  .t3-sidebar {
+    width: 160px; background: linear-gradient(180deg, #7fbcff 0%, #4a9ef0 30%, #316ac5 100%);
+    padding: 0;
+  }
+  .t3-sidebar-section {
+    background: rgba(0,0,0,0.2);
+    color: #fff; font-size: 10px; font-weight: bold;
+    padding: 3px 8px; margin-bottom: 1px;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .t3-sidebar-link {
+    display: flex; align-items: center; gap: 6px;
+    color: #fff; padding: 4px 8px; font-size: 11px;
+    cursor: pointer; text-decoration: none;
+  }
+  .t3-sidebar-link:hover { background: rgba(255,255,255,0.2); }
+  .t3-sidebar-icon2 { font-size: 16px; }
+  .t3-content { flex: 1; background: #fff; padding: 0; }
+  .t3-profile-header {
+    background: linear-gradient(180deg, #c2d9f0, #8bb8e8);
+    padding: 12px 16px; display: flex; gap: 14px; align-items: flex-start;
+    border-bottom: 1px solid #7ba7d4;
+  }
+  .t3-avatar {
+    width: 80px; height: 90px;
+    background: linear-gradient(135deg, #316ac5, #1a3a7c);
+    border: 2px solid #fff; border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 32px;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+  }
+  .t3-profile-info h2 { font-size: 18px; color: #003c74; font-weight: bold; }
+  .t3-profile-info .handle { color: #316ac5; font-size: 12px; }
+  .t3-profile-info .status-badge {
+    display: inline-block; background: #4caf50; color: #fff;
+    font-size: 10px; padding: 1px 6px; border-radius: 8px; margin-top: 4px;
+  }
+  .t3-info-panels { display: flex; gap: 8px; padding: 8px; }
+  .t3-panel {
+    flex: 1; border: 1px solid #316ac5;
+    background: #f0f6ff;
+  }
+  .t3-panel-header {
+    background: linear-gradient(180deg, #c2d9f0, #8bb8e8);
+    color: #003c74; font-weight: bold; font-size: 11px;
+    padding: 3px 8px; border-bottom: 1px solid #7ba7d4;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .t3-panel-body { padding: 8px; }
+  .t3-field { display: flex; margin-bottom: 4px; font-size: 11px; }
+  .t3-field label { color: #333; font-weight: bold; width: 90px; }
+  .t3-field span { color: #0078d7; }
+  .t3-taskbar {
+    background: linear-gradient(180deg, #245edc, #1a48b0);
+    padding: 3px 6px; display: flex; align-items: center; gap: 6px;
+    border-top: 2px solid #5d8fff;
+    position: relative;
+  }
+  .t3-start-btn {
+    background: linear-gradient(180deg, #5dc15d, #2e8b2e);
+    border: 1px solid #1a5c1a; border-radius: 12px;
+    padding: 2px 12px 2px 8px; color: #fff; font-weight: bold;
+    font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px;
+    font-family: Tahoma;
+  }
+  .t3-taskbar-items { flex: 1; display: flex; gap: 2px; }
+  .t3-taskbar-item {
+    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+    padding: 2px 10px; color: #fff; font-size: 10px; cursor: pointer;
+    min-width: 80px; display: flex; align-items: center; gap: 4px;
+  }
+  .t3-clock { color: #fff; font-size: 10px; padding: 0 8px; }
+
+  /* ===================== THEME 4: Y2K Minimal / Dumbphone ===================== */
+  #t4 {
+    background: linear-gradient(135deg, #87ceeb 0%, #98d8e8 30%, #7ec8c8 60%, #90ee90 100%);
+    font-family: 'Arial Rounded MT Bold', 'Trebuchet MS', sans-serif;
+    min-height: 100vh;
+  }
+  .t4-page { max-width: 600px; margin: 0 auto; padding: 20px; }
+  .t4-card {
+    background: rgba(255,255,255,0.85);
+    border-radius: 20px; padding: 20px;
+    box-shadow: 0 8px 32px rgba(0,150,200,0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.9);
+    margin-bottom: 16px;
+  }
+  .t4-title {
+    font-size: 28px; font-weight: 900; color: #0077aa;
+    text-align: center; margin-bottom: 4px;
+    text-shadow: 2px 2px 0 rgba(0,150,200,0.2);
+  }
+  .t4-subtitle { text-align: center; color: #55aacc; font-size: 13px; margin-bottom: 16px; }
+  .t4-profile-center { text-align: center; }
+  .t4-big-avatar {
+    width: 100px; height: 100px; border-radius: 20px;
+    background: linear-gradient(135deg, #0099cc, #0066aa);
+    margin: 0 auto 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 40px; color: #fff;
+    box-shadow: 0 4px 20px rgba(0,100,150,0.4);
+    border: 3px solid #fff;
+  }
+  .t4-name { font-size: 22px; font-weight: 900; color: #003366; }
+  .t4-tag { color: #0099cc; font-size: 14px; margin-bottom: 12px; }
+  .t4-badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 12px; }
+  .t4-badge {
+    background: linear-gradient(135deg, #0099cc, #0077aa);
+    color: #fff; padding: 4px 12px; border-radius: 20px;
+    font-size: 11px; font-weight: bold;
+  }
+  .t4-apps-title {
+    font-size: 16px; font-weight: bold; color: #0077aa;
+    margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+  }
+  .t4-apps-title::after { content: ''; flex: 1; height: 2px; background: #0099cc; opacity: 0.3; }
+  .t4-apps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .t4-app-icon {
+    text-align: center; cursor: pointer;
+  }
+  .t4-app-icon .icon-circle {
+    width: 50px; height: 50px; border-radius: 12px; margin: 0 auto 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; color: #fff;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  }
+  .t4-app-icon .icon-label { font-size: 9px; color: #555; font-weight: bold; }
+  .t4-keep { background: linear-gradient(135deg, #33bbff, #0099cc); }
+  .t4-keep2 { background: linear-gradient(135deg, #33cc88, #00aa66); }
+  .t4-remove { background: linear-gradient(135deg, #ff6666, #cc3333); opacity: 0.5; }
+  .t4-section-label {
+    font-size: 11px; font-weight: bold; color: #0077aa;
+    text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px;
+  }
+  .t4-ask-items { display: flex; flex-direction: column; gap: 6px; }
+  .t4-ask-item {
+    background: rgba(0,150,200,0.08); border-radius: 10px;
+    padding: 8px 12px; border-left: 3px solid #0099cc;
+  }
+  .t4-ask-q { font-size: 11px; font-weight: bold; color: #003366; margin-bottom: 2px; }
+  .t4-ask-a { font-size: 10px; color: #555; }
+
+  /* ===================== THEME 5: humanfinny / indie web ===================== */
+  #t5 {
+    background: #1a1a1a;
+    font-family: 'Courier Prime', 'Courier New', monospace;
+    font-size: 11px;
+    color: #cccccc;
+  }
+  .t5-page { max-width: 760px; margin: 0 auto; padding: 0; }
+  .t5-topbar {
+    background: #2a2a2a; border-bottom: 3px solid #99cc33;
+    display: flex; align-items: center; gap: 0;
+  }
+  .t5-logo-block {
+    background: #99cc33; padding: 6px 12px;
+    font-size: 13px; font-weight: bold; color: #1a1a1a;
+    letter-spacing: 2px;
+  }
+  .t5-nav-tabs { display: flex; }
+  .t5-tab {
+    padding: 6px 10px; font-size: 10px; color: #99cc33; cursor: pointer;
+    border-right: 1px solid #333; display: flex; align-items: center; gap: 4px;
+    letter-spacing: 1px;
+  }
+  .t5-tab:hover { background: #333; }
+  .t5-tab.active { background: #333; border-bottom: 3px solid #99cc33; }
+  .t5-tab-icon { font-size: 12px; }
+  .t5-sidebar-left {
+    position: absolute;
+    left: 0; top: 200px;
+    writing-mode: vertical-lr; text-orientation: mixed;
+    transform: rotate(180deg);
+    background: #99cc33; color: #1a1a1a;
+    padding: 10px 4px; font-size: 10px; font-weight: bold;
+    letter-spacing: 3px;
+  }
+  .t5-main { display: flex; }
+  .t5-left-col { width: 180px; padding: 8px; border-right: 1px solid #333; }
+  .t5-right-col { flex: 1; padding: 8px; }
+  .t5-welcome {
+    padding: 8px; border-bottom: 2px solid #333; margin-bottom: 8px;
+  }
+  .t5-welcome h1 {
+    font-size: 24px; color: #99cc33; letter-spacing: 4px;
+    font-family: 'Courier Prime', monospace;
+  }
+  .t5-welcome h1 span { color: #fff; }
+  .t5-barcode {
+    font-size: 8px; color: #555; letter-spacing: -1px;
+    border: 1px solid #333; padding: 2px 4px; margin: 6px 0;
+    display: inline-block;
+  }
+  .t5-path { color: #99cc33; font-size: 10px; margin-bottom: 6px; }
+  .t5-ticker {
+    background: #333; border: 1px solid #99cc33;
+    padding: 3px 6px; font-size: 9px; color: #99cc33;
+    margin-bottom: 8px; font-style: italic;
+  }
+  .t5-section-box { border: 1px solid #333; margin-bottom: 8px; }
+  .t5-section-title {
+    background: #99cc33; color: #1a1a1a; font-weight: bold;
+    font-size: 10px; padding: 2px 6px; letter-spacing: 2px;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .t5-section-body { padding: 8px; }
+  .t5-status { font-size: 10px; color: #aaa; margin-bottom: 4px; }
+  .t5-status strong { color: #99cc33; }
+  .t5-status-input {
+    width: 100%; background: #1a1a1a; border: 1px solid #333;
+    color: #99cc33; padding: 3px; font-size: 10px; margin-top: 3px;
+    font-family: 'Courier Prime', monospace;
+  }
+  .t5-mini-media { display: flex; gap: 6px; margin-bottom: 6px; }
+  .t5-mini-thumb {
+    width: 50px; height: 40px; background: #333;
+    border: 1px solid #444; display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .t5-mini-text { font-size: 9px; color: #aaa; line-height: 1.4; }
+  .t5-mini-text strong { color: #fff; font-size: 10px; display: block; }
+  .t5-news-item { border-bottom: 1px solid #2a2a2a; padding: 6px 0; }
+  .t5-news-date { color: #99cc33; font-size: 9px; font-weight: bold; }
+  .t5-news-title { color: #fff; font-size: 10px; font-weight: bold; margin-bottom: 3px; }
+  .t5-news-text { font-size: 9px; color: #aaa; line-height: 1.4; }
+  .t5-check-it {
+    display: inline-block; background: #99cc33; color: #1a1a1a;
+    font-size: 9px; padding: 1px 6px; font-weight: bold; margin-top: 3px; cursor: pointer;
+  }
+  .t5-art-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+  .t5-art-thumb {
+    height: 50px; background: #2a2a2a; border: 1px solid #333;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; cursor: pointer;
+  }
+  .t5-art-thumb:hover { border-color: #99cc33; }
+  .t5-wip {
+    background: #2a2a2a; border: 2px dashed #444;
+    display: flex; align-items: center; justify-content: center;
+    height: 80px; color: #555; font-size: 14px; font-weight: bold;
+    letter-spacing: 4px;
+  }
+  .t5-events { font-size: 9px; color: #aaa; }
+  .t5-events strong { color: #99cc33; display: block; margin-bottom: 4px; }
+  .t5-event-item { margin-bottom: 3px; padding-left: 8px; border-left: 2px solid #333; }
+
+  /* ===================== THEME 6: Win7 Carrd / K-pop profile ===================== */
+  #t6 {
+    background: linear-gradient(135deg, #0a5dc2 0%, #1e90ff 50%, #87ceeb 100%);
+    font-family: Tahoma, 'Segoe UI', sans-serif;
+    font-size: 11px;
+    min-height: 100vh;
+    padding: 10px;
+  }
+  .t6-desktop-icons {
+    display: flex; flex-direction: column; gap: 10px;
+    position: fixed; left: 20px; top: 60px;
+  }
+  .t6-icon { text-align: center; cursor: pointer; }
+  .t6-icon div { font-size: 28px; }
+  .t6-icon span { color: #fff; font-size: 10px; text-shadow: 1px 1px 2px #000; display: block; }
+  .t6-window {
+    max-width: 700px; margin: 0 auto;
+    background: #fff;
+    border: 1px solid #666;
+    box-shadow: 4px 4px 20px rgba(0,0,0,0.4);
+    border-radius: 8px 8px 4px 4px;
+    overflow: hidden;
+  }
+  .t6-chrome-bar {
+    background: linear-gradient(180deg, #e8e8e8, #d0d0d0);
+    padding: 5px 8px; display: flex; align-items: center; gap: 6px;
+    border-bottom: 1px solid #aaa; border-radius: 8px 8px 0 0;
+  }
+  .t6-chrome-dots { display: flex; gap: 4px; }
+  .t6-chrome-dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.2);
+  }
+  .t6-chrome-dot.r { background: #ff5f57; }
+  .t6-chrome-dot.y { background: #febc2e; }
+  .t6-chrome-dot.g { background: #28c840; }
+  .t6-chrome-nav { display: flex; gap: 4px; }
+  .t6-nav-btn {
+    background: linear-gradient(180deg, #fff, #e0e0e0);
+    border: 1px solid #999; border-radius: 3px; width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center; font-size: 10px; cursor: pointer;
+  }
+  .t6-url-bar {
+    flex: 1; background: #fff; border: 1px solid #ccc; border-radius: 10px;
+    padding: 2px 10px; font-size: 10px; color: #444;
+  }
+  .t6-win-icons { display: flex; gap: 6px; }
+  .t6-win-icon {
+    font-size: 14px; cursor: pointer;
+  }
+  .t6-content { display: flex; }
+  .t6-left-panel {
+    width: 200px; border-right: 1px solid #ddd; padding: 12px;
+    background: linear-gradient(180deg, #f8f8f8, #f0f0f0);
+  }
+  .t6-pfp-frame {
+    width: 90px; height: 90px; margin: 0 auto 8px;
+    border: 3px solid #4caf50; border-radius: 8px;
+    background: linear-gradient(135deg, #88ccff, #4499ee);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px; box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+  }
+  .t6-disp-name { text-align: center; font-size: 16px; font-weight: bold; color: #333; }
+  .t6-handle { text-align: center; color: #666; font-size: 10px; margin-bottom: 6px; }
+  .t6-meta { text-align: center; font-size: 10px; color: #888; line-height: 1.6; margin-bottom: 8px; }
+  .t6-search-box {
+    width: 100%; border: 1px solid #ccc; padding: 3px 6px; font-size: 10px;
+    border-radius: 10px; background: #fff; color: #333; margin-bottom: 8px;
+  }
+  .t6-link-list { margin-bottom: 8px; }
+  .t6-link-item {
+    display: flex; align-items: center; gap: 6px;
+    padding: 3px 6px; border: 1px solid #ddd; background: #fff;
+    margin-bottom: 2px; cursor: pointer; font-size: 10px; color: #555;
+    border-radius: 2px;
+  }
+  .t6-link-item:hover { background: #e8f4ff; }
+  .t6-link-star { color: #ffcc00; }
+  .t6-stats { font-size: 10px; color: #555; }
+  .t6-stats strong { color: #333; }
+  .t6-center-panel { flex: 1; padding: 10px; }
+  .t6-welcome-banner {
+    background: linear-gradient(180deg, #e8f4ff, #d0e8ff);
+    border: 1px solid #aacee8; padding: 6px 10px;
+    margin-bottom: 8px; font-size: 12px; font-weight: bold; color: #333;
+  }
+  .t6-feature-img {
+    width: 100%; height: 120px; background: linear-gradient(135deg, #d0e8ff, #b0d8ff);
+    border: 1px solid #aacee8; margin-bottom: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 40px; border-radius: 3px;
+  }
+  .t6-profile-sections { display: flex; flex-direction: column; gap: 8px; }
+  .t6-profile-section { background: #f8f8f8; border: 1px solid #ddd; padding: 8px; }
+  .t6-profile-section h4 { color: #3366aa; font-size: 11px; font-weight: bold; margin-bottom: 4px; }
+  .t6-stan-list { font-size: 10px; color: #444; line-height: 1.8; }
+  .t6-stan-list strong { color: #333; }
+  .t6-right-panel { width: 130px; border-left: 1px solid #ddd; padding: 10px; }
+  .t6-folder-row { display: flex; gap: 4px; margin-bottom: 6px; }
+  .t6-folder-icon { font-size: 22px; cursor: pointer; }
+  .t6-media-label {
+    background: #4caf50; color: #fff; font-size: 10px; font-weight: bold;
+    padding: 2px 6px; text-align: center; margin-bottom: 4px;
+  }
+  .t6-media-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 8px; }
+  .t6-media-thumb {
+    height: 35px; background: linear-gradient(135deg, #b0d8ff, #88aaff);
+    border: 1px solid #aaa; display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  .t6-now-playing { font-size: 10px; color: #555; margin-bottom: 4px; text-align: center; }
+  .t6-player {
+    background: linear-gradient(180deg, #e8f4ff, #c0dcf0);
+    border: 1px solid #99bbdd; border-radius: 4px; padding: 6px;
+    text-align: center;
+  }
+  .t6-player-art { font-size: 24px; margin-bottom: 3px; }
+  .t6-player-track { font-size: 9px; color: #0055aa; font-weight: bold; font-style: italic; }
+  .t6-player-controls { display: flex; gap: 4px; justify-content: center; margin-top: 4px; }
+  .t6-p-btn {
+    background: #c0dcf0; border: 1px solid #99bbdd; border-radius: 2px;
+    font-size: 10px; padding: 1px 4px; cursor: pointer; color: #0055aa;
+  }
+  .t6-taskbar {
+    background: linear-gradient(180deg, #1c5fbb, #1a4ea0);
+    padding: 3px 6px; display: flex; align-items: center; gap: 6px;
+    border-top: 2px solid #4d8dff;
+  }
+  .t6-start { background: linear-gradient(180deg, #4d8dff, #1a5fcc); border: 1px solid #0040aa; border-radius: 2px; padding: 2px 10px; color: #fff; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+  .t6-ie-icon { font-size: 16px; cursor: pointer; }
+  .t6-task-items { flex: 1; }
+  .t6-task-item { display: inline-block; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); padding: 2px 8px; color: #fff; font-size: 9px; margin-right: 2px; cursor: pointer; }
+  .t6-sys-tray { color: #fff; font-size: 9px; }
+
+  /* ===================== THEME 7: icy blue carrd ===================== */
+  #t7 {
+    background: radial-gradient(ellipse at 30% 20%, #c5d8f0 0%, #dce8f8 40%, #b8d0ec 100%);
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    font-size: 11px;
+    min-height: 100vh; padding: 20px;
+  }
+  .t7-card {
+    max-width: 380px; margin: 0 auto;
+    background: rgba(255,255,255,0.6);
+    border: 1px solid rgba(255,255,255,0.9);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(100,150,200,0.3);
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+  }
+  .t7-header-img {
+    height: 100px; background: linear-gradient(135deg, #6ab0e8 0%, #9dd0ff 50%, #dae8ff 100%);
+    position: relative; overflow: hidden;
+  }
+  .t7-header-crystal {
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(45deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 2px, transparent 2px, transparent 8px);
+  }
+  .t7-header-title {
+    position: absolute; bottom: 8px; left: 12px;
+    font-size: 18px; color: #fff; font-weight: 300; letter-spacing: 3px;
+    text-shadow: 1px 1px 6px rgba(0,100,200,0.5);
+  }
+  .t7-card-body { padding: 12px; }
+  .t7-sub-label { font-size: 9px; color: #88aabb; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  .t7-nav-pills { display: flex; gap: 4px; margin-bottom: 10px; }
+  .t7-pill {
+    flex: 1; text-align: center; padding: 4px;
+    background: linear-gradient(180deg, #e8f4ff, #c8e0f8);
+    border: 1px solid #aad0ef; border-radius: 20px;
+    color: #2266aa; font-size: 10px; cursor: pointer;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 2px 4px rgba(0,100,200,0.15);
+  }
+  .t7-pill:hover { background: linear-gradient(180deg, #d0e8ff, #a8ccef); }
+  .t7-player-pill {
+    display: flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.5); border: 1px solid #c0d8ef; border-radius: 4px;
+    padding: 3px 6px; margin-bottom: 10px;
+  }
+  .t7-player-label { font-size: 9px; color: #88aacc; }
+  .t7-player-song { font-size: 10px; color: #2266aa; font-weight: bold; }
+  .t7-transport-mini { display: flex; gap: 3px; margin-left: auto; }
+  .t7-t-btn { background: rgba(200,220,240,0.8); border: 1px solid #aaccee; font-size: 9px; padding: 1px 4px; cursor: pointer; color: #446688; border-radius: 2px; }
+  .t7-barcode-row { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
+  .t7-barcode2 {
+    background: repeating-linear-gradient(90deg, #333 0px, #333 2px, #fff 2px, #fff 4px, #333 4px, #333 5px, #fff 5px, #fff 8px);
+    height: 20px; width: 80px; opacity: 0.4;
+  }
+  .t7-page-title { font-size: 12px; color: #446688; letter-spacing: 4px; }
+  .t7-sections { display: flex; gap: 8px; margin-bottom: 10px; }
+  .t7-section-box2 { flex: 1; }
+  .t7-section-header {
+    background: linear-gradient(180deg, #d8eeff, #b8d8f8);
+    border: 1px solid #aad0ef; border-radius: 8px 8px 0 0;
+    padding: 4px 8px; font-size: 10px; font-weight: bold; color: #2266aa;
+    text-align: center;
+  }
+  .t7-section-content {
+    background: rgba(255,255,255,0.5); border: 1px solid #c8e0f8; border-top: none;
+    border-radius: 0 0 8px 8px; padding: 8px;
+  }
+  .t7-avatar3 {
+    width: 50px; height: 50px; border-radius: 6px;
+    background: rgba(200,225,245,0.8);
+    border: 2px solid rgba(150,200,230,0.8);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; margin-bottom: 4px;
+  }
+  .t7-info-line { font-size: 9px; color: #446688; line-height: 1.8; }
+  .t7-online-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #ddffdd; border: 1px solid #88cc88; border-radius: 8px;
+    padding: 2px 8px; font-size: 9px; color: #226622; margin: 4px 0;
+  }
+  .t7-online-dot { width: 6px; height: 6px; background: #44cc44; border-radius: 50%; }
+  .t7-about-text { font-size: 9px; color: #556677; line-height: 1.6; }
+  .t7-fav-header {
+    background: rgba(200,220,240,0.5); border: 1px solid #c0d8ef; border-radius: 8px 8px 0 0;
+    padding: 4px 8px; font-size: 10px; color: #446688; margin-top: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .t7-fav-body { background: rgba(255,255,255,0.4); border: 1px solid #c0d8ef; border-top: none; border-radius: 0 0 8px 8px; padding: 8px; font-size: 9px; color: #556677; line-height: 1.6; }
+  .t7-friends-header {
+    background: linear-gradient(180deg, #d8eeff, #b8d8f8); border: 1px solid #aad0ef;
+    border-radius: 8px 8px 0 0; padding: 4px 8px; font-size: 10px; font-weight: bold; color: #2266aa; margin-top: 8px;
+  }
+  .t7-friends-grid { background: rgba(255,255,255,0.4); border: 1px solid #c0d8ef; border-top: none; border-radius: 0 0 8px 8px; padding: 8px; display: flex; gap: 8px; justify-content: center; }
+  .t7-friend-box { text-align: center; }
+  .t7-friend-thumb2 { width: 40px; height: 40px; border-radius: 4px; background: linear-gradient(135deg, #b0d8ff, #88aadd); border: 1px solid #aaccee; display: flex; align-items: center; justify-content: center; font-size: 16px; margin-bottom: 2px; }
+  .t7-friend-name { font-size: 9px; color: #446688; }
+  .t7-links-footer { background: rgba(200,220,240,0.4); border: 1px solid #c0d8ef; border-radius: 8px; padding: 8px; display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+  .t7-links-label { font-size: 10px; color: #446688; font-style: italic; flex: 1; }
+  .t7-link-btn { background: linear-gradient(180deg, #e8f4ff, #c8e0f8); border: 1px solid #aad0ef; padding: 4px 8px; border-radius: 4px; font-size: 12px; cursor: pointer; }
+  .t7-bars { display: flex; gap: 3px; align-items: flex-end; }
+  .t7-bar { width: 4px; background: #aad0ef; border-radius: 1px; }
+
+  /* ===================== THEME 8: Spoono / web designers playground ===================== */
+  #t8 {
+    background: #1a2a4a;
+    font-family: Verdana, 'Trebuchet MS', sans-serif;
+    font-size: 11px;
+  }
+  .t8-page { max-width: 720px; margin: 0 auto; }
+  .t8-header {
+    background: linear-gradient(180deg, #2a4080 0%, #1a2a60 40%, #0d1a40 100%);
+    padding: 10px 16px; position: relative; overflow: hidden;
+    border-bottom: 3px solid #3355cc;
+  }
+  .t8-header-bg {
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(-45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 12px);
+  }
+  .t8-site-name { font-size: 28px; font-weight: 900; color: #fff; letter-spacing: 3px; text-transform: uppercase; position: relative; z-index: 1; font-family: 'Orbitron', sans-serif; }
+  .t8-tagline { color: #88aadd; font-size: 10px; letter-spacing: 4px; position: relative; z-index: 1; }
+  .t8-logo-mark {
+    position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+    width: 60px; height: 60px;
+    background: radial-gradient(circle, #6699ff, #2244cc);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 24px; color: #fff; font-weight: 900;
+    box-shadow: 0 0 20px rgba(100,150,255,0.5);
+  }
+  .t8-navbar {
+    background: #223366; border-bottom: 2px solid #3355cc;
+    padding: 0 6px; display: flex; gap: 0; align-items: center;
+  }
+  .t8-nav-label { color: #6688bb; font-size: 10px; font-weight: bold; padding: 0 8px; text-transform: uppercase; letter-spacing: 2px; }
+  .t8-nav-item {
+    background: linear-gradient(180deg, #3355cc, #2244aa);
+    border: 1px solid #4466dd; border-bottom: none;
+    color: #fff; padding: 4px 10px; font-size: 10px; cursor: pointer;
+    font-weight: bold; margin: 4px 2px 0; letter-spacing: 1px;
+  }
+  .t8-nav-item:hover { background: linear-gradient(180deg, #4466dd, #3355cc); }
+  .t8-nav-item.active { background: linear-gradient(180deg, #5577ee, #4466dd); }
+  .t8-flavor { margin-left: auto; padding: 6px 8px; }
+  .t8-flavor-dots { display: flex; gap: 3px; }
+  .t8-flavor-dot { width: 12px; height: 12px; background: #3355cc; border: 1px solid #4466dd; border-radius: 2px; cursor: pointer; }
+  .t8-flavor-dot:hover { background: #5577ee; }
+  .t8-main-grid { display: flex; gap: 6px; padding: 6px; }
+  .t8-left-col { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+  .t8-right-col { width: 200px; display: flex; flex-direction: column; gap: 6px; }
+  .t8-section {
+    background: linear-gradient(180deg, #1e2e50, #162240);
+    border: 1px solid #3355cc;
+  }
+  .t8-section-head {
+    background: linear-gradient(180deg, #3355cc, #2244aa);
+    color: #fff; font-size: 11px; font-weight: bold;
+    padding: 3px 8px; display: flex; align-items: center; gap: 6px;
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .t8-section-head-icon { font-size: 13px; }
+  .t8-section-body { padding: 8px; }
+  .t8-post {
+    border-bottom: 1px solid #223366; padding: 6px 0;
+    display: flex; gap: 8px;
+  }
+  .t8-post:last-child { border-bottom: none; }
+  .t8-post-avatar {
+    width: 32px; height: 32px; background: linear-gradient(135deg, #3355cc, #1133aa);
+    border: 1px solid #4466dd; display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 12px; font-weight: bold; flex-shrink: 0;
+    border-radius: 2px;
+  }
+  .t8-post-body { flex: 1; }
+  .t8-post-meta { display: flex; justify-content: space-between; margin-bottom: 3px; }
+  .t8-post-author { color: #4466ff; font-weight: bold; font-size: 10px; }
+  .t8-post-time { color: #6688bb; font-size: 9px; }
+  .t8-post-title { color: #88aadd; font-weight: bold; font-size: 10px; margin-bottom: 2px; }
+  .t8-post-text { color: #8899bb; font-size: 10px; line-height: 1.4; }
+  .t8-post-text a { color: #6699ff; }
+  .t8-post-actions { display: flex; gap: 4px; margin-top: 3px; }
+  .t8-action-btn {
+    background: #1a2a4a; border: 1px solid #334466; color: #6688bb;
+    padding: 1px 6px; font-size: 9px; cursor: pointer;
+  }
+  .t8-action-btn:hover { border-color: #4466dd; color: #88aadd; }
+  .t8-profile-widget {
+    background: linear-gradient(135deg, #1e3060, #162040);
+    border: 1px solid #3355cc; padding: 10px; text-align: center;
+    margin-bottom: 6px;
+  }
+  .t8-pw-avatar {
+    width: 70px; height: 70px; border-radius: 50%;
+    background: linear-gradient(135deg, #4466dd, #2244aa);
+    border: 3px solid #5577ee; margin: 0 auto 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; color: #fff;
+    box-shadow: 0 0 16px rgba(80,120,240,0.4);
+  }
+  .t8-pw-name { color: #fff; font-size: 14px; font-weight: bold; margin-bottom: 2px; }
+  .t8-pw-handle { color: #6688bb; font-size: 10px; margin-bottom: 6px; }
+  .t8-pw-stats { display: flex; gap: 0; border-top: 1px solid #2a3a60; padding-top: 6px; }
+  .t8-pw-stat { flex: 1; text-align: center; border-right: 1px solid #2a3a60; }
+  .t8-pw-stat:last-child { border-right: none; }
+  .t8-pw-num { color: #5577ee; font-size: 14px; font-weight: bold; }
+  .t8-pw-label2 { color: #6688bb; font-size: 9px; }
+  .t8-news-tag { background: #3355cc; color: #fff; font-size: 9px; padding: 1px 6px; font-weight: bold; margin-right: 4px; }
+  .t8-news-icon { font-size: 20px; float: left; margin-right: 6px; }
+  .t8-news-text { color: #8899bb; font-size: 10px; line-height: 1.5; }
+  .t8-artbox { }
+  .t8-art-preview {
+    height: 80px; background: linear-gradient(135deg, #1a2a60, #2a3a80, #1a4a80);
+    border: 1px solid #3355cc; display: flex; align-items: center; justify-content: center;
+    font-size: 36px; margin-bottom: 4px;
+  }
+  .t8-art-meta { font-size: 9px; color: #6688bb; display: flex; justify-content: space-between; }
+  .t8-art-meta a { color: #4466ff; }
+  .t8-sidebar-item2 { display: flex; gap: 8px; padding: 4px 0; border-bottom: 1px solid #223366; align-items: flex-start; }
+  .t8-sidebar-item2:last-child { border-bottom: none; }
+  .t8-si-badge { width: 28px; height: 28px; background: linear-gradient(135deg, #2244aa, #1133aa); display: flex; align-items: center; justify-content: center; font-size: 10px; color: #fff; font-weight: bold; flex-shrink: 0; border: 1px solid #4466dd; }
+  .t8-si-text { font-size: 9px; color: #8899bb; }
+  .t8-si-text strong { color: #6699ff; display: block; font-size: 10px; margin-bottom: 1px; }
+  .t8-vote-option { display: flex; align-items: center; gap: 6px; margin: 3px 0; }
+  .t8-vote-radio { width: 12px; height: 12px; border: 1px solid #4466dd; border-radius: 50%; background: #1a2a4a; cursor: pointer; }
+  .t8-vote-label { color: #8899bb; font-size: 10px; }
+  .t8-vote-btn { background: linear-gradient(180deg, #3355cc, #2244aa); border: 1px solid #4466dd; color: #fff; padding: 2px 10px; font-size: 10px; cursor: pointer; margin-top: 4px; }
+  .t8-footer { background: #0d1a40; border-top: 2px solid #223366; padding: 6px 10px; font-size: 9px; color: #556688; text-align: center; }
+
+  /* ===================== THEME 9: Angelfire ===================== */
+  #t9 {
+    background: #0000cc;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    color: #fff;
+  }
+  .t9-header {
+    background: linear-gradient(180deg, #2222dd, #0000aa);
+    padding: 8px 16px; display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 3px solid #ff6600;
+  }
+  .t9-logo { font-size: 36px; font-weight: 900; font-style: italic; color: #fff; font-family: Impact, Arial; letter-spacing: -2px; }
+  .t9-logo span { color: #ff6600; }
+  .t9-flame { color: #ff6600; font-size: 28px; }
+  .t9-header-links { display: flex; gap: 12px; align-items: center; }
+  .t9-header-links a { color: #ccddff; font-size: 10px; text-decoration: none; }
+  .t9-header-links a:hover { text-decoration: underline; }
+  .t9-body { display: flex; gap: 0; }
+  .t9-left-nav {
+    width: 155px; min-width: 155px;
+    background: #0000aa; border-right: 2px solid #ff6600;
+    padding: 0;
+  }
+  .t9-nav-group { }
+  .t9-nav-section {
+    background: #333399; color: #fff; font-size: 11px; font-weight: bold;
+    padding: 4px 8px; border-bottom: 1px solid #4444aa;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .t9-nav-section-arrow { color: #ff6600; font-size: 12px; }
+  .t9-nav-link {
+    display: block; color: #ccddff; padding: 3px 16px; font-size: 11px;
+    text-decoration: none; border-bottom: 1px dotted #334;
+    cursor: pointer;
+  }
+  .t9-nav-link:hover { background: #333399; color: #fff; }
+  .t9-nav-link.active { color: #ff6600; font-weight: bold; }
+  .t9-search-block { padding: 8px; border-top: 2px solid #ff6600; margin-top: 8px; }
+  .t9-search-label { color: #ff9933; font-size: 10px; font-weight: bold; margin-bottom: 3px; }
+  .t9-search-select {
+    width: 100%; background: #333399; border: 1px solid #6666cc;
+    color: #fff; padding: 2px; font-size: 10px; margin-bottom: 4px;
+  }
+  .t9-search-input {
+    width: 100%; background: #fff; border: 1px solid #6666cc;
+    color: #000; padding: 2px 4px; font-size: 10px; margin-bottom: 4px;
+  }
+  .t9-search-btn {
+    background: linear-gradient(180deg, #ff6600, #cc4400);
+    border: 1px solid #ff8833; color: #fff; padding: 2px 12px;
+    font-size: 11px; font-weight: bold; cursor: pointer;
+  }
+  .t9-top50 { padding: 4px 8px; font-size: 10px; }
+  .t9-top50 strong { color: #ff9933; display: block; margin-bottom: 3px; }
+  .t9-top50 a { color: #99bbff; display: block; padding: 1px 4px; text-decoration: none; cursor: pointer; }
+  .t9-top50 a:hover { color: #fff; }
+  .t9-main { flex: 1; padding: 0; }
+  .t9-feature-row { display: flex; gap: 4px; padding: 6px; }
+  .t9-feature-box {
+    flex: 1; border: 2px solid #ff6600;
+    background: linear-gradient(180deg, #1a1aee, #0000aa);
+    padding: 8px;
+  }
+  .t9-feature-label {
+    background: #ff6600; color: #fff; font-size: 11px; font-weight: bold;
+    padding: 2px 6px; margin-bottom: 6px; display: flex; justify-content: space-between;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .t9-feature-label .zone-link { color: #ffcc99; font-size: 9px; font-weight: normal; }
+  .t9-feature-content { display: flex; gap: 8px; }
+  .t9-feature-icon { font-size: 32px; flex-shrink: 0; }
+  .t9-feature-text { }
+  .t9-feature-title { color: #ff9933; font-weight: bold; font-size: 11px; margin-bottom: 3px; }
+  .t9-feature-desc { color: #ccddff; font-size: 10px; line-height: 1.4; }
+  .t9-feature-cta { color: #ff6600; font-size: 10px; text-decoration: underline; cursor: pointer; }
+  .t9-profile-section {
+    border: 2px solid #ff6600; margin: 6px;
+    background: linear-gradient(180deg, #0000bb, #00008a);
+  }
+  .t9-profile-header {
+    background: linear-gradient(180deg, #ff6600, #cc4400);
+    padding: 4px 10px; display: flex; align-items: center; justify-content: space-between;
+  }
+  .t9-profile-header h3 { color: #fff; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; }
+  .t9-profile-body { padding: 10px; display: flex; gap: 12px; }
+  .t9-big-avatar2 {
+    width: 90px; height: 100px; flex-shrink: 0;
+    background: linear-gradient(135deg, #333399, #1a1a99);
+    border: 2px solid #ff6600; display: flex; align-items: center; justify-content: center;
+    font-size: 38px; border-radius: 4px;
+  }
+  .t9-profile-details { flex: 1; }
+  .t9-username2 { color: #ff9933; font-size: 18px; font-weight: bold; margin-bottom: 4px; }
+  .t9-profile-row { display: flex; margin-bottom: 3px; font-size: 10px; }
+  .t9-profile-row label { color: #9999ff; width: 100px; }
+  .t9-profile-row span { color: #fff; }
+  .t9-cool-pages {
+    background: #333399; border: 2px solid #ff6600;
+    margin: 6px; padding: 0; overflow: hidden;
+  }
+  .t9-cp-header {
+    background: #ff6600; color: #fff; font-size: 11px; font-weight: bold;
+    padding: 3px 8px; text-transform: uppercase; letter-spacing: 2px;
+  }
+  .t9-cp-body { padding: 8px; }
+  .t9-cp-item { margin-bottom: 6px; }
+  .t9-cp-title { color: #ff9933; font-weight: bold; font-size: 11px; cursor: pointer; }
+  .t9-cp-title:hover { text-decoration: underline; }
+  .t9-cp-desc { color: #ccddff; font-size: 10px; }
+  .t9-poll { background: #1a1aee; border: 2px solid #ff6600; margin: 6px; padding: 0; }
+  .t9-poll-header { background: #ff6600; color: #fff; font-weight: bold; font-size: 11px; padding: 3px 8px; text-transform: uppercase; }
+  .t9-poll-body { padding: 8px; }
+  .t9-poll-q { color: #fff; font-size: 11px; font-weight: bold; margin-bottom: 6px; }
+  .t9-poll-opt { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+  .t9-poll-radio { width: 12px; height: 12px; }
+  .t9-poll-label { color: #ccddff; font-size: 10px; }
+  .t9-poll-vote {
+    background: linear-gradient(180deg, #ff6600, #cc4400);
+    border: 1px solid #ff8833; color: #fff; padding: 2px 12px;
+    font-size: 11px; cursor: pointer; margin-top: 4px; font-weight: bold;
+  }
+  .t9-footer {
+    background: #000099; border-top: 2px solid #ff6600;
+    padding: 6px 12px; font-size: 9px; color: #9999cc; text-align: center;
+  }
+  .t9-footer a { color: #6699ff; }
+
+  /* Scroll bar styling */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #111; }
+  ::-webkit-scrollbar-thumb { background: #333; }
+
+  /* ================================================================
+     VERTICAL FILL -- every theme stretches to fill the full viewport
+  ================================================================ */
+  html, body { height: 100%; }
+  body { display: flex; flex-direction: column; background: #1a1a2e; }
+
+  .theme-page {
+    flex: 1;
+    min-height: calc(100vh - 38px);
+    display: none;
+    flex-direction: column;
+  }
+  .theme-page.active { display: flex; }
+
+  /* t1 - thefacebook: sidebar & main fill height */
+  #t1 { flex: 1; }
+  .t1-body { flex: 1; align-items: stretch; }
+  .t1-main { display: flex; flex-direction: column; }
+
+  /* t2 - iTunes: background fills, window centred */
+  #t2 { align-items: center; padding-bottom: 10px; }
+
+  /* t3 - XP: desktop + window + body fill */
+  .t3-desktop { flex: 1; display: flex; flex-direction: column; }
+  .t3-window { flex: 1; display: flex; flex-direction: column; }
+  .t3-body { flex: 1; }
+  .t3-content { flex: 1; overflow-y: auto; }
+
+  /* t5 - indie web: page and main fill */
+  .t5-page { flex: 1; display: flex; flex-direction: column; }
+  .t5-main { flex: 1; }
+  .t5-left-col { height: 100%; }
+
+  /* t6 - win7: inner wrapper fills */
+  #t6 { padding: 0; }
+  #t6 > div { flex: 1; padding: 10px; display: flex; flex-direction: column; }
+  #t6 > div > div { flex: 1; display: flex; flex-direction: column; }
+  .t6-window { flex: 1; display: flex; flex-direction: column; }
+  .t6-content { flex: 1; }
+  .t6-center-panel { flex: 1; }
+
+  /* t8 - spoono: page + grid fill */
+  .t8-page { flex: 1; display: flex; flex-direction: column; }
+  .t8-main-grid { flex: 1; align-items: flex-start; }
+
+  /* t9 - angelfire: body + nav fill */
+  #t9 { display: flex; flex-direction: column; }
+  .t9-body { flex: 1; }
+  .t9-left-nav { display: flex; flex-direction: column; }
+  .t9-main { flex: 1; }
+
+  /* ================================================================
+     MOBILE -- phone-first layout at 680px and below
+  ================================================================ */
+  @media (max-width: 680px) {
+    /* theme bar -- compact */
+    #theme-bar button { font-size: 9px; padding: 8px 8px; letter-spacing: 0; }
+    #theme-bar .logo { font-size: 10px; padding: 8px 10px; letter-spacing: 1px; }
+
+    /* T1: thefacebook */
+    .t1-sidebar { display: none; }
+    .t1-content { flex-direction: column; }
+    .t1-left { width: 100%; }
+    .t1-right { width: 100%; }
+
+    /* T2: iTunes */
+    #t2 { align-items: stretch; }
+    .t2-window { margin: 0; border-radius: 0; width: 100%; max-width: 100%; }
+    .t2-body { flex-direction: column; }
+    .t2-sidebar { width: 100%; display: flex; flex-direction: row; flex-wrap: wrap; padding: 0; border-right: none; border-bottom: 1px solid #aaa; }
+    .t2-sidebar-section { flex-basis: 100%; padding: 3px 8px; margin-top: 2px; }
+    .t2-sidebar-item { flex: 1; min-width: 100px; border-bottom: 1px solid #ccc; }
+    .t2-store-body { flex-direction: column; }
+    .t2-store-nav { display: none; }
+    .t2-album-grid { flex-wrap: wrap; }
+    .t2-top-songs { width: 100%; }
+    .t2-controls-bar { flex-wrap: wrap; gap: 6px; }
+    .t2-search-box { width: 100%; }
+
+    /* T3: Windows XP */
+    .t3-desktop { padding: 0; }
+    .t3-window { border-radius: 0; box-shadow: none; max-width: 100%; }
+    .t3-body { flex-direction: column; }
+    .t3-sidebar {
+      width: 100%; min-width: 0;
+      display: flex; flex-direction: row; flex-wrap: wrap;
+      background: linear-gradient(90deg, #7fbcff, #316ac5);
+    }
+    .t3-sidebar-section { flex-basis: 100%; }
+    .t3-sidebar-link { flex: 1; min-width: 80px; justify-content: center; padding: 4px; }
+    .t3-sidebar-icon2 { display: none; }
+    .t3-info-panels { flex-direction: column; }
+    .t3-toolbar { display: none; }
+    .t3-taskbar-items { display: none; }
+    .t3-profile-header { flex-direction: column; align-items: center; gap: 8px; }
+
+    /* T4: Y2K Minimal -- already card-friendly */
+    .t4-page { padding: 10px; }
+    .t4-apps-grid { grid-template-columns: repeat(4, 1fr); }
+
+    /* T5: indie web */
+    .t5-nav-tabs { overflow-x: auto; }
+    .t5-main { flex-direction: column; }
+    .t5-left-col { width: 100%; border-right: none; border-bottom: 1px solid #333; }
+    .t5-right-col { width: 100%; padding: 8px; }
+    .t5-sidebar-left { display: none; }
+
+    /* T6: win7 carrd */
+    #t6 > div { padding: 0; }
+    #t6 > div > div { border-radius: 0; }
+    .t6-desktop-icons { display: none; }
+    .t6-window { max-width: 100%; border-radius: 0; box-shadow: none; }
+    .t6-chrome-bar { display: none; }
+    .t6-content { flex-direction: column; }
+    .t6-left-panel {
+      width: 100%; border-right: none; border-bottom: 1px solid #ddd;
+      flex-direction: row; flex-wrap: wrap; align-items: center;
+      gap: 8px; padding: 10px;
+    }
+    .t6-pfp-frame { width: 60px; height: 60px; font-size: 24px; margin: 0; }
+    .t6-disp-name, .t6-handle, .t6-meta { text-align: left; }
+    .t6-search-box { display: none; }
+    .t6-stats { font-size: 10px; }
+    .t6-right-panel { width: 100%; border-left: none; border-top: 1px solid #ddd; }
+    .t6-taskbar { display: none; }
+
+    /* T7: icy blue */
+    #t7 { padding: 8px; }
+    .t7-card { max-width: 100%; }
+    .t7-sections { flex-direction: column; }
+
+    /* T8: spoono */
+    .t8-page { max-width: 100%; }
+    .t8-header { padding: 8px 10px; }
+    .t8-site-name { font-size: 20px; }
+    .t8-logo-mark { width: 44px; height: 44px; font-size: 18px; right: 10px; }
+    .t8-navbar { flex-wrap: wrap; }
+    .t8-nav-label { display: none; }
+    .t8-flavor { margin-left: 0; }
+    .t8-main-grid { flex-direction: column; }
+    .t8-right-col { width: 100%; }
+
+    /* T9: angelfire */
+    .t9-body { flex-direction: column; }
+    .t9-left-nav {
+      width: 100%; min-width: 0;
+      border-right: none; border-bottom: 2px solid #ff6600;
+      flex-direction: row; flex-wrap: wrap;
+      padding: 0;
+    }
+    .t9-nav-group { display: flex; flex-wrap: wrap; width: 100%; }
+    .t9-nav-section { display: none; }
+    .t9-nav-link {
+      flex: 1; min-width: 80px; text-align: center;
+      padding: 5px 8px; border-bottom: none;
+      border-right: 1px dotted #334;
+    }
+    .t9-search-block { display: none; }
+    .t9-top50 { display: none; }
+    .t9-feature-row { flex-direction: column; }
+    .t9-profile-body { flex-direction: column; align-items: center; }
+    .t9-profile-details { text-align: center; }
+    .t9-profile-row { justify-content: center; }
+    .t9-profile-row label { width: auto; margin-right: 6px; }
+    .t9-header { flex-direction: row; }
+    .t9-header-links { flex-wrap: wrap; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- THEME SELECTOR BAR -->
+<div id="theme-bar">
+  <div class="logo">FAERO</div>
+  <button class="active" onclick="showTheme(1, this)">01 · THEFACEBOOK</button>
+  <button onclick="showTheme(2, this)">02 · iTUNES</button>
+  <button onclick="showTheme(3, this)">03 · WIN XP</button>
+  <button onclick="showTheme(4, this)">04 · Y2K MINIMAL</button>
+  <button onclick="showTheme(5, this)">05 · INDIE WEB</button>
+  <button onclick="showTheme(6, this)">06 · WIN7 CARRD</button>
+  <button onclick="showTheme(7, this)">07 · ICY BLUE</button>
+  <button onclick="showTheme(8, this)">08 · WEB DESIGN</button>
+  <button onclick="showTheme(9, this)">09 · ANGELFIRE</button>
+</div>
+
+<!-- ======================== THEME 1: THEFACEBOOK ======================== -->
+<div id="t1" class="theme-page active">
+  <div class="t1-header">
+    <div class="t1-logo">[ <span>faero</span> ]</div>
+    <div class="t1-nav">
+      <a href="#">home</a><a href="#">search</a><a href="#">global</a>
+      <a href="#">social net</a><a href="#">invite</a><a href="#">faq</a><a href="#">logout</a>
+    </div>
+  </div>
+  <div class="t1-body">
+    <div class="t1-sidebar">
+      <div class="t1-search">
+        <input type="text" placeholder="quick search">
+        <button>go</button>
+      </div>
+      <div class="t1-sidebar-links">
+        <a href="#">My Profile [ edit ]</a>
+        <a href="#">My Friends</a>
+        <a href="#">My Groups</a>
+        <a href="#">My Parties</a>
+        <a href="#">My Messages</a>
+        <a href="#">My Account</a>
+        <a href="#">My Privacy</a>
+      </div>
+      <div class="t1-ad">
+        <strong>FAERO</strong>
+        <div>Connect with<br>your world.</div>
+      </div>
+    </div>
+    <div class="t1-main">
+      <div class="t1-breadcrumb">Alex &nbsp;&rsaquo;&nbsp; Profile</div>
+      <div class="t1-content">
+        <div class="t1-left">
+          <div class="t1-box">
+            <div class="t1-box-header">Picture</div>
+            <div class="t1-box-body">
+              <div class="t1-avatar">
+                <div class="t1-avatar-inner" style="font-size:48px;">&#128100;</div>
+              </div>
+            </div>
+          </div>
+          <a class="t1-btn" href="#">Send Alex a Message</a>
+          <a class="t1-btn" href="#">Poke Him!</a>
+          <div class="t1-box" style="margin-top:4px;">
+            <div class="t1-box-header">Connection</div>
+            <div class="t1-box-body">You are in a relationship with Alex.</div>
+          </div>
+          <div class="t1-box">
+            <div class="t1-box-header">Mutual Friends</div>
+            <div class="t1-box-body">You have <a href="#" style="color:#3b5998;">14 friends</a> in common with Alex.</div>
+          </div>
+          <div class="t1-box">
+            <div class="t1-box-header">Access</div>
+            <div class="t1-box-body">Alex is currently logged in from a non-residential location.</div>
+          </div>
+          <div class="t1-box">
+            <div class="t1-box-header">Friends at</div>
+            <div class="t1-box-body">
+              <div class="t1-friends-grid">
+                <div class="t1-friend-thumb">&#128100;</div>
+                <div class="t1-friend-thumb">&#128100;</div>
+                <div class="t1-friend-thumb">&#128100;</div>
+                <div class="t1-friend-thumb">&#128100;</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="t1-right">
+          <div class="t1-box">
+            <div class="t1-box-header">Information</div>
+            <div class="t1-box-body">
+              <div class="t1-section-title">Account Info:</div>
+              <div class="t1-info-row"><span class="t1-info-label">Name:</span><span class="t1-info-val plain">Alex Carter</span></div>
+              <div class="t1-info-row"><span class="t1-info-label">Member Since:</span><span class="t1-info-val plain">March 12, 2024</span></div>
+              <div class="t1-info-row"><span class="t1-info-label">Last Update:</span><span class="t1-info-val plain">Today</span></div>
+              <div class="t1-section-title">Basic Info:</div>
+              <div class="t1-info-row"><span class="t1-info-label">School:</span><span class="t1-info-val">State University</span></div>
+              <div class="t1-info-row"><span class="t1-info-label">Status:</span><span class="t1-info-val plain">Student</span></div>
+              <div class="t1-info-row"><span class="t1-info-label">Sex:</span><span class="t1-info-val">Male</span></div>
+              <div class="t1-info-row"><span class="t1-info-label">Residence:</span><span class="t1-info-val">Downtown</span></div>
+              <div class="t1-info-row"><span class="t1-info-label">Birthday:</span><span class="t1-info-val">June 15</span></div>
+              <div class="t1-info-row"><span class="t1-info-label">Home Town:</span><span class="t1-info-val">Springfield</span></div>
+              <div class="t1-section-title">Contact Info:</div>
+              <div class="t1-info-row"><span class="t1-info-label">Email:</span><span class="t1-info-val">alex@faero.net</span></div>
+              <div class="t1-info-row"><span class="t1-info-label">Screenname:</span><span class="t1-info-val">alxctr</span></div>
+              <div class="t1-info-row"><span class="t1-info-label">Mobile:</span><span class="t1-info-val">555-0142</span></div>
+              <div class="t1-section-title">Personal Info:</div>
+              <div class="t1-info-row"><span class="t1-info-label">Looking For:</span><span class="t1-info-val">Friendship</span></div>
+              <div class="t1-info-row"><span class="t1-info-label">Interested In:</span><span class="t1-info-val">Everyone</span></div>
+              <div class="t1-info-row"><span class="t1-info-label">Relationship Status:</span><span class="t1-info-val">In a Relationship</span></div>
+              <div class="t1-info-row"><span class="t1-info-label">Political Views:</span><span class="t1-info-val">Independent</span></div>
+              <div class="t1-info-row"><span class="t1-info-label">Interests:</span><span class="t1-info-val plain">Film, Design, Music, Tech, Hiking, Photography, Writing</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== THEME 2: iTUNES ======================== -->
+<div id="t2" class="theme-page">
+  <div class="t2-window">
+    <div class="t2-titlebar">
+      <div class="t2-dots">
+        <div class="t2-dot red"></div>
+        <div class="t2-dot yellow"></div>
+        <div class="t2-dot green"></div>
+      </div>
+      <div class="t2-title-text"><span class="t2-apple">&#63743;</span> Faero</div>
+    </div>
+    <div class="t2-controls-bar">
+      <div class="t2-transport">
+        <button>&#9664;&#9664;</button>
+        <button style="width:30px; height:30px; font-size:13px;">&#9654;</button>
+        <button>&#9654;&#9654;</button>
+      </div>
+      <div class="t2-progress-bar"><div class="t2-progress-fill"></div></div>
+      <div style="font-size:9px; color:#555;">Alex Carter — Faero Profile</div>
+      <input class="t2-search-box" type="text" placeholder="&#128269; Search Store">
+    </div>
+    <div class="t2-body">
+      <div class="t2-sidebar">
+        <div class="t2-sidebar-section">SOURCE</div>
+        <div class="t2-sidebar-item active"><span class="t2-sidebar-icon">&#128196;</span> My Profile</div>
+        <div class="t2-sidebar-item"><span class="t2-sidebar-icon">&#128100;</span> My Friends</div>
+        <div class="t2-sidebar-item"><span class="t2-sidebar-icon">&#127926;</span> My Music</div>
+        <div class="t2-sidebar-item"><span class="t2-sidebar-icon">&#128249;</span> My Media</div>
+        <div class="t2-sidebar-section">PLAYLISTS</div>
+        <div class="t2-sidebar-item"><span class="t2-sidebar-icon">&#9733;</span> Favorites</div>
+        <div class="t2-sidebar-item"><span class="t2-sidebar-icon">&#128197;</span> Recent Activity</div>
+        <div class="t2-sidebar-item"><span class="t2-sidebar-icon">&#127911;</span> Top 25 Plays</div>
+        <div class="t2-sidebar-item"><span class="t2-sidebar-icon">&#128218;</span> Groups</div>
+      </div>
+      <div class="t2-main">
+        <div class="t2-banner">
+          <div class="t2-banner-item">
+            <div class="overlay"><div class="t2-banner-label">&#9733; NEW CONNECTIONS</div></div>
+          </div>
+          <div class="t2-banner-item">
+            <div class="overlay"><div class="t2-banner-label">&#127876; FEATURED EVENTS</div></div>
+          </div>
+          <div class="t2-banner-item">
+            <div class="overlay"><div class="t2-banner-label">&#127926; TOP STREAMS</div></div>
+          </div>
+        </div>
+        <div class="t2-profile-card">
+          <div class="t2-profile-header">
+            <div class="t2-avatar2">&#128100;</div>
+            <div>
+              <div class="t2-username">Alex Carter</div>
+              <div class="t2-handle">@alexcarter · Faero Member</div>
+              <div style="font-size:10px; color:#555; margin-top:4px;">&#128100; 284 Friends &nbsp;&#127926; 1,892 Plays &nbsp;&#128196; 47 Posts</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <div class="t2-store-center" style="flex:1;">
+              <div class="t2-section-bar"><span>&#128100; TOP FRIENDS</span><span style="font-weight:normal; cursor:pointer;">See All</span></div>
+              <div class="t2-album-grid">
+                <div class="t2-album">
+                  <div class="t2-album-art" style="background: linear-gradient(135deg,#9966ff,#330099); color:#fff; font-size:22px;">&#128100;</div>
+                  <div class="t2-album-title">Jordan K.</div>
+                </div>
+                <div class="t2-album">
+                  <div class="t2-album-art" style="background:linear-gradient(135deg,#ff9966,#cc3300); color:#fff; font-size:22px;">&#128100;</div>
+                  <div class="t2-album-title">Maya L.</div>
+                </div>
+                <div class="t2-album">
+                  <div class="t2-album-art" style="background:linear-gradient(135deg,#66cc99,#228855); color:#fff; font-size:22px;">&#128100;</div>
+                  <div class="t2-album-title">Sam R.</div>
+                </div>
+                <div class="t2-album">
+                  <div class="t2-album-art" style="background:linear-gradient(135deg,#ffcc33,#cc8800); color:#fff; font-size:22px;">&#128100;</div>
+                  <div class="t2-album-title">Dana T.</div>
+                </div>
+              </div>
+              <div class="t2-section-bar"><span>&#127926; NOW PLAYING</span></div>
+              <div style="display:flex; align-items:center; gap:8px; padding: 6px 0;">
+                <div style="width:40px;height:40px;background:linear-gradient(135deg,#1a3366,#336699);display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;border:1px solid #aaa;">&#127911;</div>
+                <div>
+                  <div style="font-size:11px; font-weight:bold; color:#1a3366;">Song Title — Artist Name</div>
+                  <div style="font-size:10px; color:#666;">Album · 2024</div>
+                  <div style="font-size:9px; color:#888;">3:42</div>
+                </div>
+              </div>
+            </div>
+            <div class="t2-top-songs">
+              <div class="t2-top-header">TODAY'S TOP POSTS</div>
+              <div class="t2-song-item"><span class="t2-song-num">1.</span><span class="t2-song-name">Just posted a new photo</span></div>
+              <div class="t2-song-item"><span class="t2-song-num">2.</span><span class="t2-song-name">Updated status</span></div>
+              <div class="t2-song-item"><span class="t2-song-num">3.</span><span class="t2-song-name">Joined group: Design</span></div>
+              <div class="t2-song-item"><span class="t2-song-num">4.</span><span class="t2-song-name">New connection added</span></div>
+              <div class="t2-song-item"><span class="t2-song-num">5.</span><span class="t2-song-name">Commented on Maya</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="t2-statusbar">
+      <span>284 friends · Last sync: Today</span>
+      <span>Account: alex@faero.net</span>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== THEME 3: WINDOWS XP ======================== -->
+<div id="t3" class="theme-page">
+  <div class="t3-desktop">
+    <div class="t3-window">
+      <div class="t3-titlebar">
+        <span class="t3-titlebar-icon">&#128196;</span>
+        <span class="t3-titlebar-text">Alex Carter — Faero Profile</span>
+        <div class="t3-titlebar-btns">
+          <button class="t3-xp-btn min">&#8212;</button>
+          <button class="t3-xp-btn max">&#9744;</button>
+          <button class="t3-xp-btn close">&#10005;</button>
+        </div>
+      </div>
+      <div class="t3-menubar">
+        <span class="t3-menu-item">File</span>
+        <span class="t3-menu-item">Edit</span>
+        <span class="t3-menu-item">View</span>
+        <span class="t3-menu-item">Favorites</span>
+        <span class="t3-menu-item">Tools</span>
+        <span class="t3-menu-item">Help</span>
+      </div>
+      <div class="t3-toolbar">
+        <button class="t3-tool-btn">&#9664; Back</button>
+        <button class="t3-tool-btn">Forward &#9654;</button>
+        <button class="t3-tool-btn">&#128269; Search</button>
+        <button class="t3-tool-btn">&#9733; Favorites</button>
+        <div class="t3-address">faero.net/profile/alexcarter</div>
+        <button class="t3-tool-btn">Go &#9658;</button>
+      </div>
+      <div class="t3-body">
+        <div class="t3-sidebar">
+          <div class="t3-sidebar-section">Navigation</div>
+          <a class="t3-sidebar-link" href="#"><span class="t3-sidebar-icon2">&#127968;</span> Home</a>
+          <a class="t3-sidebar-link" href="#"><span class="t3-sidebar-icon2">&#128100;</span> My Profile</a>
+          <a class="t3-sidebar-link" href="#"><span class="t3-sidebar-icon2">&#128101;</span> Friends</a>
+          <a class="t3-sidebar-link" href="#"><span class="t3-sidebar-icon2">&#128172;</span> Messages</a>
+          <a class="t3-sidebar-link" href="#"><span class="t3-sidebar-icon2">&#128247;</span> Photos</a>
+          <a class="t3-sidebar-link" href="#"><span class="t3-sidebar-icon2">&#128203;</span> Groups</a>
+          <div class="t3-sidebar-section">Faero Tasks</div>
+          <a class="t3-sidebar-link" href="#"><span class="t3-sidebar-icon2">&#128393;</span> Edit Profile</a>
+          <a class="t3-sidebar-link" href="#"><span class="t3-sidebar-icon2">&#128276;</span> Notifications</a>
+          <a class="t3-sidebar-link" href="#"><span class="t3-sidebar-icon2">&#9881;</span> Settings</a>
+        </div>
+        <div class="t3-content">
+          <div class="t3-profile-header">
+            <div class="t3-avatar">&#128100;</div>
+            <div class="t3-profile-info">
+              <h2>Alex Carter</h2>
+              <div class="handle">@alexcarter · faero.net</div>
+              <div><span class="status-badge">&#9679; Online</span></div>
+              <div style="margin-top:6px; font-size:11px; color:#333;">
+                <strong>284</strong> friends &nbsp;&bull;&nbsp;
+                <strong>47</strong> posts &nbsp;&bull;&nbsp;
+                <strong>1,892</strong> profile views
+              </div>
+              <div style="margin-top:6px; display:flex; gap:4px;">
+                <button class="t3-tool-btn">&#128172; Send Message</button>
+                <button class="t3-tool-btn">&#128101; Add Friend</button>
+                <button class="t3-tool-btn">&#128247; View Photos</button>
+              </div>
+            </div>
+          </div>
+          <div class="t3-info-panels">
+            <div class="t3-panel">
+              <div class="t3-panel-header"><span>&#128196;</span> Profile Information</div>
+              <div class="t3-panel-body">
+                <div class="t3-field"><label>Full Name:</label><span>Alex Carter</span></div>
+                <div class="t3-field"><label>Location:</label><span>Springfield, US</span></div>
+                <div class="t3-field"><label>Birthday:</label><span>June 15</span></div>
+                <div class="t3-field"><label>Status:</label><span>Student</span></div>
+                <div class="t3-field"><label>Joined:</label><span>March 2024</span></div>
+                <div class="t3-field"><label>Email:</label><span>alex@faero.net</span></div>
+                <div class="t3-field"><label>Interests:</label><span style="color:#333;">Film, Design, Music, Tech</span></div>
+              </div>
+            </div>
+            <div class="t3-panel">
+              <div class="t3-panel-header"><span>&#128101;</span> Friends</div>
+              <div class="t3-panel-body">
+                <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                  <div style="text-align:center; width:48px;">
+                    <div style="width:40px;height:40px;background:linear-gradient(135deg,#316ac5,#1a3a7c);border:1px solid #7ba7d4;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;">&#128100;</div>
+                    <div style="font-size:9px;color:#333;">Jordan</div>
+                  </div>
+                  <div style="text-align:center; width:48px;">
+                    <div style="width:40px;height:40px;background:linear-gradient(135deg,#cc5533,#993322);border:1px solid #cc8866;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;">&#128100;</div>
+                    <div style="font-size:9px;color:#333;">Maya</div>
+                  </div>
+                  <div style="text-align:center; width:48px;">
+                    <div style="width:40px;height:40px;background:linear-gradient(135deg,#228855,#115533);border:1px solid #66aa77;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;">&#128100;</div>
+                    <div style="font-size:9px;color:#333;">Sam</div>
+                  </div>
+                  <div style="text-align:center; width:48px;">
+                    <div style="width:40px;height:40px;background:linear-gradient(135deg,#cc8800,#aa6600);border:1px solid #ddaa33;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;">&#128100;</div>
+                    <div style="font-size:9px;color:#333;">Dana</div>
+                  </div>
+                </div>
+                <div style="margin-top:6px; font-size:10px; color:#0078d7; cursor:pointer;">View all 284 friends...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="t3-taskbar">
+      <button class="t3-start-btn">&#9178; start</button>
+      <div class="t3-taskbar-items">
+        <div class="t3-taskbar-item">&#128196; Alex Carter — Faero</div>
+      </div>
+      <div class="t3-clock">4:09 PM</div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== THEME 4: Y2K MINIMAL ======================== -->
+<div id="t4" class="theme-page">
+  <div class="t4-page">
+    <div class="t4-card">
+      <div class="t4-title">faero</div>
+      <div class="t4-subtitle">your social space · version 2.0</div>
+      <div class="t4-profile-center">
+        <div class="t4-big-avatar">&#128100;</div>
+        <div class="t4-name">Alex Carter</div>
+        <div class="t4-tag">@alexcarter · faero.net</div>
+        <div class="t4-badges">
+          <span class="t4-badge">STUDENT</span>
+          <span class="t4-badge">DESIGNER</span>
+          <span class="t4-badge">PHOTOGRAPHER</span>
+        </div>
+      </div>
+    </div>
+    <div class="t4-card">
+      <div class="t4-apps-title">apps i use</div>
+      <div class="t4-apps-grid">
+        <div class="t4-app-icon">
+          <div class="icon-circle t4-keep">&#128172;</div>
+          <div class="icon-label">MESSAGES</div>
+        </div>
+        <div class="t4-app-icon">
+          <div class="icon-circle t4-keep">&#128247;</div>
+          <div class="icon-label">PHOTOS</div>
+        </div>
+        <div class="t4-app-icon">
+          <div class="icon-circle t4-keep2">&#127926;</div>
+          <div class="icon-label">MUSIC</div>
+        </div>
+        <div class="t4-app-icon">
+          <div class="icon-circle t4-keep2">&#128203;</div>
+          <div class="icon-label">GROUPS</div>
+        </div>
+        <div class="t4-app-icon">
+          <div class="icon-circle t4-remove">&#128250;</div>
+          <div class="icon-label">REELS</div>
+        </div>
+        <div class="t4-app-icon">
+          <div class="icon-circle t4-remove">&#128240;</div>
+          <div class="icon-label">NEWS</div>
+        </div>
+        <div class="t4-app-icon">
+          <div class="icon-circle t4-remove">&#127918;</div>
+          <div class="icon-label">GAMES</div>
+        </div>
+        <div class="t4-app-icon">
+          <div class="icon-circle t4-remove">&#128684;</div>
+          <div class="icon-label">SHOP</div>
+        </div>
+      </div>
+    </div>
+    <div class="t4-card">
+      <div class="t4-section-label">ask yourself</div>
+      <div class="t4-ask-items">
+        <div class="t4-ask-item">
+          <div class="t4-ask-q">1. Do I still use these apps?</div>
+          <div class="t4-ask-a">Get rid of apps you really never use.</div>
+        </div>
+        <div class="t4-ask-item">
+          <div class="t4-ask-q">2. Do they help me connect with real people?</div>
+          <div class="t4-ask-a">Keep the ones that build real relationships.</div>
+        </div>
+        <div class="t4-ask-item">
+          <div class="t4-ask-q">3. Could I replace these with something better?</div>
+          <div class="t4-ask-a">Always keep improving your digital life.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== THEME 5: INDIE WEB ======================== -->
+<div id="t5" class="theme-page">
+  <div class="t5-page">
+    <div class="t5-topbar">
+      <div class="t5-logo-block">FAERO NETWORK</div>
+      <div class="t5-nav-tabs">
+        <div class="t5-tab active"><span class="t5-tab-icon">&#127968;</span> home</div>
+        <div class="t5-tab"><span class="t5-tab-icon">&#128100;</span> about</div>
+        <div class="t5-tab"><span class="t5-tab-icon">&#127912;</span> art</div>
+        <div class="t5-tab"><span class="t5-tab-icon">&#128196;</span> site</div>
+        <div class="t5-tab"><span class="t5-tab-icon">&#128247;</span> media</div>
+        <div class="t5-tab"><span class="t5-tab-icon">&#128172;</span> blog</div>
+        <div class="t5-tab"><span class="t5-tab-icon">&#128218;</span> collections</div>
+      </div>
+    </div>
+    <div class="t5-welcome">
+      <h1>welcome<span>*</span></h1>
+      <div class="t5-barcode">001 &nbsp;|||||||||||&nbsp; C:/faero/home</div>
+      <div class="t5-path">&laquo; welcome to the faero network. can you be transported? &raquo;</div>
+      <div class="t5-ticker">&gt;&gt; home page: the landing zone. the at-a-glance. who goes there? *</div>
+    </div>
+    <div class="t5-main">
+      <div class="t5-left-col">
+        <div class="t5-section-box">
+          <div class="t5-section-title">&#9733; what's what?</div>
+          <div class="t5-section-body">
+            <div class="t5-status">STATUS</div>
+            <div><strong style="color:#99cc33;">alexcarter</strong> &#128204; <span style="color:#777; font-size:9px;">12 mins ago</span></div>
+            <div style="font-size:9px; color:#aaa; margin:2px 0;">working on new photos...</div>
+            <input class="t5-status-input" type="text" placeholder="update status...">
+          </div>
+        </div>
+        <div class="t5-section-box">
+          <div class="t5-section-title">&#127926; audio</div>
+          <div class="t5-section-body">
+            <div class="t5-mini-media">
+              <div class="t5-mini-thumb">&#127926;</div>
+              <div class="t5-mini-text"><strong>Now Listening</strong>some really great track from a great album</div>
+            </div>
+          </div>
+        </div>
+        <div class="t5-section-box">
+          <div class="t5-section-title">&#128249; video</div>
+          <div class="t5-section-body">
+            <div class="t5-mini-media">
+              <div class="t5-mini-thumb">&#128249;</div>
+              <div class="t5-mini-text"><strong>Latest Upload</strong>new vlog from last weekend's trip</div>
+            </div>
+          </div>
+        </div>
+        <div class="t5-section-box">
+          <div class="t5-section-title">&#128172; more</div>
+          <div class="t5-section-body">
+            <div class="t5-mini-media">
+              <div class="t5-mini-thumb">&#128172;</div>
+              <div class="t5-mini-text"><strong>GUESTBOOK</strong>sign my guestbook if you want to connect!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="t5-right-col">
+        <div style="display:flex; gap:8px;">
+          <div style="flex:1;">
+            <div class="t5-section-box">
+              <div class="t5-section-title">intro</div>
+              <div class="t5-section-body">
+                <div class="t5-mini-media">
+                  <div class="t5-mini-thumb">&#128100;</div>
+                  <div class="t5-mini-text"><strong>Alex Carter</strong>Welcome to my profile. This is version 3.0. Wanna link to me? Grab a button <span style="color:#99cc33; cursor:pointer;">here</span>.<br>[++ Alex]</div>
+                </div>
+                <div class="t5-check-it">check it out &rarr;</div>
+              </div>
+            </div>
+          </div>
+          <div style="width:180px;">
+            <div class="t5-section-box">
+              <div class="t5-section-title">news</div>
+              <div class="t5-section-body">
+                <div class="t5-news-item">
+                  <div class="t5-news-date">FEATURED · 04/09/26</div>
+                  <div class="t5-news-title">New photo album up!</div>
+                  <div class="t5-news-text">Just posted 40 new photos from the trip last month.</div>
+                  <span class="t5-check-it">check it out &rarr;</span>
+                </div>
+                <div class="t5-news-item" style="margin-top:6px;">
+                  <div class="t5-news-date">UPDATE · 04/08/26</div>
+                  <div class="t5-news-title">Profile redesign v3.0</div>
+                  <div class="t5-news-text">Redid the whole layout. What do you think?</div>
+                  <span class="t5-check-it">check it out &rarr;</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex; gap:8px; margin-top:8px;">
+          <div style="flex:1;">
+            <div class="t5-section-box">
+              <div class="t5-section-title">&#127912; art</div>
+              <div class="t5-section-body">
+                <div style="font-size:10px; color:#99cc33; margin-bottom:4px;">:: recent art work</div>
+                <div class="t5-art-grid">
+                  <div class="t5-art-thumb">&#127912;</div>
+                  <div class="t5-art-thumb">&#128247;</div>
+                  <div class="t5-art-thumb">&#127912;</div>
+                  <div class="t5-art-thumb">&#128247;</div>
+                  <div class="t5-art-thumb">&#127912;</div>
+                  <div class="t5-art-thumb">&#128247;</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="width:110px;">
+            <div class="t5-wip">WORK<br>IN<br>PROGRESS*</div>
+          </div>
+          <div style="width:140px;">
+            <div class="t5-section-box" style="height:100%;">
+              <div class="t5-section-title">events</div>
+              <div class="t5-section-body">
+                <div class="t5-events">
+                  <strong>:: upcoming events</strong>
+                  <div class="t5-event-item">++ Photography Workshop</div>
+                  <div class="t5-event-item">++ Design meetup TBD</div>
+                  <strong style="margin-top:6px;">:: past events</strong>
+                  <div class="t5-event-item">++ Album release night</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== THEME 6: WIN7 CARRD ======================== -->
+<div id="t6" class="theme-page">
+  <div style="position:relative;">
+    <div style="padding:10px;">
+      <div class="t6-window">
+        <div class="t6-chrome-bar">
+          <div class="t6-chrome-dots">
+            <div class="t6-chrome-dot r"></div>
+            <div class="t6-chrome-dot y"></div>
+            <div class="t6-chrome-dot g"></div>
+          </div>
+          <div class="t6-chrome-nav">
+            <div class="t6-nav-btn">&#9664;</div>
+            <div class="t6-nav-btn">&#9654;</div>
+          </div>
+          <div class="t6-url-bar">faero.net/profile/@alexcarter</div>
+          <div class="t6-win-icons">&#9733; &#9775; &#9881;</div>
+          <div class="t6-titlebar-btns" style="display:flex;gap:4px;">
+            <div style="width:18px;height:18px;background:#ddd;border:1px solid #aaa;display:flex;align-items:center;justify-content:center;font-size:10px;cursor:pointer;">&#8212;</div>
+            <div style="width:18px;height:18px;background:#ddd;border:1px solid #aaa;display:flex;align-items:center;justify-content:center;font-size:10px;cursor:pointer;">&#9744;</div>
+            <div style="width:18px;height:18px;background:#e88;border:1px solid #c44;display:flex;align-items:center;justify-content:center;font-size:10px;cursor:pointer;color:#fff;">&#10005;</div>
+          </div>
+        </div>
+        <div class="t6-content">
+          <div class="t6-left-panel">
+            <div class="t6-pfp-frame">&#128100;</div>
+            <div class="t6-disp-name">Alex Carter &#9733;</div>
+            <div class="t6-handle">@alexcarter</div>
+            <div class="t6-meta">she / they<br>designer + dreamer<br>capricorn + isfp</div>
+            <input class="t6-search-box" type="text" placeholder="&#128269; Search">
+            <div class="t6-link-list">
+              <div class="t6-link-item"><span class="t6-link-star">&#9733;</span> twitter</div>
+              <div class="t6-link-item"><span class="t6-link-star">&#9733;</span> instagram</div>
+              <div class="t6-link-item"><span class="t6-link-star">&#9733;</span> portfolio</div>
+              <div class="t6-link-item"><span class="t6-link-star">&#9733;</span> youtube</div>
+            </div>
+            <div class="t6-stats">
+              <div><strong>Profile views:</strong> 2,847</div>
+              <div><strong>Last online:</strong> Today</div>
+            </div>
+          </div>
+          <div class="t6-center-panel">
+            <div class="t6-welcome-banner">welcome to my profile!!! &#12288;&#730;(&#8811;&#9699;&#8810;)&#730; &#12288;</div>
+            <div class="t6-feature-img">&#127775;</div>
+            <div class="t6-profile-sections">
+              <div class="t6-profile-section">
+                <h4>read this first!!</h4>
+                <div style="font-size:10px; color:#444; line-height:1.7;">
+                  <strong>before you follow</strong> i mostly post about design, music and random things. not very active sometimes but i try!<br>
+                  <strong>do not follow if</strong> you are toxic or drama-seeking. life is too short.
+                </div>
+              </div>
+              <div class="t6-profile-section">
+                <h4>fav list!!</h4>
+                <div class="t6-stan-list">
+                  <strong>ults</strong> design, photography, indie music, retro games<br>
+                  <strong>semi-ults</strong> film, poetry, street art, vintage finds<br>
+                  <strong>others</strong> tech, coffee, travel, minimalism, night skies
+                </div>
+              </div>
+              <div class="t6-profile-section">
+                <h4>other interests</h4>
+                <div class="t6-stan-list">
+                  adventure film · anime · vocaloid · manga · lo-fi music · k-drama · game design · illustration · journaling...
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="t6-right-panel">
+            <div class="t6-folder-row">
+              <div class="t6-folder-icon">&#128193;</div>
+              <div class="t6-folder-icon">&#127926;</div>
+              <div class="t6-folder-icon">&#128247;</div>
+            </div>
+            <div class="t6-media-label">my media</div>
+            <div class="t6-media-grid">
+              <div class="t6-media-thumb">&#127776;</div>
+              <div class="t6-media-thumb">&#127956;</div>
+              <div class="t6-media-thumb">&#127919;</div>
+              <div class="t6-media-thumb">&#127942;</div>
+            </div>
+            <div class="t6-now-playing">now playing &#9835; indie track &#9835;</div>
+            <div class="t6-player">
+              <div class="t6-player-art">&#127926;</div>
+              <div class="t6-player-track">lo-fi beats ~ artist</div>
+              <div class="t6-player-controls">
+                <button class="t6-p-btn">&#9664;&#9664;</button>
+                <button class="t6-p-btn">&#9646;&#9646;</button>
+                <button class="t6-p-btn">&#9654;&#9654;</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="t6-taskbar">
+          <div class="t6-start">&#9178; Start</div>
+          <div class="t6-ie-icon">&#128028;</div>
+          <div class="t6-task-items">
+            <span class="t6-task-item">&#128100; Alex — Faero</span>
+          </div>
+          <div class="t6-sys-tray">&#9834; &#128246; 4:09 PM</div>
+        </div>
+      </div>
+      <div style="text-align:center; margin-top:6px; font-size:9px; color:rgba(255,255,255,0.5);">Made with Faero</div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== THEME 7: ICY BLUE ======================== -->
+<div id="t7" class="theme-page">
+  <div class="t7-card">
+    <div class="t7-header-img">
+      <div class="t7-header-crystal"></div>
+      <div class="t7-header-title">Your Profile Here!</div>
+    </div>
+    <div class="t7-card-body">
+      <div class="t7-sub-label">carrd style · faero.net</div>
+      <div class="t7-nav-pills">
+        <div class="t7-pill">Home</div>
+        <div class="t7-pill">About</div>
+        <div class="t7-player-pill" style="flex:2;">
+          <div>
+            <div class="t7-player-label">playing :</div>
+            <div class="t7-player-song">indie track · artist name</div>
+          </div>
+          <div class="t7-transport-mini">
+            <button class="t7-t-btn">&#9664;&#9664;</button>
+            <button class="t7-t-btn">&#9646;&#9646;</button>
+            <button class="t7-t-btn">&#9654;&#9654;</button>
+          </div>
+        </div>
+      </div>
+      <div class="t7-barcode-row">
+        <div class="t7-barcode2"></div>
+        <div class="t7-page-title">PAGE TITLE HERE! &#9830;</div>
+      </div>
+      <div class="t7-sections">
+        <div class="t7-section-box2">
+          <div class="t7-section-header">Alex's Profile!</div>
+          <div class="t7-section-content">
+            <div class="t7-avatar3">&#128100;</div>
+            <div class="t7-info-line">
+              name / info<br>
+              pronouns / sign<br>
+              mbti / interests<br>
+              last login: today
+            </div>
+            <div class="t7-online-badge">
+              <div class="t7-online-dot"></div>
+              Alex is online! <span style="color:#88aacc; cursor:pointer; margin-left:4px;">say hi?</span>
+            </div>
+          </div>
+        </div>
+        <div class="t7-section-box2">
+          <div class="t7-section-header">About Me</div>
+          <div class="t7-section-content">
+            <div class="t7-about-text">
+              Hello! I'm Alex, a designer and creative based in Springfield. I love music, photography, film and connecting with cool people. This is my Faero profile — feel free to reach out and say hi!
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="t7-fav-header">&#9834; favorite artists</div>
+      <div class="t7-fav-body">indie folk · lo-fi beats · post-rock · dream pop · ambient<br><br><span style="font-size:9px; color:#88aacc;">Cute personalized playlist text here!</span></div>
+      <div class="t7-friends-header">Top Friends!</div>
+      <div class="t7-friends-grid">
+        <div class="t7-friend-box">
+          <div class="t7-friend-thumb2">&#128100;</div>
+          <div class="t7-friend-name">Jordan</div>
+        </div>
+        <div class="t7-friend-box">
+          <div class="t7-friend-thumb2">&#128100;</div>
+          <div class="t7-friend-name">Maya</div>
+        </div>
+        <div class="t7-friend-box">
+          <div class="t7-friend-thumb2">&#128100;</div>
+          <div class="t7-friend-name">Sam</div>
+        </div>
+      </div>
+      <div class="t7-links-footer">
+        <div class="t7-links-label">...links</div>
+        <button class="t7-link-btn">&#9993;</button>
+        <button class="t7-link-btn">&#128172;</button>
+        <button class="t7-link-btn">&#128247;</button>
+        <div class="t7-bars">
+          <div class="t7-bar" style="height:8px;"></div>
+          <div class="t7-bar" style="height:12px;"></div>
+          <div class="t7-bar" style="height:16px;"></div>
+          <div class="t7-bar" style="height:10px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== THEME 8: SPOONO/WEB DESIGNERS ======================== -->
+<div id="t8" class="theme-page">
+  <div class="t8-page">
+    <div class="t8-header">
+      <div class="t8-header-bg"></div>
+      <div class="t8-site-name">faero</div>
+      <div class="t8-tagline">THE SOCIAL DESIGNERS' PLAYGROUND</div>
+      <div class="t8-logo-mark">F</div>
+    </div>
+    <div class="t8-navbar">
+      <span class="t8-nav-label">NAVIGATE</span>
+      <div class="t8-nav-item active">Home</div>
+      <div class="t8-nav-item">Profile</div>
+      <div class="t8-nav-item">Friends</div>
+      <div class="t8-nav-item">Media</div>
+      <div class="t8-nav-item">Groups</div>
+      <div class="t8-nav-item">Settings</div>
+      <div class="t8-flavor">
+        <div style="font-size:9px; color:#6688bb; margin-bottom:2px;">THEME</div>
+        <div class="t8-flavor-dots">
+          <div class="t8-flavor-dot" style="background:#3355cc;"></div>
+          <div class="t8-flavor-dot" style="background:#cc3333;"></div>
+          <div class="t8-flavor-dot" style="background:#33aa55;"></div>
+          <div class="t8-flavor-dot" style="background:#cc8833;"></div>
+          <div class="t8-flavor-dot" style="background:#8833cc;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="t8-main-grid">
+      <div class="t8-left-col">
+        <div class="t8-profile-widget">
+          <div class="t8-pw-avatar">&#128100;</div>
+          <div class="t8-pw-name">Alex Carter</div>
+          <div class="t8-pw-handle">@alexcarter · Member since 2024</div>
+          <div class="t8-pw-stats">
+            <div class="t8-pw-stat"><div class="t8-pw-num">284</div><div class="t8-pw-label2">friends</div></div>
+            <div class="t8-pw-stat"><div class="t8-pw-num">47</div><div class="t8-pw-label2">posts</div></div>
+            <div class="t8-pw-stat"><div class="t8-pw-num">1.8k</div><div class="t8-pw-label2">views</div></div>
+          </div>
+        </div>
+        <div class="t8-section">
+          <div class="t8-section-head"><span class="t8-section-head-icon">&#128202;</span> GRAPEVINE</div>
+          <div class="t8-section-body">
+            <div class="t8-post">
+              <div class="t8-post-avatar">JK</div>
+              <div class="t8-post-body">
+                <div class="t8-post-meta"><span class="t8-post-author">Jordan K.</span><span class="t8-post-time">2:14pm Apr.09</span></div>
+                <div class="t8-post-title">New portfolio up</div>
+                <div class="t8-post-text">Just launched my redesigned portfolio. Check it out <a href="#">here</a>. The whole thing runs on CSS grid now.</div>
+                <div class="t8-post-actions">
+                  <button class="t8-action-btn">reply</button>
+                  <button class="t8-action-btn">like</button>
+                  <button class="t8-action-btn">share</button>
+                </div>
+              </div>
+            </div>
+            <div class="t8-post">
+              <div class="t8-post-avatar">ML</div>
+              <div class="t8-post-body">
+                <div class="t8-post-meta"><span class="t8-post-author">Maya L.</span><span class="t8-post-time">11:30am Apr.09</span></div>
+                <div class="t8-post-title">Design resources thread</div>
+                <div class="t8-post-text">Compiling a list of free retro UI resources. Adding to it as I find more. Maybe by reading this you can learn a thing or two.</div>
+                <div class="t8-post-actions">
+                  <button class="t8-action-btn">reply</button>
+                  <button class="t8-action-btn">like</button>
+                  <button class="t8-action-btn">share</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex; gap:6px;">
+          <div class="t8-section" style="flex:1;">
+            <div class="t8-section-head"><span class="t8-section-head-icon">&#9889;</span> FRESH POSTS</div>
+            <div class="t8-section-body">
+              <div class="t8-sidebar-item2">
+                <div class="t8-si-badge" style="background:linear-gradient(135deg,#cc5533,#aa3311);">&#128247;</div>
+                <div class="t8-si-text"><strong>Photo Series</strong>New landscape shots from the weekend hike.</div>
+              </div>
+              <div class="t8-sidebar-item2">
+                <div class="t8-si-badge" style="background:linear-gradient(135deg,#3388cc,#1166aa);">&#127912;</div>
+                <div class="t8-si-text"><strong>Design Tutorial</strong>How to build CSS-only retro interfaces.</div>
+              </div>
+              <div class="t8-sidebar-item2">
+                <div class="t8-si-badge" style="background:linear-gradient(135deg,#228855,#116633);">&#128203;</div>
+                <div class="t8-si-text"><strong>Group Update</strong>Faero Designers group just hit 500 members.</div>
+              </div>
+            </div>
+          </div>
+          <div class="t8-section" style="width:140px;">
+            <div class="t8-section-head"><span>&#128202;</span> POLL</div>
+            <div class="t8-section-body">
+              <div style="font-size:10px; color:#88aadd; margin-bottom:6px; font-weight:bold;">Favorite profile theme?</div>
+              <div class="t8-vote-option"><div class="t8-vote-radio"></div><span class="t8-vote-label">TheFacebook</span></div>
+              <div class="t8-vote-option"><div class="t8-vote-radio"></div><span class="t8-vote-label">iTunes</span></div>
+              <div class="t8-vote-option"><div class="t8-vote-radio"></div><span class="t8-vote-label">Windows XP</span></div>
+              <div class="t8-vote-option"><div class="t8-vote-radio"></div><span class="t8-vote-label">Indie Web</span></div>
+              <button class="t8-vote-btn">VOTE</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="t8-right-col">
+        <div class="t8-section">
+          <div class="t8-section-head"><span class="t8-section-head-icon">&#128680;</span> FAERO TAP</div>
+          <div class="t8-section-body">
+            <div class="t8-news-icon">&#128240;</div>
+            <div class="t8-news-text"><span class="t8-news-tag">NEWS</span><strong style="color:#88aadd;">Profile Builder V3</strong><br>New customization tools have arrived. Read what's changed.</div>
+            <div style="text-align:right; margin-top:4px;"><span style="background:#223366;border:1px solid #3355cc;padding:1px 6px;font-size:9px;color:#6699ff;cursor:pointer;">ARCHIVE</span></div>
+          </div>
+        </div>
+        <div class="t8-section">
+          <div class="t8-section-head"><span class="t8-section-head-icon">&#127912;</span> ART BOX</div>
+          <div class="t8-section-body">
+            <div class="t8-art-preview">&#127912;</div>
+            <div class="t8-art-meta">
+              <span>Title: <a href="#">DigitalDream</a></span>
+              <a href="#">View Full Size &raquo;</a>
+            </div>
+            <div style="font-size:9px; color:#6688bb; margin-top:3px;">Author: alexcarter &nbsp;·&nbsp; Website: faero.net</div>
+          </div>
+        </div>
+        <div class="t8-section">
+          <div class="t8-section-head"><span class="t8-section-head-icon">&#128101;</span> SKILLET</div>
+          <div class="t8-section-body">
+            <div class="t8-sidebar-item2">
+              <div class="t8-si-badge">&#127912;</div>
+              <div class="t8-si-text"><strong>Design Collective</strong>Top graphics group with creative tutorials and art battles.</div>
+            </div>
+            <div class="t8-sidebar-item2">
+              <div class="t8-si-badge">&#127926;</div>
+              <div class="t8-si-text"><strong>Music Lovers</strong>A community for sharing and discovering new music.</div>
+            </div>
+            <div class="t8-sidebar-item2">
+              <div class="t8-si-badge">&#128247;</div>
+              <div class="t8-si-text"><strong>Photographic</strong>Photo challenges, critiques and gallery showcases.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="t8-footer">
+      Looking for connections? Visit our <span style="color:#4466ff; cursor:pointer;">directory</span>. Want to advertise? Check our <span style="color:#4466ff; cursor:pointer;">media kit</span>.<br>
+      &copy; 2024&ndash;2026 Faero LLC. All rights reserved. <span style="color:#4466ff; cursor:pointer;">Privacy Policy</span> and <span style="color:#4466ff; cursor:pointer;">Terms of Service.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== THEME 9: ANGELFIRE ======================== -->
+<div id="t9" class="theme-page">
+  <div class="t9-header">
+    <div style="display:flex; align-items:center; gap:4px;">
+      <div class="t9-flame">&#128293;</div>
+      <div class="t9-logo">fa<span>ero</span></div>
+    </div>
+    <div class="t9-header-links">
+      <a href="#">web shell</a>
+      <a href="#">help</a>
+    </div>
+  </div>
+  <div class="t9-body">
+    <div class="t9-left-nav">
+      <div class="t9-nav-group">
+        <div class="t9-nav-section">ON FAERO</div>
+        <a class="t9-nav-link active">&#9658; Faero Home</a>
+        <a class="t9-nav-link">About</a>
+        <a class="t9-nav-link">Build</a>
+        <a class="t9-nav-link">Cool Pages</a>
+        <a class="t9-nav-link">My Account</a>
+        <a class="t9-nav-link">What's New</a>
+        <a class="t9-nav-link">Web Shell</a>
+        <div class="t9-nav-section">ZONES</div>
+        <a class="t9-nav-link">Celebrities</a>
+        <a class="t9-nav-link">Design &amp; Art</a>
+        <a class="t9-nav-link">Games</a>
+        <a class="t9-nav-link">Movies</a>
+        <a class="t9-nav-link">Music</a>
+        <a class="t9-nav-link">Sports</a>
+        <a class="t9-nav-link">Tech</a>
+        <div class="t9-nav-section">ON FAERO</div>
+        <a class="t9-nav-link">Faero E-Mail</a>
+        <a class="t9-nav-link">Chat</a>
+        <a class="t9-nav-link">Clubs</a>
+        <a class="t9-nav-link">Message Boards</a>
+        <a class="t9-nav-link">Find a Friend</a>
+      </div>
+      <div class="t9-search-block">
+        <div class="t9-search-label">SEARCH</div>
+        <select class="t9-search-select"><option>with Faero</option></select>
+        <input class="t9-search-input" type="text" placeholder="">
+        <button class="t9-search-btn">Go!</button>
+      </div>
+      <div class="t9-top50">
+        <strong>Faero Top 50</strong>
+        <a href="#">&#9658; Photography</a>
+        <a href="#">&#9658; Indie Music</a>
+        <a href="#">&#9658; Design Blogs</a>
+        <a href="#">&#9658; Film Reviews</a>
+        <a href="#">&#9658; Game Streams</a>
+        <a href="#">More &raquo;</a>
+      </div>
+    </div>
+    <div class="t9-main">
+      <div class="t9-feature-row">
+        <div class="t9-feature-box">
+          <div class="t9-feature-label">
+            <span>BUILD A HOMEPAGE!</span>
+            <span class="zone-link">BUILD ZONE &rsaquo;</span>
+          </div>
+          <div class="t9-feature-content">
+            <div class="t9-feature-icon">&#128421;</div>
+            <div class="t9-feature-text">
+              <div class="t9-feature-title">NEW IMPROVED PROFILE BUILDER</div>
+              <div class="t9-feature-desc">Faero makes profiles even easier! Post your photos, videos and audio with our simple tools. <span class="t9-feature-cta">Sign up</span> today — it's FREE!</div>
+            </div>
+          </div>
+        </div>
+        <div class="t9-feature-box">
+          <div class="t9-feature-label">
+            <span>MUSIC</span>
+            <span class="zone-link">MUSIC ZONE &rsaquo;</span>
+          </div>
+          <div class="t9-feature-content">
+            <div class="t9-feature-icon">&#127926;</div>
+            <div class="t9-feature-text">
+              <div class="t9-feature-title">Stream Your Music</div>
+              <div class="t9-feature-desc">Add your favorite tracks to your Faero profile. Find more in the <span class="t9-feature-cta">Music Zone...</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="t9-profile-section">
+        <div class="t9-profile-header">
+          <h3>Alex Carter — Faero Profile</h3>
+          <span style="color:#ffcc99; font-size:10px;">Edit Profile &raquo;</span>
+        </div>
+        <div class="t9-profile-body">
+          <div class="t9-big-avatar2">&#128100;</div>
+          <div class="t9-profile-details">
+            <div class="t9-username2">alexcarter</div>
+            <div class="t9-profile-row"><label>Member Since:</label><span>March 2024</span></div>
+            <div class="t9-profile-row"><label>Location:</label><span>Springfield, US</span></div>
+            <div class="t9-profile-row"><label>Status:</label><span>&#9679; Online Now</span></div>
+            <div class="t9-profile-row"><label>Interests:</label><span>Film, Design, Music, Photography</span></div>
+            <div class="t9-profile-row"><label>Friends:</label><span>284</span></div>
+            <div class="t9-profile-row"><label>Profile Views:</label><span>1,892</span></div>
+            <div style="margin-top:8px; display:flex; gap:4px;">
+              <button class="t9-poll-vote" style="font-size:10px; padding:2px 10px;">Send Message</button>
+              <button class="t9-poll-vote" style="font-size:10px; padding:2px 10px; background:linear-gradient(180deg,#5555dd,#3333bb); border-color:#7777ff;">Add Friend</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex; gap:4px;">
+        <div class="t9-cool-pages" style="flex:1;">
+          <div class="t9-cp-header">COOL PROFILES</div>
+          <div class="t9-cp-body">
+            <div class="t9-cp-item">
+              <div class="t9-cp-title">Jordan's Design Blog</div>
+              <div class="t9-cp-desc">Amazing UI experiments and web design resources. Check it out!</div>
+              <span style="color:#ff9933; font-size:9px; cursor:pointer;">Find MORE Profiles &raquo;</span>
+            </div>
+            <div class="t9-cp-item">
+              <div class="t9-cp-title">Maya's Photography</div>
+              <div class="t9-cp-desc">Stunning landscape and portrait photography from around the world.</div>
+            </div>
+          </div>
+        </div>
+        <div style="width:200px; display:flex; flex-direction:column; gap:4px;">
+          <div class="t9-poll">
+            <div class="t9-poll-header">TODAY'S POLL</div>
+            <div class="t9-poll-body">
+              <div class="t9-poll-q">Do you have a Faero profile?</div>
+              <div class="t9-poll-opt"><input class="t9-poll-radio" type="radio" name="poll"> <span class="t9-poll-label">Yes</span></div>
+              <div class="t9-poll-opt"><input class="t9-poll-radio" type="radio" name="poll"> <span class="t9-poll-label">No, signing up now!</span></div>
+              <div class="t9-poll-opt"><input class="t9-poll-radio" type="radio" name="poll"> <span class="t9-poll-label">Not yet</span></div>
+              <button class="t9-poll-vote">vote</button>
+              <span style="margin-left:6px; color:#9999ff; font-size:10px; cursor:pointer;">view results</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="t9-footer">
+    Faero · <a href="#">Site Map</a> · <a href="#">About Us</a> · <a href="#">Rules</a> · <a href="#">Fight Spam</a> · <a href="#">Report Abuse</a><br>
+    &copy; 2024&ndash;2026 Faero, Inc. All rights reserved. &nbsp;<a href="#">Privacy Policy</a> &nbsp;|&nbsp; <a href="#">Terms &amp; Conditions</a>
+  </div>
+</div>
+
+<script>
+/* â”€â”€â”€ SHOW THEME â”€â”€â”€ */
+function showTheme(n, btn) {
+  document.querySelectorAll('.theme-page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('#theme-bar button').forEach(b => b.classList.remove('active'));
+  document.getElementById('t' + n).classList.add('active');
+  if (btn) btn.classList.add('active');
+  window.scrollTo(0, 0);
+  if (_gPr) { applyFullData(_gPr, _gPosts); }
+}
+
+/* â”€â”€â”€ RELATIVE TIME â”€â”€â”€ */
+function relTime(ts) {
+  const d = Date.now() - ts;
+  if (d < 60000) return 'just now';
+  if (d < 3600000) return Math.floor(d/60000) + 'm ago';
+  if (d < 86400000) return Math.floor(d/3600000) + 'h ago';
+  return Math.floor(d/86400000) + 'd ago';
+}
+
+/* â”€â”€â”€ POST TEXT â”€â”€â”€ */
+function postLine(p) {
+  let s = p.text || '';
+  if (p.type === 'music' && p.music) s += (s ? ' ' : '') + '\uD83C\uDFB5 ' + p.music.title + ' \u2014 ' + p.music.artist;
+  if (p.type === 'place' && p.place) s += (s ? ' ' : '') + '\uD83D\uDCCD ' + p.place.name;
+  if (p.tags && p.tags.length) s += ' ' + p.tags.join(' ');
+  return s;
+}
+
+/* â”€â”€â”€ AVATAR HELPER â”€â”€â”€ */
+function avDiv(letter, grad, size, radius) {
+  return '<div style="width:' + size + ';height:' + size + ';border-radius:' + (radius||'4px') + ';flex-shrink:0;background:' + grad + ';display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:' + (parseInt(size)*0.45) + 'px;">' + letter + '</div>';
+}
+
+/* â”€â”€â”€ APPLY ALL REAL DATA â”€â”€â”€ */
+var _gPr = null, _gPosts = [];
+function applyFullData(pr, posts) {
+  _gPr = pr; _gPosts = posts;
+  const name    = pr.name    || 'Alex Carter';
+  const handle  = pr.handle  || '@alexcarter';
+  const hClean  = handle.replace(/^@/, '');
+  const bio     = pr.bio     || '';
+  const friends = String(pr.friends || '284');
+  const views   = String(pr.views   || '1,892');
+  const mood    = pr.mood    || '';
+  const avL     = pr.avatarLetter || name[0].toUpperCase();
+  const avG     = pr.avatarGrad   || 'linear-gradient(135deg,#80d4ff,#1a88d4)';
+  const pcnt    = posts ? posts.length : 0;
+  const lastMus = posts ? posts.find(p => p.type === 'music') : null;
+
+  const page = document.body;
+
+  /* 1. TEXT NODE REPLACEMENT */
+  const walk = document.createTreeWalker(page, NodeFilter.SHOW_TEXT);
+  while (walk.nextNode()) {
+    const n = walk.currentNode;
+    n.nodeValue = n.nodeValue
+      .replace(/Alex Carter/g, name)
+      .replace(/@alexcarter/g, handle)
+      .replace(/alexcarter/g, hClean)
+      .replace(/Alex's Profile!/g, name + "'s Profile!")
+      .replace(/living in glass and gradients\.\.\./g, bio || mood || 'living in glass and gradients...')
+      .replace(/working on new photos\.\.\./g, mood || bio || 'creating...')
+      .replace(/\b284\b/g, friends)
+      .replace(/1,892/g, views)
+      .replace(/2,847/g, views)
+      .replace(/\b47\b( [Pp]osts)/g, pcnt + '$1')
+      .replace(/\b1\.8k\b/g, views)
+      .replace(/alex@faero\.net/g, hClean + '@faero.net');
+  }
+  if (bio) {
+    const bioEl = page.querySelector('.t7-about-text');
+    if (bioEl) bioEl.textContent = bio;
+    const t6meta = page.querySelector('.t6-meta');
+    if (t6meta) { t6meta.innerHTML = bio.replace(/\n/g, '<br>'); }
+  }
+
+  /* 2. AVATAR REPLACEMENT */
+  ['.t1-avatar-inner', '.t2-avatar2', '.t4-big-avatar',
+   '.t6-pfp-frame', '.t7-avatar3', '.t8-pw-avatar', '.t9-big-avatar2'].forEach(sel => {
+    page.querySelectorAll(sel).forEach(el => {
+      el.style.background = avG;
+      el.style.color = '#fff';
+      el.style.fontWeight = '700';
+      el.textContent = avL;
+    });
+  });
+
+  /* 3. REAL POSTS */
+  if (posts && posts.length) {
+    _feedT1(page, posts, name, avL, avG);
+    _feedT2(page, posts, name, avL, avG);
+    _feedT3(page, posts, name, avL, avG);
+    _feedT5(page, posts);
+    _feedT6(page, posts, name, avL, avG);
+    _feedT8(page, posts, name, avL, avG);
+    _feedT9(page, posts, name, avL, avG);
+  }
+
+  /* 4. NOW PLAYING */
+  const trackStr = lastMus ? ((lastMus.music && lastMus.music.title ? lastMus.music.title : 'track') + ' \u266B ' + (lastMus.music && lastMus.music.artist ? lastMus.music.artist : 'artist')) : null;
+  if (trackStr) {
+    const t6track = page.querySelector('.t6-player-track');
+    if (t6track) t6track.textContent = trackStr;
+    const t6now = page.querySelector('.t6-now-playing');
+    if (t6now) t6now.textContent = 'now playing \u266B ' + trackStr;
+    const t7song = page.querySelector('.t7-player-song');
+    if (t7song) t7song.textContent = trackStr;
+    const t5aud = page.querySelector('.t5-section-box:nth-child(2) .t5-mini-text');
+    if (t5aud) t5aud.innerHTML = '<strong>Now Playing</strong>' + trackStr;
+  }
+
+  /* 5. WIRE TABS */
+  _tabsT2(page);
+  _tabsT5(page);
+  _tabsT7(page);
+  _tabsT8(page);
+  _tabsT9(page);
+}
+
+/* â”€â”€â”€ FEED RENDERERS â”€â”€â”€ */
+function _feedT1(page, posts, name, avL, avG) {
+  if (page.querySelector('#t1-wall')) return;
+  const right = page.querySelector('.t1-right');
+  if (!right) return;
+  const box = document.createElement('div');
+  box.className = 't1-box';
+  box.innerHTML = '<div class="t1-box-header">Wall</div><div class="t1-box-body" id="t1-wall" style="padding:4px 6px;"></div>';
+  right.prepend(box);
+  const wall = box.querySelector('#t1-wall');
+  posts.slice(0,5).forEach(p => {
+    const d = document.createElement('div');
+    d.style.cssText = 'border-bottom:1px solid #e8eef7;padding:5px 0;font-size:11px;';
+    d.innerHTML = '<div style="display:flex;gap:6px;align-items:flex-start;">' + avDiv(avL,avG,'30px','3px') + '<div><strong>' + name + '</strong> <span style="color:#888;font-size:9px;">' + relTime(p.ts) + '</span><div style="margin-top:2px;line-height:1.4;color:#333;">' + postLine(p) + '</div></div></div>';
+    wall.appendChild(d);
+  });
+}
+
+function _feedT2(page, posts, name, avL, avG) {
+  if (page.querySelector('#t2-activity')) return;
+  const recentItem = page.querySelector('.t2-sidebar-item:nth-child(6)'); /* Recent Activity */
+  const main = page.querySelector('.t2-main');
+  if (!main) return;
+  const feed = document.createElement('div');
+  feed.id = 't2-activity';
+  feed.style.cssText = 'display:none;padding:8px;background:#f5f5f5;';
+  feed.innerHTML = '<div style="background:linear-gradient(180deg,#6699cc,#4477aa);color:#fff;font-weight:700;font-size:10px;padding:2px 6px;margin-bottom:6px;">Recent Activity</div>';
+  posts.slice(0,5).forEach(p => {
+    const d = document.createElement('div');
+    d.style.cssText = 'border-bottom:1px solid #ddd;padding:4px 0;font-size:11px;display:flex;gap:6px;';
+    d.innerHTML = avDiv(avL,avG,'28px','3px') + '<div><strong style="color:#1a3366;">' + name + '</strong> <span style="color:#888;font-size:9px;">' + relTime(p.ts) + '</span><div style="margin-top:1px;color:#333;">' + postLine(p) + '</div></div>';
+    feed.appendChild(d);
+  });
+  main.appendChild(feed);
+}
+
+function _feedT3(page, posts, name, avL, avG) {
+  if (page.querySelector('#t3-feed')) return;
+  const panels = page.querySelector('.t3-info-panels');
+  if (!panels) return;
+  const panel = document.createElement('div');
+  panel.className = 't3-panel';
+  panel.innerHTML = '<div class="t3-panel-header"><span>\uD83D\uDCDD</span> Recent Posts</div><div class="t3-panel-body" id="t3-feed"></div>';
+  panels.appendChild(panel);
+  const feed = panel.querySelector('#t3-feed');
+  posts.slice(0,4).forEach(p => {
+    const d = document.createElement('div');
+    d.style.cssText = 'border-bottom:1px solid #ccc;padding:4px 0;font-size:11px;';
+    d.innerHTML = '<div style="display:flex;gap:5px;">' + avDiv(avL,avG,'24px','2px') + '<div><strong style="color:#0078d7;">' + name + '</strong> <span style="color:#888;font-size:9px;">' + relTime(p.ts) + '</span><div style="margin-top:1px;line-height:1.4;color:#333;">' + postLine(p) + '</div></div></div>';
+    feed.appendChild(d);
+  });
+}
+
+function _feedT5(page, posts) {
+  const newsItems = page.querySelectorAll('.t5-news-item');
+  if (!newsItems.length || page.querySelector('#t5-feed-done')) return;
+  const container = newsItems[0].parentElement;
+  container.innerHTML = '';
+  container.id = 't5-feed-done';
+  posts.slice(0,4).forEach((p, i) => {
+    const d = new Date(p.ts);
+    const ds = String(d.getMonth()+1).padStart(2,'0') + '/' + String(d.getDate()).padStart(2,'0') + '/' + d.getFullYear().toString().slice(-2);
+    const lbl = p.type === 'music' ? 'MUSIC' : p.type === 'place' ? 'PLACE' : p.type === 'link' ? 'LINK' : 'POST';
+    const el = document.createElement('div');
+    el.className = 't5-news-item';
+    if (i) el.style.marginTop = '6px';
+    el.innerHTML = '<div class="t5-news-date">' + lbl + ' \u00B7 ' + ds + '</div><div class="t5-news-title">' + (p.text || '').slice(0,48) + ((p.text||'').length>48?'...':'') + '</div>' + (p.type==='music'&&p.music ? '<div class="t5-news-text">\uD83C\uDFB5 ' + p.music.title + ' \u2014 ' + p.music.artist + '</div>' : p.type==='place'&&p.place ? '<div class="t5-news-text">\uD83D\uDCCD ' + p.place.name + '</div>' : '');
+    container.appendChild(el);
+  });
+}
+
+function _feedT6(page, posts, name, avL, avG) {
+  if (page.querySelector('#t6-feed')) return;
+  const center = page.querySelector('.t6-profile-sections');
+  if (!center) return;
+  const sec = document.createElement('div');
+  sec.className = 't6-profile-section';
+  sec.innerHTML = '<h4>recent posts</h4><div id="t6-feed"></div>';
+  center.prepend(sec);
+  const feed = sec.querySelector('#t6-feed');
+  posts.slice(0,4).forEach(p => {
+    const d = document.createElement('div');
+    d.style.cssText = 'font-size:10px;padding:4px 0;border-bottom:1px solid #eee;display:flex;gap:5px;line-height:1.5;';
+    d.innerHTML = avDiv(avL,avG,'22px','3px') + '<div><span style="color:#888;font-size:9px;">' + relTime(p.ts) + '</span><div style="color:#333;">' + postLine(p) + '</div></div>';
+    feed.appendChild(d);
+  });
+}
+
+function _feedT8(page, posts, name, avL, avG) {
+  const grapevine = page.querySelector('.t8-section-body');
+  if (!grapevine || grapevine.dataset.real) return;
+  grapevine.dataset.real = '1';
+  grapevine.innerHTML = '';
+  posts.slice(0,3).forEach(p => {
+    const el = document.createElement('div');
+    el.className = 't8-post';
+    el.innerHTML = '<div class="t8-post-avatar" style="background:' + avG + ';color:#fff;font-size:11px;">' + avL + '</div><div class="t8-post-body"><div class="t8-post-meta"><span class="t8-post-author">' + name + '</span><span class="t8-post-time">' + relTime(p.ts) + '</span></div><div class="t8-post-text" style="line-height:1.5;">' + postLine(p) + '</div><div class="t8-post-actions"><button class="t8-action-btn">\u2665 ' + (p.likes||0) + '</button></div></div>';
+    grapevine.appendChild(el);
+  });
+}
+
+function _feedT9(page, posts, name, avL, avG) {
+  const cpBody = page.querySelector('.t9-cp-body');
+  if (!cpBody || cpBody.dataset.real) return;
+  cpBody.dataset.real = '1';
+  cpBody.innerHTML = '<div style="padding:2px 0;font-size:10px;color:#ffcc99;font-weight:700;margin-bottom:4px;">Recent Posts</div>';
+  posts.slice(0,3).forEach(p => {
+    const el = document.createElement('div');
+    el.className = 't9-cp-item';
+    el.innerHTML = '<div class="t9-cp-title" style="display:flex;gap:4px;align-items:center;">' + avDiv(avL,avG,'16px','2px') + ' ' + name + ' <span style="color:#aaa;font-size:9px;margin-left:auto;">' + relTime(p.ts) + '</span></div><div class="t9-cp-desc">' + (p.text||'').slice(0,80) + ((p.text||'').length>80?'...':'') + '</div>';
+    cpBody.appendChild(el);
+  });
+}
+
+/* â”€â”€â”€ TAB NAV â”€â”€â”€ */
+function _tabsT2(page) {
+  const items = page.querySelectorAll('.t2-sidebar-item');
+  const main  = page.querySelector('.t2-main');
+  const actFeed = page.querySelector('#t2-activity');
+  if (!items.length || !main) return;
+  items.forEach(item => {
+    if (item.dataset.wired) return;
+    item.dataset.wired = '1';
+    item.style.cursor = 'pointer';
+    item.addEventListener('click', () => {
+      items.forEach(b => b.classList.remove('active'));
+      item.classList.add('active');
+      /* show activity feed when "Recent Activity" clicked */
+      const label = item.textContent.trim().toLowerCase();
+      if (actFeed) actFeed.style.display = label.includes('activity') ? 'block' : 'none';
+      /* hide store content for non-profile clicks */
+      const banner = main.querySelector('.t2-banner');
+      const store  = main.querySelector('.t2-store-body');
+      const profile = main.querySelector('.t2-profile-card');
+      if (banner) banner.style.display = label.includes('profile') ? '' : 'none';
+      if (store)  store.style.display  = label.includes('profile') ? '' : 'none';
+      if (profile) profile.style.display = label.includes('profile') ? '' : 'none';
+      if (actFeed && label.includes('activity')) {
+        if (banner) banner.style.display = 'none';
+        if (store)  store.style.display  = 'none';
+        if (profile) profile.style.display = 'none';
+      }
+    });
+  });
+}
+
+function _tabsT5(page) {
+  const tabs = page.querySelectorAll('.t5-tab');
+  const main  = page.querySelector('.t5-main');
+  if (!tabs.length) return;
+  tabs.forEach(tab => {
+    if (tab.dataset.wired) return;
+    tab.dataset.wired = '1';
+    tab.style.cursor = 'pointer';
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const label = tab.textContent.trim().toLowerCase();
+      const leftCol  = page.querySelector('.t5-left-col');
+      const rightCol = page.querySelector('.t5-right-col');
+      /* home â†’ show all; about â†’ left col only; others â†’ right only */
+      if (main) {
+        if (label.includes('home')) {
+          if (leftCol) leftCol.style.display = '';
+          if (rightCol) rightCol.style.display = '';
+        } else if (label.includes('about')) {
+          if (leftCol) leftCol.style.display = '';
+          if (rightCol) rightCol.style.display = 'none';
+        } else {
+          if (leftCol) leftCol.style.display = 'none';
+          if (rightCol) rightCol.style.display = '';
+        }
+      }
+    });
+  });
+}
+
+function _tabsT7(page) {
+  const pills = page.querySelectorAll('.t7-pill');
+  const sections = page.querySelectorAll('.t7-section-box2');
+  if (!pills.length) return;
+  pills.forEach((pill, i) => {
+    if (pill.dataset.wired) return;
+    pill.dataset.wired = '1';
+    pill.style.cursor = 'pointer';
+    pill.addEventListener('click', () => {
+      pills.forEach(p => { p.style.background = ''; p.style.color = ''; });
+      pill.style.background = '#c5daf0';
+      pill.style.color = '#1a3a6e';
+      sections.forEach((s,j) => {
+        s.style.display = (i === j || sections.length <= 1) ? '' : 'none';
+      });
+    });
+  });
+}
+
+function _tabsT8(page) {
+  const items = page.querySelectorAll('.t8-nav-item');
+  if (!items.length) return;
+  items.forEach(item => {
+    if (item.dataset.wired) return;
+    item.dataset.wired = '1';
+    item.style.cursor = 'pointer';
+    item.addEventListener('click', () => {
+      items.forEach(n => n.classList.remove('active'));
+      item.classList.add('active');
+    });
+  });
+}
+
+function _tabsT9(page) {
+  const links = page.querySelectorAll('.t9-nav-link');
+  if (!links.length) return;
+  links.forEach(link => {
+    if (link.dataset.wired) return;
+    link.dataset.wired = '1';
+    link.style.cursor = 'pointer';
+    link.addEventListener('click', () => {
+      links.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+}
+
+/* â”€â”€â”€ MAIN INIT â”€â”€â”€ */
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(location.search);
+
+  if (params.has('embed')) {
+    document.getElementById('theme-bar').style.display = 'none';
+    document.querySelectorAll('.theme-page').forEach(p => p.style.paddingTop = '0');
+  }
+
+  const themeN = parseInt(params.get('theme') || '1');
+  const validN = Math.min(9, Math.max(1, themeN));
+  const btn = document.querySelector('#theme-bar button:nth-child(' + (validN + 1) + ')');
+  showTheme(validN, btn || document.querySelector('#theme-bar button'));
+
+  /* Apply basic URL param data immediately (no posts â€” posts arrive via postMessage) */
+  if (params.has('name') || params.has('handle') || params.has('avatarGrad')) {
+    applyFullData({
+      name:         params.get('name'),
+      handle:       params.get('handle'),
+      bio:          params.get('bio') || '',
+      friends:      params.get('friends') || '0',
+      views:        params.get('views') || '0',
+      mood:         params.get('mood') || '',
+      avatarLetter: params.get('avatarLetter') || 'A',
+      avatarGrad:   params.get('avatarGrad') || 'linear-gradient(135deg,#80d4ff,#1a88d4)',
+    }, []);
+  }
+
+  /* Receive full profile + posts from parent frame */
+  window.addEventListener('message', e => {
+    if (!e.data || e.data.type !== 'faeroData') return;
+    applyFullData(e.data.profile, e.data.posts || []);
+  });
+});
+</script>
+</body>
+</html>
