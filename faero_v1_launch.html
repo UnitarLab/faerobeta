@@ -4798,6 +4798,7 @@ body.has-rls-warning { padding-top:72px; }
    CUSTOMIZER PANEL
 ═══════════════════════════════════════════ */
 #customizer-toggle {
+  display: none !important;
   position: fixed; bottom: 24px; right: 24px; z-index: 999;
   width: 52px; height: 52px; border-radius: 50%;
   background: linear-gradient(135deg, var(--leaf), var(--clay));
@@ -13309,6 +13310,10 @@ function fsRender() {
     <div class="fs-pane ${_fsActiveTab==='vibes'?'active':''}" data-pane="vibes">
       <div class="fs-pane-title">Themes & Vibes</div>
       <div class="fs-pane-sub">Make Faero yours. Changes apply instantly.</div>
+      <div class="fs-toggle-row" style="cursor:pointer" onclick="faeroCloseSettingsForce();toggleCustomizer()">
+        <div><div class="fs-toggle-label">🎨 Design Studio</div><div class="fs-toggle-sub">Live theme editor — colors, fonts, glass</div></div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
       <div class="fs-section">Color theme</div>
       <div class="fs-theme-grid">${themeCards}</div>
       <div class="fs-section">Background pattern</div>
