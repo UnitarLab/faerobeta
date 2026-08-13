@@ -319,21 +319,17 @@
       border: none !important;
     }
     body.faero-immersive #taskbar > *:not(#taskbar-apps) { display: none !important; }
-    /* faero window in immersive mode: no titlebar chrome, just the content */
-    body.faero-immersive .os-window[data-app-id="faero"] .win-titlebar {
-      opacity: 0;
-      pointer-events: none;
-      height: 0;
-      overflow: hidden;
-      transition: opacity 0.2s, height 0.2s;
+    /* Taskbar button stays solid and readable over the transparent taskbar strip */
+    body.faero-immersive .taskbar-app-btn {
+      background: rgba(30, 100, 200, 0.75) !important;
+      border-color: rgba(255,255,255,0.35) !important;
+      color: #fff !important;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
     }
-    body.faero-immersive .os-window[data-app-id="faero"]:hover .win-titlebar {
-      opacity: 1;
-      pointer-events: auto;
-      height: 42px;
-    }
-    body.faero-immersive .os-window[data-app-id="faero"] .win-body {
-      height: 100vh !important;
+    body.faero-immersive .taskbar-app-btn.active {
+      background: rgba(60, 140, 255, 0.85) !important;
     }
   </style>
   <style>
