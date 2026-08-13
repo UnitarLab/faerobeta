@@ -1008,35 +1008,8 @@
       transition: border-color 0.15s, box-shadow 0.15s;
     }
 
-    #webamp,
-    #webamp-app,
-    .webamp-app,
-    #webamp-os-root,
-    [id^="webamp"] {
-      background: transparent !important;
-      background-color: transparent !important;
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 999999 !important;
-    }
-
-    /* Ensure Webamp windows and their contents are clickable */
-    #webamp *,
-    #webamp-app *,
-    .webamp-app *,
-    #webamp-os-root * {
-      pointer-events: auto;
-    }
-
-    /* Fix for Webamp context menus which are sometimes appended to body */
-    [class*="webamp-context-menu"],
-    #webamp-context-menu,
-    .webamp-context-menu {
-      z-index: 1000000 !important;
-      pointer-events: auto !important;
-      position: fixed !important;
-    }
+    /* The Webamp overlay rules lived here. They pinned a fixed, full-viewport,
+       z-index 999999 layer over the entire desktop. Removed with Winamp. */
 
     /* â”€â”€ CUSTOM CURSORS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     [data-cursor-set="frutiger-aero"],
@@ -1826,7 +1799,6 @@
       .desk-icon-img[data-app="browser"]     { background: linear-gradient(150deg,#f5a623,#e67000) !important; }
       .desk-icon-img[data-app="chat"]        { background: linear-gradient(150deg,#ff7055,#e02040) !important; }
       .desk-icon-img[data-app="photobooth"]  { background: linear-gradient(150deg,#f06aa8,#a020c0) !important; }
-      .desk-icon-img[data-app="winamp"]      { background: linear-gradient(150deg,#2a2a2a,#0e0e0e) !important; }
       .desk-icon-img[data-app="ps1"]         { background: linear-gradient(150deg,#555,#1a1a1a) !important; }
       .desk-icon-img[data-app="painter"]     { background: linear-gradient(150deg,#ffe033,#e69000) !important; }
       .desk-icon-img[data-app="settings"]    { background: linear-gradient(150deg,#8e8e93,#48484a) !important; }
@@ -2534,8 +2506,6 @@
     <!-- â”€â”€â”€ SELECTION BOX â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
     <div id="select-box"></div>
 
-    <!-- â”€â”€â”€ WEBAMP ROOT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
-    <div id="webamp-os-root"></div>
 
     <!-- â”€â”€â”€ MOBILE DOCK â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
     <div id="mobile-dock" style="display:none">
@@ -2611,15 +2581,6 @@
           </svg>
         </div>
         <div class="dock-label">Chat</div>
-      </div>
-      <!-- Winamp — Dark charcoal tile with green play -->
-      <div class="dock-item" data-sm-open="winamp">
-        <div class="dock-icon" style="background:linear-gradient(150deg,#2a2a2a 0%,#0e0e0e 100%)">
-          <svg viewBox="0 0 32 32" fill="none" width="32" height="32">
-            <path d="M11 9l14 7-14 7z" fill="#54e050"/>
-          </svg>
-        </div>
-        <div class="dock-label">Winamp</div>
       </div>
       <!-- PSX — Dark grey tile -->
       <div class="dock-item" data-sm-open="ps1">
@@ -2938,9 +2899,12 @@ AERONET OS â€” THEME ENGINE
 
     window.ThemeEngine = ThemeEngine;
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/butterchurn@2.6.7/dist/index.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/butterchurn-presets@2.4.7/dist/bundle.min.js"></script>
-  <script src="https://unpkg.com/webamp@1.5.0/built/webamp.bundle.min.js"></script>
+  <!-- Winamp/Webamp was removed. Three render-blocking CDN scripts went with it
+       (webamp from unpkg, butterchurn + butterchurn-presets from jsdelivr).
+       The two butterchurn URLs had been 404ing upstream for some time and were
+       served as text/plain, so every single page load spent time fetching them
+       and then logged a MIME-type refusal — on every visit, for a feature that
+       could not work. Nothing else on the desktop used them. -->
   <script>/* ============================================================
 AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
 ============================================================ */
@@ -2971,7 +2935,6 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
            The window is still a normal window: restore/resize work as usual. */
         faero: { title: 'faero', icon: '&#127760;', file: 'faero_v1_launch.html', w: 1320, h: 840, minW: 700, minH: 500, maximized: true },
         photobooth: { title: 'Disposable', icon: 'icons/photo.svg', file: 'apps/photobooth.html', w: 1032, h: 768, minW: 640, minH: 480 },
-        winamp: { title: 'Winamp', icon: '&#9836;', file: 'apps/winamp.html', w: 528, h: 480, minW: 280, minH: 340 },
         chat: { title: 'Chat', icon: 'icons/chat.svg', file: 'apps/chat.html', w: 864, h: 648, minW: 500, minH: 400 },
         emulator: { title: 'GameBoy', icon: 'icons/gameboy.svg', file: 'apps/emulator.html', w: 600, h: 576, minW: 400, minH: 440 },
         notepad: { title: 'Notepad', icon: 'icons/notepad.svg', file: 'apps/notepad.html', w: 648, h: 528, minW: 340, minH: 300 },
@@ -3257,14 +3220,17 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
 
         const isMobile = window.innerWidth <= 767;
                         const defaultPositions = [
+      // Reflowed after Winamp was removed. Dropping its entry alone would have
+      // left a hole at (38, 228) — the grid is absolute coordinates, not a
+      // layout, so nothing closes the gap on its own. These positions keep the
+      // original column-major reading order exactly, minus Winamp.
       { id: 'faero', x: 38, y: 28 },
       { id: 'chat', x: 38, y: 128 },
-      { id: 'winamp', x: 38, y: 228 },
-      { id: 'notepad', x: 38, y: 328 },
-      { id: 'games', x: 138, y: 28 },
-      { id: 'calendar', x: 138, y: 128 },
-      { id: 'painter', x: 138, y: 228 },
-      { id: 'radio', x: 138, y: 328 }
+      { id: 'notepad', x: 38, y: 228 },
+      { id: 'games', x: 38, y: 328 },
+      { id: 'calendar', x: 138, y: 28 },
+      { id: 'painter', x: 138, y: 128 },
+      { id: 'radio', x: 138, y: 228 }
     ];
 
         defaultPositions.forEach(({ id, x, y }, idx) => {
@@ -3297,7 +3263,7 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
             // unreachable from the desktop even after it shipped. It now opens like
             // every other app; access control is the app's own job (it has real auth,
             // and signed-out visitors get its sign-in pane, not a broken window).
-            if (id === 'winamp') { window.postMessage({ type: 'LAUNCH_WEBAMP' }, '*'); } else { openApp(id); }
+            openApp(id);
           });
 
           // Drag
@@ -3451,117 +3417,8 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
           case 'SET_TASKBAR_POS':
             document.body.dataset.taskbarPos = msg.pos;
             break;
-          case 'SET_WEBAMP_SKIN':
-            if (window.__webampInstance && msg.url) {
-              window.__webampInstance.setSkinFromUrl(msg.url).catch(err => {
-                console.error("Skin Fetch Error:", err);
-                toast("CORS Error: Cannot download skin from webamp.org", "&#10060;");
-              });
-            }
-            break;
-          case 'LAUNCH_WEBAMP':
-            if (window.__webampInstance) {
-              toast("Winamp is already active", "&#9836;");
-              return;
-            }
-
-            const WebampClass = window.Webamp;
-            if (!WebampClass) {
-              toast("Webamp engine failed to load. Check internet.", "&#10060;");
-              return;
-            }
-
-            toast("Starting Winamp Engine...", "&#9836;");
-
-            const webamp = new WebampClass({
-              initialTracks: [
-                {
-                  metaData: { artist: "Scott Joplin", title: "Maple Leaf Rag" },
-                  url: "https://upload.wikimedia.org/wikipedia/commons/d/da/Maple_Leaf_Rag.mp3",
-                  duration: 191
-                },
-                {
-                  metaData: { artist: "Beethoven", title: "Moonlight Sonata" },
-                  url: "https://upload.wikimedia.org/wikipedia/commons/4/44/Moonlight_Sonata.mp3",
-                  duration: 300
-                },
-                {
-                  metaData: { artist: "Mozart", title: "Eine Kleine Nachtmusik" },
-                  url: "https://upload.wikimedia.org/wikipedia/commons/b/be/Wolfgang_Amadeus_Mozart_-_Eine_Kleine_Nachtmusik_-_1._Allegro.mp3",
-                  duration: 350
-                }
-              ],
-              availableSkins: [
-                { url: "https://webamp.org/skins/m_Winamp_1.5.wsz", name: "Winamp Modern" }
-              ],
-              __butterchurnOptions: {
-                importButterchurn: () => {
-                  const bc = window.butterchurn || (window.butterchurn && window.butterchurn.default);
-                  return Promise.resolve(bc);
-                },
-                getPresets: () => {
-                  const ps = window.butterchurnPresets ? window.butterchurnPresets.getPresets() : {};
-                  return Promise.resolve(ps);
-                },
-                butterchurnOpen: true
-              },
-              __initialWindowLayout: {
-                main: { position: { top: 60, left: 60 } },
-                playlist: { position: { top: 180, left: 60 } },
-                equalizer: { position: { top: 60, left: 335 } },
-                milkdrop: { position: { top: 180, left: 335 } }
-              }
-            });
-
-            window.__webampInstance = webamp;
-
-            const webRoot = document.getElementById('webamp-os-root');
-            if (webRoot) webRoot.innerHTML = '';
-
-            webamp.renderWhenReady(webRoot || document.body).then(() => {
-              const launcher = Object.values(windows).find(w => w.appId === 'winamp');
-              if (launcher) closeWindow(launcher.id);
-
-              // Force Milkdrop reveal
-              try {
-                webamp.showWindow('milkdrop');
-                // Try everything to wake up Milkdrop
-                setTimeout(() => {
-                  const presets = window.butterchurnPresets ? window.butterchurnPresets.getPresets() : {};
-                  const names = Object.keys(presets);
-                  if (names.length) {
-                    const rand = presets[names[Math.floor(Math.random() * names.length)]];
-                    webamp.store.dispatch({ type: "SELECT_PRESET", preset: rand });
-                    webamp.store.dispatch({ type: "SET_MILKDROP_DESKTOP_VISIBILITY", visible: true });
-                  }
-                }, 1500);
-              } catch (e) { }
-
-              // Force reveal desktop
-              document.body.style.backgroundColor = "transparent";
-              document.getElementById('desktop').style.opacity = "1";
-              document.getElementById('desktop').style.display = "block";
-
-              toast("Winamp Ready!", "&#9989;");
-            }).catch(err => {
-              toast("Mount Error: " + err.message, "&#10060;");
-            });
-
-            webamp.onClose(() => {
-              webamp.dispose();
-              window.__webampInstance = null;
-            });
-
-            // Ensure it stays on top by forcing z-index on its container
-            // Webamp creates a #webamp element
-            setTimeout(() => {
-              const el = document.getElementById('webamp') || document.querySelector('[id^="webamp"]');
-              if (el) {
-                el.style.backgroundColor = "transparent";
-                el.style.zIndex = "999999";
-              }
-            }, 800);
-            break;
+          // The SET_WEBAMP_SKIN and LAUNCH_WEBAMP cases were removed with Winamp.
+          // They were the only consumers of window.__webampInstance.
           case 'SET_CURSOR':
             document.body.dataset.cursorSet = msg.css;
             AeroStorage.set('cursorSet', msg.css);
@@ -3632,8 +3489,6 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
 
         // Desktop right-click
         document.addEventListener('contextmenu', (e) => {
-          // IF clicking on Webamp, allow native player menu
-          if (e.target.closest('#webamp') || e.target.closest('[id^="webamp"]') || e.target.closest('#webamp-os-root')) return;
 
           if (e.target.closest('.desktop-icon') || e.target.closest('.os-window')) return;
           e.preventDefault();
@@ -3696,11 +3551,6 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
       <circle cx="24" cy="28" r="8" fill="none" stroke="${W}" stroke-width="2"/>
       <circle cx="24" cy="28" r="4" fill="${S}" opacity="0.7"/>
       <rect x="34" y="13" width="6" height="4" rx="1.5" fill="${S}" opacity="0.6"/>
-    </svg>`,
-        winamp: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="2" y="2" width="44" height="44" rx="8" fill="${W}" opacity="0.12" stroke="${W}" stroke-width="1.8"/>
-      <polygon points="16,14 36,24 16,34" fill="${W}"/>
-      <line x1="8" y1="38" x2="40" y2="38" stroke="${S}" stroke-width="1.5" opacity="0.5"/>
     </svg>`,
         chat: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect x="4" y="8" width="40" height="27" rx="8" fill="${W}" opacity="0.12" stroke="${W}" stroke-width="1.8"/>
