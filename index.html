@@ -307,6 +307,36 @@
     }
   </style>
   <style>
+    /* ── FAERO IMMERSIVE MODE ── */
+    /* When the faero social app is open and maximized, hide the OS chrome.
+       The taskbar minimize button is kept so the user can escape back to the desktop. */
+    body.faero-immersive #desktop-icons-container { display: none !important; }
+    body.faero-immersive #taskbar {
+      background: transparent !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      border: none !important;
+    }
+    body.faero-immersive #taskbar > *:not(#taskbar-apps) { display: none !important; }
+    /* faero window in immersive mode: no titlebar chrome, just the content */
+    body.faero-immersive .os-window[data-app-id="faero"] .win-titlebar {
+      opacity: 0;
+      pointer-events: none;
+      height: 0;
+      overflow: hidden;
+      transition: opacity 0.2s, height 0.2s;
+    }
+    body.faero-immersive .os-window[data-app-id="faero"]:hover .win-titlebar {
+      opacity: 1;
+      pointer-events: auto;
+      height: 42px;
+    }
+    body.faero-immersive .os-window[data-app-id="faero"] .win-body {
+      height: 100vh !important;
+    }
+  </style>
+  <style>
     #boot-screen {
       display: none !important;
       position: fixed;
@@ -2916,6 +2946,8 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
       let zCounter = 100;
       let focusedId = null;
       let draggingWin = null, dragOffX = 0, dragOffY = 0;
+      // Forward declaration — real body defined after window functions
+      let syncImmersiveMode = () => {};
       let resizingWin = null, resizeStartW = 0, resizeStartH = 0, resizeStartX = 0, resizeStartY = 0;
       let draggingIcon = null, iconDragOffX = 0, iconDragOffY = 0;
       let selectBoxStart = null;
@@ -3032,6 +3064,7 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
           win.el.remove();
           delete windows[id];
           removeFromTaskbar(id);
+          syncImmersiveMode();
         }, 160);
       };
 
@@ -3041,6 +3074,7 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
         win.minimized = true;
         win.el.style.display = 'none';
         updateTaskbarBtn(id, false);
+        syncImmersiveMode();
       };
 
       const restoreWindow = (id) => {
@@ -3050,6 +3084,7 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
         win.el.style.display = 'flex';
         focusWindow(id);
         updateTaskbarBtn(id, true);
+        syncImmersiveMode();
       };
 
       const toggleMaximize = (id) => {
@@ -3070,6 +3105,7 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
           el.classList.add('maximized');
         }
         focusWindow(id);
+        syncImmersiveMode();
       };
 
       const focusWindow = (id) => {
@@ -3531,7 +3567,13 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
         } catch (e) { }
       };
 
-      return { init, openApp, closeWindow, minimizeWindow, restoreWindow, toast, APPS, injectCursors };
+      syncImmersiveMode = () => {
+        const faeroWin = Object.values(windows).find(w => w.appId === 'faero');
+        const immersive = faeroWin && !faeroWin.minimized && faeroWin.maximized;
+        document.body.classList.toggle('faero-immersive', !!immersive);
+      };
+
+      return { init, openApp, closeWindow, minimizeWindow, restoreWindow, toast, APPS, injectCursors, syncImmersiveMode };
     })();
 
     /* â”€â”€ DEFAULT ICON FALLBACKS (SVG inline) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
@@ -3670,6 +3712,9 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
       // Init OS immediately
       ThemeEngine.init();
       OS.init();
+
+      // Auto-launch faero social app full-screen on every visit
+      OS.openApp('faero');
     });
 
     // Mobile dock items
