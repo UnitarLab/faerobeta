@@ -1,10 +1,5 @@
 {
-  "//cleanUrls": "MUST stay false now that the Supabase-backed social app ships here. Vercel's cleanUrls strips the .html extension and 308-redirects /faero_v1_launch.html -> /faero_v1_launch. Supabase matches auth redirect URLs EXACTLY, so that redirect silently breaks password reset and email confirmation. It also makes the service worker's offline fallback miss (it looks up 'faero_v1_launch.html') and puts a redirect in front of the PWA start_url on every launch. The OS itself is unaffected: index.html is served at '/' natively and the app registry uses explicit .html paths.",
   "cleanUrls": false,
-
-  "//frame": "X-Frame-Options is SAMEORIGIN, not DENY, and frame-ancestors is 'self', not 'none'. This is deliberate and load-bearing: the faero OS opens the social app in an iframe window, and DENY / 'none' block same-origin framing too — they would break the desktop integration outright while looking like a pure security win. SAMEORIGIN still blocks third-party clickjacking, which is the actual threat.",
-
-  "//csp": "Only frame-ancestors is enforced for now. A full CSP (script-src / connect-src / frame-src) is NOT shipped here, and that is a known, deliberate gap rather than an oversight: this origin also serves ~20 legacy OS apps that load from cdn.emulatorjs.org, unpkg.com, cdn.jsdelivr.net, stream.zeno.fm, 00s.myretrotvs.com, api.dicebear.com, youtube, twitch, mixcloud and soundcloud. A restrictive policy written without testing each of those would break them silently. frame-ancestors alone is safe to enforce because it constrains who may frame this site, not what it may load. See DEPLOY.md 'Remaining hardening'.",
 
   "headers": [
     {
@@ -20,7 +15,6 @@
       ]
     },
     {
-      "//": "The two shells must never be cached hard, or a deploy leaves users on stale code. This overrides the s-maxage above for these paths.",
       "source": "/faero_v1_launch.html",
       "headers": [
         { "key": "Cache-Control", "value": "no-cache, must-revalidate" }
@@ -33,7 +27,6 @@
       ]
     },
     {
-      "//": "A cached service worker cannot ship its own replacement.",
       "source": "/sw.js",
       "headers": [
         { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
