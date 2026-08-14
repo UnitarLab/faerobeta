@@ -308,10 +308,23 @@
   </style>
   <style>
     /* ── FAERO IMMERSIVE MODE ── */
-    /* When the faero social app is open and maximized, hide the OS chrome.
-       The taskbar minimize button is kept so the user can escape back to the desktop. */
+    /* Faero social app open + maximized: full-bleed. Hide OS desktop icons and the
+       window titlebar so the social feed owns the whole viewport above the taskbar.
+       The taskbar (with its faero button) is the only escape hatch back to the desktop. */
     body.faero-immersive #desktop-icons-container { display: none !important; }
-    /* Immersive mode: taskbar is fully identical to desktop — nothing hidden */
+
+    /* Hide titlebar and expand body to fill the space */
+    body.faero-immersive .os-window[data-app-id="faero"] .win-titlebar {
+      display: none !important;
+    }
+    body.faero-immersive .os-window[data-app-id="faero"] .win-body {
+      height: 100% !important;
+      border-radius: 0 !important;
+    }
+    /* The window itself should reach the very top edge */
+    body.faero-immersive .os-window[data-app-id="faero"].maximized {
+      height: calc(100vh - var(--taskbar-height, 42px)) !important;
+    }
   </style>
   <style>
     #boot-screen {
@@ -741,8 +754,20 @@
     }
 
     .taskbar-app-btn.active {
-      background: rgba(255, 255, 255, 0.25);
-      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+      background: rgba(255, 255, 255, 0.32);
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255,255,255,0.4);
+    }
+
+    /* faero taskbar button — always looks solid/present regardless of focus state */
+    .taskbar-app-btn[data-app-id="faero"] {
+      background: linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.18) 100%);
+      border-color: rgba(255,255,255,0.7);
+      font-weight: 800;
+      letter-spacing: 0.03em;
+    }
+    .taskbar-app-btn[data-app-id="faero"].active {
+      background: linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.28) 100%);
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.6);
     }
 
     /* System tray */
@@ -3105,11 +3130,14 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
         const btn = document.createElement('button');
         btn.className = 'taskbar-app-btn active';
         btn.id = 'tb_' + id;
+        btn.dataset.appId = appId;
         btn.innerHTML = `<span style="font-size:12px">${app.title}</span>`;
         btn.addEventListener('click', () => {
           const win = windows[id];
           if (!win) return;
           if (win.minimized) restoreWindow(id);
+          // faero always comes forward — clicking its button should never hide it
+          else if (appId === 'faero') focusWindow(id);
           else if (focusedId === id) minimizeWindow(id);
           else focusWindow(id);
         });
