@@ -313,18 +313,6 @@
        The taskbar (with its faero button) is the only escape hatch back to the desktop. */
     body.faero-immersive #desktop-icons-container { display: none !important; }
 
-    /* Hide titlebar and expand body to fill the space */
-    body.faero-immersive .os-window[data-app-id="faero"] .win-titlebar {
-      display: none !important;
-    }
-    body.faero-immersive .os-window[data-app-id="faero"] .win-body {
-      height: 100% !important;
-      border-radius: 0 !important;
-    }
-    /* The window itself should reach the very top edge */
-    body.faero-immersive .os-window[data-app-id="faero"].maximized {
-      height: calc(100vh - var(--taskbar-height, 42px)) !important;
-    }
   </style>
   <style>
     #boot-screen {
