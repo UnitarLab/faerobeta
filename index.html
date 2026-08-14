@@ -3114,18 +3114,19 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
 
       /* â”€â”€ TASKBAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
       const addToTaskbar = (id, app) => {
+        const thisAppId = windows[id] && windows[id].appId;
         const container = document.getElementById('taskbar-apps');
         const btn = document.createElement('button');
         btn.className = 'taskbar-app-btn active';
         btn.id = 'tb_' + id;
-        btn.dataset.appId = appId;
+        btn.dataset.appId = thisAppId || '';
         btn.innerHTML = `<span style="font-size:12px">${app.title}</span>`;
         btn.addEventListener('click', () => {
           const win = windows[id];
           if (!win) return;
           if (win.minimized) restoreWindow(id);
           // faero always comes forward — clicking its button should never hide it
-          else if (appId === 'faero') focusWindow(id);
+          else if (thisAppId === 'faero') focusWindow(id);
           else if (focusedId === id) minimizeWindow(id);
           else focusWindow(id);
         });
