@@ -18,29 +18,30 @@
        alongside the Vercel one (216.198.79.1), so TLS fails. www.faero.net is
        fine. Removing that one DNS record fixes it. Until it is removed, these
        tags point at a host that does not answer — see DEPLOY.md. -->
-  <link rel="canonical" href="https://faero.net/">
+  <link rel="canonical" href="https://faerobeta.vercel.app/">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://faero.net/">
-  <meta property="og:site_name" content="Faero">
-  <meta property="og:title" content="faero OS — Our Promised Future">
+  <meta property="og:url" content="https://faerobeta.vercel.app/">
+  <meta property="og:site_name" content="faero">
+  <meta property="og:title" content="faero — A real internet social OS">
   <meta property="og:description" content="A real internet social OS. Your desktop, your world. Glass, gradients and a future we all dreamed of. Join the closed beta now.">
-  <meta property="og:image" content="https://faero.net/preview.png">
+  <meta property="og:image" content="https://faerobeta.vercel.app/og-card.jpg">
   <meta property="og:image:alt" content="The faero OS desktop — a glass-and-gradient social operating system.">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
 
-  <!-- Twitter. These are name=, not property=: the twitter:* tags are plain
-       meta names, and while crawlers have historically tolerated property=,
-       name= is what the spec asks for. -->
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="faero OS — Our Promised Future">
+  <meta name="twitter:title" content="faero — A real internet social OS">
   <meta name="twitter:description" content="A real internet social OS. Your desktop, your world. Glass, gradients and a future we all dreamed of. Join the closed beta now.">
-  <meta name="twitter:image" content="https://faero.net/preview.png">
+  <meta name="twitter:image" content="https://faerobeta.vercel.app/og-card.jpg">
   <meta name="twitter:image:alt" content="The faero OS desktop — a glass-and-gradient social operating system.">
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>faero OS</title>
+  <title>faero — social OS</title>
   <link rel="icon" type="image/webp" href="favicon.webp">
+  <link rel="manifest" href="manifest.webmanifest">
   <!-- A duplicate description meta tag used to sit here. Two of them on one
        page is not additive — crawlers take the first and discard the rest, so
        it never had any effect, and its text was mojibake ("faero â€”") from a
@@ -1102,18 +1103,7 @@
     }
 
     /* â•â• GLASSMORPHIC ICONS â€” background:inherit blur trick â•â• */
-    #desktop {
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      background-size: cover;
-      background-position: center;
-      background-image: url(https://i.redd.it/puzkje595kf81.jpg);
-    }
 
-    /* Override theme wallpaper layer to be transparent so desktop bg shows */
-    #wallpaper-layer {
-      display: none !important;
-    }
 
     .desktop-icon {
       transition: opacity 0.15s ease !important;
@@ -3328,11 +3318,11 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
         const profile = AeroStorage.getProfile();
         const menu = document.getElementById('start-menu');
         menu.innerHTML = `
-      <div class="start-menu-header">
+      <div class="start-menu-header" style="cursor:pointer" onclick="OS.openApp('faero');document.getElementById('start-menu').classList.remove('open')">
         <div class="start-av" style="background:${profile.avatarGrad}">${profile.avatarLetter}</div>
         <div>
-          <div class="start-username">${profile.displayName}</div>
-          <div class="start-tagline">${profile.handle}</div>
+          <div class="start-username">${profile.displayName === 'faero User' ? 'Sign in to faero' : profile.displayName}</div>
+          <div class="start-tagline">${profile.displayName === 'faero User' ? 'Click to open the app' : profile.handle}</div>
         </div>
       </div>
       <div class="start-menu-apps">
@@ -3352,7 +3342,9 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
           el.addEventListener('click', () => { openApp(el.dataset.smOpen); toggleStartMenu(); });
         });
         $('#sm-settings', menu)?.addEventListener('click', () => { openApp('settings'); toggleStartMenu(); });
-        $('#sm-shutdown', menu)?.addEventListener('click', () => { location.reload(); });
+        $('#sm-shutdown', menu)?.addEventListener('click', () => {
+          if (confirm('Restart faero OS?')) location.reload();
+        });
       };
 
       /* â”€â”€ CLOCK â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
@@ -3418,8 +3410,8 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
                 ts: Date.now()
               };
 
-              let aeronetWin = Object.values(windows).find(w => w.appId === 'aeronet');
-              const sendToAeronet = (win) => {
+              let faeroWin = Object.values(windows).find(w => w.appId === 'faero');
+              const sendToFaero = (win) => {
                 try {
                   win.el.querySelector('iframe').contentWindow.postMessage({
                     type: 'INCOMING_POST',
@@ -3428,14 +3420,14 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
                 } catch (e) { console.error("Post failed", e); }
               };
 
-              if (aeronetWin) {
-                sendToAeronet(aeronetWin);
-                focusWindow(aeronetWin.id);
+              if (faeroWin) {
+                sendToFaero(faeroWin);
+                focusWindow(faeroWin.id);
               } else {
-                openApp('aeronet');
+                openApp('faero');
                 setTimeout(() => {
-                  const newWin = Object.values(windows).find(w => w.appId === 'aeronet');
-                  if (newWin) sendToAeronet(newWin);
+                  const newWin = Object.values(windows).find(w => w.appId === 'faero');
+                  if (newWin) sendToFaero(newWin);
                 }, 1000);
               }
             }
@@ -3526,9 +3518,11 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
 
           if (e.target.closest('.desktop-icon') || e.target.closest('.os-window')) return;
           e.preventDefault();
+          const faeroOpen = Object.values(windows).some(w => w.appId === 'faero' && !w.minimized);
           showContextMenu(e.clientX, e.clientY, [
-            { label: 'Open faero', icon: '&#9670;', action: () => openApp('faero') },
-            { label: 'Open Settings', icon: '&#9881;', action: () => openApp('settings') },
+            ...(faeroOpen ? [] : [{ label: 'Open faero', icon: '&#9670;', action: () => openApp('faero') }]),
+            { label: 'Apps', icon: '&#9783;', action: () => toggleStartMenu() },
+            { label: 'Settings', icon: '&#9881;', action: () => openApp('settings') },
             'sep',
             { label: 'Change Wallpaper', icon: '&#9728;', action: () => openApp('settings') },
             { label: 'Change Theme', icon: '&#9674;', action: () => openApp('settings') },
@@ -3541,6 +3535,16 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
         buildDesktopIcons();
         buildStartMenu();
         startClock();
+
+        // Tray icons open Settings
+        document.getElementById('tray-vol')?.addEventListener('click', () => openApp('settings'));
+        document.querySelector('#sys-tray .tray-icon:not(#tray-vol)')?.addEventListener('click', () => openApp('settings'));
+
+        // First-visit hint — shown once, after faero finishes loading
+        if (!AeroStorage.get('hintSeen_v1', false)) {
+          AeroStorage.set('hintSeen_v1', true);
+          setTimeout(() => toast('Minimize faero any time to reach the desktop apps', '🖥️', 5000), 3500);
+        }
 
         // Init cursor
         const savedCursor = AeroStorage.get('cursorSet', 'default');
@@ -3752,7 +3756,7 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
       <h2 id="beta-title">faero</h2>
       <p id="beta-desc">A real internet social OS.<br>Your desktop, your world.<br>Glass, gradients and a future we all
         dreamed of.</p>
-      <a id="beta-link" href="https://faero.net/beta" target="_blank" rel="noopener">Request Access &rarr;</a>
+      <button id="beta-link" onclick="closeBetaPopup(); OS.openApp('faero');">Open faero &rarr;</button>
       <p id="beta-fine">Closed beta with limited spaces available</p>
     </div>
   </div>
@@ -3939,7 +3943,8 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
       font-family: 'Nunito', sans-serif;
       font-size: 13px;
       font-weight: 800;
-      text-decoration: none;
+      border: none;
+      cursor: pointer;
       letter-spacing: 0.5px;
       box-shadow: 0 5px 22px rgba(26, 120, 196, 0.52);
       transition: filter 0.15s, transform 0.15s;
