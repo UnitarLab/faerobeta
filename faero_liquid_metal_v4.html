@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -29,7 +29,7 @@
       position: fixed;
       inset: 0;
       z-index: 0;
-      background: url('https://i.redd.it/puzkje595kf81.jpg') center/cover no-repeat;
+      background: linear-gradient(135deg, #0a1628 0%, #1a2a4a 40%, #0d1f3c 100%);
     }
 
     #shadow-canvas {
@@ -208,7 +208,7 @@ float snoise(vec3 v){
     const bgSampleCtx = bgSampleCv.getContext('2d');
     const bgImg = new Image(); bgImg.crossOrigin = 'anonymous';
     bgImg.onload = () => { bgSampleCtx.drawImage(bgImg, 0, 0, 8, 8); sampleBgColors(); };
-    bgImg.src = 'https://i.redd.it/puzkje595kf81.jpg';
+    /* background image removed — no external CORS dependency */
     function sampleBgColors() {
       if (!bgReflectionCfg.enabled) return;
       try {
