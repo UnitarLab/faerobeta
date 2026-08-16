@@ -2027,6 +2027,30 @@ body::after {
 .dm-empty-title { font: 700 15px var(--font-body); color: var(--text2); }
 .dm-empty-sub   { font: 400 12.5px var(--font-body); color: var(--text3); }
 
+/* ── DM shell mobile layout ── */
+@media (max-width: 860px) {
+  .dm-shell {
+    grid-template-columns: 1fr;
+    height: calc(100dvh - 64px - 36px - 60px); /* subtract mobile bottom nav */
+    min-height: 0;
+    border-radius: 12px;
+  }
+  /* sidebar fills full width; thread overlays on top when a convo is selected */
+  .dm-thread {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    transform: translateX(100%);
+    transition: transform 0.26s cubic-bezier(.4,0,.2,1);
+    border-radius: 12px;
+  }
+  .dm-shell.dm-thread-open .dm-thread {
+    transform: translateX(0);
+  }
+  /* back button visible on mobile */
+  .dm-thread-back { display: flex !important; }
+}
+
 /* full-bleed variants: wider cap, but still capped — `max-width:none`
    here is what let these pages stretch edge-to-edge on large displays */
 .page-wrap.snaps-expanded,
@@ -3129,7 +3153,7 @@ body::after {
 }
 .reply-av img { width:100%; height:100%; object-fit:cover; }
 .reply-main { flex:1; min-width:0; }
-.reply-head { display:flex; align-items:baseline; gap:6px; flex-wrap:wrap; }
+.reply-head { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
 .reply-name   { font-size:12.5px; font-weight:700; color:var(--text); }
 .reply-handle { font-size:11.5px; color:var(--text3); }
 .reply-time   { font-size:11.5px; color:var(--text3); }
@@ -3310,12 +3334,13 @@ body::after {
   color:#fff; font-family:inherit; font-size:12px; font-weight:700; cursor:pointer;
 }
 #faero-rls-warning .rlsw-btn:hover { background:rgba(255,255,255,.26); }
-body.has-rls-warning .topbar { top:auto; }
+body.has-rls-warning .topbar { top:72px; }
 body.has-rls-warning { padding-top:72px; }
 @media (max-width: 700px) {
   #faero-rls-warning .rlsw-inner { flex-wrap:wrap; gap:9px; }
   #faero-rls-warning .rlsw-btn { width:100%; }
   body.has-rls-warning { padding-top:132px; }
+  body.has-rls-warning .topbar { top:132px; }
 }
 
 /* ── offline banner ─────────────────────────────────────────── */
@@ -3470,6 +3495,7 @@ body.has-rls-warning { padding-top:72px; }
   .post-foot .pact { padding:7px 9px; font-size:12.5px; }   /* bigger tap targets */
   .feed-state { padding:34px 16px; }
   .reply-composer { flex-direction:column; align-items:stretch; }
+  .reply-composer-av { display:none; }
   .reply-send { width:100%; }
 }
 
@@ -4241,6 +4267,10 @@ body.has-rls-warning { padding-top:72px; }
 }
 .gc-detail-post-btn:hover { opacity: 0.86; }
 .gc-detail-post-btn:disabled { opacity: 0.45; cursor: default; }
+@media (max-width: 480px) {
+  .gc-detail-composer { flex-direction: column; }
+  .gc-composer-av { display: none; }
+}
 
 /* ── post rows with vote gutter (reddit style) ── */
 .gc-detail-posts { display: flex; flex-direction: column; gap: 9px; }
@@ -5495,7 +5525,7 @@ body.has-rls-warning { padding-top:72px; }
 
 <!-- ════ PAGE: CHAT ════ -->
 <div class="page" id="page-chat">
-  <div class="dm-shell">
+  <div class="dm-shell" id="dm-shell">
 
     <!-- ── Sidebar: conversation list ── -->
     <div class="dm-sidebar">
@@ -5527,13 +5557,16 @@ body.has-rls-warning { padding-top:72px; }
 
       <!-- Thread header -->
       <div class="dm-thread-head">
+        <button class="dm-thread-btn dm-thread-back" aria-label="Back to conversations" style="display:none" onclick="document.getElementById('dm-shell').classList.remove('dm-thread-open')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
         <div class="dm-thread-av" id="dm-thread-av" style="background:linear-gradient(135deg,#1565C0,#64B5F6)">F</div>
         <div class="dm-thread-info">
           <div class="dm-thread-name" id="dm-thread-name">Fern Studio</div>
           <div class="dm-thread-status" id="dm-thread-status">online</div>
         </div>
         <div class="dm-thread-actions">
-          <button class="dm-thread-btn" title="View profile" onclick="(()=>{const o=DM_CONVO_CACHE[dmActiveConvo]?.other_profile;if(o?.id){PF_VIEWING=o.id;navigate('profile');}})()">
+          <button class="dm-thread-btn" aria-label="View profile" title="View profile" onclick="(()=>{const o=DM_CONVO_CACHE[dmActiveConvo]?.other_profile;if(o?.id){PF_VIEWING=o.id;navigate('profile');}})()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
             </svg>
@@ -7254,6 +7287,7 @@ function dmBubbleHTML(msg, otherProfile) {
 async function dmOpen(el, convoId) {
   document.querySelectorAll('.dm-convo-item').forEach(i => i.classList.remove('active'));
   el.classList.add('active');
+  document.getElementById('dm-shell')?.classList.add('dm-thread-open');
   el.querySelector('.dm-convo-badge')?.remove();
   dmSyncMsgBadge();
   dmActiveConvo = convoId;
@@ -9467,9 +9501,11 @@ async function faeroUndoRepost(originalId, el) {
 
 function faeroOpenQuoteComposer(postId) {
   const body = faeroOpenSheet('Quote this post', `
-    <textarea id="quote-input" class="reply-input" rows="4" maxlength="5000"
-              style="width:100%" placeholder="Add your thoughts…"
-              oninput="faeroAutogrow(this)"></textarea>
+    <div class="reply-composer" style="margin-bottom:10px">
+      <textarea id="quote-input" class="reply-input" rows="4" maxlength="5000"
+                placeholder="Add your thoughts…"
+                oninput="faeroAutogrow(this)"></textarea>
+    </div>
     <div id="quote-preview" class="fs-note" style="margin-top:10px">Loading the post…</div>
     <div class="gc-create-err" id="quote-err" role="alert"></div>
     <button class="fam-submit" id="quote-btn" onclick="faeroSubmitQuote('${faeroEsc(postId)}')">Post quote</button>`);
