@@ -11019,7 +11019,7 @@ function gcRenderAestheticPills() {
     const style = isAll ? '' : `style="--gfp-c1:${a.c1};--gfp-c2:${a.c2}"`;
     const badge = a.img
       ? `<span class="gfp-img"><img src="${faeroSafeUrl(a.img)}" alt="" loading="lazy" decoding="async"
-           onerror="this.parentNode.outerHTML='<span class=\\'gfp-emoji\\'>${a.emoji}</span>'"></span>`
+           onerror="var pn=this.parentNode;if(pn){var s=document.createElement('span');s.className='gfp-emoji';s.textContent='${a.emoji}';pn.replaceWith(s);}"></span>`
       : `<span class="gfp-emoji">${a.emoji}</span>`;
     return `<button class="gc-fpill${isActive ? ' active' : ''}" data-aest="${a.id}" ${style} onclick="gcTagPill(this)">
       ${badge}
@@ -11150,7 +11150,7 @@ function gcIconHTML(g, cls, c1, c2) {
   if (!url) return `<div class="${cls}" style="background:${grad}">${icon}</div>`;
   return `<div class="${cls} has-img" style="background:${grad}">
     <img src="${faeroSafeUrl(url)}" alt="" loading="lazy" decoding="async"
-         onerror="this.remove();this.parentNode.classList.remove('has-img')">
+         onerror="var p=this.parentNode;this.remove();p&&p.classList.remove('has-img')">
     <span class="gc-icon-fallback">${icon}</span>
   </div>`;
 }
