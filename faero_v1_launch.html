@@ -2100,6 +2100,10 @@ body::after {
 
 /* Profile card av - bigger */
 .av-wrap.size-80 { width: 80px; height: 80px; }
+/* Profile page avatar gets a solid white ring to pop off the banner */
+.pf-av-col .av-wrap.size-80 {
+  box-shadow: 0 0 0 4px #fff, 0 4px 20px rgba(0,0,0,0.25);
+}
 .av-wrap.size-80 .av-badge-corner { width: 26px; height: 26px; font-size: 12px; bottom: -5px; right: -5px; }
 .av-wrap.size-80 .av-canvas-wrap { width: 80px; height: 80px; }
 .av-wrap.size-60 { width: 60px; height: 60px; }
@@ -4441,15 +4445,12 @@ body.has-rls-warning { padding-top:72px; }
   content: ''; position: absolute; inset: 0;
   background: repeating-linear-gradient(45deg, transparent, transparent 14px, rgba(255,255,255,0.04) 14px, rgba(255,255,255,0.04) 15px);
 }
-.pf-banner img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
-.pf-banner-edit-btn {
-  position: absolute; bottom: 10px; right: 12px; z-index: 2;
-  padding: 5px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.35);
-  background: rgba(0,0,0,0.28); color: rgba(255,255,255,0.85);
-  font-family: inherit; font-size: 11px; font-weight: 600; cursor: pointer;
-  backdrop-filter: blur(6px); transition: all 0.15s;
+.pf-banner::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.38) 100%);
+  pointer-events: none;
 }
-.pf-banner-edit-btn:hover { background: rgba(0,0,0,0.45); }
+.pf-banner img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
 
 .pf-header {
   display: flex; align-items: flex-end; gap: 16px;
@@ -4469,15 +4470,20 @@ body.has-rls-warning { padding-top:72px; }
 .pf-header-info { flex: 1; min-width: 0; padding-bottom: 4px; }
 .pf-name {
   font-family: 'Lora', serif; font-size: 22px; font-weight: 700;
-  color: var(--text); line-height: 1.15; margin-bottom: 3px;
+  color: #fff; line-height: 1.15; margin-bottom: 3px;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.55), 0 0 20px rgba(0,0,0,0.3);
 }
 .pf-handle-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 5px; }
-.pf-handle { font-size: 12px; color: var(--text3); font-family: 'Space Mono', monospace; }
-.pf-pronouns {
-  font-size: 10.5px; color: var(--leaf3); background: rgba(21,101,192,0.1);
-  border: 1px solid var(--border); border-radius: 8px; padding: 1px 7px;
+.pf-handle {
+  font-size: 12px; color: rgba(255,255,255,0.82); font-family: 'Space Mono', monospace;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.45);
 }
-.pf-joined { font-size: 10.5px; color: var(--text3); }
+.pf-pronouns {
+  font-size: 10.5px; color: #fff; background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.35); border-radius: 8px; padding: 1px 7px;
+  text-shadow: none;
+}
+.pf-joined { font-size: 10.5px; color: rgba(255,255,255,0.75); text-shadow: 0 1px 4px rgba(0,0,0,0.4); }
 
 .pf-status-line {
   display: flex; align-items: center; gap: 6px;
@@ -5786,7 +5792,6 @@ body.has-rls-warning { padding-top:72px; }
   <!-- BANNER — spans all 3 grid columns -->
   <div class="pf-banner-section">
     <div class="pf-banner" id="pf-banner">
-      <button class="pf-banner-edit-btn" id="pf-banner-edit-btn" style="display:none" onclick="tupEditProfile()">Edit Profile</button>
     </div>
     <div class="pf-header">
       <div class="pf-av-col">
@@ -8889,10 +8894,6 @@ function epApplyToUI() {
   const pfViews = pfEl('pf-views');
   if (pfViews) pfViews.textContent = p.profile_views ? `${num(p.profile_views)} views` : '';
 
-  // edit button visibility
-  const pfEditBtn = pfEl('pf-banner-edit-btn');
-  if (pfEditBtn) pfEditBtn.style.display = FAERO_USER?.id === p.id ? '' : 'none';
-
   // action buttons — re-render for own profile
   pfRenderActions(p);
 
@@ -10327,8 +10328,6 @@ function pfRenderHeader(p) {
       img.src = p.banner_url;
       banner.insertBefore(img, banner.firstChild);
     }
-    const editBtn = document.getElementById('pf-banner-edit-btn');
-    if (editBtn) editBtn.style.display = FAERO_USER?.id === p.id ? '' : 'none';
   }
 
   // avatar
