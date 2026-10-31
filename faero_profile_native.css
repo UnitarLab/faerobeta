@@ -61,7 +61,7 @@
 }
 
 .profile-native__yt-now {
-  font: 800 8px 'Space Mono', monospace;
+  font: 800 8px var(--font-body);
   letter-spacing: 1.6px;
   text-transform: uppercase;
   color: rgba(255,255,255,.64);
@@ -81,7 +81,7 @@
 
 .profile-native__yt-status {
   margin-top: 8px;
-  font: 700 9px 'Space Mono', monospace;
+  font: 700 9px var(--font-body);
   letter-spacing: 1px;
   text-transform: uppercase;
   color: rgba(255,255,255,.62);
@@ -105,7 +105,7 @@
   margin-top: 5px;
   display: flex;
   justify-content: space-between;
-  font: 400 9px 'Space Mono', monospace;
+  font: 400 9px var(--font-body);
   color: rgba(255,255,255,.62);
 }
 
@@ -319,7 +319,7 @@
 }
 
 .profile-native__music-brand {
-  font: 900 36px/1 'Lora', Georgia, serif;
+  font: 900 36px/1 var(--font-body);
   letter-spacing: -1.5px;
   color: var(--leaf);
   text-transform: lowercase;
@@ -369,7 +369,7 @@
   border-bottom: 1px solid var(--border);
   border-radius: 14px 14px 0 0;
   color: #fff;
-  font: 700 10px 'Space Mono', monospace;
+  font: 700 10px var(--font-body);
   letter-spacing: 1.2px;
   text-transform: uppercase;
 }
@@ -381,7 +381,7 @@
 }
 
 .profile-native__music-name {
-  font: 700 20px/1.15 'Lora', Georgia, serif;
+  font: 700 20px/1.15 var(--font-body);
   color: var(--text);
   letter-spacing: -0.3px;
 }
@@ -438,7 +438,7 @@
 .profile-native__music-row-label {
   background: var(--bg2);
   color: var(--text3);
-  font: 700 9px 'Space Mono', monospace;
+  font: 700 9px var(--font-body);
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
@@ -473,7 +473,7 @@
   left: 10px;
   bottom: 10px;
   color: #fff;
-  font: 900 26px/1 'Lora', Georgia, serif;
+  font: 900 26px/1 var(--font-body);
   letter-spacing: -1px;
   text-transform: lowercase;
 }
@@ -545,13 +545,13 @@
 
 .profile-native__music-row-artist {
   margin-top: 2px;
-  font: 400 11px 'Space Mono', monospace;
+  font: 400 11px var(--font-body);
   color: var(--text3);
 }
 
 .profile-native__music-row-plays {
   flex-shrink: 0;
-  font: 700 10px 'Space Mono', monospace;
+  font: 700 10px var(--font-body);
   color: var(--text3);
 }
 
@@ -559,7 +559,7 @@
   display: flex;
   gap: 8px;
   padding: 8px 2px 0;
-  font: 400 11px 'Space Mono', monospace;
+  font: 400 11px var(--font-body);
   color: var(--text3);
   text-transform: lowercase;
 }

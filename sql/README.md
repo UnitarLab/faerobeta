@@ -208,6 +208,18 @@ your email isn't confirmed yet.
 
 ---
 
+## Step 5 — profile spaces (block layouts)
+
+Run **`09_profile_space.sql`**. It adds `profiles.space`, where each person's
+block layout is saved, and a trigger that caps its size and shape. It adds no
+policy: the existing "owner updates" rule already decides who can write it.
+
+Until it runs, the app still works. People can build their space, but it is
+saved only in their own browser and visitors see a default layout. The app
+tells them so when they press Save.
+
+---
+
 ## What file 01 actually does
 
 | Section | Fixes |

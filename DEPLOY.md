@@ -44,6 +44,8 @@ type the filename.
 faero_v1_launch.html        the app itself
 faero_profile_native.css    styles it depends on
 faero_profile_native.js     scripts it depends on  ← easy to forget, hard 404
+faero_space.css             profile blocks, Radio, Booth, player
+faero_space.js              same — loaded by a <script> tag, also a hard 404
 sw.js                       offline support
 manifest.webmanifest        install-to-homescreen
 icons/                      the whole folder
@@ -51,16 +53,12 @@ og-card.jpg                 link preview image
 TERMS_OF_SERVICE.md
 PRIVACY_POLICY.md
 
-index.html                  the faero OS desktop — this is the site root
-apps/                       OS apps (each opens in an iframe window)
+index.html                  redirects / to the app (the desktop is retired)
+apps/photobooth.html        the camera, shown on the Booth page
 
-  NOTE: css/ and js/ are ORPHANED. index.html inlines its own CSS and its own
-  copy of the OS engine, and loads nothing from either directory — verified by
-  grepping index.html for src="js/ and href="css/, which return no matches.
-  js/os.js still holds a stale second copy of the app registry that has already
-  drifted from the live one (it lists settings, ps1 and tv, which the live
-  registry does not). Editing it looks like it should work and does nothing.
-  Worth deleting or re-wiring, but that is a refactor, not a deploy step.
+  The other files in apps/ (games, radio, painter, tv, emulator, notepad, chat, …) and the
+  css/ and js/ folders belonged to the faero OS desktop. Nothing links to them
+  any more, so leave them off the server.
 
 vercel.json                 headers                 (Vercel only)
 _headers                    headers                 (Netlify / Cloudflare)
@@ -73,35 +71,26 @@ the list literally shipped a 404 and a half-dead app.
 The host config files are not optional. Without them you lose the entire
 security-header set.
 
-### How the two shells relate
+### One site, one shell
 
-This repo serves **two** top-level pages, and the distinction matters:
+Faero used to be two pages: the faero OS desktop at `/` and the social app at
+`/faero_v1_launch.html`, which the desktop opened in a window. The desktop is
+gone. `/` (`index.html`) now redirects to `/faero_v1_launch.html`, and Radio
+and Booth are pages inside the app (`#/radio`, `#/booth`).
 
-| URL | Page |
-|---|---|
-| `/` | The faero OS desktop (`index.html`) |
-| `/faero_v1_launch.html` | The social app, standalone |
+⚠️ **Keep the app at `/faero_v1_launch.html`.** Its Supabase auth redirect
+URLs, PWA `start_url` and legal links are all registered against that path,
+and Supabase matches redirect URLs exactly — moving or renaming it breaks
+password reset and email confirmation. That is also why the root is a
+redirect page and not a host rewrite.
 
-The social app is *both* a window inside the OS (the `faero` icon opens it in
-an iframe) and its own page. That is deliberate — its Supabase auth redirect
-URLs, PWA `start_url` and legal links are all registered against
-`/faero_v1_launch.html`.
-
-⚠️ **There is no root rewrite here, and there must not be one.** The
-standalone-app repo rewrote `/` to `faero_v1_launch.html` because it had no
-`index.html`. Here `/` is the OS's own page; that rewrite would replace the
-desktop with the social app. The `_redirects` file carrying it was removed
-during the integration.
-
-⚠️ **Do not move the app under `apps/`.** It looks tidier next to the other OS
-apps, but relocating it changes its URL, and Supabase matches auth redirect
-URLs exactly — password reset and email confirmation would break. The OS app
-registry points at the root path on purpose.
+⚠️ **Do not move the app under `apps/`.** Same reason: it changes the URL.
 
 ⚠️ **Frame headers must stay `SAMEORIGIN` / `frame-ancestors 'self'`.** The
 standalone repo used `DENY` / `'none'`. Those block *same-origin* framing too,
-so adopting them would stop the OS from opening the app at all — while looking
-like a straightforward security improvement.
+so adopting them would stop the app from opening its Booth camera, which is
+a same-origin iframe — while looking like a straightforward
+security improvement.
 
 ⚠️ **Do not turn `cleanUrls` back on in `vercel.json`.** The comment at the top
 of that file explains what it broke; the short version is that stripping `.html`

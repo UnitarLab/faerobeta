@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Disposable Cam</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <title>Booth — Faero</title>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
@@ -450,19 +450,78 @@
             pointer-events: none;
             z-index: 5
         }
+
+        /* ── Faero skin ────────────────────────────────────────────────
+           The app's own look: Exo 2, glass panels, bg2 header strips,
+           glossy blue buttons. Overrides the old pink theme only. */
+        :root { --accent:#1565C0; --text:#0D1B2A; --text2:#1A3A5C; --bg:#E3F2FD; --panel:rgba(240,248,255,.92);
+                --leaf:#1565C0; --leaf3:#64B5F6; --bg2:#BBDEFB; --border:#90CAF9; --text3:#4A7FA5; --sun:#00BCD4; --sun2:#80DEEA }
+        body { font-family:'Exo 2',sans-serif; background:linear-gradient(180deg,#E3F2FD,#BBDEFB); color:var(--text) }
+        .toolbar { height:48px; color:#fff; border-bottom:0;
+          background:radial-gradient(circle at 18% 0%,rgba(255,255,255,.22),transparent 28%),linear-gradient(180deg,rgba(16,103,181,.96),rgba(9,82,160,.98));
+          box-shadow:0 6px 18px rgba(21,101,192,.22), inset 0 1px 0 rgba(255,255,255,.22) }
+        .toolbar-title { font-weight:800; font-size:15px; background:none; -webkit-text-fill-color:#fff; color:#fff; letter-spacing:.5px }
+        .tb-btn { height:28px; padding:0 15px; border-radius:999px; font-weight:700; font-size:11.5px; color:#0d5a9a; text-shadow:0 1px 0 rgba(255,255,255,.9);
+          border:1px solid rgba(255,255,255,.62); background:linear-gradient(180deg,rgba(255,255,255,.85) 0%,rgba(210,240,255,.55) 52%,rgba(255,255,255,.2) 100%);
+          box-shadow:inset 0 1px 0 rgba(255,255,255,.46) }
+        .tb-btn:hover { background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(200,235,255,.75)) }
+        .tb-btn.on, .tb-btn.tb-post { color:#f7fcff; text-shadow:0 1px 0 rgba(5,44,86,.45); border-color:rgba(185,231,255,.85);
+          background:linear-gradient(180deg,rgba(38,131,220,.96) 0%,rgba(24,102,188,.92) 54%,rgba(15,80,160,.94) 100%);
+          box-shadow:inset 0 1px 0 rgba(255,255,255,.34), 0 4px 10px rgba(5,44,86,.25) }
+        .ctrl-panel { background:var(--panel); border-right:1px solid var(--border); color:var(--text); backdrop-filter:blur(14px) }
+        .ctrl-panel::-webkit-scrollbar-thumb { background:var(--leaf3) }
+        .ctrl-label { margin:0 -12px 10px; padding:8px 12px; background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+          color:var(--text3); font-size:10px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase }
+        .grid-opt, .frame-opt, .font-btn, .sticker { background:rgba(255,255,255,.75); border:1px solid var(--border); color:var(--text2); border-radius:10px }
+        .grid-opt.on, .frame-opt.on, .font-btn.on { border-color:var(--leaf); background:var(--bg2); color:var(--leaf); box-shadow:0 0 0 2px rgba(100,181,246,.45) }
+        .grid-preview, .grid-preview * { border-color:var(--leaf3) }
+        .filter-item { color:var(--text2); border-radius:10px }
+        .filter-item:hover { background:var(--bg2); color:var(--leaf) }
+        .filter-item.on { background:linear-gradient(90deg,rgba(21,101,192,.12),transparent); border-left:3px solid var(--leaf3) }
+        .filter-name, .filter-item.on .filter-name { color:inherit }
+        .filter-item.on .filter-name { color:var(--leaf); font-weight:700 }
+        .slider-row label { color:var(--text3) }
+        .slider-row input { accent-color:var(--leaf) }
+        .main-area { background:transparent }
+        .camera-container { border:1px solid var(--border); border-radius:16px; box-shadow:0 4px 24px rgba(21,101,192,.18); background:#0D1B2A }
+        .photo-strip { background:var(--panel); border-top:1px solid var(--border) }
+        .strip-slot { border:1px solid var(--border); background:var(--bg2); border-radius:8px }
+        .strip-slot.active { border-color:var(--leaf); box-shadow:0 0 0 2px rgba(100,181,246,.5) }
+        .action-bar { background:var(--panel); border-top:1px solid var(--border) }
+        .capture-btn { border:3px solid rgba(255,255,255,.8);
+          background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.85) 0 9%,rgba(255,255,255,0) 34%),linear-gradient(180deg,#42A5F5 0%,#1976D2 55%,#0D47A1 100%);
+          box-shadow:0 6px 18px rgba(21,101,192,.4), inset 0 -4px 8px rgba(0,0,0,.18) }
+        .capture-btn:hover { transform:scale(1.05) }
+        .capture-btn:active { transform:scale(.95) }
+        .action-btn { font-family:inherit; font-weight:700; font-size:12px; border-radius:14px; white-space:nowrap }
+        .action-btn.primary { color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.2); border:1px solid rgba(185,231,255,.85);
+          background:linear-gradient(180deg,rgba(38,131,220,.96) 0%,rgba(24,102,188,.92) 54%,rgba(15,80,160,.94) 100%);
+          box-shadow:inset 0 1px 0 rgba(255,255,255,.34), 0 6px 14px rgba(20,104,191,.22) }
+        .action-btn.primary:hover { filter:brightness(1.06) }
+        .action-btn.secondary { color:var(--leaf); border:1.5px solid rgba(144,202,249,.7);
+          background:linear-gradient(135deg,rgba(240,248,255,.75),rgba(187,222,251,.5));
+          box-shadow:2px 6px 10px rgba(21,101,192,.1), inset 0 -3px 0 rgba(144,202,249,.4), inset 0 1px 0 rgba(255,255,255,.5) }
+        .action-btn.secondary:hover { background:linear-gradient(135deg,rgba(240,248,255,.9),rgba(187,222,251,.7)) }
+        .action-btn.rec { color:#fff; background:#e53935; border-color:#e53935 }
+        .strip-empty { font-size:11px; color:var(--text3); flex-shrink:0 }
+        .countdown { position:absolute; inset:0; z-index:9; display:grid; place-items:center; pointer-events:none;
+          font:800 120px/1 'Exo 2',sans-serif; color:#fff; text-shadow:0 4px 24px rgba(13,27,42,.6) }
+        .countdown[hidden] { display:none }
+        .flash { position:absolute; inset:0; background:#fff; opacity:.85; pointer-events:none; z-index:10; animation:flashAnim .22s forwards }
+        @keyframes flashAnim { to { opacity:0 } }
+        .capture-btn:disabled { opacity:.5; cursor:default }
+        @media (hover:none) { .strip-slot .strip-slot-del { display:flex } }
     </style>
 </head>
 
 <body>
     <div class="toolbar">
         <span style="font-size:22px">&#128247;</span>
-        <div class="toolbar-title">Disposable Cam</div>
-        <button class="tb-btn on" id="photoModeBtn">Photo</button>
-        <button class="tb-btn" id="videoModeBtn">Video</button>
-        <button class="tb-btn" id="startCamBtn">Start Camera</button>
+        <div class="toolbar-title">Booth</div>
+        <button class="tb-btn on" id="startCamBtn">Start camera</button>
         <span style="flex:1"></span>
-        <button class="tb-btn" id="saveAllBtn">Save All to My Docs</button>
-        <button class="tb-btn" id="postAllBtn">Post to AeroNet</button>
+        <button class="tb-btn" id="saveAllBtn">Download all</button>
+        <button class="tb-btn tb-post" id="postAllBtn">Post selected</button>
     </div>
 
     <div class="layout">
@@ -485,7 +544,7 @@
                             <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
                             <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
                         </div>
-                        1x4 H
+                        Strip of 4
                     </div>
                     <div class="grid-opt" data-grid="1x4v">
                         <div class="grid-preview" style="grid-template-columns:1fr;grid-template-rows:repeat(4,1fr)">
@@ -494,7 +553,7 @@
                             <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
                             <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
                         </div>
-                        1x4 V
+                        Tall strip
                     </div>
                     <div class="grid-opt" data-grid="2x2">
                         <div class="grid-preview" style="grid-template-columns:1fr 1fr">
@@ -503,7 +562,7 @@
                             <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
                             <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
                         </div>
-                        2x2
+                        Grid of 4
                     </div>
                     <div class="grid-opt" data-grid="2x4">
                         <div class="grid-preview" style="grid-template-columns:1fr 1fr">
@@ -516,7 +575,7 @@
                             <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
                             <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
                         </div>
-                        2x4
+                        2 × 4
                     </div>
                     <div class="grid-opt" data-grid="4x2">
                         <div class="grid-preview" style="grid-template-columns:repeat(4,1fr)">
@@ -529,7 +588,7 @@
                             <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
                             <div style="background:rgba(255,255,255,0.2);border-radius:2px"></div>
                         </div>
-                        4x2
+                        4 × 2
                     </div>
                 </div>
             </div>
@@ -583,7 +642,7 @@
             </div>
             <!-- Stickers -->
             <div class="ctrl-section">
-                <div class="ctrl-label">Stickers / Overlays</div>
+                <div class="ctrl-label">Stickers</div>
                 <div class="sticker-grid" id="stickerGrid">
                     <span class="sticker" data-sticker="&#9733;">&#9733;</span>
                     <span class="sticker" data-sticker="&#9829;">&#9829;</span>
@@ -596,12 +655,13 @@
                     <span class="sticker" data-sticker="&#9836;">&#9836;</span>
                     <span class="sticker" data-sticker="&#128100;">&#128100;</span>
                 </div>
+                <button class="font-btn" id="clearStickers" style="margin-top:8px">Clear stickers</button>
             </div>
             <!-- Font overlays -->
             <div class="ctrl-section">
                 <div class="ctrl-label">Text Overlay</div>
-                <div style="margin-bottom:6px"><input id="textOverlay" placeholder="Add text..."
-                        style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:6px 10px;font-family:inherit;font-size:12px;color:#fff;outline:none">
+                <div style="margin-bottom:6px"><input id="textOverlay" placeholder="Add text…" maxlength="60"
+                        style="width:100%;background:#fff;border:1px solid var(--border);border-radius:10px;padding:7px 10px;font-family:inherit;font-size:12.5px;color:var(--text);outline:none">
                 </div>
                 <div class="font-btns" id="fontBtns">
                     <button class="font-btn on" data-font="Comic Sans MS,cursive">Comic Sans</button>
@@ -630,7 +690,7 @@
                             style="font-size:11px;color:var(--text2)">Show date stamp</span>
                     </label>
                 </div>
-                <div style="font-size:9px;color:rgba(255,255,255,0.3);margin-top:4px">e.g. 04/02/2001</div>
+                <div style="font-size:10px;color:var(--text3);margin-top:4px">Orange film date, 25 years back</div>
             </div>
         </div>
 
@@ -639,298 +699,358 @@
             <div class="camera-container" id="camContainer">
                 <video id="videoEl" autoplay playsinline muted></video>
                 <canvas id="previewCanvas"></canvas>
-                <div class="date-stamp" id="dateStamp" style="display:none">04/02/2001</div>
-                <div id="stickerLayer"
-                    style="position:absolute;inset:0;pointer-events:none;z-index:4;font-size:24px;display:flex;flex-wrap:wrap;align-items:flex-start;padding:8px;gap:4px">
-                </div>
+                <div class="countdown" id="countdown" hidden></div>
             </div>
             <!-- Photo strip -->
             <div class="photo-strip" id="photoStrip">
-                <div style="font-size:10px;color:rgba(255,255,255,0.3);flex-shrink:0">Photos will appear here</div>
+                <div class="strip-empty">Your photos show up here. Tap one to pick it.</div>
             </div>
             <!-- Actions -->
             <div class="action-bar">
-                <button class="capture-btn" id="captureBtn" title="Take Photo">&#128247;</button>
+                <button class="capture-btn" id="captureBtn" title="Take a photo (space bar)" aria-label="Take a photo">&#128247;</button>
                 <button class="action-btn secondary" id="flipBtn">Flip Camera</button>
-                <button class="action-btn secondary" id="recordBtn">&#9673; Record</button>
+                <button class="action-btn secondary" id="recordBtn">&#9679; Record</button>
                 <span style="flex:1"></span>
-                <button class="action-btn primary" id="saveOneBtn">Save Photo</button>
-                <button class="action-btn primary" id="postOneBtn">Post to AeroNet</button>
+                <button class="action-btn secondary" id="saveOneBtn">Download</button>
+                <button class="action-btn primary" id="postOneBtn">Post to Faero</button>
             </div>
         </div>
     </div>
 
     <script>
-        let stream = null; let facing = 'user'; let isRecording = false; let mediaRecorder = null; let recordedChunks = [];
-        let capturedPhotos = []; let currentFilter = 'none'; let currentFrame = 'none'; let currentFont = 'Comic Sans MS,cursive';
-        let currentGrid = 'single'; let grainAmt = 0; let pixelAmt = 1; let expAmt = 0; let showDate = false;
-        let overlayText = ''; let overlayStickers = [];
-        const video = document.getElementById('videoEl');
-        const canvas = document.getElementById('previewCanvas');
+        /* Booth — Faero's camera.
+           One drawing loop, started and stopped with the camera. Filters run
+           on the GPU through ctx.filter where the browser has it, with a
+           per-pixel fallback only for the looks that need it. Stickers,
+           text and the date are drawn into the picture, so what you see is
+           what you save. Photos are JPEG blobs, not PNG data URLs. */
+        const $ = id => document.getElementById(id);
+        const toast = text => parent.postMessage({ type: 'TOAST', text }, location.origin);
+        const video = $('videoEl'), canvas = $('previewCanvas');
         const ctx = canvas.getContext('2d');
 
-        // Grid opts
-        document.getElementById('gridOpts').addEventListener('click', e => {
-            const opt = e.target.closest('[data-grid]');
-            if (!opt) return;
-            document.querySelectorAll('.grid-opt').forEach(o => o.classList.remove('on'));
-            opt.classList.add('on');
-            currentGrid = opt.dataset.grid;
-            if (currentGrid !== 'single' && capturedPhotos.length > 0) renderGrid();
-        });
+        let stream = null, facing = 'user', loopId = 0, resumeOnShow = false;
+        let rec = null, recChunks = [], micStream = null;
+        let photos = [];          // { blob, url }
+        let selected = -1;
+        let currentFilter = 'none', currentFrame = 'none', currentFont = 'Comic Sans MS,cursive', currentGrid = 'single';
+        let grainAmt = 0, pixelAmt = 1, expAmt = 0, showDate = false, overlayText = '', stickers = [];
+        let busy = false;         // a strip countdown is running
 
-        // Filters
-        document.getElementById('filterList').addEventListener('click', e => {
-            const item = e.target.closest('[data-filter]');
-            if (!item) return;
-            document.querySelectorAll('.filter-item').forEach(i => i.classList.remove('on'));
-            item.classList.add('on');
-            currentFilter = item.dataset.filter;
-            document.querySelectorAll('.slider-row').forEach(r => {
-                if (currentFilter === 'grain') document.getElementById('grainSlider').value = 60;
-                if (currentFilter === 'pixelate') document.getElementById('pixelSlider').value = 8;
-                if (currentFilter === 'disposable') { document.getElementById('grainSlider').value = 40; document.getElementById('expSlider').value = 30; }
-            });
-        });
+        // ctx.filter: Chrome, Edge, Firefox, Safari 18+. Older Safari falls back.
+        const GPU = (() => { ctx.filter = 'blur(1px)'; const ok = ctx.filter === 'blur(1px)'; ctx.filter = 'none'; return ok; })();
 
-        // Frame opts
-        document.getElementById('frameOpts').addEventListener('click', e => {
-            const opt = e.target.closest('[data-frame]');
-            if (!opt) return;
-            document.querySelectorAll('.frame-opt').forEach(o => o.classList.remove('on'));
-            opt.classList.add('on');
-            currentFrame = opt.dataset.frame;
-        });
+        const GRIDS = { single: { c: 1, r: 1, n: 1 }, '1x4h': { c: 4, r: 1, n: 4 }, '1x4v': { c: 1, r: 4, n: 4 }, '2x2': { c: 2, r: 2, n: 4 }, '2x4': { c: 2, r: 4, n: 8 }, '4x2': { c: 4, r: 2, n: 8 } };
 
-        // Font btns
-        document.getElementById('fontBtns').addEventListener('click', e => {
-            const btn = e.target.closest('[data-font]');
-            if (!btn) return;
-            document.querySelectorAll('.font-btn').forEach(b => b.classList.remove('on'));
-            btn.classList.add('on');
-            currentFont = btn.dataset.font;
+        /* ── controls ── */
+        const pick = (wrap, attr, set) => $(wrap).addEventListener('click', e => {
+            const el = e.target.closest(`[${attr}]`);
+            if (!el) return;
+            $(wrap).querySelectorAll(`[${attr}]`).forEach(o => o.classList.toggle('on', o === el));
+            set(el.getAttribute(attr));
+            if (!stream) drawIdle();
         });
-
-        // Stickers
-        document.getElementById('stickerGrid').addEventListener('click', e => {
+        pick('gridOpts', 'data-grid', v => { currentGrid = v; $('captureBtn').title = v === 'single' ? 'Take a photo (space bar)' : `Take a ${GRIDS[v].n}-shot strip (space bar)`; });
+        pick('filterList', 'data-filter', v => {
+            currentFilter = v;
+            if (v === 'grain') setSlider('grainSlider', 60);
+            if (v === 'pixelate') setSlider('pixelSlider', 8);
+            if (v === 'disposable') { setSlider('grainSlider', 35); setSlider('expSlider', 15); }
+        });
+        pick('frameOpts', 'data-frame', v => currentFrame = v);
+        pick('fontBtns', 'data-font', v => currentFont = v);
+        function setSlider(id, v) { $(id).value = v; $(id).dispatchEvent(new Event('input')); }
+        $('grainSlider').addEventListener('input', e => grainAmt = +e.target.value);
+        $('pixelSlider').addEventListener('input', e => pixelAmt = +e.target.value);
+        $('expSlider').addEventListener('input', e => expAmt = +e.target.value);
+        $('dateStampToggle').addEventListener('change', e => { showDate = e.target.checked; drawIdle(); });
+        $('textOverlay').addEventListener('input', e => { overlayText = e.target.value; drawIdle(); });
+        $('stickerGrid').addEventListener('click', e => {
             const s = e.target.closest('[data-sticker]');
-            if (!s) return;
-            overlayStickers.push(s.dataset.sticker);
-            const layer = document.getElementById('stickerLayer');
-            const span = document.createElement('span');
-            span.style.cssText = 'font-size:28px;cursor:move;user-select:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.5))';
-            span.textContent = s.dataset.sticker;
-            span.title = 'Click to remove';
-            span.addEventListener('click', () => span.remove());
-            layer.appendChild(span);
+            if (s && stickers.length < 12) stickers.push(s.dataset.sticker);
+            drawIdle();
         });
+        $('clearStickers').addEventListener('click', () => { stickers = []; drawIdle(); });
 
-        // Sliders
-        document.getElementById('grainSlider').addEventListener('input', e => grainAmt = parseInt(e.target.value));
-        document.getElementById('pixelSlider').addEventListener('input', e => pixelAmt = parseInt(e.target.value));
-        document.getElementById('expSlider').addEventListener('input', e => expAmt = parseInt(e.target.value));
-        document.getElementById('dateStampToggle').addEventListener('change', e => {
-            showDate = e.target.checked;
-            const ds = document.getElementById('dateStamp');
-            ds.style.display = showDate ? 'block' : 'none';
-            if (showDate) { const n = new Date(); ds.textContent = `${(n.getMonth() + 1).toString().padStart(2, '0')}/${n.getDate().toString().padStart(2, '0')}/${String(n.getFullYear() - 25).padStart(4, '0')}`; }
-        });
-        document.getElementById('textOverlay').addEventListener('input', e => overlayText = e.target.value);
-
-        // Camera
+        /* ── camera ── */
         async function startCamera() {
+            stopCamera();
             try {
-                if (stream) { stream.getTracks().forEach(t => t.stop()); }
-                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: facing }, audio: true });
-                video.srcObject = stream;
-                video.style.display = 'none';
-                canvas.width = 640; canvas.height = 480;
-                renderLoop();
-                document.getElementById('startCamBtn').textContent = 'Camera On';
-                parent.postMessage({ type: 'TOAST', text: 'Camera ready!', icon: '&#128247;' }, '*');
+                // Video only: the microphone is asked for when you record, not before.
+                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: facing, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false });
             } catch (e) {
-                parent.postMessage({ type: 'TOAST', text: 'Camera access denied or unavailable', icon: '&#9888;' }, '*');
-                // Show demo placeholder
-                renderDemoLoop();
+                stream = null;
+                toast('No camera. Allow camera access for this site and try again.');
+                drawIdle();
+                return;
             }
+            video.srcObject = stream;
+            await video.play().catch(() => {});
+            // Match the camera's shape, capped so the preview stays smooth.
+            const vw = video.videoWidth || 1280, vh = video.videoHeight || 720, scale = Math.min(1, 960 / vw);
+            canvas.width = Math.round(vw * scale); canvas.height = Math.round(vh * scale);
+            $('startCamBtn').textContent = 'Stop camera';
+            startLoop();
         }
+        function stopCamera() {
+            cancelAnimationFrame(loopId); loopId = 0;
+            if (rec && rec.state !== 'inactive') rec.stop();
+            if (stream) stream.getTracks().forEach(t => t.stop());
+            stream = null; video.srcObject = null;
+            $('startCamBtn').textContent = 'Start camera';
+        }
+        $('startCamBtn').addEventListener('click', () => { if (stream) { stopCamera(); drawIdle(); } else startCamera(); });
+        $('flipBtn').addEventListener('click', () => { facing = facing === 'user' ? 'environment' : 'user'; if (stream) startCamera(); });
 
-        function applyFilter(ctx, w, h) {
-            const id = ctx.getImageData(0, 0, w, h);
-            const d = id.data;
-            const grain = grainAmt;
-            const brightness = expAmt;
+        // Faero tells Booth when its page is hidden, so the camera light does
+        // not stay on while you read the feed. Same when the tab is hidden.
+        function pause() { if (stream) { resumeOnShow = true; stopCamera(); drawIdle(); } }
+        function resume() { if (resumeOnShow) { resumeOnShow = false; startCamera(); } }
+        window.addEventListener('message', e => {
+            if (e.origin !== location.origin || e.source !== parent) return;
+            if (e.data?.type === 'FAERO_BOOTH_HIDE') pause();
+            if (e.data?.type === 'FAERO_BOOTH_SHOW') resume();
+        });
+        document.addEventListener('visibilitychange', () => document.hidden ? pause() : resume());
+
+        /* ── drawing ── */
+        function startLoop() {
+            cancelAnimationFrame(loopId);
+            const tick = () => { drawFrame(); loopId = requestAnimationFrame(tick); };
+            loopId = requestAnimationFrame(tick);
+        }
+        const CSS_FILTERS = {
+            none: '', grain: '', pixelate: '',
+            bw: 'grayscale(1) contrast(1.15)',
+            vhs: 'saturate(1.45) contrast(1.12) hue-rotate(-6deg)',
+            disposable: 'sepia(.22) saturate(1.3) contrast(1.06)',
+            dithered: 'grayscale(1)'
+        };
+        function drawFrame() {
+            const w = canvas.width, h = canvas.height, c = ctx;
+            if (!stream || video.readyState < 2) return;
+            const css = [CSS_FILTERS[currentFilter] || '', expAmt ? `brightness(${1 + expAmt / 100})` : ''].join(' ').trim();
+            c.save();
+            if (GPU) c.filter = css || 'none';
+            if (facing === 'user') { c.translate(w, 0); c.scale(-1, 1); }
+            c.drawImage(video, 0, 0, w, h);
+            c.restore();
+            if (!GPU && css) cpuFilter(c, w, h);
+            if (currentFilter === 'dithered') dither(c, w, h);
+            if (currentFilter === 'pixelate' && pixelAmt > 1) pixelate(c, w, h);
+            if (currentFilter === 'vhs') scanlines(c, w, h);
+            if (currentFilter === 'disposable') vignette(c, w, h);
+            if (grainAmt > 0) grain(c, w, h);
+            drawOverlays(c, w, h);
+        }
+        // Only for browsers without ctx.filter.
+        function cpuFilter(c, w, h) {
+            const id = c.getImageData(0, 0, w, h), d = id.data, b = expAmt, f = currentFilter;
             for (let i = 0; i < d.length; i += 4) {
-                let r = d[i], g = d[i + 1], b = d[i + 2];
-                // Brightness
-                if (brightness !== 0) { r += brightness; g += brightness; b += brightness; }
-                // Filter effects
-                if (currentFilter === 'bw') { const gray = 0.299 * r + 0.587 * g + 0.114 * b; r = g = b = gray; }
-                if (currentFilter === 'vhs') { r = Math.min(255, r * 1.1); b = Math.min(255, b * 0.85); }
-                if (currentFilter === 'disposable') { r = Math.min(255, r * 1.05 + 10); g = Math.min(255, g * 1.02 + 5); }
-                if (currentFilter === 'dithered') { const avg = (r + g + b) / 3; const dith = avg > 128 ? 200 : 50; r = g = b = dith; }
-                // Grain
-                if (grain > 0) { const n = (Math.random() - 0.5) * grain; r += n; g += n; b += n; }
-                d[i] = Math.max(0, Math.min(255, r));
-                d[i + 1] = Math.max(0, Math.min(255, g));
-                d[i + 2] = Math.max(0, Math.min(255, b));
+                let r = d[i] + b, g = d[i + 1] + b, bl = d[i + 2] + b;
+                if (f === 'bw' || f === 'dithered') { r = g = bl = 0.299 * r + 0.587 * g + 0.114 * bl; }
+                else if (f === 'vhs') { r *= 1.1; bl *= 0.85; }
+                else if (f === 'disposable') { r = r * 1.05 + 10; g = g * 1.02 + 5; }
+                d[i] = r; d[i + 1] = g; d[i + 2] = bl;   // Uint8ClampedArray clamps
             }
-            ctx.putImageData(id, 0, 0);
-            // Pixelate
-            if (pixelAmt > 1 && currentFilter === 'pixelate') {
-                ctx.imageSmoothingEnabled = false;
-                const small = document.createElement('canvas'); small.width = Math.max(1, Math.floor(w / pixelAmt)); small.height = Math.max(1, Math.floor(h / pixelAmt));
-                small.getContext('2d').drawImage(canvas, 0, 0, small.width, small.height);
-                ctx.clearRect(0, 0, w, h); ctx.drawImage(small, 0, 0, w, h);
-            }
+            c.putImageData(id, 0, 0);
         }
-
-        function drawOverlays(ctx, w, h) {
+        // Ordered (Bayer) dither: the real 1-bit look, worked on a half-size copy.
+        const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5].map(v => (v + .5) * 16);
+        const small = document.createElement('canvas'), sctx = small.getContext('2d', { willReadFrequently: true });
+        function dither(c, w, h) {
+            small.width = w >> 1; small.height = h >> 1;
+            sctx.drawImage(canvas, 0, 0, small.width, small.height);
+            const id = sctx.getImageData(0, 0, small.width, small.height), d = id.data, sw = small.width;
+            for (let i = 0, p = 0; i < d.length; i += 4, p++) {
+                const x = p % sw, y = (p / sw) | 0, v = d[i] > BAYER[(y & 3) * 4 + (x & 3)] ? 235 : 30;
+                d[i] = d[i + 1] = d[i + 2] = v;
+            }
+            sctx.putImageData(id, 0, 0);
+            c.imageSmoothingEnabled = false; c.drawImage(small, 0, 0, w, h); c.imageSmoothingEnabled = true;
+        }
+        function pixelate(c, w, h) {
+            small.width = Math.max(1, (w / pixelAmt) | 0); small.height = Math.max(1, (h / pixelAmt) | 0);
+            sctx.drawImage(canvas, 0, 0, small.width, small.height);
+            c.imageSmoothingEnabled = false; c.drawImage(small, 0, 0, w, h); c.imageSmoothingEnabled = true;
+        }
+        function scanlines(c, w, h) {
+            c.fillStyle = 'rgba(0,0,0,.14)';
+            for (let y = 0; y < h; y += 3) c.fillRect(0, y, w, 1);
+        }
+        function vignette(c, w, h) {
+            const g = c.createRadialGradient(w / 2, h / 2, Math.min(w, h) * .35, w / 2, h / 2, Math.max(w, h) * .7);
+            g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(40,20,0,.45)');
+            c.fillStyle = g; c.fillRect(0, 0, w, h);
+        }
+        // Grain: four noise tiles made once and laid over the frame, instead
+        // of a random number for every pixel of every frame.
+        const noise = Array.from({ length: 4 }, () => {
+            const n = document.createElement('canvas'); n.width = n.height = 128;
+            const nc = n.getContext('2d'), id = nc.createImageData(128, 128);
+            for (let i = 0; i < id.data.length; i += 4) { const v = Math.random() * 255; id.data[i] = id.data[i + 1] = id.data[i + 2] = v; id.data[i + 3] = 255; }
+            nc.putImageData(id, 0, 0); return n;
+        });
+        let noiseN = 0;
+        function grain(c, w, h) {
+            c.save();
+            c.globalAlpha = grainAmt / 220; c.globalCompositeOperation = 'overlay';
+            c.fillStyle = c.createPattern(noise[noiseN++ & 3], 'repeat'); c.fillRect(0, 0, w, h);
+            c.restore();
+        }
+        const dateText = () => { const n = new Date(); return `${String(n.getMonth() + 1).padStart(2, '0')}/${String(n.getDate()).padStart(2, '0')}/${n.getFullYear() - 25}`; };
+        function drawOverlays(c, w, h) {
+            const u = w / 640;   // sizes are designed at 640px wide
+            if (stickers.length) {
+                c.save(); c.font = `${32 * u}px "Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif`; c.textBaseline = 'top';
+                c.shadowColor = 'rgba(0,0,0,.45)'; c.shadowBlur = 3 * u;
+                stickers.forEach((s, i) => c.fillText(s, 12 * u + (i % 8) * 40 * u, 12 * u + Math.floor(i / 8) * 40 * u));
+                c.restore();
+            }
             if (overlayText) {
-                ctx.font = `bold 28px ${currentFont}`;
-                ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.strokeStyle = 'rgba(0,0,0,0.5)'; ctx.lineWidth = 2;
-                ctx.textAlign = 'center'; ctx.strokeText(overlayText, w / 2, h - 30); ctx.fillText(overlayText, w / 2, h - 30);
+                c.save(); c.font = `bold ${28 * u}px ${currentFont}`; c.textAlign = 'center';
+                c.lineWidth = 3 * u; c.strokeStyle = 'rgba(0,0,0,.55)'; c.fillStyle = 'rgba(255,255,255,.95)';
+                c.strokeText(overlayText, w / 2, h - 30 * u); c.fillText(overlayText, w / 2, h - 30 * u);
+                c.restore();
             }
             if (showDate) {
-                const n = new Date(); const ds = `${(n.getMonth() + 1).toString().padStart(2, '0')}/${n.getDate().toString().padStart(2, '0')}/${String(n.getFullYear() - 25).padStart(4, '0')}`;
-                ctx.font = 'bold 14px Courier New, monospace'; ctx.fillStyle = '#f04c00'; ctx.textAlign = 'right'; ctx.fillText(ds, w - 10, h - 10);
+                c.save(); c.font = `bold ${16 * u}px "Courier New",monospace`; c.textAlign = 'right';
+                c.fillStyle = '#ff6a1a'; c.shadowColor = 'rgba(255,90,0,.7)'; c.shadowBlur = 6 * u;
+                c.fillText(dateText(), w - 12 * u, h - 12 * u);
+                c.restore();
             }
         }
-
-        function renderLoop() {
-            if (!stream || video.readyState < 2) { requestAnimationFrame(renderLoop); return; }
-            const w = canvas.width, h = canvas.height;
-            ctx.save();
-            if (facing === 'user') { ctx.scale(-1, 1); ctx.drawImage(video, -w, 0, w, h); }
-            else ctx.drawImage(video, 0, 0, w, h);
-            ctx.restore();
-            applyFilter(ctx, w, h);
+        // The camera-off screen, drawn once (not every frame).
+        function drawIdle() {
+            if (stream) return;
+            const w = canvas.width = 960, h = canvas.height = 540;
+            ctx.fillStyle = '#0D1B2A'; ctx.fillRect(0, 0, w, h);
+            ctx.fillStyle = 'rgba(100,181,246,.08)';
+            for (let i = 0; i < w; i += 48) ctx.fillRect(i, 0, 1, h);
+            for (let i = 0; i < h; i += 48) ctx.fillRect(0, i, w, 1);
+            ctx.textAlign = 'center'; ctx.fillStyle = 'rgba(227,242,253,.75)'; ctx.font = 'bold 26px "Exo 2",sans-serif';
+            ctx.fillText('Camera is off', w / 2, h / 2 - 12);
+            ctx.fillStyle = 'rgba(227,242,253,.45)'; ctx.font = '17px "Exo 2",sans-serif';
+            ctx.fillText('Press “Start camera” up top', w / 2, h / 2 + 22);
             drawOverlays(ctx, w, h);
-            requestAnimationFrame(renderLoop);
         }
 
-        function renderDemoLoop() {
-            const w = canvas.width = 640, h = canvas.height = 480;
-            let t = 0;
-            const loop = () => {
-                ctx.fillStyle = `hsl(${(t * 0.5) % 360},40%,15%)`; ctx.fillRect(0, 0, w, h);
-                ctx.fillStyle = 'rgba(255,255,255,0.06)';
-                for (let i = 0; i < w; i += 40) ctx.fillRect(i, 0, 1, h);
-                for (let i = 0; i < h; i += 40) ctx.fillRect(0, i, w, 1);
-                ctx.font = 'bold 18px Nunito,sans-serif'; ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.textAlign = 'center';
-                ctx.fillText('Camera Not Available', w / 2, h / 2 - 20); ctx.font = '13px Nunito,sans-serif'; ctx.fillStyle = 'rgba(255,255,255,0.25)';
-                ctx.fillText('Click "Start Camera" to enable webcam', w / 2, h / 2 + 10);
-                drawOverlays(ctx, w, h); t++; requestAnimationFrame(loop);
-            }; loop();
+        /* ── taking photos ── */
+        const toBlob = (cv, q = .92) => new Promise(r => cv.toBlob(r, 'image/jpeg', q));
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
+        function flash() { const f = document.createElement('div'); f.className = 'flash'; $('camContainer').appendChild(f); setTimeout(() => f.remove(), 240); }
+        async function countdown(n) {
+            const el = $('countdown'); el.hidden = false;
+            for (let i = n; i > 0; i--) { el.textContent = i; await sleep(700); }
+            el.hidden = true;
         }
-
-        // Capture
-        function capture() {
-            const dataURL = canvas.toDataURL('image/png');
-            capturedPhotos.push(dataURL);
-            const strip = document.getElementById('photoStrip');
-            if (capturedPhotos.length === 1) strip.innerHTML = '';
+        function snapshot() {
+            const c = document.createElement('canvas'); c.width = canvas.width; c.height = canvas.height;
+            c.getContext('2d').drawImage(canvas, 0, 0);
+            flash();
+            return c;
+        }
+        // A frame around a finished picture, drawn onto the saved image.
+        function framed(src) {
+            if (currentFrame === 'none') return src;
+            const pad = Math.round(src.width * .04), bottom = currentFrame === 'polaroid' ? pad * 5 : pad;
+            const c = document.createElement('canvas'); c.width = src.width + pad * 2; c.height = src.height + pad + bottom;
+            const g = c.getContext('2d');
+            g.fillStyle = { polaroid: '#fbfaf5', filmstrip: '#111', scrapbook: '#f3e3c3', aim: '#ECE9D8' }[currentFrame] || '#fff';
+            g.fillRect(0, 0, c.width, c.height);
+            if (currentFrame === 'filmstrip') { g.fillStyle = '#eee'; for (let x = pad; x < c.width - pad; x += pad * 1.6) { g.fillRect(x, pad * .3, pad * .7, pad * .4); g.fillRect(x, c.height - pad * .7, pad * .7, pad * .4); } }
+            if (currentFrame === 'aim') { g.fillStyle = '#0A246A'; g.fillRect(0, 0, c.width, pad); g.fillStyle = '#fff'; g.font = `bold ${pad * .6}px "Exo 2",sans-serif`; g.fillText('Buddy Info', pad * .4, pad * .72); }
+            g.drawImage(src, pad, pad);
+            if (currentFrame === 'polaroid' && overlayText) { g.fillStyle = '#333'; g.font = `${pad * 1.6}px ${currentFont}`; g.textAlign = 'center'; g.fillText(overlayText, c.width / 2, c.height - bottom / 2.4); }
+            return c;
+        }
+        async function capture() {
+            if (busy) return;
+            if (!stream) { toast('Start the camera first'); return; }
+            const grid = GRIDS[currentGrid];
+            busy = true; $('captureBtn').disabled = true;
+            try {
+                if (grid.n === 1) { await addPhoto(framed(snapshot())); return; }
+                // A photo-booth strip: a countdown, then a shot, n times.
+                const shots = [];
+                for (let i = 0; i < grid.n; i++) { await countdown(i ? 2 : 3); shots.push(snapshot()); await sleep(250); }
+                const cw = Math.round(shots[0].width / Math.max(1, grid.c / 2)), ch = Math.round(cw * shots[0].height / shots[0].width), gap = Math.round(cw * .03);
+                const s = document.createElement('canvas');
+                s.width = grid.c * cw + (grid.c + 1) * gap; s.height = grid.r * ch + (grid.r + 1) * gap;
+                const g = s.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, s.width, s.height);
+                shots.forEach((sh, i) => g.drawImage(sh, gap + (i % grid.c) * (cw + gap), gap + Math.floor(i / grid.c) * (ch + gap), cw, ch));
+                await addPhoto(framed(s));
+            } finally { busy = false; $('captureBtn').disabled = false; $('countdown').hidden = true; }
+        }
+        const EMPTY = '<div class="strip-empty">Your photos show up here. Tap one to pick it.</div>';
+        async function addPhoto(cv) {
+            const blob = await toBlob(cv);
+            if (!blob) { toast('Could not save that photo'); return; }
+            const p = { blob, url: URL.createObjectURL(blob) };
+            photos.push(p);
+            const strip = $('photoStrip');
+            strip.querySelector('.strip-empty')?.remove();
             const slot = document.createElement('div'); slot.className = 'strip-slot';
-            const img = document.createElement('img'); img.src = dataURL;
-            const del = document.createElement('button'); del.className = 'strip-slot-del'; del.textContent = 'X';
-            del.addEventListener('click', e => { e.stopPropagation(); const idx = capturedPhotos.indexOf(dataURL); if (idx > -1) capturedPhotos.splice(idx, 1); slot.remove(); });
-            slot.appendChild(img); slot.appendChild(del);
-            slot.addEventListener('click', () => { document.querySelectorAll('.strip-slot').forEach(s => s.classList.remove('active')); slot.classList.add('active'); });
-            strip.appendChild(slot);
-            // Flash effect
-            const flash = document.createElement('div');
-            flash.style.cssText = 'position:absolute;inset:0;background:white;opacity:0.8;pointer-events:none;z-index:10;animation:flashAnim 0.2s forwards';
-            document.head.appendChild(Object.assign(document.createElement('style'), { textContent: '@keyframes flashAnim{0%{opacity:0.8}100%{opacity:0}}' }));
-            document.getElementById('camContainer').appendChild(flash);
-            setTimeout(() => flash.remove(), 220);
-            parent.postMessage({ type: 'TOAST', text: 'Photo captured!', icon: '&#128247;' }, '*');
+            const img = document.createElement('img'); img.src = p.url; img.alt = 'Photo';
+            const del = document.createElement('button'); del.className = 'strip-slot-del'; del.textContent = '×'; del.setAttribute('aria-label', 'Delete photo');
+            del.addEventListener('click', e => {
+                e.stopPropagation();
+                const idx = photos.indexOf(p); if (idx > -1) photos.splice(idx, 1);
+                URL.revokeObjectURL(p.url); slot.remove();
+                selected = Math.min(selected, photos.length - 1); paintSelection();
+                if (!photos.length) strip.innerHTML = EMPTY;
+            });
+            slot.addEventListener('click', () => { selected = photos.indexOf(p); paintSelection(); });
+            slot.append(img, del); strip.appendChild(slot);
+            selected = photos.length - 1; paintSelection();
+            slot.scrollIntoView({ inline: 'end', block: 'nearest' });
         }
+        function paintSelection() { [...$('photoStrip').querySelectorAll('.strip-slot')].forEach((s, i) => s.classList.toggle('active', i === selected)); }
+        const current = () => photos[selected] || photos[photos.length - 1];
 
-        function savePhoto(dataURL, filename = 'photo.png') {
-            // Save to My Docs
-            const docs = JSON.parse(localStorage.getItem('aeronet_mydocs') || '[]');
-            docs.push({ id: Date.now(), name: filename, type: 'image', dataURL, ts: Date.now() });
-            localStorage.setItem('aeronet_mydocs', JSON.stringify(docs));
-            // Also trigger download
-            const a = document.createElement('a'); a.href = dataURL; a.download = filename; a.click();
-            parent.postMessage({ type: 'TOAST', text: 'Photo saved to My Documents!', icon: '&#128247;' }, '*');
+        function download(blob, name) {
+            const url = URL.createObjectURL(blob), a = document.createElement('a');
+            a.href = url; a.download = name; a.click();
+            setTimeout(() => URL.revokeObjectURL(url), 4000);
         }
+        // Faero puts the photo in your post box on the feed; you add a
+        // caption and post it yourself.
+        const post = blob => parent.postMessage({ type: 'FAERO_BOOTH_POST', blob, text: overlayText || '' }, location.origin);
+        const withPhoto = fn => () => { const p = current(); if (!p) { toast('Take a photo first'); return; } fn(p); };
 
-        function postPhoto(dataURL) {
-            const post = { id: Date.now(), isOwn: true, text: overlayText || 'Shot on Disposable Cam &#128247;', type: 'image', image: dataURL, likes: 0, liked: false, comments: [], tags: ['#disposable', '#film'], ts: Date.now(), showComments: false };
-            parent.postMessage({ type: 'POST_TO_FEED', post }, '*');
-            parent.postMessage({ type: 'TOAST', text: 'Posted to AeroNet!', icon: '&#9993;' }, '*');
-        }
-
-        function renderGrid() {
-            if (capturedPhotos.length < 2) return;
-            const gridCanvas = document.createElement('canvas');
-            let cols = 1, rows = 1;
-            if (currentGrid === '1x4h') { cols = 4; rows = 1; }
-            else if (currentGrid === '1x4v') { cols = 1; rows = 4; }
-            else if (currentGrid === '2x2') { cols = 2; rows = 2; }
-            else if (currentGrid === '2x4') { cols = 2; rows = 4; }
-            else if (currentGrid === '4x2') { cols = 4; rows = 2; }
-            const cellW = 320, cellH = 240;
-            gridCanvas.width = cols * cellW; gridCanvas.height = rows * cellH;
-            const gctx = gridCanvas.getContext('2d');
-            gctx.fillStyle = 'white'; gctx.fillRect(0, 0, gridCanvas.width, gridCanvas.height);
-            const total = cols * rows;
-            for (let i = 0; i < Math.min(total, capturedPhotos.length); i++) {
-                const img = new Image(); img.src = capturedPhotos[i];
-                const col = i % cols, row = Math.floor(i / cols);
-                img.onload = () => { gctx.drawImage(img, col * cellW, row * cellH, cellW, cellH); };
-            }
-            setTimeout(() => {
-                const dataURL = gridCanvas.toDataURL('image/png');
-                savePhoto(dataURL, `grid_${currentGrid}_${Date.now()}.png`);
-            }, 200);
-        }
-
-        // Buttons
-        document.getElementById('startCamBtn').addEventListener('click', startCamera);
-        document.getElementById('captureBtn').addEventListener('click', capture);
-        document.getElementById('flipBtn').addEventListener('click', async () => { facing = facing === 'user' ? 'environment' : 'user'; await startCamera(); });
-        document.getElementById('saveOneBtn').addEventListener('click', () => { const url = canvas.toDataURL('image/png'); savePhoto(url, `shot_${Date.now()}.png`); });
-        document.getElementById('postOneBtn').addEventListener('click', () => { const url = canvas.toDataURL('image/png'); postPhoto(url); });
-        document.getElementById('saveAllBtn').addEventListener('click', () => { if (!capturedPhotos.length) { parent.postMessage({ type: 'TOAST', text: 'No photos to save!', icon: '&#9888;' }, '*'); return; } capturedPhotos.forEach((p, i) => savePhoto(p, `photo_${i + 1}_${Date.now()}.png`)); });
-        document.getElementById('postAllBtn').addEventListener('click', () => { if (!capturedPhotos.length) { parent.postMessage({ type: 'TOAST', text: 'No photos to post!', icon: '&#9888;' }, '*'); return; } postPhoto(capturedPhotos[capturedPhotos.length - 1]); });
-
-        // Video recording
-        document.getElementById('recordBtn').addEventListener('click', () => {
-            if (!stream) { parent.postMessage({ type: 'TOAST', text: 'Start camera first!', icon: '&#9888;' }, '*'); return; }
-            if (!isRecording) {
-                recordedChunks = [];
-                mediaRecorder = new MediaRecorder(stream);
-                mediaRecorder.ondataavailable = e => { if (e.data.size > 0) recordedChunks.push(e.data); };
-                mediaRecorder.onstop = () => {
-                    const blob = new Blob(recordedChunks, { type: 'video/webm' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a'); a.href = url; a.download = `video_${Date.now()}.webm`; a.click();
-                    parent.postMessage({ type: 'TOAST', text: 'Video saved!', icon: '&#127909;' }, '*');
-                };
-                mediaRecorder.start(); isRecording = true;
-                document.getElementById('recordBtn').textContent = '&#9646;&#9646; Stop';
-                document.getElementById('recordBtn').style.background = 'rgba(220,40,40,0.3)';
-            } else {
-                mediaRecorder.stop(); isRecording = false;
-                document.getElementById('recordBtn').textContent = '&#9673; Record';
-                document.getElementById('recordBtn').style.background = '';
-            }
+        $('captureBtn').addEventListener('click', capture);
+        document.addEventListener('keydown', e => { if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'BUTTON') { e.preventDefault(); capture(); } });
+        $('saveOneBtn').addEventListener('click', withPhoto(p => download(p.blob, `faero-booth-${Date.now()}.jpg`)));
+        $('postOneBtn').addEventListener('click', withPhoto(p => post(p.blob)));
+        $('postAllBtn').addEventListener('click', withPhoto(p => post(p.blob)));
+        $('saveAllBtn').addEventListener('click', () => {
+            if (!photos.length) { toast('No photos yet'); return; }
+            photos.forEach((p, i) => setTimeout(() => download(p.blob, `faero-booth-${i + 1}.jpg`), i * 250));
         });
 
-        // Mode switch
-        document.getElementById('photoModeBtn').addEventListener('click', () => {
-            document.getElementById('photoModeBtn').classList.add('on');
-            document.getElementById('videoModeBtn').classList.remove('on');
-        });
-        document.getElementById('videoModeBtn').addEventListener('click', () => {
-            document.getElementById('videoModeBtn').classList.add('on');
-            document.getElementById('photoModeBtn').classList.remove('on');
+        /* ── video: records what you see, filters and all ── */
+        $('recordBtn').addEventListener('click', async () => {
+            const btn = $('recordBtn');
+            if (rec && rec.state === 'recording') { rec.stop(); return; }
+            if (!stream) { toast('Start the camera first'); return; }
+            const out = canvas.captureStream(30);
+            try { micStream = await navigator.mediaDevices.getUserMedia({ audio: true }); micStream.getAudioTracks().forEach(t => out.addTrack(t)); }
+            catch (e) { micStream = null; toast('Recording without sound'); }
+            const type = ['video/webm;codecs=vp9,opus', 'video/webm', 'video/mp4'].find(t => window.MediaRecorder && MediaRecorder.isTypeSupported(t));
+            if (!type) { toast('This browser can’t record video'); micStream?.getTracks().forEach(t => t.stop()); micStream = null; return; }
+            recChunks = [];
+            rec = new MediaRecorder(out, { mimeType: type });
+            rec.ondataavailable = e => { if (e.data.size) recChunks.push(e.data); };
+            rec.onstop = () => {
+                micStream?.getTracks().forEach(t => t.stop()); micStream = null;
+                btn.textContent = '● Record'; btn.classList.remove('rec');
+                if (recChunks.length) { download(new Blob(recChunks, { type }), `faero-booth-${Date.now()}.${type.startsWith('video/mp4') ? 'mp4' : 'webm'}`); toast('Video saved'); }
+            };
+            rec.start(1000);
+            btn.textContent = '■ Stop'; btn.classList.add('rec');
         });
 
-        window.addEventListener('message', e => { if (e.data?.type === 'THEME_CHANGE') document.body.dataset.theme = e.data.theme; });
-        renderDemoLoop();
+        drawIdle();
     </script>
 </body>
 

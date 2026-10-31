@@ -13,6 +13,7 @@
 <meta name="theme-color" content="#0D1B2A" media="(prefers-color-scheme: dark)">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <!-- Everything below is inline on purpose. A 404 is the one page that has to
      render when something is already wrong — a missing stylesheet, a bad
@@ -54,7 +55,7 @@
     place-items: center;
     padding: 24px;
     background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-bottom) 100%);
-    font: 16px/1.55 "Segoe UI", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+    font: 16px/1.55 "Exo 2", system-ui, sans-serif;
     color: var(--ink);
     -webkit-font-smoothing: antialiased;
   }
@@ -115,7 +116,7 @@
   p { margin: 0 0 18px; color: var(--ink-soft); }
 
   .path {
-    font-family: "Cascadia Code", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-family: inherit; font-weight: 600;
     font-size: 13px;
     background: rgba(21, 101, 192, .09);
     border: 1px solid var(--line);

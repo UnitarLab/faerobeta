@@ -5,7 +5,7 @@
      • Supabase + Cloudinary API → never cached (always network)
    Bump CACHE_VERSION on every deploy to evict old shells. */
 
-const CACHE_VERSION = 'faero-v1.0.0-beta.4';
+const CACHE_VERSION = 'faero-v1.0.0-beta.6';
 const SHELL_CACHE   = `${CACHE_VERSION}-shell`;
 const ASSET_CACHE   = `${CACHE_VERSION}-assets`;
 
@@ -31,6 +31,8 @@ const SHELL = [
   // Loaded by a <script> tag in the page — omitting it meant the app opened
   // offline without its profile module.
   'faero_profile_native.js',
+  'faero_space.css',
+  'faero_space.js',
   'manifest.webmanifest',
   // Precached so an installed app doesn't show a broken icon on its first
   // offline launch.
