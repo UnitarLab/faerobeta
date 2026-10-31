@@ -10821,11 +10821,33 @@ async function pfToggleFollow(profileId, btn) {
 }
 
 /* ── guest (not logged in) state ────────────────────────────── */
+// Shown when signed out, or when the profile asked for doesn't exist.
+// The page ships with loading skeletons and a placeholder "R" avatar; they
+// must be replaced here or the page looks stuck loading forever.
 function pfShowGuest() {
-  const name = document.getElementById('pf-name');
-  if (name) name.textContent = 'Sign in to view profiles';
-  const actions = document.getElementById('pf-action-col');
-  if (actions) actions.innerHTML = `<button class="pf-btn-edit" onclick="faeroOpenAuth()">Sign In</button>`;
+  const $ = id => document.getElementById(id);
+  const signedIn = !!FAERO_USER;
+  const msg = (text, cta) => `<div class="ex-empty" style="padding:24px 0">${text}${cta
+    ? `<div style="margin-top:10px"><button class="feed-state-btn" onclick="faeroOpenAuth()">Sign in</button></div>` : ''}</div>`;
+
+  if ($('pf-name'))   $('pf-name').textContent = signedIn ? 'Profile not found' : 'Sign in to view profiles';
+  if ($('pf-handle')) $('pf-handle').textContent = '';
+  if ($('pf-av-inner')) $('pf-av-inner').textContent = '🌱';
+  if ($('pf-action-col')) $('pf-action-col').innerHTML = signedIn ? ''
+    : `<button class="pf-btn-edit" onclick="faeroOpenAuth()">Sign In</button>`;
+
+  ['pf-bio', 'pf-tags', 'pf-meta', 'pf-links', 'pf-views', 'pf-status-line']
+    .forEach(id => { if ($(id)) $(id).textContent = ''; });
+  ['pf-stat-following', 'pf-stat-followers', 'pf-stat-posts', 'pf-stat-views']
+    .forEach(id => { if ($(id)) $(id).textContent = '–'; });
+  if ($('pf-pinned-card')) $('pf-pinned-card').style.display = 'none';
+  if ($('pf-gb-compose'))  $('pf-gb-compose').style.display = 'none';
+
+  if ($('pf-posts-list'))   $('pf-posts-list').innerHTML = msg(signedIn
+    ? 'This profile may have been deleted.' : 'Posts, friends and guestbook notes show up once you sign in.', !signedIn);
+  if ($('pf-friends-grid')) $('pf-friends-grid').innerHTML = '';
+  if ($('pf-guestbook'))    $('pf-guestbook').innerHTML = '';
+  if ($('pf-commons-wrap')) $('pf-commons-wrap').innerHTML = '';
 }
 
 // ════════════════════════════════════════════════════════════════
