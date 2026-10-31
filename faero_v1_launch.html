@@ -2769,7 +2769,11 @@ body::after {
   display: flex; align-items: center; justify-content: center;
   font-family: 'Lora', serif; font-size: 21px; font-weight: 700; color: #fff;
   box-shadow: 0 3px 10px rgba(0,0,0,0.14); flex-shrink: 0;
+  overflow: hidden;
 }
+/* Without this a real avatar renders at its full photo size and spills
+   across the whole People row, covering the other cards. */
+.ex-person-av img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }
 .ex-person-name {
   font-size: 12.5px; font-weight: 700; color: var(--font-color); line-height: 1.2;
 }
