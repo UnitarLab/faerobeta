@@ -245,7 +245,7 @@ function faeroRenderSdkFailure(reason) {
     el.innerHTML =
       '<div style="max-width:24rem;text-align:center;background:#fff;border-radius:18px;' +
       'padding:32px 28px;box-shadow:0 8px 40px rgba(21,101,192,.18)">' +
-        '<div style="font-size:40px;line-height:1;margin-bottom:14px" aria-hidden="true">🌱</div>' +
+        '<div style="line-height:1;margin-bottom:14px" aria-hidden="true"><img src="beta/assets/faero-logo.webp" alt="" width="48" height="48" style="display:inline-block;vertical-align:middle;object-fit:contain"></div>' +
         '<h1 id="faeroSdkFailTitle" style="font-size:1.15rem;margin:0 0 10px">Faero couldn\'t finish loading</h1>' +
         '<p style="margin:0 0 20px;font-size:.92rem;line-height:1.5;opacity:.8">' +
           'One of the files Faero needs didn\'t arrive. This is usually a ' +
@@ -7893,7 +7893,7 @@ function faeroInjectAuthModal() {
       </div>
 
       <div id="fam-verify" style="display:none">
-        <div class="fam-note fam-note-big">🌱 Check your inbox</div>
+        <div class="fam-note fam-note-big"><img src="beta/assets/faero-logo.webp" alt="" width="22" height="22" style="display:inline-block;vertical-align:middle;object-fit:contain;margin-right:6px">Check your inbox</div>
         <div class="fam-note">We sent a confirmation link to <b id="fam-verify-email"></b>.
           Click it to finish setting up your Faero account.</div>
         <button class="fam-submit" onclick="faeroResendVerify()">Resend the email</button>
@@ -8199,7 +8199,7 @@ function faeroHandleAuthRedirect() {
   if (type === 'recovery') {
     faeroOpenAuth('newpass');
   } else if (type === 'signup' || type === 'magiclink') {
-    faeroToast('ok', 'Email confirmed', 'Welcome to Faero 🌱');
+    faeroToast('ok', 'Email confirmed', 'Welcome to Faero');
     history.replaceState(null, '', location.pathname + location.search);
   }
 }
@@ -9154,7 +9154,7 @@ function faeroFeedEmpty() {
     </div>`;
   }
   return `<div class="feed-state">
-    <div class="feed-state-icon">🌱</div>
+    <div class="feed-state-icon"><img src="beta/assets/faero-logo.webp" alt="" width="44" height="44" style="display:inline-block;vertical-align:middle;object-fit:contain"></div>
     <div class="feed-state-title">Nothing planted yet</div>
     <div class="feed-state-body">Be the first to post something to the commons.</div>
     ${FAERO_USER
@@ -9628,7 +9628,7 @@ async function faeroSubmitQuote(postId) {
   if (error) { err.textContent = faeroFriendlyDbError(error); return; }
 
   faeroCloseSheet();
-  faeroToast('ok', 'Quoted 🌱', 'Your post is live.');
+  faeroToast('ok', 'Quoted', 'Your post is live.');
   await faeroLoadFeed();
 }
 
@@ -10151,7 +10151,7 @@ function faeroShowGuestBar() {
     'padding:10px 12px 10px 16px;border-radius:14px;background:var(--glass,#fff);border:1px solid var(--border,#cfe3f7);' +
     'box-shadow:0 8px 28px rgba(0,40,90,.18);backdrop-filter:blur(12px);font-size:13px;color:var(--font-color,#123)';
   bar.innerHTML = `
-    <span>🌱 You're looking around Faero. <b>Join</b> to post, like, reply and message.</span>
+    <span><img src="beta/assets/faero-logo.webp" alt="" width="20" height="20" style="display:inline-block;vertical-align:middle;object-fit:contain;margin-right:6px">You're looking around Faero. <b>Join</b> to post, like, reply and message.</span>
     <button class="fam-submit" style="width:auto;margin:0;padding:7px 14px" onclick="faeroOpenAuth('up')">Join Faero</button>
     <button class="fam-linkbtn" style="margin:0" onclick="faeroOpenAuth('in')">Sign in</button>
     <button class="fam-linkbtn" style="margin:0;padding:4px 8px" aria-label="Hide" onclick="this.parentElement.remove();try{sessionStorage.setItem('faero-guest-bar-off','1')}catch(_){}">✕</button>`;
@@ -10345,7 +10345,7 @@ faeroDoSignIn = async function() {
 const _origDoSignUp = faeroDoSignUp;
 faeroDoSignUp = async function() {
   await _origDoSignUp();
-  if (FAERO_USER) faeroToast('ok', 'Account created', 'Welcome to Faero 🌱');
+  if (FAERO_USER) faeroToast('ok', 'Account created', 'Welcome to Faero');
 };
 
 /* ── patch faeroBootstrap to wire everything ── */
@@ -10847,7 +10847,7 @@ async function pfToggleFollow(profileId, btn) {
     faeroToast('err', 'Could not update', faeroFriendlyDbError(error));
     return;
   }
-  if (!isFollowing) faeroToast('ok', 'Following!', 'You\'ll see their posts in your feed 🌱');
+  if (!isFollowing) faeroToast('ok', 'Following!', 'You\'ll see their posts in your feed.');
 }
 
 /* ── guest (not logged in) state ────────────────────────────── */
@@ -10862,7 +10862,7 @@ function pfShowGuest() {
 
   if ($('pf-name'))   $('pf-name').textContent = signedIn ? 'Profile not found' : 'Sign in to view profiles';
   if ($('pf-handle')) $('pf-handle').textContent = '';
-  if ($('pf-av-inner')) $('pf-av-inner').textContent = '🌱';
+  if ($('pf-av-inner')) $('pf-av-inner').innerHTML = '<img src="beta/assets/faero-logo.webp" alt="" width="40" height="40" style="display:inline-block;vertical-align:middle;object-fit:contain">';
   if ($('pf-action-col')) $('pf-action-col').innerHTML = signedIn ? ''
     : `<button class="pf-btn-edit" onclick="faeroOpenAuth()">Sign In</button>`;
 
@@ -11412,7 +11412,7 @@ async function gcJoin(groupId, btn) {
   } else {
     await supabase.from('group_members')
       .insert({ group_id: groupId, user_id: FAERO_USER.id });
-    faeroToast('ok', 'Joined!', 'Welcome to the commons 🌱');
+    faeroToast('ok', 'Joined!', 'Welcome to the commons.');
   }
   gcRenderJoinedSidebar();
 }
@@ -12025,7 +12025,7 @@ async function gcSubmitCreate() {
 
   gcCloseCreate();
   _gcCoverFile = null;
-  faeroToast('ok', 'Group created 🌱', `${name} is live. You're its first steward.`);
+  faeroToast('ok', 'Group created', `${name} is live. You're its first steward.`);
 
   await gcBoot();
   if (data) gcOpenDetail(data);
@@ -12413,7 +12413,7 @@ async function exFollow(profileId, btn) {
     faeroToast('err', 'Could not update', faeroFriendlyDbError(error));
     return;
   }
-  if (!isFollowing) faeroToast('ok', 'Following!', 'You\'ll see their posts in your feed 🌱');
+  if (!isFollowing) faeroToast('ok', 'Following!', 'You\'ll see their posts in your feed.');
 }
 
 /* ── view a profile from explore / anywhere ─────────────────── */
@@ -13956,7 +13956,7 @@ async function fsDeleteAccount() {
   await supabase.auth.signOut();
 
   alert(authGone
-    ? 'Your account and everything in it has been deleted. Thanks for having been here. 🌱'
+    ? 'Your account and everything in it has been deleted. Thanks for having been here.'
     : 'Your content has been erased and your profile anonymised. The login record ' +
       'will be removed within 30 days. If you need it gone sooner, email contact@unitar.app.');
 
@@ -14534,7 +14534,7 @@ function faeroOnbRender() {
   if (_onbStep === 1) {
     const name = FAERO_PROFILE?.display_name || 'friend';
     body.innerHTML = `
-      <div class="onb-hero">🌱</div>
+      <div class="onb-hero"><img src="beta/assets/faero-logo.webp" alt="" width="56" height="56" style="display:inline-block;vertical-align:middle;object-fit:contain"></div>
       <h2 class="onb-title" id="onb-title">Welcome to Faero, ${faeroEsc(name)}</h2>
       <p class="onb-sub">
         This is a commons, not a feed to be farmed. Posts appear newest-first —
@@ -14659,7 +14659,7 @@ async function faeroOnbFinish(skipped) {
   if (FAERO_PROFILE && FAERO_PROFILE.tos_version !== FAERO_TOS_VERSION) faeroOpenTermsGate();
 
   if (!skipped) {
-    faeroToast('ok', 'You\'re all set 🌱', 'Say hello — the commons is listening.');
+    faeroToast('ok', 'You\'re all set', 'Say hello — the commons is listening.');
     await faeroLoadFeed();
   }
 }

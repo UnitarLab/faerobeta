@@ -41,7 +41,7 @@ function copyFor(type: string, actor: string, body: string | null) {
   switch (type) {
     case 'reply':   return { title: `${actor} replied`,           body: body || 'Tap to read the thread.' };
     case 'mention': return { title: `${actor} mentioned you`,     body: body || 'Tap to see the post.' };
-    case 'follow':  return { title: `${actor} followed you`,      body: 'Say hello 🌱' };
+    case 'follow':  return { title: `${actor} followed you`,      body: 'Say hello.' };
     case 'repost':  return { title: `${actor} reposted your post`,body: body || '' };
     default:        return { title: 'Faero', body: body || '' };
   }
