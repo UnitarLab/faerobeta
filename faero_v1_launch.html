@@ -10165,18 +10165,16 @@ function faeroShowGuestBar() {
   bar.id = 'faero-guest-bar';
   bar.setAttribute('role', 'region');
   bar.setAttribute('aria-label', 'Join Faero');
-  bar.style.cssText = 'position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:900;' +
-    'display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;max-width:calc(100% - 32px);' +
-    'padding:10px 12px 10px 16px;border-radius:14px;background:var(--glass,#fff);border:1px solid var(--border,#cfe3f7);' +
-    'box-shadow:0 8px 28px rgba(0,40,90,.18);backdrop-filter:blur(12px);font-size:13px;color:var(--font-color,#123)';
+  // One slim row. Looks and position live in faero_space.css (.fgb):
+  // above the phone tab bar and the radio player, never over a post.
+  bar.className = 'fgb';
   bar.innerHTML = `
-    <span><img src="beta/assets/faero-logo.webp" alt="" width="20" height="20" style="display:inline-block;vertical-align:middle;object-fit:contain;margin-right:6px">You're looking around Faero. <b>Join</b> to post, like, reply and message.</span>
-    <button class="fam-submit" style="width:auto;margin:0;padding:7px 14px" onclick="faeroOpenAuth('up')">Join Faero</button>
-    <button class="fam-linkbtn" style="margin:0" onclick="faeroOpenAuth('in')">Sign in</button>
-    <button class="fam-linkbtn" style="margin:0;padding:4px 8px" aria-label="Hide" onclick="this.parentElement.remove();try{sessionStorage.setItem('faero-guest-bar-off','1')}catch(_){}">✕</button>`;
-  // sit above the phone tab bar rather than on top of it
-  const mobileNav = document.querySelector('.fmn-item')?.parentElement;
-  if (mobileNav && mobileNav.offsetHeight) bar.style.bottom = (mobileNav.offsetHeight + 12) + 'px';
+    <img class="fgb-logo" src="beta/assets/faero-logo.webp" alt="" width="22" height="22">
+    <span class="fgb-text"><b>You're browsing Faero.</b> <span class="fgb-more">Join to post, sign guestbooks and build your space.</span></span>
+    <button class="fx-btn fx-btn-sm" onclick="faeroOpenAuth('in')">Sign in</button>
+    <button class="fx-btn fx-btn-pri fx-btn-sm" onclick="faeroOpenAuth('up')">Join Faero</button>
+    <button class="fgb-x" aria-label="Hide" onclick="this.parentElement.remove();try{sessionStorage.setItem('faero-guest-bar-off','1')}catch(_){}">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>`;
   document.body.appendChild(bar);
 }
 
