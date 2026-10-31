@@ -1,8 +1,8 @@
 # Faero Privacy Policy
 
 **Effective Date:** August 9, 2026
-**Last Updated:** August 9, 2026
-**Version:** 1.0 (Beta)
+**Last Updated:** October 31, 2026
+**Version:** 1.1 (Beta)
 
 **Contact:** contact@unitar.app
 
@@ -68,6 +68,7 @@ Questions, requests, or complaints: **contact@unitar.app**
 | Display name, username | Sign-up / profile | Identifying you to others |
 | Bio, location, website, tags, avatar, banner | Profile editor | Shown on your public profile |
 | Posts, replies, messages, guestbook notes | You writing them | The platform itself |
+| Your profile space: the blocks you pick and what you type into them (notes, links, shows, release details, mood, a radio station you pin) | Profile space editor | Shown on your public profile |
 | Images you upload | Compose / profile editor | Displaying your content |
 | Commons you join and create | Your actions | Group membership |
 | Terms acceptance + age confirmation | Sign-up | Legal record that consent was given |
@@ -90,6 +91,18 @@ Questions, requests, or complaints: **contact@unitar.app**
 - **Server logs.** Our hosting and database provider records standard request
   logs, which include IP addresses, for security and abuse prevention.
 
+### 3.4 Camera and microphone (Booth)
+
+Booth, Faero's photo booth, uses your camera only after you press
+**Start camera**, and your microphone only while you **record a video**. Your
+browser asks your permission first, and you can withdraw it at any time in your
+browser's site settings. The camera turns off when you leave Booth.
+
+Photos and videos are made in your browser and stay on your device. Nothing is
+sent to us unless you choose to post a photo, in which case it is uploaded like
+any other image you post. Downloading a photo or video saves it to your device
+only.
+
 ---
 
 ## 4. What we do *not* collect
@@ -101,8 +114,11 @@ To be explicit, Faero does **not**:
 - Build cross-site behavioural profiles or use third-party analytics tags.
 - Read your direct messages for advertising, training, or profiling.
 - Require your real name, phone number, date of birth, or government ID.
-- Access your contacts, camera roll (beyond files you explicitly pick),
-  microphone, or precise location.
+- Access your contacts, your precise location, or your photos beyond the files
+  you explicitly pick.
+- Receive anything from your camera or microphone. Booth uses them only after
+  you start it, and what it makes stays on your device unless you post it
+  (see 3.4).
 
 ---
 
@@ -125,8 +141,8 @@ Under GDPR Article 6, we rely on:
 
 ### 6.1 Other users
 
-Your profile, posts, replies, commons memberships, and guestbook entries are
-**public** — visible to anyone on the internet, signed in or not. Direct
+Your profile (including your profile space), posts, replies, commons
+memberships, and guestbook entries are **public** — visible to anyone on the internet, signed in or not. Direct
 messages are visible to the participants in that conversation. Blocks and mutes
 are private to you; the other person is not notified.
 
@@ -142,7 +158,19 @@ are private to you; the other person is not notified.
 These are processors acting on our instructions, except Google Fonts and
 jsDelivr, which are simple asset requests made by your browser.
 
-### 6.3 Legal disclosure
+### 6.3 Services your browser contacts directly
+
+Some features load content straight from other services. We don't send them
+your account details, but like any website they see your IP address and
+browser, and their own privacy policies apply.
+
+| Service | When | What it sees |
+|---|---|---|
+| **Radio Browser** (radio-browser.info) | When you open Radio, search for stations, or play one | Your search or genre, and which station you play (it uses plays to rank stations) |
+| **Radio stations** | While you listen to one | The station's own server streams the audio to you. Each station is run by a third party, not by Faero |
+| **SoundCloud, Mixcloud, YouTube, Bandcamp** | When a post or profile shows one of their music players | These players load from their own sites and may set their own cookies. YouTube players use YouTube's privacy-enhanced mode (youtube-nocookie.com) |
+
+### 6.4 Legal disclosure
 
 We may disclose data if we are legally compelled to, or where it is genuinely
 necessary to prevent imminent harm. We will tell you unless we are legally
@@ -160,6 +188,10 @@ Faero sets **no advertising or analytics cookies**.
 - **Preferences** — your chosen theme, palette, font, glass level, nav style,
   and accessibility toggles — are stored locally in your browser under keys
   beginning `faero-`. They never leave your device.
+- **Radio and profile space** — your recently played stations, and a copy of
+  your profile-space layout so your edits are not lost if saving fails, are
+  also stored locally under `faero-` keys. The layout copy is the same layout
+  you publish on your profile.
 - **Service worker cache** — the app caches its own files so it opens offline.
   It never caches API responses or your content.
 
@@ -217,8 +249,8 @@ When you do:
 
 1. Your posts, replies, likes, follows, messages, guestbook entries, bookmarks,
    blocks, and commons memberships are deleted immediately.
-2. Your profile is anonymised — name, bio, avatar, banner, location, website
-   and tags are erased.
+2. Your profile is anonymised — name, bio, status, avatar, banner, profile
+   background, location, website, tags and your profile space are erased.
 3. Your login record is removed, freeing your email address for reuse.
 
 **What can survive:** replies other people wrote to your posts may remain as

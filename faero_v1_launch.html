@@ -7024,7 +7024,7 @@ function resolveAudioEmbed(url, platform) {
     // searchParams decodes %22 → " — only a real video id may reach src="…".
     if (!/^[A-Za-z0-9_-]{6,20}$/.test(vid)) return null;
     return `<iframe width="100%" height="${HEIGHTS.yt}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"
-      src="https://www.youtube.com/embed/${vid}?rel=0"></iframe>`;
+      src="https://www.youtube-nocookie.com/embed/${vid}?rel=0"></iframe>`;
   }
 
   if (p === 'bc') {
@@ -7843,7 +7843,7 @@ function faeroReleaseFocus() {
 
 /* Legal version — bump this string when the terms change and every user
    is asked to re-accept on next sign-in. */
-var FAERO_TOS_VERSION = '2026-08-09';
+var FAERO_TOS_VERSION = '2026-10-31';
 /* Rendered pages, not the raw .md — browsers serve markdown as plain text.
    Regenerate with `python build_legal.py` after editing either document. */
 var FAERO_TOS_URL     = 'terms.html';
@@ -14843,7 +14843,7 @@ function _pfIdentity() {
    disagree with the payload. The URL now carries nothing but the style. */
 function _pfFrameSrc() {
   if (!_pfIdentity()) return null;   // profile row not loaded yet
-  return `faero-profiles.html?theme=${_pfPageThemeId()}&embed=1`;
+  return `apps/faero-profiles.html?theme=${_pfPageThemeId()}&embed=1`;
 }
 
 /* The themed page announces itself with faeroProfileReady as soon as its

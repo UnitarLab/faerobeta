@@ -13,12 +13,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <!-- The OS desktop. This is what faero.net/ actually serves. -->
-  <url>
-    <loc>https://www.faero.net/</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
 
   <!-- The social app. Lives at an explicit .html path, not at /, because its
        Supabase auth redirects and PWA start_url are registered against it. -->

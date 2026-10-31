@@ -7,7 +7,7 @@
 
 # ── NOT ignored: beta/ ───────────────────────────────────────────────────
 # beta/ is deliberately NOT listed here. It is the closed-beta waitlist page
-# at /beta, it is still linked from the desktop splash, and it stays live.
+# at /beta, it is in the sitemap, and it stays live.
 #
 # One thing to confirm about it, though. It carries a live publishable key for
 # Supabase project pvqxsgqqlupldroooyhy — a DIFFERENT project from the app
@@ -38,13 +38,21 @@ _rasterize.html
 _glasstest/
 faero_koi_30_v3.html
 
-# NOT ignored: faero_liquid_metal_v4.html. It looks like a prototype and was
-# listed here, but index.html:3828 loads it as the animated logo inside the
-# closed-beta popup (<iframe id="beta-logo-frame">). Ignoring it deploys an
-# index.html that references a file the deployment does not contain, so the
-# popup renders with an empty hole where the logo is — and only in production,
-# never locally, since locally the file is right there. Before removing it from
-# the deploy, remove the iframe that needs it.
+faero_liquid_metal_v4.html
+# (It was the animated logo in the desktop's closed-beta popup. The desktop is
+# gone and nothing loads it any more.)
+
+# ── The retired faero OS desktop ─────────────────────────────────────────
+# index.html is now a redirect to the app. The desktop's apps, its games,
+# its old radio and its CSS/JS are no longer linked from anywhere, so they
+# come off the public site. Two files in apps/ are still used by the app:
+#   apps/photobooth.html     the Booth page
+#   apps/faero-profiles.html the profile styles
+apps/*
+!apps/photobooth.html
+!apps/faero-profiles.html
+css/
+js/
 
 # ── Source documents ─────────────────────────────────────────────────────
 # privacy.html / terms.html are the rendered pages and DO ship. These are the

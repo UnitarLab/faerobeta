@@ -218,6 +218,11 @@ Until it runs, the app still works. People can build their space, but it is
 saved only in their own browser and visitors see a default layout. The app
 tells them so when they press Save.
 
+Then run **`10_scrub_deleted_profiles.sql`**. Deleting an account used to
+leave the status line, pronouns, links, profile background, pinned post and
+profile space public; this clears them when an account is deleted, and once
+for accounts already deleted.
+
 ---
 
 ## What file 01 actually does

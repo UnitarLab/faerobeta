@@ -1,8 +1,8 @@
 # Faero Terms of Service
 
 **Effective Date:** August 9, 2026  
-**Last Updated:** August 9, 2026  
-**Version:** 2026-08-09 (Beta)
+**Last Updated:** October 31, 2026  
+**Version:** 2026-10-31 (Beta)
 
 ---
 
@@ -64,9 +64,12 @@ By using Faero, you represent and warrant that:
 
 Faero is a social media platform that allows users to:
 - Create and customize personal profiles with avatars, badges, and seasonal cosmetics
+- Build a profile space from blocks: a profile song, music, shows, links, a Top 8, a guestbook and more
 - Post content including status updates, images, videos, music, and links
 - Interact with other users' content via reactions and comments
-- Explore content via curated and algorithmic feeds
+- Browse a chronological feed and discover people, posts and groups in Explore
+- Listen to live radio stations from around the world
+- Take photos and short videos in Booth, Faero's in-browser photo booth
 - Customize their experience through themes and visual settings
 
 ### 3.1 Beta Status
@@ -81,11 +84,15 @@ Faero is currently in **beta**. This means:
 
 Faero stores your account and content **on our servers**. Specifically:
 
-- Your account, profile, posts, replies, messages, commons memberships and
-  moderation records are stored in our hosted database (Supabase).
+- Your account, profile, profile space, posts, replies, messages, commons
+  memberships and moderation records are stored in our hosted database
+  (Supabase).
 - Images you upload are stored and delivered by our image host (Cloudinary).
 - Only your **display preferences** — theme, palette, font, glass level, and
-  accessibility toggles — are stored locally in your browser. Clearing your
+  accessibility toggles — plus your recently played radio stations and a
+  working copy of your profile-space layout are stored locally in your browser.
+- Photos and videos you take in Booth stay on your device unless you post or
+  download them. Clearing your
   browser storage resets those preferences and signs you out; it does **not**
   delete your account or your content.
 - Your content is synced across every device you sign in on.
@@ -148,6 +155,14 @@ By posting User Content, you represent and warrant that:
 
 We reserve the right (but not the obligation) to review, monitor, remove, or refuse any User Content at our sole discretion, at any time, for any or no reason, without notice or liability to you.
 
+### 5.6 Music, Links and Profile Spaces
+
+Everything you put in your profile space — notes, links, shows, release details, songs and tracks — is User Content and follows these Terms.
+
+- **Music.** Only add songs and tracks you have the right to share, using the official players of the services that host them (SoundCloud, Mixcloud, YouTube or Bandcamp). Faero shows those players; it does not host or copy the audio.
+- **Links.** Links in your space lead to sites we don't control. Don't use them to send people to malware, phishing, scams, or anything this section would not allow on Faero itself.
+- **Shows and releases.** Keep dates, venues and ticket links accurate. Don't use them to sell tickets you don't have or to impersonate an artist or venue.
+
 ---
 
 ## 6. Prohibited Conduct
@@ -167,6 +182,7 @@ You agree not to use Faero to:
 ### 6.3 Privacy Violations
 - Post personally identifiable information about another person without their consent ("doxxing")
 - Record, capture, or distribute private communications without consent
+- Photograph or record anyone in Booth without their consent, or post photos or videos of people who would reasonably expect them to stay private
 - Violate the privacy rights of any individual
 
 ### 6.4 Platform Integrity
@@ -221,13 +237,13 @@ As described in Section 3.2:
 - We do **not** sell, rent, or trade your data to third parties
 - We do **not** read your direct messages for advertising, training, or profiling
 
-### 8.3 Third-Party Fonts
+### 8.3 Third-Party Services
 
-The Platform currently loads fonts from Google Fonts (fonts.googleapis.com). Google's use of data from this service is governed by [Google's Privacy Policy](https://policies.google.com/privacy). This is a current beta implementation detail subject to change.
+Some parts of the Platform load directly from other services: fonts from Google Fonts, the radio station directory from Radio Browser, audio from the radio stations themselves, and music players from SoundCloud, Mixcloud, YouTube and Bandcamp. Those services see your IP address and browser, and their own terms and privacy policies apply. The Privacy Policy lists them and what each one sees.
 
-### 8.4 Future Data Collection
+### 8.4 Changes to Data Practices
 
-When Faero transitions from local-only to server-connected features, we will update this section and our Privacy Policy accordingly, and provide you with appropriate notice and consent mechanisms.
+If we start collecting a new kind of personal data, or share it with a new kind of service, we will update the Privacy Policy first and ask you to review it the next time you sign in.
 
 ### 8.5 GDPR (European Users)
 
@@ -270,6 +286,8 @@ We will terminate the accounts of users who are determined to be repeat copyrigh
 ## 10. Third-Party Services & Links
 
 The Platform may contain links to third-party websites, services, or content. We do not endorse, control, or take responsibility for any third-party content, privacy practices, or terms of service. Your interactions with third-party services are governed solely by those services' own terms and policies.
+
+Radio stations on Faero are run by third parties. We don't control what they broadcast, we don't guarantee that any station is available or appropriate, and a station can stop working at any time.
 
 ---
 

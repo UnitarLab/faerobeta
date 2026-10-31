@@ -55,10 +55,12 @@ PRIVACY_POLICY.md
 
 index.html                  redirects / to the app (the desktop is retired)
 apps/photobooth.html        the camera, shown on the Booth page
+apps/faero-profiles.html    the profile styles (Settings → Profile style)
 
   The other files in apps/ (games, radio, painter, tv, emulator, notepad, chat, …) and the
   css/ and js/ folders belonged to the faero OS desktop. Nothing links to them
-  any more, so leave them off the server.
+  any more, so leave them off the server. .vercelignore already does this
+  on Vercel.
 
 vercel.json                 headers                 (Vercel only)
 _headers                    headers                 (Netlify / Cloudflare)

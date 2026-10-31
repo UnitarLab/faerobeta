@@ -131,7 +131,7 @@ footer a { color:var(--text3); }
 <main>
   <article class="doc">
 <h1 id="faero-privacy-policy">Faero Privacy Policy</h1>
-<p><strong>Effective Date:</strong> August 9, 2026 <strong>Last Updated:</strong> August 9, 2026 <strong>Version:</strong> 1.0 (Beta)</p>
+<p><strong>Effective Date:</strong> August 9, 2026 <strong>Last Updated:</strong> October 31, 2026 <strong>Version:</strong> 1.1 (Beta)</p>
 <p><strong>Contact:</strong> contact@unitar.app</p>
 <hr>
 <blockquote><p><strong>Beta Notice:</strong> Faero is in active beta. This policy describes how the platform handles personal data today. If it changes materially, you'll be asked to review it the next time you sign in.</p></blockquote>
@@ -187,6 +187,7 @@ footer a { color:var(--text3); }
 <tr><td>Display name, username</td><td>Sign-up / profile</td><td>Identifying you to others</td></tr>
 <tr><td>Bio, location, website, tags, avatar, banner</td><td>Profile editor</td><td>Shown on your public profile</td></tr>
 <tr><td>Posts, replies, messages, guestbook notes</td><td>You writing them</td><td>The platform itself</td></tr>
+<tr><td>Your profile space: the blocks you pick and what you type into them (notes, links, shows, release details, mood, a radio station you pin)</td><td>Profile space editor</td><td>Shown on your public profile</td></tr>
 <tr><td>Images you upload</td><td>Compose / profile editor</td><td>Displaying your content</td></tr>
 <tr><td>Commons you join and create</td><td>Your actions</td><td>Group membership</td></tr>
 <tr><td>Terms acceptance + age confirmation</td><td>Sign-up</td><td>Legal record that consent was given</td></tr>
@@ -210,6 +211,9 @@ footer a { color:var(--text3); }
 <li><strong>Server logs.</strong> Our hosting and database provider records standard request</li>
 </ul>
 <p>logs, which include IP addresses, for security and abuse prevention.</p>
+<h3 id="34-camera-and-microphone-booth">3.4 Camera and microphone (Booth)</h3>
+<p>Booth, Faero's photo booth, uses your camera only after you press <strong>Start camera</strong>, and your microphone only while you <strong>record a video</strong>. Your browser asks your permission first, and you can withdraw it at any time in your browser's site settings. The camera turns off when you leave Booth.</p>
+<p>Photos and videos are made in your browser and stay on your device. Nothing is sent to us unless you choose to post a photo, in which case it is uploaded like any other image you post. Downloading a photo or video saves it to your device only.</p>
 <hr>
 <h2 id="4-what-we-do-not-collect">4. What we do <em>not</em> collect</h2>
 <p>To be explicit, Faero does <strong>not</strong>:</p>
@@ -219,9 +223,13 @@ footer a { color:var(--text3); }
 <li>Build cross-site behavioural profiles or use third-party analytics tags.</li>
 <li>Read your direct messages for advertising, training, or profiling.</li>
 <li>Require your real name, phone number, date of birth, or government ID.</li>
-<li>Access your contacts, camera roll (beyond files you explicitly pick),</li>
+<li>Access your contacts, your precise location, or your photos beyond the files</li>
 </ul>
-<p>microphone, or precise location.</p>
+<p>you explicitly pick.</p>
+<ul>
+<li>Receive anything from your camera or microphone. Booth uses them only after</li>
+</ul>
+<p>you start it, and what it makes stays on your device unless you post it (see 3.4).</p>
 <hr>
 <h2 id="5-why-we-process-it-legal-bases">5. Why we process it (legal bases)</h2>
 <p>Under GDPR Article 6, we rely on:</p>
@@ -243,7 +251,7 @@ footer a { color:var(--text3); }
 <hr>
 <h2 id="6-who-else-sees-your-data">6. Who else sees your data</h2>
 <h3 id="61-other-users">6.1 Other users</h3>
-<p>Your profile, posts, replies, commons memberships, and guestbook entries are <strong>public</strong> — visible to anyone on the internet, signed in or not. Direct messages are visible to the participants in that conversation. Blocks and mutes are private to you; the other person is not notified.</p>
+<p>Your profile (including your profile space), posts, replies, commons memberships, and guestbook entries are <strong>public</strong> — visible to anyone on the internet, signed in or not. Direct messages are visible to the participants in that conversation. Blocks and mutes are private to you; the other person is not notified.</p>
 <h3 id="62-processors-we-use">6.2 Processors we use</h3>
 <div class="table-wrap"><table><thead><tr>
 <th>Provider</th>
@@ -256,7 +264,18 @@ footer a { color:var(--text3); }
 <tr><td><strong>jsDelivr</strong></td><td>The Supabase JavaScript client library</td><td>Global CDN</td></tr>
 </tbody></table></div>
 <p>These are processors acting on our instructions, except Google Fonts and jsDelivr, which are simple asset requests made by your browser.</p>
-<h3 id="63-legal-disclosure">6.3 Legal disclosure</h3>
+<h3 id="63-services-your-browser-contacts-directly">6.3 Services your browser contacts directly</h3>
+<p>Some features load content straight from other services. We don't send them your account details, but like any website they see your IP address and browser, and their own privacy policies apply.</p>
+<div class="table-wrap"><table><thead><tr>
+<th>Service</th>
+<th>When</th>
+<th>What it sees</th>
+</tr></thead><tbody>
+<tr><td><strong>Radio Browser</strong> (radio-browser.info)</td><td>When you open Radio, search for stations, or play one</td><td>Your search or genre, and which station you play (it uses plays to rank stations)</td></tr>
+<tr><td><strong>Radio stations</strong></td><td>While you listen to one</td><td>The station's own server streams the audio to you. Each station is run by a third party, not by Faero</td></tr>
+<tr><td><strong>SoundCloud, Mixcloud, YouTube, Bandcamp</strong></td><td>When a post or profile shows one of their music players</td><td>These players load from their own sites and may set their own cookies. YouTube players use YouTube's privacy-enhanced mode (youtube-nocookie.com)</td></tr>
+</tbody></table></div>
+<h3 id="64-legal-disclosure">6.4 Legal disclosure</h3>
 <p>We may disclose data if we are legally compelled to, or where it is genuinely necessary to prevent imminent harm. We will tell you unless we are legally prohibited from doing so.</p>
 <hr>
 <h2 id="7-cookies-and-local-storage">7. Cookies and local storage</h2>
@@ -269,6 +288,10 @@ footer a { color:var(--text3); }
 <li><strong>Preferences</strong> — your chosen theme, palette, font, glass level, nav style,</li>
 </ul>
 <p>and accessibility toggles — are stored locally in your browser under keys beginning <code>faero-</code>. They never leave your device.</p>
+<ul>
+<li><strong>Radio and profile space</strong> — your recently played stations, and a copy of</li>
+</ul>
+<p>your profile-space layout so your edits are not lost if saving fails, are also stored locally under <code>faero-</code> keys. The layout copy is the same layout you publish on your profile.</p>
 <ul>
 <li><strong>Service worker cache</strong> — the app caches its own files so it opens offline.</li>
 </ul>
@@ -323,9 +346,9 @@ footer a { color:var(--text3); }
 </ol>
 <p>blocks, and commons memberships are deleted immediately.</p>
 <ol>
-<li>Your profile is anonymised — name, bio, avatar, banner, location, website</li>
+<li>Your profile is anonymised — name, bio, status, avatar, banner, profile</li>
 </ol>
-<p>and tags are erased.</p>
+<p>background, location, website, tags and your profile space are erased.</p>
 <ol>
 <li>Your login record is removed, freeing your email address for reuse.</li>
 </ol>

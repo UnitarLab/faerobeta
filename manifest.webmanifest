@@ -44,6 +44,8 @@
   "shortcuts": [
     { "name": "Compose",  "url": "faero_v1_launch.html#compose" },
     { "name": "Messages", "url": "faero_v1_launch.html#messages" },
-    { "name": "Explore",  "url": "faero_v1_launch.html#explore" }
+    { "name": "Explore",  "url": "faero_v1_launch.html#explore" },
+    { "name": "Radio",    "url": "faero_v1_launch.html#/radio" },
+    { "name": "Booth",    "url": "faero_v1_launch.html#/booth" }
   ]
 }

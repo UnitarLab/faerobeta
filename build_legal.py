@@ -101,7 +101,7 @@ blockquote {{
 }}
 blockquote p:last-child {{ margin-bottom:0; }}
 code {{
-  font-family:ui-monospace, 'Space Mono', monospace; font-size:.88em;
+  font-family:inherit; font-weight:600; font-size:.92em;
   background:var(--bg2); padding:2px 6px; border-radius:5px; color:var(--text);
 }}
 .table-wrap {{ overflow-x:auto; margin:0 0 18px; }}
