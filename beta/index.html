@@ -7,21 +7,27 @@
   <meta name="theme-color" content="#1a88d4">
 
   <!-- Open Graph / Facebook -->
+  <!-- Brand host, not faerobeta.vercel.app: share equity must accrue to the
+       domain we own. www (not apex) because the apex A record is still stale —
+       see DEPLOY.md. Flip these to apex only after that record is removed AND
+       this origin 301s to it. -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://faerobeta.vercel.app/beta">
+  <meta property="og:url" content="https://www.faero.net/beta">
   <meta property="og:title" content="faero OS — Our Promised Future">
   <meta property="og:description" content="A real internet social OS. Your desktop, your world. Glass, gradients and a future we all dreamed of. Join the closed beta now.">
-  <meta property="og:image" content="https://faerobeta.vercel.app/preview.png">
+  <meta property="og:image" content="https://www.faero.net/preview.png">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://faerobeta.vercel.app/beta">
+  <meta property="twitter:url" content="https://www.faero.net/beta">
   <meta property="twitter:title" content="faero OS — Our Promised Future">
   <meta property="twitter:description" content="A real internet social OS. Your desktop, your world. Glass, gradients and a future we all dreamed of. Join the closed beta now.">
-  <meta property="twitter:image" content="https://faerobeta.vercel.app/preview.png">
+  <meta property="twitter:image" content="https://www.faero.net/preview.png">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>FAERO — Our Promised Future</title>
+<link rel="icon" type="image/webp" href="../favicon.webp">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;0,800;0,900;1,200;1,300&family=Kode+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -521,7 +527,7 @@ body {
 <div class="taskbar">
   <div class="start-btn">
     <div class="start-orb">
-      <img src="https://i.ibb.co/hh0h9ZX/faerologomediumsiksi.webp" alt="FAERO">
+      <img src="assets/faero-logo.webp" alt="FAERO">
     </div>
     FAERO
   </div>
@@ -532,7 +538,7 @@ body {
 
   <!-- MAIN LOGO BG — behind all content, centered on page -->
   <div class="hero-main-logo-bg" aria-hidden="true">
-    <img src="https://i.ibb.co/hh0h9ZX/faerologomediumsiksi.webp" alt="">
+    <img src="assets/faero-logo.webp" alt="">
   </div>
 
   <!-- CENTERED HERO HEADER -->
@@ -549,7 +555,7 @@ body {
   <!-- MAIN WINDOW -->
   <div class="window">
     <div class="window-titlebar">
-      <div class="title-icon"><img src="https://i.ibb.co/hh0h9ZX/faerologomediumsiksi.webp" alt=""></div>
+      <div class="title-icon"><img src="assets/faero-logo.webp" alt=""></div>
       <div class="window-title-text">faero.net — early access</div>
       <div class="window-buttons">
         <div class="wb wb-min">&#8211;</div>
@@ -585,7 +591,7 @@ body {
           <!-- Ring canvas: CSS 92×92, actual buffer scaled by DPR for crisp rendering -->
           <canvas id="badgeRingCanvas" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:1;width:92px;height:92px;"></canvas>
           <!-- Koi avatar image — 62×62 centered — darkens on click -->
-          <img id="aviImg" src="https://images2.alphacoders.com/941/thumb-1920-941898.jpg" alt="koi" style="width:62px;height:62px;border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);object-fit:cover;object-position:center 40%;z-index:2;background:#081828;transition:filter 0.18s,transform 0.18s;">
+          <img id="aviImg" src="assets/koi-default.jpg" alt="koi" style="width:62px;height:62px;border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);object-fit:cover;object-position:center 40%;z-index:2;background:#081828;transition:filter 0.18s,transform 0.18s;">
           <!-- Dark overlay shown on click -->
           <div id="aviDarkOverlay" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:62px;height:62px;border-radius:50%;background:rgba(0,0,0,0);z-index:3;pointer-events:none;transition:background 0.18s;"></div>
           <!-- Pip canvas: CSS 30×30, DPR-scaled for crisp clownfish -->
@@ -674,7 +680,7 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
   const isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
   const TAU=Math.PI*2, sn=Math.sin, cs=Math.cos;
   const DPR = window.devicePixelRatio || 1;
-  const DEFAULT_SRC = "https://images2.alphacoders.com/941/thumb-1920-941898.jpg";
+  const DEFAULT_SRC = "assets/koi-default.jpg";
   
   let ringT = 0, pipT = 0, lastTs = 0;
   let customAviSrc = null;
@@ -884,7 +890,7 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
         </div>
 
         <div class="social-row">
-          <a href="https://tiktok.com/@frutigeraerosoftclub" target="_blank" rel="noopener" class="soc-btn soc-tiktok">
+          <a href="https://www.tiktok.com/@frutigeraerosoftclub" target="_blank" rel="noopener" class="soc-btn soc-tiktok">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.21 8.21 0 0 0 4.79 1.53V6.78a4.85 4.85 0 0 1-1.02-.09z"/></svg>
             Follow on TikTok
           </a>
@@ -901,6 +907,18 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
         </div>
         <h3>You're in.</h3>
         <p>Your Aura Badge is held. You'll hear from us when FAERO opens.<br><br>Welcome to the promised future.</p>
+        <!-- Post-signup is the highest-intent moment. Don't let it dead-end:
+             the wait can be weeks, so hand over the channels now. -->
+        <div class="social-row" style="justify-content:center;">
+          <a href="https://www.tiktok.com/@frutigeraerosoftclub" target="_blank" rel="noopener" class="soc-btn soc-tiktok">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.21 8.21 0 0 0 4.79 1.53V6.78a4.85 4.85 0 0 1-1.02-.09z"/></svg>
+            Follow on TikTok
+          </a>
+          <a href="https://discord.com/invite/gf8yYG7FzZ" target="_blank" rel="noopener" class="soc-btn soc-discord">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+            Join Discord
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -908,7 +926,7 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
   <!-- FEATURES WINDOW -->
   <div class="window-features">
     <div class="window-titlebar">
-      <div class="title-icon"><img src="https://i.ibb.co/hh0h9ZX/faerologomediumsiksi.webp" alt=""></div>
+      <div class="title-icon"><img src="assets/faero-logo.webp" alt=""></div>
       <div class="window-title-text">What FAERO actually is</div>
       <div class="window-buttons">
         <div class="wb wb-min">&#8211;</div>
@@ -973,7 +991,7 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
   <div class="popup-box">
     <div class="popup-titlebar">
       <div class="title-icon" style="width:14px;height:14px;border-radius:50%;overflow:hidden;flex-shrink:0;">
-        <img src="https://i.ibb.co/hh0h9ZX/faerologomediumsiksi.webp" alt="" style="width:100%;height:100%;object-fit:cover;">
+        <img src="assets/faero-logo.webp" alt="" style="width:100%;height:100%;object-fit:cover;">
       </div>
       <div class="popup-title-text">FAERO &mdash; You're in</div>
       <div class="window-buttons">
@@ -1451,7 +1469,7 @@ document.getElementById('xpEmail').addEventListener('input', function () {
         ">
           <!-- Titlebar -->
           <div style="background:linear-gradient(180deg,#4c9be8 0%,#1a5faa 50%,#1a5faa 95%,#1058a7 100%);padding:7px 10px 8px;display:flex;align-items:center;gap:8px;user-select:none;">
-            <img src="https://i.ibb.co/hh0h9ZX/faerologomediumsiksi.webp" style="width:15px;height:15px;border-radius:50%;object-fit:cover;" alt="">
+            <img src="assets/faero-logo.webp" style="width:15px;height:15px;border-radius:50%;object-fit:cover;" alt="">
             <span style="font-family:'Exo 2',sans-serif;font-size:0.73rem;font-weight:600;color:white;text-shadow:1px 1px 3px rgba(0,0,0,0.5);flex:1;">Avatar Preview — Frutiger Aero Badge</span>
             <div style="display:flex;gap:3px;">
               <div style="width:18px;height:18px;border-radius:4px;background:linear-gradient(180deg,#7ec8fc,#3a80d2);border:1px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(255,255,255,0.9);cursor:pointer;font-weight:700;">&#8211;</div>
@@ -1466,7 +1484,7 @@ document.getElementById('xpEmail').addEventListener('input', function () {
             <div style="position:relative;width:180px;height:180px;margin:0 auto 22px;overflow:visible;">
               <canvas id="aviModalRing" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:1;width:180px;height:180px;"></canvas>
               <!-- The big avatar image -->
-              <img id="aviModalImg" src="https://images2.alphacoders.com/941/thumb-1920-941898.jpg" alt="Your avatar"
+              <img id="aviModalImg" src="assets/koi-default.jpg" alt="Your avatar"
                 style="width:130px;height:130px;border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);object-fit:cover;object-position:center 40%;z-index:2;background:#081828;transition:opacity 0.25s;">
               <!-- Pip canvas large -->
               <canvas id="aviModalPip" style="position:absolute;bottom:6px;right:6px;z-index:10;border-radius:50%;border:3px solid rgba(0,0,0,.55);box-shadow:0 0 14px #4488ff99,0 0 4px rgba(0,0,0,0.8);width:52px;height:52px;"></canvas>

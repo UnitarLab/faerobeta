@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minesweeper — faero</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Exo+2:wght@300;400;600;700;800&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { height:100%; }
+  body {
+    /* Frutiger Aero sky → water → grass horizon */
+    background: linear-gradient(180deg,
+      #1a88d4 0%, #3aa8e8 26%, #7cc8f0 48%,
+      #b8e6f8 64%, #cfeec0 76%, #8ec86a 88%, #56a34a 100%);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    font-family:'Exo 2',sans-serif; overflow:hidden; user-select:none;
+  }
+
+  /* ── rising water bubbles ── */
+  .bubble {
+    position:fixed; bottom:-70px; border-radius:50%; pointer-events:none; z-index:0;
+    background: radial-gradient(circle at 32% 28%,
+      rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.35) 22%,
+      rgba(190,230,255,0.12) 48%, rgba(140,210,250,0.05) 75%);
+    border:1px solid rgba(255,255,255,0.55);
+    box-shadow: inset -4px -6px 12px rgba(120,190,240,0.25), 0 0 12px rgba(255,255,255,0.25);
+    animation: rise linear infinite;
+  }
+  @keyframes rise {
+    0%   { transform: translate(0,0) scale(1); opacity:0; }
+    8%   { opacity:1; }
+    50%  { transform: translate(14px,-55vh) scale(1.04); }
+    100% { transform: translate(-10px,-112vh) scale(0.96); opacity:0.9; }
+  }
+
+  h1 {
+    font-family:'Orbitron',sans-serif; font-size:1.45rem; font-weight:900; letter-spacing:0.3em;
+    color:transparent; z-index:1; margin-bottom:0.75rem;
+    background:linear-gradient(180deg,#ffffff 20%,#d7f1ff 55%,#8fd0f5 100%);
+    -webkit-background-clip:text; background-clip:text;
+    filter:drop-shadow(0 2px 3px rgba(10,60,110,0.55)) drop-shadow(0 0 16px rgba(255,255,255,0.5));
+  }
+
+  .hud { display:flex; gap:0.7rem; align-items:center; margin-bottom:0.75rem; z-index:1; flex-wrap:wrap; justify-content:center; }
+  .panel {
+    background: linear-gradient(160deg, rgba(255,255,255,0.82) 0%, rgba(222,243,255,0.55) 100%);
+    border:1px solid rgba(255,255,255,0.95);
+    border-radius:14px; padding:0.3rem 0.9rem; text-align:center; min-width:72px;
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    box-shadow: inset 0 1px 0 #ffffff, inset 0 -1px 0 rgba(170,215,245,0.6),
+                0 8px 22px rgba(15,80,130,0.28);
+  }
+  .panel-label { font-size:0.52rem; letter-spacing:0.2em; color:#2a7cb0; text-transform:uppercase; font-weight:700; }
+  .panel-value { font-family:'Orbitron',sans-serif; font-size:1.15rem; font-weight:700; color:#0a4d80; text-shadow:0 1px 0 rgba(255,255,255,0.8); }
+  #face { font-size:1.3rem; line-height:1.2; }
+
+  .btn {
+    font-family:'Exo 2',sans-serif; font-size:0.66rem; font-weight:800;
+    letter-spacing:0.14em; text-transform:uppercase; padding:0.55rem 1.15rem;
+    border-radius:50px; cursor:pointer; position:relative; transition:all 0.15s;
+    color:#fff; text-shadow:0 1px 2px rgba(10,60,110,0.5);
+    background:linear-gradient(180deg,#6cc6f2 0%,#1a88d4 55%,#1272b8 100%);
+    border:1px solid rgba(255,255,255,0.75);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 4px 12px rgba(15,80,130,0.4);
+  }
+  .btn::before { content:''; position:absolute; left:8%; right:8%; top:6%; height:42%;
+    background:linear-gradient(180deg,rgba(255,255,255,0.75),rgba(255,255,255,0.05));
+    border-radius:50px; pointer-events:none; }
+  .btn:hover { transform:translateY(-1px); filter:brightness(1.08); }
+  .btn.active { background:linear-gradient(180deg,#ffe27a 0%,#f5b81a 55%,#d99e06 100%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 0 16px rgba(255,205,60,0.75); }
+
+  .bezel {
+    border-radius:22px; padding:10px; z-index:1;
+    background:linear-gradient(160deg, rgba(255,255,255,0.7) 0%, rgba(205,236,255,0.38) 100%);
+    border:1px solid rgba(255,255,255,0.9);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    box-shadow: inset 0 1px 0 #fff, 0 18px 44px rgba(12,70,115,0.4);
+  }
+  #board {
+    display:grid; grid-template-columns:repeat(9,33px);
+    grid-auto-rows:33px; gap:2px; padding:8px; border-radius:14px;
+    background:rgba(255,255,255,0.22);
+    border:1px solid rgba(255,255,255,0.55);
+    box-shadow: inset 0 2px 8px rgba(20,90,140,0.25);
+  }
+  .cell {
+    border-radius:7px; display:flex; align-items:center; justify-content:center;
+    font-family:'Orbitron',sans-serif; font-size:0.9rem; font-weight:700;
+    cursor:pointer; transition:filter 0.1s, transform 0.05s;
+    /* glossy grass-green tile */
+    background:linear-gradient(180deg, rgba(214,248,228,0.92) 0%, rgba(126,214,168,0.88) 42%, rgba(46,152,98,0.88) 100%);
+    border:1px solid rgba(255,255,255,0.65);
+    box-shadow: inset 0 2px 0 rgba(255,255,255,0.85), inset 0 -3px 5px rgba(20,110,65,0.35);
+  }
+  .cell:hover { filter:brightness(1.1); }
+  .cell:active { transform:scale(0.94); }
+  .cell.revealed {
+    cursor:default;
+    background:linear-gradient(180deg, rgba(255,255,255,0.34) 0%, rgba(225,245,255,0.22) 100%);
+    border-color:rgba(255,255,255,0.4);
+    box-shadow: inset 0 1px 3px rgba(20,90,140,0.18);
+  }
+  .cell.flagged {
+    background:linear-gradient(180deg, #fff3c2 0%, #ffd75e 45%, #eda90c 100%);
+    box-shadow: inset 0 2px 0 rgba(255,255,255,0.9), inset 0 -3px 5px rgba(170,110,5,0.4);
+  }
+  .cell.mine-hit {
+    background:radial-gradient(circle at 40% 35%, #ffb0a0 0%, #ef5340 55%, #b02a1a 100%);
+    box-shadow: inset 0 2px 0 rgba(255,255,255,0.6), 0 0 14px rgba(255,80,50,0.8);
+  }
+  .n1{color:#0b62a8} .n2{color:#177f36} .n3{color:#c0392b} .n4{color:#6b3fa0}
+  .n5{color:#a8571a} .n6{color:#0e7f74} .n7{color:#a8286e} .n8{color:#455a64}
+
+  #msg { min-height:1.3rem; margin-top:0.65rem; z-index:1;
+    font-size:0.68rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase;
+    color:#0a4d80; text-shadow:0 1px 0 rgba(255,255,255,0.7); text-align:center; }
+  .hint { margin-top:0.35rem; z-index:1; font-size:0.6rem; font-weight:600;
+    color:rgba(10,70,115,0.55); letter-spacing:0.1em; }
+</style>
+</head>
+<body>
+  <div class="bubble" style="left:6%;  width:26px;height:26px; animation-duration:11s;"></div>
+  <div class="bubble" style="left:18%; width:14px;height:14px; animation-duration:8s;  animation-delay:-3s;"></div>
+  <div class="bubble" style="left:34%; width:34px;height:34px; animation-duration:13s; animation-delay:-6s;"></div>
+  <div class="bubble" style="left:55%; width:18px;height:18px; animation-duration:9s;  animation-delay:-1s;"></div>
+  <div class="bubble" style="left:72%; width:40px;height:40px; animation-duration:14s; animation-delay:-8s;"></div>
+  <div class="bubble" style="left:88%; width:22px;height:22px; animation-duration:10s; animation-delay:-4s;"></div>
+
+  <h1>MINESWEEPER</h1>
+
+  <div class="hud">
+    <div class="panel"><div class="panel-label">Mines</div><div class="panel-value" id="mineCount">10</div></div>
+    <div class="panel"><span id="face">&#128578;</span></div>
+    <div class="panel"><div class="panel-label">Time</div><div class="panel-value" id="time">0</div></div>
+    <button class="btn" id="flagBtn" title="Toggle flag mode (mobile)">&#9873; Flag</button>
+    <button class="btn" onclick="reset()">&#8635;</button>
+  </div>
+
+  <div class="bezel"><div id="board"></div></div>
+  <div id="msg"></div>
+  <div class="hint">left-click reveal &middot; right-click / flag-mode to mark</div>
+
+<script>
+(() => {
+  const W = 9, H = 9, MINES = 10;
+  const board = document.getElementById('board');
+  const msg = document.getElementById('msg');
+  const face = document.getElementById('face');
+  const timeEl = document.getElementById('time');
+  const mineEl = document.getElementById('mineCount');
+  const flagBtn = document.getElementById('flagBtn');
+  let cells, mines, flags, revealed, started, over, timer, seconds, flagMode = false;
+
+  function reset() {
+    clearInterval(timer);
+    board.innerHTML = '';
+    cells = []; mines = new Set(); flags = new Set();
+    revealed = 0; started = false; over = false; seconds = 0;
+    timeEl.textContent = '0'; mineEl.textContent = MINES;
+    msg.textContent = ''; face.innerHTML = '&#128578;';
+    flagBtn.classList.remove('active'); flagMode = false;
+    for (let i = 0; i < W * H; i++) {
+      const c = document.createElement('div');
+      c.className = 'cell'; c.dataset.i = i;
+      c.addEventListener('click', () => tap(i));
+      c.addEventListener('contextmenu', e => { e.preventDefault(); toggleFlag(i); });
+      board.appendChild(c); cells.push(c);
+    }
+  }
+
+  const nbrs = i => {
+    const r = Math.floor(i / W), c = i % W, out = [];
+    for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) {
+      if (!dr && !dc) continue;
+      const nr = r + dr, nc = c + dc;
+      if (nr >= 0 && nr < H && nc >= 0 && nc < W) out.push(nr * W + nc);
+    }
+    return out;
+  };
+
+  // Mines are placed AFTER the first click so it can never be fatal.
+  function placeMines(safe) {
+    const banned = new Set([safe, ...nbrs(safe)]);
+    while (mines.size < MINES) {
+      const i = Math.floor(Math.random() * W * H);
+      if (!banned.has(i)) mines.add(i);
+    }
+  }
+
+  const count = i => nbrs(i).filter(n => mines.has(n)).length;
+
+  function startTimer() {
+    timer = setInterval(() => { timeEl.textContent = ++seconds; }, 1000);
+  }
+
+  function toggleFlag(i) {
+    if (over || cells[i].classList.contains('revealed')) return;
+    if (flags.has(i)) { flags.delete(i); cells[i].classList.remove('flagged'); cells[i].textContent = ''; }
+    else if (flags.size < MINES) { flags.add(i); cells[i].classList.add('flagged'); cells[i].textContent = '\u2691'; }
+    mineEl.textContent = MINES - flags.size;
+  }
+
+  function tap(i) {
+    if (over || flags.has(i)) return;
+    if (flagMode) return toggleFlag(i);
+    if (!started) { placeMines(i); started = true; startTimer(); }
+    if (mines.has(i)) return boom(i);
+    flood(i);
+    check();
+  }
+
+  function flood(start) {
+    const stack = [start];
+    while (stack.length) {
+      const i = stack.pop();
+      const c = cells[i];
+      if (over || c.classList.contains('revealed') || flags.has(i)) continue;
+      c.classList.add('revealed');
+      c.classList.remove('flagged');
+      flags.delete(i);
+      mineEl.textContent = MINES - flags.size;
+      revealed++;
+      const n = count(i);
+      if (n) { c.textContent = n; c.classList.add('n' + n); }
+      else nbrs(i).forEach(nb => stack.push(nb));
+    }
+  }
+
+  function boom(hit) {
+    over = true; clearInterval(timer);
+    face.innerHTML = '&#128128;';
+    msg.textContent = 'boom. try again';
+    mines.forEach(i => {
+      cells[i].classList.add('revealed');
+      cells[i].textContent = '\uD83D\uDCA3';
+    });
+    cells[hit].classList.add('mine-hit');
+  }
+
+  function check() {
+    if (revealed === W * H - MINES) {
+      over = true; clearInterval(timer);
+      face.innerHTML = '&#128526;';
+      msg.textContent = 'field cleared in ' + seconds + 's';
+      flags.forEach(i => { cells[i].textContent = '\uD83D\uDCA3'; });
+    }
+  }
+
+  flagBtn.addEventListener('click', () => {
+    flagMode = !flagMode;
+    flagBtn.classList.toggle('active', flagMode);
+  });
+
+  reset();
+})();
+</script>
+</body>
+</html>

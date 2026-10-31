@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Rock Paper Scissors — faero</title>
+<link rel="stylesheet" href="aero.css">
+<style>
+  .hands { display:flex; gap:2.2rem; z-index:1; margin-bottom:1rem; }
+  .hand {
+    width:110px; height:110px; border-radius:26px; display:flex; align-items:center; justify-content:center;
+    font-size:3.4rem;
+    background:linear-gradient(160deg, rgba(255,255,255,0.82), rgba(222,243,255,0.55));
+    border:1px solid rgba(255,255,255,0.95);
+    box-shadow: inset 0 1px 0 #fff, 0 8px 22px rgba(15,80,130,0.28);
+  }
+  .hand.shake { animation: shake 0.4s ease infinite; }
+  @keyframes shake { 25% { transform:rotate(-12deg) translateY(-6px);} 75% { transform:rotate(12deg) translateY(-6px);} }
+  .vs { font-family:'Orbitron',sans-serif; color:#fff; text-shadow:0 2px 6px rgba(10,60,110,0.6); align-self:center; font-size:1.2rem; }
+  .choices { display:flex; gap:0.7rem; z-index:1; }
+  .pick {
+    width:74px; height:74px; border-radius:20px; cursor:pointer; font-size:2.2rem;
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(180deg,#d8f2ff,#7cc8f0);
+    border:1px solid rgba(255,255,255,0.9);
+    box-shadow: inset 0 2px 0 rgba(255,255,255,0.9), 0 5px 14px rgba(15,80,130,0.35);
+    transition:transform .1s;
+  }
+  .pick:hover { transform:translateY(-4px); }
+  .pick.won { outline:3px solid #ffd75e; }
+</style>
+</head>
+<body class="faero">
+<script src="aero.js"></script>
+<h1>ROCK &middot; PAPER &middot; SCISSORS</h1>
+<div class="hud">
+  <div class="panel"><div class="panel-label">You</div><div class="panel-value" id="sy">0</div></div>
+  <div class="panel"><div class="panel-label">Draws</div><div class="panel-value" id="sd">0</div></div>
+  <div class="panel"><div class="panel-label">CPU</div><div class="panel-value" id="sc">0</div></div>
+</div>
+<div class="hands">
+  <div class="hand" id="you">&#129309;</div>
+  <div class="vs">VS</div>
+  <div class="hand" id="cpu">&#129309;</div>
+</div>
+<div class="choices">
+  <div class="pick" data-i="0" title="Rock">&#9994;</div>
+  <div class="pick" data-i="1" title="Paper">&#9995;</div>
+  <div class="pick" data-i="2" title="Scissors">&#9996;</div>
+</div>
+<div id="msg" class="gmsg">choose your hand</div>
+
+<script>
+(() => {
+  const ICONS = ['\u270A','\u270B','\u270C'];
+  const NAMES = ['rock','paper','scissors'];
+  const you = document.getElementById('you'), cpu = document.getElementById('cpu');
+  const msg = document.getElementById('msg');
+  let sy = 0, sc = 0, sd = 0;
+
+  document.querySelectorAll('.pick').forEach(p => p.addEventListener('click', () => play(+p.dataset.i)));
+
+  function play(i) {
+    const picks = [...document.querySelectorAll('.pick')];
+    picks.forEach(p => p.classList.remove('won'));
+    you.textContent = '\u270A'; cpu.textContent = '\u270A';
+    you.classList.add('shake'); cpu.classList.add('shake');
+
+    setTimeout(() => {
+      you.classList.remove('shake'); cpu.classList.remove('shake');
+      const j = Math.floor(Math.random()*3);
+      you.textContent = ICONS[i]; cpu.textContent = ICONS[j];
+      picks[i].classList.add('won');
+
+      if (i === j) { sd++; document.getElementById('sd').textContent = sd; msg.textContent = 'draw'; }
+      else if ((i - j + 3) % 3 === 1) { sy++; document.getElementById('sy').textContent = sy; msg.textContent = 'you win the round!'; }
+      else { sc++; document.getElementById('sc').textContent = sc; msg.textContent = 'cpu wins the round'; }
+    }, 900);
+  }
+})();
+</script>
+</body>
+</html>

@@ -29,4 +29,6 @@ Disallow: /*?cb=
 
 Allow: /
 
-Sitemap: https://faero.net/sitemap.xml
+# Serving host: www, not apex — the apex A record is still stale (see
+# DEPLOY.md). Keep this line in sync with the canonical/og: tags of both shells.
+Sitemap: https://www.faero.net/sitemap.xml

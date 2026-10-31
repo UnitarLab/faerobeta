@@ -14,7 +14,7 @@
 
   <!-- The OS desktop. This is what faero.net/ actually serves. -->
   <url>
-    <loc>https://faero.net/</loc>
+    <loc>https://www.faero.net/</loc>
     <lastmod>2026-08-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -23,7 +23,7 @@
   <!-- The social app. Lives at an explicit .html path, not at /, because its
        Supabase auth redirects and PWA start_url are registered against it. -->
   <url>
-    <loc>https://faero.net/faero_v1_launch.html</loc>
+    <loc>https://www.faero.net/faero_v1_launch.html</loc>
     <lastmod>2026-08-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -31,21 +31,21 @@
 
   <!-- Closed-beta waitlist. Still live and still linked from the desktop. -->
   <url>
-    <loc>https://faero.net/beta</loc>
+    <loc>https://www.faero.net/beta</loc>
     <lastmod>2026-08-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://faero.net/privacy.html</loc>
+    <loc>https://www.faero.net/privacy.html</loc>
     <lastmod>2026-08-13</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
 
   <url>
-    <loc>https://faero.net/terms.html</loc>
+    <loc>https://www.faero.net/terms.html</loc>
     <lastmod>2026-08-13</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>

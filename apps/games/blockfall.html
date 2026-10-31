@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Blockfall — faero</title>
+<link rel="stylesheet" href="aero.css">
+<style>
+  canvas { display:block; border-radius:14px; }
+</style>
+</head>
+<body class="faero">
+<script src="aero.js"></script>
+<h1>BLOCKFALL</h1>
+<div class="hud">
+  <div class="panel"><div class="panel-label">Score</div><div class="panel-value" id="score">0</div></div>
+  <div class="panel"><div class="panel-label">Lines</div><div class="panel-value" id="lines">0</div></div>
+  <button class="btn" onclick="reset()">New</button>
+</div>
+<div class="bezel"><canvas id="cv" width="260" height="468"></canvas></div>
+<div id="msg" class="gmsg">&larr; &rarr; move &middot; &uarr; rotate &middot; &darr; soft drop &middot; space hard drop</div>
+
+<script>
+(() => {
+  const cv = document.getElementById('cv'), ctx = cv.getContext('2d');
+  const COLS = 10, ROWS = 18, CELL = 26;
+  const COLORS = ['#2ea05f','#1272b8','#e0a010','#d0342c','#7c4dbd','#0e9488','#d96420'];
+  const SHAPES = [
+    [[1,1,1,1]],
+    [[1,1],[1,1]],
+    [[0,1,0],[1,1,1]],
+    [[1,0,0],[1,1,1]],
+    [[0,0,1],[1,1,1]],
+    [[1,1,0],[0,1,1]],
+    [[0,1,1],[1,1,0]]
+  ];
+  let grid, piece, px, py, pi, score, lines, dropMs, timer, over;
+
+  function reset() {
+    grid = Array.from({length: ROWS}, () => Array(COLS).fill(-1));
+    score = 0; lines = 0; dropMs = 620; over = false;
+    sync(); spawn();
+    clearInterval(timer);
+    timer = setInterval(tick, dropMs);
+    draw();
+  }
+
+  function sync() {
+    document.getElementById('score').textContent = score;
+    document.getElementById('lines').textContent = lines;
+  }
+
+  function spawn() {
+    pi = Math.floor(Math.random()*SHAPES.length);
+    piece = SHAPES[pi].map(r => [...r]);
+    px = (COLS/2 - piece[0].length/2) | 0; py = 0;
+    if (collides(piece, px, py)) {
+      over = true;
+      clearInterval(timer);
+      document.getElementById('msg').textContent = 'stacked out! score ' + score;
+      setTimeout(() => document.getElementById('msg').textContent = '', 2500);
+    }
+  }
+
+  function collides(shape, ox, oy) {
+    for (let r = 0; r < shape.length; r++) for (let c = 0; c < shape[r].length; c++) {
+      if (!shape[r][c]) continue;
+      const x = ox+c, y = oy+r;
+      if (x < 0 || x >= COLS || y >= ROWS) return true;
+      if (y >= 0 && grid[y][x] !== -1) return true;
+    }
+    return false;
+  }
+
+  function lock() {
+    piece.forEach((row, r) => row.forEach((v, c) => {
+      if (v && py+r >= 0) grid[py+r][px+c] = pi;
+    }));
+    let cleared = 0;
+    for (let y = ROWS-1; y >= 0; y--) {
+      if (grid[y].every(v => v !== -1)) {
+        grid.splice(y, 1);
+        grid.unshift(Array(COLS).fill(-1));
+        cleared++; y++;
+      }
+    }
+    if (cleared) {
+      lines += cleared;
+      score += [0,100,280,520,800][cleared];
+      if (lines % 5 === 0 && dropMs > 160) { dropMs -= 50; clearInterval(timer); timer = setInterval(tick, dropMs); }
+      sync();
+    }
+    spawn();
+  }
+
+  function tick() {
+    if (over) return;
+    if (!collides(piece, px, py+1)) py++;
+    else lock();
+    draw();
+  }
+
+  function hardDrop() { while (!collides(piece, px, py+1)) { py++; score += 2; } lock(); sync(); draw(); }
+
+  function rotate() {
+    const rot = piece[0].map((_, i) => piece.map(row => row[i]).reverse());
+    for (const k of [0,-1,1,-2,2]) if (!collides(rot, px+k, py)) { piece = rot; px += k; return; }
+  }
+
+  addEventListener('keydown', e => {
+    if (over || !timer) return;
+    const k = e.key;
+    if (k === 'ArrowLeft' && !collides(piece, px-1, py)) px--;
+    else if (k === 'ArrowRight' && !collides(piece, px+1, py)) px++;
+    else if (k === 'ArrowDown') { if (!collides(piece, px, py+1)) { py++; score++; } }
+    else if (k === 'ArrowUp') rotate();
+    else if (k === ' ') { e.preventDefault(); hardDrop(); }
+    else return;
+    e.preventDefault();
+    sync(); draw();
+  });
+
+  function draw() {
+    const g = ctx.createLinearGradient(0,0,0,cv.height);
+    g.addColorStop(0,'#bfe9ff'); g.addColorStop(1,'#63b8dd');
+    ctx.fillStyle = g; ctx.fillRect(0,0,cv.width,cv.height);
+
+    ctx.strokeStyle = 'rgba(255,255,255,0.16)';
+    for (let x = 1; x < COLS; x++) { ctx.beginPath(); ctx.moveTo(x*CELL,0); ctx.lineTo(x*CELL,cv.height); ctx.stroke(); }
+    for (let y = 1; y < ROWS; y++) { ctx.beginPath(); ctx.moveTo(0,y*CELL); ctx.lineTo(cv.width,y*CELL); ctx.stroke(); }
+
+    const block = (x, y, ci) => {
+      const bg = ctx.createLinearGradient(x, y, x, y+CELL);
+      bg.addColorStop(0, 'rgba(255,255,255,0.85)');
+      bg.addColorStop(0.25, COLORS[ci]);
+      bg.addColorStop(1, shade(COLORS[ci]));
+      ctx.fillStyle = bg;
+      ctx.beginPath(); ctx.roundRect(x+1.5, y+1.5, CELL-3, CELL-3, 5); ctx.fill();
+    };
+
+    grid.forEach((row, y) => row.forEach((v, x) => { if (v !== -1) block(x*CELL, y*CELL, v); }));
+    if (piece && !over)
+      piece.forEach((row, r) => row.forEach((v, c) => { if (v && py+r >= 0) block((px+c)*CELL, (py+r)*CELL, pi); }));
+  }
+
+  function shade(hex) {
+    const n = parseInt(hex.slice(1),16);
+    return `rgb(${((n>>16)&255)*0.65|0},${((n>>8)&255)*0.7|0},${(n&255)*0.75|0})`;
+  }
+
+  reset();
+})();
+</script>
+</body>
+</html>

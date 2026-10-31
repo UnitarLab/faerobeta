@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bubble Shooter — faero</title>
+<link rel="stylesheet" href="aero.css">
+<style>
+  canvas { display:block; border-radius:14px; cursor:crosshair; }
+</style>
+</head>
+<body class="faero">
+<script src="aero.js"></script>
+<h1>BUBBLE SHOOTER</h1>
+<div class="hud">
+  <div class="panel"><div class="panel-label">Score</div><div class="panel-value" id="score">0</div></div>
+  <div class="panel"><div class="panel-label">Shots</div><div class="panel-value" id="shots">0</div></div>
+  <button class="btn" onclick="init()">New</button>
+</div>
+<div class="bezel"><canvas id="cv" width="392" height="480"></canvas>
+  <div id="overlay"><div id="overlayTitle">READY</div><div id="overlaySub">Aim with the mouse &middot; click to fire.<br>Match 3+ of a colour to pop them.</div><button class="btn" onclick="start()">Play</button></div>
+</div>
+<div id="msg" class="gmsg">pop 3+ of a colour</div>
+
+<script>
+(() => {
+  const cv = document.getElementById('cv'), ctx = cv.getContext('2d');
+  const W = cv.width;
+  const COLORS = ['#2ea05f','#d0342c','#e0a010','#1272b8'];
+  const R = 22, CELL = 46;
+  let grid, rows, cur, next, score, shots, flying, over, angle;
+
+  function init() {
+    grid = []; rows = 5;
+    for (let r = 0; r < rows; r++) {
+      const n = W / CELL | 0;
+      const line = [];
+      for (let c = 0; c < n - (r % 2); c++) line.push(Math.floor(Math.random()*COLORS.length));
+      grid.push(line);
+    }
+    score = 0; shots = 0; over = false; flying = null; angle = -Math.PI/2;
+    sync();
+    loadNext(); loadNext();
+    draw();
+  }
+
+  function start() { document.getElementById('overlay').classList.add('hide'); }
+
+  function sync() {
+    document.getElementById('score').textContent = score;
+    document.getElementById('shots').textContent = shots;
+  }
+
+  function loadNext() {
+    if (!next) { cur = rand(); next = rand(); return; }
+    cur = next; next = rand();
+  }
+  const rand = () => Math.floor(Math.random()*COLORS.length);
+
+  const bx = (r,c) => c*CELL + (r%2 ? CELL : CELL/2);
+  const by = r => r*CELL*0.88 + R + 6;
+
+  cv.addEventListener('mousemove', e => {
+    const rect = cv.getBoundingClientRect();
+    angle = Math.atan2(e.clientY - rect.top - (by(rows)+40), e.clientX - rect.left - W/2);
+    if (angle > -0.15) angle = -0.15;
+    if (angle < -Math.PI+0.15) angle = -Math.PI+0.15;
+  });
+  cv.addEventListener('click', fire);
+  addEventListener('keydown', e => { if (e.code === 'Space') { e.preventDefault(); fire(); } });
+
+  function fire() {
+    if (flying || over) return;
+    shots++; sync();
+    flying = { x: W/2, y: by(rows)+40, vx: Math.cos(angle)*11, vy: Math.sin(angle)*11, color: cur };
+    loop();
+  }
+
+  function loop() {
+    if (flying) { stepFly(); draw(); requestAnimationFrame(loop); }
+  }
+
+  function stepFly() {
+    const f = flying;
+    f.x += f.vx; f.y += f.vy;
+    if (f.x < R || f.x > W-R) { f.vx *= -1; f.x = Math.max(R, Math.min(W-R, f.x)); }
+
+    let hit = f.y <= R+6;
+    if (!hit) outer:
+    for (let r = 0; r < grid.length; r++) for (let c = 0; c < grid[r].length; c++) {
+      if (grid[r][c] == null) continue;
+      const dx = f.x - bx(r,c), dy = f.y - by(r);
+      if (dx*dx + dy*dy < (CELL*0.82)**2) { hit = true; break outer; }
+    }
+    if (!hit) return;
+
+    const r = Math.max(0, Math.round((f.y - R - 6) / (CELL*0.88)));
+    while (grid.length <= r) grid.push([]);
+    let c = Math.round((f.x - (r%2 ? CELL : CELL/2)) / CELL);
+    const maxC = (W / CELL | 0) - (r % 2);
+    c = Math.max(0, Math.min(maxC, c));
+    while (grid[r].length <= c) grid[r].push(null);
+    while (grid[r].length <= maxC && grid[r].length <= c) grid[r].push(null);
+    grid[r][c] = f.color;
+
+    flying = null;
+    resolve(r, c);
+    if (!over) { loadNext(); draw(); }
+  }
+
+  function neighbors(r, c) {
+    const odd = r % 2;
+    return [[r,c-1],[r,c+1],[r-1,c],[r-1,odd?c+1:c-1],[r+1,c],[r+1,odd?c+1:c-1]];
+  }
+
+  function resolve(r, c) {
+    const color = grid[r][c];
+    const seen = new Set([r+','+c]);
+    const stack = [[r,c]], cluster = [[r,c]];
+    while (stack.length) {
+      const [cr, cc] = stack.pop();
+      for (const [nr, nc] of neighbors(cr, cc)) {
+        const k = nr+','+nc;
+        if (seen.has(k) || !grid[nr] || grid[nr][nc] !== color || grid[nr][nc] == null) continue;
+        seen.add(k); stack.push([nr,nc]); cluster.push([nr,nc]);
+      }
+    }
+    if (cluster.length >= 3) {
+      cluster.forEach(([a,b]) => { grid[a][b] = null; score += 10; });
+      dropFloating();
+    } else {
+      score += 0;
+    }
+
+    if (grid.some((line, ri) => line.some((v, ci) => v != null && by(ri) > cv.height - 90))) {
+      gameOver();
+    } else if (shots % 6 === 0) {
+      grid.push(new Array(W / CELL | 0).fill(null).map(() => Math.floor(Math.random()*COLORS.length)));
+    }
+    sync();
+  }
+
+  function dropFloating() {
+    const anchored = new Set();
+    const stack = [];
+    for (let c = 0; c < grid[0].length; c++) if (grid[0][c] != null) { stack.push([0,c]); anchored.add('0,'+c); }
+    while (stack.length) {
+      const [r, c] = stack.pop();
+      for (const [nr, nc] of neighbors(r, c)) {
+        if (anchored.has(nr+','+nc) || !grid[nr] || grid[nr][nc] == null) continue;
+        anchored.add(nr+','+nc); stack.push([nr,nc]);
+      }
+    }
+    for (let r = 0; r < grid.length; r++) for (let c = 0; c < grid[r].length; c++) {
+      if (grid[r][c] != null && !anchored.has(r+','+c)) { grid[r][c] = null; score += 15; }
+    }
+  }
+
+  function gameOver() {
+    over = true; flying = null;
+    const ov = document.getElementById('overlay');
+    document.getElementById('overlayTitle').textContent = 'GAME OVER';
+    document.getElementById('overlaySub').innerHTML = 'Score: <b>' + score + '</b>';
+    ov.querySelector('.btn').textContent = 'Again';
+    ov.classList.remove('hide');
+  }
+
+  function drawBubble(x, y, ci, alpha = 1) {
+    ctx.globalAlpha = alpha;
+    const g = ctx.createRadialGradient(x-7, y-8, 2, x, y, R);
+    g.addColorStop(0, 'rgba(255,255,255,0.95)');
+    g.addColorStop(0.35, COLORS[ci]);
+    g.addColorStop(1, shade(COLORS[ci]));
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(x, y, R-2, 0, 7); ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.7)'; ctx.lineWidth = 1.4; ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
+
+  function shade(hex) {
+    const n = parseInt(hex.slice(1),16);
+    return `rgb(${(n>>16)&255},${((n>>8)&255)*0.7|0},${(n&255)*0.65|0})`;
+  }
+
+  function draw() {
+    const g = ctx.createLinearGradient(0,0,0,cv.height);
+    g.addColorStop(0,'#bfe9ff'); g.addColorStop(1,'#63b8dd');
+    ctx.fillStyle = g; ctx.fillRect(0,0,W,cv.height);
+
+    for (let r = 0; r < grid.length; r++)
+      for (let c = 0; c < grid[r].length; c++)
+        if (grid[r][c] != null) drawBubble(bx(r,c), by(r), grid[r][c]);
+
+    ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+    ctx.beginPath(); ctx.moveTo(W/2, by(rows)+40);
+    ctx.lineTo(W/2 + Math.cos(angle)*60, by(rows)+40 + Math.sin(angle)*60);
+    ctx.setLineDash([4,5]); ctx.stroke(); ctx.setLineDash([]);
+
+    drawBubble(cur != null ? W/2 : W/2, by(rows)+40, cur ?? 0);
+    if (next != null) drawBubble(W/2 + 44, by(rows)+52, next, 0.85);
+
+    ctx.fillStyle = 'rgba(30,120,180,0.25)';
+    ctx.fillRect(0, cv.height-70, W, 70);
+    ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+    ctx.beginPath(); ctx.moveTo(0,cv.height-70); ctx.lineTo(W,cv.height-70); ctx.stroke();
+
+    if (flying) drawBubble(flying.x, flying.y, flying.color);
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>

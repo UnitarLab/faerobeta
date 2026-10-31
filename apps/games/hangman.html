@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hangman — faero</title>
+<link rel="stylesheet" href="aero.css">
+<style>
+  #word { display:flex; gap:7px; z-index:1; margin:0.4rem 0 0.9rem; flex-wrap:wrap; justify-content:center; }
+  .slot {
+    width:34px; height:44px; border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Orbitron',sans-serif; font-size:1.25rem; font-weight:700; color:#0a4d80;
+    background:linear-gradient(180deg, rgba(255,255,255,0.85), rgba(210,238,255,0.6));
+    border:1px solid rgba(255,255,255,0.95);
+    box-shadow: inset 0 1px 0 #fff, inset 0 -2px 4px rgba(20,90,140,0.15);
+  }
+  #keys { display:flex; flex-wrap:wrap; gap:5px; max-width:430px; justify-content:center; z-index:1; }
+  .key {
+    width:30px; height:36px; border-radius:9px; cursor:pointer;
+    font-family:'Exo 2',sans-serif; font-weight:800; font-size:0.95rem; color:#0a4d80;
+    background:linear-gradient(180deg,#eaf7ff,#bfe6fa);
+    border:1px solid rgba(255,255,255,0.95);
+    box-shadow: inset 0 2px 0 rgba(255,255,255,0.9), 0 3px 8px rgba(15,80,130,0.25);
+  }
+  .key:hover { filter:brightness(1.08); }
+  .key.used { opacity:0.35; pointer-events:none; }
+  .key.bad { color:#c0392b; text-decoration:line-through; }
+</style>
+</head>
+<body class="faero">
+<script src="aero.js"></script>
+<h1>HANGMAN</h1>
+<div class="hud">
+  <div class="panel"><div class="panel-label">Lives</div><div class="panel-value" id="lives">&#9829;&#9829;&#9829;&#9829;&#9829;&#9829;</div></div>
+  <button class="btn" onclick="reset()">New word</button>
+</div>
+<div id="word"></div>
+<div id="keys"></div>
+<div id="msg" class="gmsg">guess the aero word &middot; six lives</div>
+
+<script>
+(() => {
+  const WORDS = ['bubbles','aquarium','waterfall','meadow','sunlight','desktop','window','garden','skyline','lagoon','crystal','breeze','raindrops','horizon','glacier','orchard','seashell','cloudless','springtime','dewdrop'];
+  const wordEl = document.getElementById('word');
+  const keysEl = document.getElementById('keys');
+  const livesEl = document.getElementById('lives'), msg = document.getElementById('msg');
+  let word, guessed, lives;
+
+  function reset() {
+    word = WORDS[Math.floor(Math.random()*WORDS.length)];
+    guessed = new Set(); lives = 6;
+    livesEl.innerHTML = '\u2665'.repeat(6);
+    msg.textContent = 'guess the aero word \u00b7 six lives';
+    keysEl.innerHTML = '';
+    for (const ch of 'abcdefghijklmnopqrstuvwxyz') {
+      const k = document.createElement('button');
+      k.className = 'key'; k.textContent = ch.toUpperCase();
+      k.addEventListener('click', () => guess(ch, k));
+      keysEl.appendChild(k);
+    }
+    render();
+  }
+
+  function render() {
+    wordEl.innerHTML = [...word].map(ch =>
+      `<div class="slot">${guessed.has(ch) ? ch.toUpperCase() : ''}</div>`).join('');
+  }
+
+  function guess(ch, key) {
+    if (guessed.has(ch)) return;
+    guessed.add(ch);
+    key.classList.add('used');
+
+    if (word.includes(ch)) {
+      render();
+      if ([...word].every(c => guessed.has(c))) win();
+    } else {
+      key.classList.add('bad');
+      lives--;
+      livesEl.innerHTML = '\u2665'.repeat(lives) + '<span style="opacity:.3">' + '\u2665'.repeat(6-lives) + '</span>';
+      if (lives <= 0) lose();
+    }
+  }
+
+  function win() {
+    msg.textContent = 'saved! the word was ' + word.toUpperCase();
+    endRound();
+  }
+
+  function lose() {
+    guessed = new Set([...word]);
+    render();
+    msg.textContent = 'it was ' + word.toUpperCase();
+    endRound();
+  }
+
+  function endRound() {
+    [...keysEl.children].forEach(k => k.classList.add('used'));
+  }
+
+  addEventListener('keydown', e => {
+    const ch = e.key.toLowerCase();
+    if (/^[a-z]$/.test(ch)) {
+      const btn = [...keysEl.children].find(k => k.textContent.toLowerCase() === ch);
+      if (btn && !btn.classList.contains('used')) guess(ch, btn);
+    }
+  });
+
+  reset();
+})();
+</script>
+</body>
+</html>

@@ -79,9 +79,14 @@ Deno.serve(async (req) => {
   const actorName = actor?.display_name || actor?.username || 'Someone';
   const { title, body } = copyFor(row.type, actorName, row.body);
 
-  const url = row.entity_type === 'post'  ? `faero_v1_launch.html#post/${row.entity_id}`
-            : row.entity_type === 'reply' ? `faero_v1_launch.html#post/${row.entity_id}`
-            : `faero_v1_launch.html#/feed`;
+  // A reply notification's entity_id is the REPLY's id; the router only
+  // opens posts, so resolve the parent post or the tap lands on nothing.
+  let postId: string | null = row.entity_type === 'post' ? row.entity_id : null;
+  if (row.entity_type === 'reply' && row.entity_id) {
+    const { data: rep } = await admin.from('replies').select('post_id').eq('id', row.entity_id).maybeSingle();
+    postId = rep?.post_id ?? null;
+  }
+  const url = postId ? `faero_v1_launch.html#post/${postId}` : `faero_v1_launch.html#/feed`;
 
   const message = JSON.stringify({ title, body, url, type: row.type, tag: `faero-${row.type}` });
 

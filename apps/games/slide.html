@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Slide Puzzle — faero</title>
+<link rel="stylesheet" href="aero.css">
+<style>
+  #board { display:grid; grid-template-columns:repeat(4,72px); grid-auto-rows:72px; gap:6px; z-index:1; }
+  .tile {
+    border-radius:12px; display:flex; align-items:center; justify-content:center;
+    font-family:'Orbitron',sans-serif; font-size:1.5rem; font-weight:700; color:#0a4d80;
+    cursor:pointer;
+    background:linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(190,232,250,0.9) 50%, rgba(110,190,235,0.9) 100%);
+    border:1px solid #fff;
+    box-shadow: inset 0 2px 0 #fff, inset 0 -3px 5px rgba(20,90,140,0.3), 0 3px 8px rgba(15,80,130,0.25);
+    transition:left 0.08s, top 0.08s;
+  }
+  .tile.blank { visibility:hidden; }
+</style>
+</head>
+<body class="faero">
+<script src="aero.js"></script>
+<h1>SLIDE PUZZLE</h1>
+<div class="hud">
+  <div class="panel"><div class="panel-label">Moves</div><div class="panel-value" id="moves">0</div></div>
+  <div class="panel"><div class="panel-label">Best</div><div class="panel-value" id="best">&ndash;</div></div>
+  <button class="btn" onclick="reset()">Shuffle</button>
+</div>
+<div class="bezel"><div id="board"></div></div>
+<div id="msg" class="gmsg">order 1&ndash;15 &middot; blank ends bottom-right</div>
+
+<script>
+(() => {
+  const N = 4, CELLS = N*N;
+  const boardEl = document.getElementById('board');
+  const movesEl = document.getElementById('moves'), bestEl = document.getElementById('best'), msg = document.getElementById('msg');
+  let tiles, moves;
+
+  const stored = +(localStorage.getItem('faero-slide-best') || 0);
+  if (stored) bestEl.textContent = stored;
+
+  function reset() {
+    do { tiles = shuffle([...Array(CELLS).keys()]); } while (!solvable(tiles) || solved());
+    moves = 0; movesEl.textContent = '0';
+    msg.textContent = 'slide to order';
+    render();
+  }
+
+  function shuffle(a) {
+    for (let i = a.length-1; i > 0; i--) {
+      const j = Math.floor(Math.random()*(i+1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function solvable(t) {
+    let inv = 0;
+    for (let i = 0; i < CELLS-1; i++) for (let j = i+1; j < CELLS-1; j++)
+      if (t[i] && t[j] && t[i] > t[j]) inv++;
+    const blankRowFromBottom = N - Math.floor(t.indexOf(0)/N);
+    return (N % 2 === 1) ? inv % 2 === 0 : (inv + blankRowFromBottom) % 2 === 1;
+  }
+
+  const solved = () => tiles.every((v,i) => v === (i+1) % CELLS);
+
+  function render() {
+    boardEl.innerHTML = '';
+    tiles.forEach((v, i) => {
+      const t = document.createElement('div');
+      t.className = 'tile' + (v === 0 ? ' blank' : '');
+      if (v) t.textContent = v;
+      t.addEventListener('click', () => slide(i));
+      boardEl.appendChild(t);
+    });
+  }
+
+  function slide(i) {
+    const z = tiles.indexOf(0);
+    const [ri, ci] = [Math.floor(i/N), i%N], [rz, cz] = [Math.floor(z/N), z%N];
+    if (Math.abs(ri-rz) + Math.abs(ci-cz) !== 1) return;
+    [tiles[i], tiles[z]] = [tiles[z], tiles[i]];
+    movesEl.textContent = ++moves;
+    render();
+    if (solved()) win();
+  }
+
+  function win() {
+    msg.textContent = 'solved in ' + moves + ' moves!';
+    const best = +(localStorage.getItem('faero-slide-best') || 0);
+    if (!best || moves < best) { localStorage.setItem('faero-slide-best', moves); bestEl.textContent = moves; msg.textContent += ' new best!'; }
+  }
+
+  addEventListener('keydown', e => {
+    const z = tiles.indexOf(0), rz = Math.floor(z/N), cz = z%N;
+    const map = { ArrowUp:[rz+1,cz], ArrowDown:[rz-1,cz], ArrowLeft:[rz,cz+1], ArrowRight:[rz,cz-1] };
+    if (map[e.key]) {
+      e.preventDefault();
+      const [r,c] = map[e.key];
+      if (r >= 0 && r < N && c >= 0 && c < N) slide(r*N+c);
+    }
+  });
+
+  reset();
+})();
+</script>
+</body>
+</html>

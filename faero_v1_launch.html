@@ -23,10 +23,10 @@
      "https://faero.net/" and that was correct when a rewrite made / serve this
      file. It no longer does: / is the faero OS desktop, a different page. Left
      as-is, every share of this app previewed — and linked to — the desktop. -->
-<meta property="og:url"          content="https://faero.net/faero_v1_launch.html">
-<link rel="canonical"            href="https://faero.net/faero_v1_launch.html">
+<meta property="og:url"          content="https://www.faero.net/faero_v1_launch.html">
+<link rel="canonical"            href="https://www.faero.net/faero_v1_launch.html">
 <!-- Crawlers do not reliably render SVG, so the share card is a real JPEG. -->
-<meta property="og:image"        content="https://faero.net/og-card.jpg">
+<meta property="og:image"        content="https://www.faero.net/og-card.jpg">
 <meta property="og:image:type"   content="image/jpeg">
 <meta property="og:image:width"  content="1200">
 <meta property="og:image:height" content="630">
@@ -34,7 +34,7 @@
 <meta name="twitter:card"        content="summary_large_image">
 <meta name="twitter:title"       content="FAERO — Our Promised Future">
 <meta name="twitter:description" content="A solarpunk social commons. Music, mutual aid, repair, gardening, solar.">
-<meta name="twitter:image"       content="https://faero.net/og-card.jpg">
+<meta name="twitter:image"       content="https://www.faero.net/og-card.jpg">
 <meta name="twitter:image:alt"   content="FAERO — Our Promised Future">
 
 <!-- Favicon — the real Faero mark, generated from the same paths as the
@@ -118,6 +118,23 @@ window.addEventListener('unhandledrejection', e => faeroLogError('unhandledrejec
 const _ESC_MAP = { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' };
 function faeroEsc(s) {
   return String(s == null ? '' : s).replace(/[&<>"']/g, c => _ESC_MAP[c]);
+}
+
+/* A JS string literal for an inline handler: onclick="f(${faeroJsArg(x)})".
+   faeroEsc alone is NOT enough there — the HTML parser decodes &#39; back
+   to ' before the JS runs, so an escaped name still breaks out of '…'.
+   JSON-encode first (JS-safe), then HTML-escape (attribute-safe). Emits its
+   own quotes — do not wrap it in '…'. */
+function faeroJsArg(s) {
+  return faeroEsc(JSON.stringify(String(s == null ? '' : s)));
+}
+
+/* avatar_color / badge_color are user-writable columns that land inside
+   style="…". Only a plain hex colour gets through; anything else (a stray
+   quote, url(), expression) falls back. */
+function faeroSafeColor(c, fallback) {
+  const v = String(c == null ? '' : c).trim();
+  return /^#[0-9a-f]{3,8}$/i.test(v) ? v : (fallback || '#1565C0');
 }
 
 /* URLs get an extra gate: an attacker-supplied avatar_url of
@@ -6981,7 +6998,8 @@ function resolveAudioEmbed(url, platform) {
       const u = new URL(url);
       vid = u.searchParams.get('v') || u.pathname.replace('/','');
     } catch(e) {}
-    if (!vid) return null;
+    // searchParams decodes %22 → " — only a real video id may reach src="…".
+    if (!/^[A-Za-z0-9_-]{6,20}$/.test(vid)) return null;
     return `<iframe width="100%" height="${HEIGHTS.yt}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"
       src="https://www.youtube.com/embed/${vid}?rel=0"></iframe>`;
   }
@@ -7030,7 +7048,9 @@ function initMusicEmbeds() {
     const prebuiltSrc = card.dataset.musicEmbedSrc;
     let embedHtml;
     if (prebuiltSrc) {
-      embedHtml = `<iframe width="100%" height="${HEIGHTS[platform] || 120}" frameborder="0" allow="autoplay" src="${prebuiltSrc}" seamless></iframe>`;
+      embedHtml = faeroSafeUrl(prebuiltSrc)
+        ? `<iframe width="100%" height="${HEIGHTS[platform] || 120}" frameborder="0" allow="autoplay" src="${faeroSafeUrl(prebuiltSrc)}" seamless></iframe>`
+        : null;
     } else {
       embedHtml = resolveAudioEmbed(url, platform);
     }
@@ -7041,7 +7061,7 @@ function initMusicEmbeds() {
       <div class="mec-header">
         <div class="mec-platform-icon">${icon}</div>
         <div class="mec-info">
-          <div class="mec-title">${title}</div>
+          <div class="mec-title">${faeroEsc(title)}</div>
           <div class="mec-platform-pill">
             <span class="mec-platform-dot"></span>${label}
           </div>
@@ -7183,26 +7203,27 @@ function dmTimeAgo(iso) {
 function dmConvoRowHTML(c) {
   const p      = c.other_profile || {};
   const name   = p.display_name || p.username || 'Unknown';
-  const init   = name.charAt(0).toUpperCase();
-  const color  = p.avatar_color || '#1565C0';
+  const initRaw = name.charAt(0).toUpperCase();
+  const init   = faeroEsc(initRaw);
+  const color  = faeroSafeColor(p.avatar_color);
   const av     = faeroSafeUrl(p.avatar_url)
-    ? `<img src="${faeroSafeUrl(p.avatar_url)}" alt="${init}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" onerror="this.style.display='none';this.parentElement.textContent='${init}'">`
+    ? `<img src="${faeroSafeUrl(p.avatar_url)}" alt="${init}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" onerror="this.style.display='none';if(this.parentElement)this.parentElement.textContent=${faeroJsArg(initRaw)}">`
     : init;
   const unread = c.unread_count > 0
-    ? `<span class="dm-convo-badge">${c.unread_count}</span>` : '';
+    ? `<span class="dm-convo-badge">${Number(c.unread_count) || 0}</span>` : '';
   const preview = c.last_message_body
     ? (c.last_message_body.length > 42 ? c.last_message_body.slice(0,42)+'…' : c.last_message_body)
     : 'No messages yet';
   return `
-    <div class="dm-convo-item" data-convo="${c.id}" onclick="dmOpen(this,'${c.id}')">
+    <div class="dm-convo-item" data-convo="${faeroEsc(c.id)}" onclick="dmOpen(this,${faeroJsArg(c.id)})">
       <div class="dm-convo-av" style="background:linear-gradient(135deg,${color},${color}99)">${av}</div>
       <div class="dm-convo-body">
         <div class="dm-convo-row1">
-          <span class="dm-convo-name">${name}</span>
+          <span class="dm-convo-name">${faeroEsc(name)}</span>
           <span class="dm-convo-time">${dmTimeAgo(c.last_message_at)}</span>
         </div>
         <div class="dm-convo-row2">
-          <span class="dm-convo-preview">${preview}</span>
+          <span class="dm-convo-preview">${faeroEsc(preview)}</span>
           ${unread}
         </div>
       </div>
@@ -7290,14 +7311,15 @@ function dmBubbleHTML(msg, otherProfile) {
   const time   = new Date(msg.created_at).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
   const p      = otherProfile || {};
   const name   = p.display_name || p.username || '?';
-  const init   = name.charAt(0).toUpperCase();
-  const color  = p.avatar_color || '#1565C0';
+  const initRaw = name.charAt(0).toUpperCase();
+  const init   = faeroEsc(initRaw);
+  const color  = faeroSafeColor(p.avatar_color);
   const avHTML = isMine ? '' : `<div class="dm-msg-av" style="background:linear-gradient(135deg,${color},${color}99)">${
     p.avatar_url
-      ? `<img src="${faeroSafeUrl(p.avatar_url)}" alt="${init}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" onerror="this.style.display='none';this.parentElement.textContent='${init}'">`
+      ? `<img src="${faeroSafeUrl(p.avatar_url)}" alt="${init}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" onerror="this.style.display='none';if(this.parentElement)this.parentElement.textContent=${faeroJsArg(initRaw)}">`
       : init
   }</div>`;
-  const body = (msg.body || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const body = faeroEsc(msg.body || '');
   return `
     <div class="dm-msg dm-msg--${side}" onclick="dmMsgTap(this)">
       ${avHTML}
@@ -7329,14 +7351,14 @@ async function dmOpen(el, convoId) {
   const convo = DM_CONVO_CACHE[convoId] || {};
   const other = convo.other_profile || {};
   const name  = other.display_name || other.username || 'Unknown';
-  const color = other.avatar_color || '#1565C0';
+  const color = faeroSafeColor(other.avatar_color);
   const init  = name.charAt(0).toUpperCase();
 
   // update thread header
   const avEl = document.getElementById('dm-thread-av');
   avEl.style.background = `linear-gradient(135deg,${color},${color}99)`;
   if (other.avatar_url) {
-    avEl.innerHTML = `<img src="${faeroSafeUrl(other.avatar_url)}" alt="${init}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" onerror="this.style.display='none';this.parentElement.textContent='${init}'">`;
+    avEl.innerHTML = `<img src="${faeroSafeUrl(other.avatar_url)}" alt="${faeroEsc(init)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" onerror="this.style.display='none';if(this.parentElement)this.parentElement.textContent=${faeroJsArg(init)}">`;
   } else {
     avEl.textContent = init;
   }
@@ -7360,7 +7382,7 @@ async function dmOpen(el, convoId) {
     msgs.innerHTML = `
       <div class="dm-empty-state">
         <div class="dm-empty-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-        <div class="dm-empty-title">Say hello to ${name}</div>
+        <div class="dm-empty-title">Say hello to ${faeroEsc(name)}</div>
         <div class="dm-empty-sub">Start the conversation.</div>
       </div>`;
   } else {
@@ -7378,6 +7400,9 @@ async function dmOpen(el, convoId) {
       event: 'INSERT', schema: 'public', table: 'messages',
       filter: `conversation_id=eq.${convoId}`
     }, payload => {
+      // Our own sends are already on screen as the optimistic bubble;
+      // realtime echoes them back too, which showed every message twice.
+      if (payload.new.sender_id === FAERO_USER?.id) return;
       const emptyState = msgs.querySelector('.dm-empty-state');
       if (emptyState) emptyState.remove();
       msgs.insertAdjacentHTML('beforeend', dmBubbleHTML(payload.new, other));
@@ -7475,7 +7500,8 @@ function dmNewSearch(q) {
     const { data } = await supabase.from('profiles')
       .select('id,display_name,username,avatar_url')
       .neq('id', FAERO_USER.id)
-      .or(`username.ilike.%${q}%,display_name.ilike.%${q}%`)
+      // , ( ) are PostgREST .or() syntax — a raw comma in q splits the filter.
+      .or(`username.ilike.%${q.replace(/[,()*%\\]/g, ' ').trim()}%,display_name.ilike.%${q.replace(/[,()*%\\]/g, ' ').trim()}%`)
       .limit(12);
     if (!data?.length) {
       results.innerHTML = '<div class="dm-new-hint">No one found — try a different name</div>';
@@ -7483,15 +7509,15 @@ function dmNewSearch(q) {
     }
     results.innerHTML = data.map(u => {
       const name = u.display_name || u.username || '?';
-      const init = name[0].toUpperCase();
+      const init = faeroEsc(name[0].toUpperCase());
       const av   = faeroSafeUrl(u.avatar_url)
-        ? `<img src="${faeroSafeUrl(u.avatar_url)}" alt="${init}" onerror="this.style.display='none';this.parentElement.textContent='${init}'">`
+        ? `<img src="${faeroSafeUrl(u.avatar_url)}" alt="${init}" onerror="this.style.display='none';if(this.parentElement)this.parentElement.textContent=${faeroJsArg(name[0].toUpperCase())}">`
         : init;
-      return `<div class="dm-new-row" onclick="dmNewSelectUser('${u.id}','${(u.display_name||u.username||'').replace(/'/g,"\\'")}','${(u.avatar_url||'').replace(/'/g,"\\'")}','${(u.username||'').replace(/'/g,"\\'")}')">
+      return `<div class="dm-new-row" onclick="dmNewSelectUser(${faeroJsArg(u.id)},${faeroJsArg(u.display_name||u.username||'')},${faeroJsArg(u.avatar_url||'')},${faeroJsArg(u.username||'')})">
         <div class="dm-new-av">${av}</div>
         <div>
-          <div class="dm-new-name">${name}</div>
-          <div class="dm-new-handle">@${u.username || ''}</div>
+          <div class="dm-new-name">${faeroEsc(name)}</div>
+          <div class="dm-new-handle">@${faeroEsc(u.username || '')}</div>
         </div>
       </div>`;
     }).join('');
@@ -7501,9 +7527,15 @@ function dmNewSearch(q) {
 async function dmNewSelectUser(userId, displayName, avatarUrl, username) {
   dmCloseNew();
   // check for existing 1:1 conversation
-  const { data: existing } = await supabase.rpc('find_or_create_dm', {
+  const { data: existing, error } = await supabase.rpc('find_or_create_dm', {
     other_user_id: userId
   });
+  if (error) {
+    faeroLogError('dmStart', error.message);
+    faeroToast('err', 'Could not start a chat', String(error.message).includes('DM_NOT_ALLOWED')
+      ? 'This person isn\'t accepting messages from you.' : faeroFriendlyDbError(error));
+    return;
+  }
   // navigate to messages page and open the thread
   navigate('chat');
   setTimeout(async () => {
@@ -7973,6 +8005,8 @@ async function faeroDoSignUp() {
 
   btn.textContent = 'Creating…'; btn.disabled = true;
 
+  // Finish profile + consent before the auth listener reloads the page.
+  window.FAERO_AUTH_HANDOFF = true;
   const { data, error } = await supabase.auth.signUp({
     email,
     password: pass,
@@ -7984,14 +8018,16 @@ async function faeroDoSignUp() {
   });
 
   btn.textContent = 'Create account'; btn.disabled = false;
-  if (error) { errEl.textContent = faeroAuthErr(error); return; }
+  if (error) { window.FAERO_AUTH_HANDOFF = false; errEl.textContent = faeroAuthErr(error); return; }
 
   _famPendingEmail = email;
 
   // Two possible worlds, and we must handle both:
   //   • confirmation ON  → data.session is null, nothing is writable yet
+  //     (consent is recorded server-side from the signup metadata)
   //   • confirmation OFF → we have a session and can finish setup now
   if (!data.session) {
+    window.FAERO_AUTH_HANDOFF = false;
     document.getElementById('fam-verify-email').textContent = email;
     faeroSwitchTab('verify');
     return;
@@ -7999,8 +8035,8 @@ async function faeroDoSignUp() {
 
   await faeroEnsureProfile(data.user, name);
   await faeroAcceptTerms();
-  faeroCloseAuth();
-  if (typeof faeroStartOnboarding === 'function') faeroStartOnboarding();
+  // Reload into a signed-in page; bootstrap starts onboarding.
+  location.reload();
 }
 
 /* Where Supabase should send people back to after a confirm/reset click.
@@ -8187,7 +8223,8 @@ function faeroUpdateProfileCard() {
   if (!FAERO_PROFILE) return;
   const p    = FAERO_PROFILE;
   const name = p.display_name || p.username || '';
-  const init = name.charAt(0).toUpperCase();
+  const initRaw = name.charAt(0).toUpperCase();
+  const init = faeroEsc(initRaw);
 
   // name + handle across all sidebar slots
   document.querySelectorAll('.p-name').forEach(el => { el.textContent = name; });
@@ -8195,7 +8232,7 @@ function faeroUpdateProfileCard() {
     el.textContent = '@' + p.username + ' · joined ' + new Date(p.created_at).getFullYear());
   document.querySelectorAll('.p-bio').forEach(el => el.textContent = p.bio || '');
   document.querySelectorAll('.p-tags').forEach(el =>
-    el.innerHTML = (p.tags||[]).map(t => `<div class="ptag">${t}</div>`).join(''));
+    el.innerHTML = (p.tags||[]).map(t => `<div class="ptag">${faeroEsc(t)}</div>`).join(''));
 
   // stats — update all sidebar instances
   const num = v => (v||0).toLocaleString();
@@ -8207,16 +8244,16 @@ function faeroUpdateProfileCard() {
   const badgeHTML = (p.badges||[]).map(b => {
     if (b === 'og')     return `<div class="pbadge pbadge-og"><svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor" style="display:inline;vertical-align:middle;margin-right:2px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>OG</div>`;
     if (b === 'artist') return `<div class="pbadge pbadge-art">Artist</div>`;
-    return `<div class="pbadge">${b}</div>`;
+    return `<div class="pbadge">${faeroEsc(b)}</div>`;
   }).join('');
   document.querySelectorAll('#sidebar-badges').forEach(el => el.innerHTML = badgeHTML);
 
   // avatar
   document.querySelectorAll('#profile-av-inner').forEach(el => {
-    const color = p.avatar_color || '#1565C0';
+    const color = faeroSafeColor(p.avatar_color);
     el.style.background = `linear-gradient(135deg,${color},${color}88)`;
     el.innerHTML = p.avatar_url
-      ? `<img src="${faeroSafeUrl(p.avatar_url)}" alt="${init}" onerror="this.style.display='none';this.parentElement.textContent='${init}'">`
+      ? `<img src="${faeroSafeUrl(p.avatar_url)}" alt="${init}" onerror="this.style.display='none';if(this.parentElement)this.parentElement.textContent=${faeroJsArg(initRaw)}">`
       : init;
   });
 
@@ -8235,7 +8272,7 @@ function faeroUpdateProfileCard() {
   });
 
   // status mini
-  const statusMini = p.status ? `<span class="pf-status-dot"></span>${p.status}` : '';
+  const statusMini = p.status ? `<span class="pf-status-dot"></span>${faeroEsc(p.status)}` : '';
   document.querySelectorAll('.p-status-mini').forEach(el => el.innerHTML = statusMini);
 
   // top-right pill
@@ -8505,7 +8542,7 @@ function epBuildModal() {
           </div>
           <div class="ep-field">
             <label class="ep-label">Username</label>
-            <input class="ep-input" id="ep-username" type="text" maxlength="30"
+            <input class="ep-input" id="ep-username" type="text" maxlength="24"
                    value="${epEsc(username)}" placeholder="handle"
                    oninput="epSanitiseUsername(this)">
           </div>
@@ -8517,6 +8554,12 @@ function epBuildModal() {
                     placeholder="Tell Faero who you are…"
                     oninput="epCount(this,'ep-bio-count',200)">${epEsc(bio)}</textarea>
           <div class="ep-charcount" id="ep-bio-count">${bio.length}/200</div>
+        </div>
+
+        <div class="ep-field">
+          <label class="ep-label">Status</label>
+          <input class="ep-input" id="ep-status" type="text" maxlength="80"
+                 value="${epEsc(p.status || '')}" placeholder="What are you up to? (shows on your profile)">
         </div>
 
         <div class="ep-row">
@@ -8701,7 +8744,7 @@ function epCount(el, countId, max) {
 }
 
 function epSanitiseUsername(input) {
-  input.value = input.value.toLowerCase().replace(/[^a-z0-9._]/g,'').slice(0,30);
+  input.value = input.value.toLowerCase().replace(/[^a-z0-9._]/g,'').slice(0,24);
 }
 
 function epShowErr(msg) {
@@ -8724,10 +8767,16 @@ async function epSave() {
   const bio      = document.getElementById('ep-bio')?.value.trim()      || '';
   const location = document.getElementById('ep-location')?.value.trim() || '';
   const website  = document.getElementById('ep-website')?.value.trim()  || '';
+  const status   = document.getElementById('ep-status')?.value.trim()   || '';
 
   if (!name)     { epShowErr('Display name is required.'); return; }
   if (!username) { epShowErr('Username is required.'); return; }
-  if (username.length < 2) { epShowErr('Username must be at least 2 characters.'); return; }
+  if (!/^[a-z0-9._]{2,24}$/.test(username)) {
+    epShowErr('Usernames are 2–24 characters: lowercase letters, numbers, dots and underscores.'); return;
+  }
+  if (website && !/^https?:\/\//i.test(website)) {
+    epShowErr('Website needs to start with https://'); return;
+  }
 
   const btn = document.getElementById('ep-save-btn');
   btn.classList.add('saving'); btn.disabled = true;
@@ -8754,6 +8803,7 @@ async function epSave() {
       bio,
       location,
       website,
+      status:     status || null,
       tags:       epTagsFromDOM(),
       avatar_url,
       banner_url,
@@ -8761,12 +8811,15 @@ async function epSave() {
       updated_at: new Date().toISOString(),
     }).eq('id', FAERO_USER.id);
 
-    if (dbErr) throw new Error(dbErr.message);
+    if (dbErr) {
+      if (dbErr.code === '23505') throw new Error(`@${username} is taken — try another.`);
+      throw new Error(faeroFriendlyDbError(dbErr));
+    }
 
     // update local cache
     FAERO_PROFILE = {
       ...FAERO_PROFILE,
-      display_name: name, username, bio, location, website,
+      display_name: name, username, bio, location, website, status: status || null,
       tags: epTagsFromDOM(), avatar_url, banner_url, profile_bg_url,
     };
 
@@ -8789,7 +8842,8 @@ function epApplyToUI() {
   const p    = FAERO_PROFILE;
   if (!p) return;
   const name = p.display_name || p.username || '';
-  const init = name.charAt(0).toUpperCase();
+  const initRaw = name.charAt(0).toUpperCase();
+  const init = faeroEsc(initRaw);
 
   // profile card sidebar
   document.querySelectorAll('.p-name').forEach(el => {
@@ -8815,8 +8869,8 @@ function epApplyToUI() {
 
   // banner
   document.querySelectorAll('.profile-banner').forEach(el => {
-    if (p.banner_url) {
-      el.style.backgroundImage = `url('${p.banner_url}')`;
+    if (p.banner_url && faeroSafeUrl(p.banner_url)) {
+      el.style.backgroundImage = `url(${JSON.stringify(String(p.banner_url))})`;
       el.style.backgroundSize  = 'cover';
       el.style.backgroundPosition = 'center';
     }
@@ -8824,14 +8878,14 @@ function epApplyToUI() {
 
   // tags
   document.querySelectorAll('.p-tags').forEach(el => {
-    el.innerHTML = p.tags.map(t => `<div class="ptag">${t}</div>`).join('');
+    el.innerHTML = (p.tags || []).map(t => `<div class="ptag">${faeroEsc(t)}</div>`).join('');
   });
 
   // top-bar avatar
   const avSm = document.getElementById('tup-av-sm');
   if (avSm) {
     avSm.innerHTML = p.avatar_url
-      ? `<img src="${faeroSafeUrl(p.avatar_url)}" alt="${init}" onerror="this.style.display='none';this.parentElement.textContent='${init}'">`
+      ? `<img src="${faeroSafeUrl(p.avatar_url)}" alt="${init}" onerror="this.style.display='none';if(this.parentElement)this.parentElement.textContent=${faeroJsArg(initRaw)}">`
       : init;
   }
 
@@ -8863,7 +8917,7 @@ function epApplyToUI() {
   // status
   const pfStatus = pfEl('pf-status-line');
   if (pfStatus) pfStatus.innerHTML = p.status
-    ? `<span class="pf-status-dot"></span>${p.status}` : '';
+    ? `<span class="pf-status-dot"></span>${faeroEsc(p.status)}` : '';
 
   document.querySelectorAll('#sidebar-status').forEach(el => el.textContent = p.status || '');
 
@@ -9170,7 +9224,11 @@ function faeroLinkifyBody(escaped) {
       (_, pre, h) => `${pre}<a class="post-mention" href="#profile/${h}" data-mention="${h}">@${h}</a>`)
     .replace(/(^|[\s(])#([A-Za-z0-9_]{1,30})/g,
       (_, pre, t) => `${pre}<a class="post-hashtag" href="#tag/${t}" data-tag="${t}">#${t}</a>`)
-    .replace(/(^|[\s(])(https?:\/\/[^\s<]{4,200})/g, (m, pre, url) => {
+    .replace(/(^|[\s(])(https?:\/\/[^\s<]{4,200})/g, (m, pre, escUrl) => {
+      // The match is escaped text; undo that once so faeroSafeUrl/faeroEsc
+      // below don't double-escape (?a=1&b=2 would otherwise link to &amp;b=2).
+      const url = escUrl.replace(/&(amp|lt|gt|quot|#39);/g,
+        (_, e) => ({ amp:'&', lt:'<', gt:'>', quot:'"', '#39':"'" })[e]);
       const href = faeroSafeUrl(url);
       if (!href) return m;
       const label = url.replace(/^https?:\/\//, '').slice(0, 60) + (url.length > 68 ? '…' : '');
@@ -9752,9 +9810,11 @@ function faeroReplyComposerHTML(postId) {
       <button class="feed-state-btn" onclick="faeroOpenAuth()">Sign in to reply</button>
     </div>`;
   }
-  const av = FAERO_USER.avatar_url
-    ? `<img src="${faeroEsc(FAERO_USER.avatar_url)}" alt="">`
-    : (FAERO_USER.display_name || FAERO_USER.username || '?')[0].toUpperCase();
+  // The auth user has no avatar/name — those live on the profile row.
+  const me = FAERO_PROFILE || {};
+  const av = faeroSafeUrl(me.avatar_url)
+    ? `<img src="${faeroSafeUrl(me.avatar_url)}" alt="">`
+    : faeroEsc((me.display_name || me.username || '?')[0].toUpperCase());
   return `<div class="reply-composer">
     <div class="reply-composer-av">${av}</div>
     <textarea class="reply-input" rows="1" maxlength="2000"
@@ -10074,8 +10134,10 @@ function faeroTimeAgo(iso) {
    BOOTSTRAP
 ══════════════════ */
 async function faeroBootstrap() {
-  // check existing session
-  const { data: { session } } = await supabase.auth.getSession();
+  // check existing session. data is null when the SDK failed to load
+  // (faeroSdkStub), so don't destructure through it.
+  const { data } = await supabase.auth.getSession();
+  const session = data?.session;
   if (session?.user) {
     FAERO_USER = session.user;
     await faeroLoadMyProfile();
@@ -10084,7 +10146,19 @@ async function faeroBootstrap() {
 
   // listen for sign-in / sign-out
   supabase.auth.onAuthStateChange(async (_event, session) => {
+    // A different person (sign in from the modal, sign out, switching
+    // accounts) needs a clean page: the feed's likes/follows, the DM cache,
+    // onboarding and the terms gate were all built for whoever came before.
+    // Flows that show their own screen afterwards (ban, deletion) set
+    // FAERO_AUTH_HANDOFF so this doesn't wipe it.
+    const nextId = session?.user?.id ?? null;
+    if (nextId !== (FAERO_USER?.id ?? null) && !window.FAERO_AUTH_HANDOFF) {
+      location.reload();
+      return;
+    }
+    const sameUser = nextId && nextId === FAERO_USER?.id;
     FAERO_USER    = session?.user ?? null;
+    if (sameUser) return;               // token refresh — profile is unchanged
     FAERO_PROFILE = null;
     if (FAERO_USER) {
       await faeroLoadMyProfile();
@@ -10180,8 +10254,8 @@ function faeroToast(type, title, msg) {
   t.innerHTML = `
     <div class="faero-toast-icon">${icons[type] || '◈'}</div>
     <div class="faero-toast-body">
-      <div class="faero-toast-title">${title}</div>
-      ${msg ? `<div class="faero-toast-msg">${msg}</div>` : ''}
+      <div class="faero-toast-title">${faeroEsc(title)}</div>
+      ${msg ? `<div class="faero-toast-msg">${faeroEsc(msg)}</div>` : ''}
     </div>`;
   tc.appendChild(t);
   setTimeout(() => { t.style.transition = 'opacity 0.4s'; t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, 3800);
@@ -10214,7 +10288,8 @@ function faeroWireRealtimeStatus() {
         if (state === 'joined' || state === 'SUBSCRIBED') {
           fsbSet('rt', 'ok', 'live');
         } else {
-          fsbSet('rt', 'warn', state || '…');
+          // state is the stub Proxy, not a string, when the SDK failed to load
+          fsbSet('rt', 'warn', typeof state === 'string' ? state : '…');
         }
       }
     }, 2000);
@@ -10342,7 +10417,7 @@ async function pfBoot(uid) {
 
   // increment view if not own profile
   if (FAERO_USER && p.id !== FAERO_USER.id)
-    supabase.rpc('increment_profile_views', { pid: p.id });
+    supabase.rpc('increment_profile_views', { pid: p.id }).then(() => {});  // lazy builder: .then() sends it
 }
 
 /* ── header: banner + avatar + name + actions ───────────────── */
@@ -10395,7 +10470,7 @@ function pfRenderHeader(p) {
   const statusEl = document.getElementById('pf-status-line');
   if (statusEl) {
     statusEl.innerHTML = p.status
-      ? `<span class="pf-status-dot"></span>${p.status}`
+      ? `<span class="pf-status-dot"></span>${faeroEsc(p.status)}`
       : '';
   }
 
@@ -10474,15 +10549,18 @@ function pfRenderActions(p) {
     col.innerHTML = `
       <div class="pf-action-row">
         <button class="pf-btn-follow ${isFollowing?'following':''}" id="pf-follow-btn"
-          onclick="pfToggleFollow('${p.id}',this)">
+          onclick="pfToggleFollow(${faeroJsArg(p.id)},this)">
           ${isFollowing ? 'Following' : '+ Follow'}
         </button>
-        <button class="pf-btn-dm" onclick="navigate('chat')">
+        <button class="pf-btn-dm" onclick="${FAERO_USER ? `dmNewSelectUser(${faeroJsArg(p.id)},'','','')` : 'faeroOpenAuth()'}">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           DM
         </button>
+        ${FAERO_USER ? `
+        <button class="pf-btn-dm" onclick="faeroBlockUser(${faeroJsArg(p.id)},${faeroJsArg(p.username || '')},'block')" title="Block">🚫 Block</button>
+        <button class="pf-btn-dm" onclick="faeroReportPost(${faeroJsArg(p.id)},${faeroJsArg(p.id)},'profile')" title="Report">⚑ Report</button>` : ''}
         ${(FAERO_PROFILE?.role === 'admin' || FAERO_PROFILE?.role === 'mod') ? `
-        <button class="pf-btn-ban" onclick="faeroOpenBanModal('${p.id}','${(p.username||p.display_name||'').replace(/'/g,"\\'")}')">🔨 Ban</button>` : ''}
+        <button class="pf-btn-ban" onclick="faeroOpenBanModal(${faeroJsArg(p.id)},${faeroJsArg(p.username||p.display_name||'')})">🔨 Ban</button>` : ''}
       </div>`;
   }
 }
@@ -10495,7 +10573,7 @@ function pfRenderAbout(p) {
   const tags = document.getElementById('pf-tags');
   if (tags) {
     tags.innerHTML = (p.tags || []).map(t =>
-      `<div class="ptag" onclick="navigate('explore')">${t}</div>`
+      `<div class="ptag" onclick="navigate('explore')">${faeroEsc(t)}</div>`
     ).join('');
   }
 
@@ -10505,12 +10583,12 @@ function pfRenderAbout(p) {
     if (p.location) html += `
       <div class="pf-meta-item">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        ${p.location}
+        ${faeroEsc(p.location)}
       </div>`;
     if (p.website) html += `
       <div class="pf-meta-item">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-        <a href="${faeroSafeUrl(p.website)}" target="_blank" rel="noopener">${p.website.replace(/^https?:\/\//,'')}</a>
+        <a href="${faeroSafeUrl(p.website)}" target="_blank" rel="noopener">${faeroEsc(String(p.website).replace(/^https?:\/\//,''))}</a>
       </div>`;
     meta.innerHTML = html;
   }
@@ -10522,7 +10600,7 @@ function pfRenderAbout(p) {
     const lObj = p.links || {};
     links.innerHTML = Object.entries(lObj)
       .filter(([,v]) => v)
-      .map(([k,v]) => `<a class="pf-link-chip" href="${faeroSafeUrl(v)}" target="_blank" rel="noopener">${lMap[k]||k}</a>`)
+      .map(([k,v]) => `<a class="pf-link-chip" href="${faeroSafeUrl(v)}" target="_blank" rel="noopener">${lMap[k]||faeroEsc(k)}</a>`)
       .join('');
   }
 }
@@ -10554,10 +10632,10 @@ async function pfRenderPosts(uid) {
 
   list.innerHTML = posts.map(p => {
     const ago  = exTimeAgo(p.created_at);
-    const tags = (p.tags||[]).map(t => `<span class="pf-post-tag" onclick="navigate('explore')">#${t}</span>`).join('');
+    const tags = (p.tags||[]).map(t => `<span class="pf-post-tag" onclick="navigate('explore')">#${faeroEsc(t)}</span>`).join('');
     return `
       <div class="pf-post-item">
-        <div class="pf-post-body">${p.body || ''}</div>
+        <div class="pf-post-body">${faeroEsc(p.body || '')}</div>
         ${tags ? `<div class="pf-post-tags">${tags}</div>` : ''}
         <div class="pf-post-foot">
           <span>${ago}</span>
@@ -10582,7 +10660,7 @@ async function pfRenderPinned(p) {
   card.style.display = '';
   body.innerHTML = `
     <div class="pf-pinned-inner">
-      <div class="pf-pinned-body">${post.body||''}</div>
+      <div class="pf-pinned-body">${faeroEsc(post.body||'')}</div>
       <div class="pf-pinned-meta">❤️ ${post.like_count||0} · ${exTimeAgo(post.created_at)}</div>
     </div>`;
 }
@@ -10606,14 +10684,14 @@ async function pfRenderFriends(uid) {
   }
 
   grid.innerHTML = friends.slice(0,12).map(f => {
-    const initial = (f.display_name||f.username||'?')[0].toUpperCase();
-    const color   = f.avatar_color || '#1565C0';
+    const initial = faeroEsc((f.display_name||f.username||'?')[0].toUpperCase());
+    const color   = faeroSafeColor(f.avatar_color);
     const inner   = f.avatar_url
       ? `<img src="${faeroSafeUrl(f.avatar_url)}" alt="${initial}" onerror="this.style.display='none'">`
       : initial;
-    return `<div class="pf-friend-av" title="${f.display_name||f.username||''}"
+    return `<div class="pf-friend-av" title="${faeroEsc(f.display_name||f.username||'')}"
       style="background:linear-gradient(135deg,${color},${color}88)"
-      onclick="pfBoot('${f.id}')">${inner}</div>`;
+      onclick="pfBoot(${faeroJsArg(f.id)})">${inner}</div>`;
   }).join('');
 
   if (friends.length > 12)
@@ -10637,8 +10715,8 @@ async function pfRenderCommons(uid) {
     return;
   }
   wrap.innerHTML = groups.map(g => `
-    <div class="pf-commons-pill" onclick="navigate('groups')" title="${g.name}">
-      ${gcIconHTML(g, 'pf-commons-thumb', gcGrad(g).c1, gcGrad(g).c2)}${g.name}
+    <div class="pf-commons-pill" onclick="navigate('groups')" title="${faeroEsc(g.name)}">
+      ${gcIconHTML(g, 'pf-commons-thumb', gcGrad(g).c1, gcGrad(g).c2)}${faeroEsc(g.name)}
     </div>`).join('');
 }
 
@@ -10665,8 +10743,8 @@ async function pfRenderGuestbook(uid) {
     el.innerHTML = data.map(e => {
       const a = e.author || {};
       const name = a.display_name || a.username || 'Faero member';
-      const initial = name[0].toUpperCase();
-      const color = a.avatar_color || '#1565C0';
+      const initial = faeroEsc(name[0].toUpperCase());
+      const color = faeroSafeColor(a.avatar_color);
       const avInner = a.avatar_url
         ? `<img src="${faeroSafeUrl(a.avatar_url)}" alt="">`
         : initial;
@@ -10674,10 +10752,10 @@ async function pfRenderGuestbook(uid) {
         <div class="pf-gb-entry">
           <div class="pf-gb-head">
             <div class="pf-gb-av" style="background:linear-gradient(135deg,${color},${color}88)">${avInner}</div>
-            <span class="pf-gb-name">${name}</span>
+            <span class="pf-gb-name">${faeroEsc(name)}</span>
             <span class="pf-gb-time">${exTimeAgo(e.created_at)}</span>
           </div>
-          <div class="pf-gb-body">${e.body}</div>
+          <div class="pf-gb-body">${faeroEsc(e.body)}</div>
         </div>`;
     }).join('');
   }
@@ -10694,6 +10772,7 @@ async function pfGuestPost() {
   const input = document.getElementById('pf-gb-input');
   const body  = input?.value?.trim();
   if (!body) return;
+  if (body.length > 500) { faeroToast('err', 'Too long', 'Guestbook notes max out at 500 characters.'); return; }
 
   const btn = document.querySelector('.pf-gb-btn');
   if (btn) { btn.textContent = 'Posting…'; btn.disabled = true; }
@@ -10705,7 +10784,12 @@ async function pfGuestPost() {
   });
 
   if (btn) { btn.textContent = 'Post'; btn.disabled = false; }
-  if (error) { faeroToast('err', 'Error', 'Could not post to guestbook'); return; }
+  if (error) {
+    // Blocked, banned or rate-limited each have a reason worth showing.
+    faeroLogError('guestbook', error.message);
+    faeroToast('err', 'Could not post', faeroFriendlyDbError(error));
+    return;
+  }
 
   if (input) input.value = '';
   faeroToast('ok', 'Posted!', 'Your note was left ✉️');
@@ -10716,17 +10800,24 @@ async function pfGuestPost() {
 async function pfToggleFollow(profileId, btn) {
   if (!FAERO_USER) { faeroOpenAuth(); return; }
   const isFollowing = EX_FOLLOWING?.has(profileId);
-  if (isFollowing) {
-    EX_FOLLOWING?.delete(profileId);
-    btn.textContent = '+ Follow'; btn.classList.remove('following');
-    await supabase.from('follows').delete()
-      .eq('follower_id', FAERO_USER.id).eq('following_id', profileId);
-  } else {
-    EX_FOLLOWING?.add(profileId);
-    btn.textContent = 'Following'; btn.classList.add('following');
-    await supabase.from('follows').insert({ follower_id: FAERO_USER.id, following_id: profileId });
-    faeroToast('ok', 'Following!', 'You\'ll see their posts in your feed 🌱');
+  const paint = following => {
+    btn.textContent = following ? 'Following' : '+ Follow';
+    btn.classList.toggle('following', following);
+    if (following) EX_FOLLOWING?.add(profileId); else EX_FOLLOWING?.delete(profileId);
+  };
+  paint(!isFollowing);
+
+  const { error } = isFollowing
+    ? await supabase.from('follows').delete()
+        .eq('follower_id', FAERO_USER.id).eq('following_id', profileId)
+    : await supabase.from('follows').insert({ follower_id: FAERO_USER.id, following_id: profileId });
+
+  if (error) {
+    paint(isFollowing);
+    faeroToast('err', 'Could not update', faeroFriendlyDbError(error));
+    return;
   }
+  if (!isFollowing) faeroToast('ok', 'Following!', 'You\'ll see their posts in your feed 🌱');
 }
 
 /* ── guest (not logged in) state ────────────────────────────── */
@@ -10798,24 +10889,24 @@ async function nfLoad() {
 function nfItemHTML(n) {
   const actor    = n.actor || {};
   const name     = actor.display_name || actor.username || 'Someone';
-  const initial  = name[0].toUpperCase();
-  const color    = actor.avatar_color || '#1565C0';
+  const initial  = faeroEsc(name[0].toUpperCase());
+  const color    = faeroSafeColor(actor.avatar_color);
   const avInner  = actor.avatar_url
     ? `<img src="${faeroSafeUrl(actor.avatar_url)}" alt="">`
     : initial;
 
-  const icons = { like:'❤️', follow:'🌿', reply:'💬', mention:'@', event:'📅', group_join:'🤝' };
+  const icons = { like:'❤️', follow:'🌿', reply:'💬', mention:'@', event:'📅', group_join:'🤝', guestbook:'✉️', repost:'🔁' };
   const icon  = icons[n.type] || '🔔';
   const ago   = exTimeAgo(n.created_at);
 
   return `
-    <div class="notif-item ${n.read ? '' : 'unread'}" onclick="nfClick('${n.id}','${n.type}','${n.entity_id||''}','${n.entity_type||''}')">
+    <div class="notif-item ${n.read ? '' : 'unread'}" onclick="nfClick(${faeroJsArg(n.id)},${faeroJsArg(n.type)},${faeroJsArg(n.entity_id||'')},${faeroJsArg(n.entity_type||'')})">
       <div class="notif-av-wrap">
         <div class="notif-av" style="background:linear-gradient(135deg,${color},${color}88)">${avInner}</div>
         <div class="notif-type-icon">${icon}</div>
       </div>
       <div class="notif-body">
-        <div class="notif-text">${n.body || name + ' interacted with you'}</div>
+        <div class="notif-text">${faeroEsc(n.body || name + ' interacted with you')}</div>
         <div class="notif-time">${ago}</div>
       </div>
     </div>`;
@@ -10823,8 +10914,9 @@ function nfItemHTML(n) {
 
 /* ── clicking a notification ─────────────────────────────────── */
 async function nfClick(id, type, entityId, entityType) {
-  // mark this one read in DB (fire-and-forget)
-  supabase.from('notifications').update({ read: true }).eq('id', id);
+  // mark this one read in DB (fire-and-forget). supabase-js builders are
+  // lazy — without .then() the request is never sent.
+  supabase.from('notifications').update({ read: true }).eq('id', id).then(() => {});
 
   // mark it read in DOM
   const el = event?.currentTarget;
@@ -10832,8 +10924,15 @@ async function nfClick(id, type, entityId, entityType) {
 
   nfSetUnread(Math.max(0, NF_UNREAD - 1));
 
-  // navigate somewhere useful
+  // Go to the thing the notification is about, via the deep-link router.
   nfClose();
+  if (entityType === 'profile' && entityId) { location.hash = '#profile/' + entityId; return; }
+  if (entityType === 'post' && entityId)    { location.hash = '#post/' + entityId; return; }
+  if (entityType === 'reply' && entityId) {
+    // entity_id is the reply; the router opens its parent post.
+    const { data: rep } = await supabase.from('replies').select('post_id').eq('id', entityId).maybeSingle();
+    if (rep?.post_id) { location.hash = '#post/' + rep.post_id; return; }
+  }
   if (type === 'follow' || type === 'mention') navigate('profile');
   else if (type === 'like' || type === 'reply') navigate('feed');
   else if (type === 'group_join') navigate('groups');
@@ -10843,7 +10942,10 @@ async function nfClick(id, type, entityId, entityType) {
 /* ── mark all read ───────────────────────────────────────────── */
 async function nfMarkAllRead() {
   if (!FAERO_USER) return;
-  await supabase.rpc('mark_notifications_read', { uid: FAERO_USER.id });
+  // Takes no arguments — it reads auth.uid() server-side. Passing { uid }
+  // made PostgREST reject the call, so "mark all read" never persisted.
+  const { error } = await supabase.rpc('mark_notifications_read');
+  if (error) faeroLogError('nfMarkAllRead', error.message);
   // update DOM
   document.querySelectorAll('.notif-item.unread').forEach(el => el.classList.remove('unread'));
   nfSetUnread(0);
@@ -10889,7 +10991,7 @@ function nfStartRealtime() {
         }
       }
       // toast
-      const icons = { like:'❤️', follow:'🌿', reply:'💬', mention:'@', event:'📅', group_join:'🤝' };
+      const icons = { like:'❤️', follow:'🌿', reply:'💬', mention:'@', event:'📅', group_join:'🤝', guestbook:'✉️', repost:'🔁' };
       faeroToast('info', icons[n.type] || '🔔', n.body || 'New notification');
     })
     .subscribe();
@@ -11040,7 +11142,7 @@ function gcRenderAll() {
   }
   if (q) list = list.filter(g =>
     g.name.toLowerCase().includes(q) ||
-    g.description.toLowerCase().includes(q) ||
+    (g.description || '').toLowerCase().includes(q) ||
     (g.tags || []).some(t => t.toLowerCase().includes(q))
   );
 
@@ -11075,18 +11177,18 @@ function gcRenderFeatured(groups) {
     ? gcImgLayer(hImg, hGrad.c1, hGrad.c2, { tint: 0.5 })
     : `background:linear-gradient(135deg,${hGrad.c1},${hGrad.c2})`;
   wrap.innerHTML = `
-    <div class="gc-featured-banner" onclick="gcOpenDetail('${hero.id}')">
+    <div class="gc-featured-banner" onclick="gcOpenDetail(${faeroJsArg(hero.id)})">
       <div class="gc-fb-bg${hImg ? ' has-img' : ''}" style="${hBg}"></div>
       <div class="gc-fb-pattern"></div>
       <div class="gc-fb-body">
         ${gcIconHTML(hero, 'gc-fb-icon', hGrad.c1, hGrad.c2)}
         <div class="gc-fb-text">
-          <div class="gc-fb-name">${hero.name}</div>
-          <div class="gc-fb-meta">${gcMemberCount(hero)} ${gcMemberCount(hero)===1?"member":"members"} · ${(hero.tags||[]).join(', ')}</div>
+          <div class="gc-fb-name">${faeroEsc(hero.name)}</div>
+          <div class="gc-fb-meta">${gcMemberCount(hero)} ${gcMemberCount(hero)===1?"member":"members"} · ${faeroEsc((hero.tags||[]).join(', '))}</div>
         </div>
         <button class="gc-fb-join ${GC_JOINED.has(hero.id)?'joined':''}"
-          onclick="event.stopPropagation();gcJoin('${hero.id}',this)"
-          id="gcjoin-${hero.id}">
+          onclick="event.stopPropagation();gcJoin(${faeroJsArg(hero.id)},this)"
+          id="gcjoin-${faeroEsc(hero.id)}">
           ${GC_JOINED.has(hero.id) ? 'Joined ✓' : 'Join'}
         </button>
       </div>
@@ -11094,15 +11196,15 @@ function gcRenderFeatured(groups) {
 
   sidebar.innerHTML = `<div class="gc-sb-label">Featured Groups</div>` +
     groups.slice(1).map(g => `
-      <div class="gc-sb-item" onclick="gcOpenDetail('${g.id}')">
+      <div class="gc-sb-item" onclick="gcOpenDetail(${faeroJsArg(g.id)})">
         ${gcIconHTML(g, 'gc-sb-icon', gcGrad(g).c1, gcGrad(g).c2)}
         <div class="gc-sb-info">
-          <div class="gc-sb-name">${g.name}</div>
+          <div class="gc-sb-name">${faeroEsc(g.name)}</div>
           <div class="gc-sb-count">${gcMemberCount(g)} ${gcMemberCount(g)===1?"member":"members"}</div>
         </div>
         <button class="gc-sb-join-btn ${GC_JOINED.has(g.id)?'joined':''}"
-          onclick="event.stopPropagation();gcJoin('${g.id}',this)"
-          id="gcjoin-${g.id}">
+          onclick="event.stopPropagation();gcJoin(${faeroJsArg(g.id)},this)"
+          id="gcjoin-${faeroEsc(g.id)}">
           ${GC_JOINED.has(g.id)?'✓':'Join'}
         </button>
       </div>`).join('');
@@ -11126,7 +11228,8 @@ function gcAestheticGrad(tags) {
 }
 function gcGrad(g) {
   const a = gcAestheticGrad(g.tags);
-  return { c1: a?.c1 || g.color || '#1565C0', c2: a?.c2 || g.color2 || '#00BCD4' };
+  // g.color / g.color2 are owner-writable and land inside style="…".
+  return { c1: a?.c1 || faeroSafeColor(g.color, '#1565C0'), c2: a?.c2 || faeroSafeColor(g.color2, '#00BCD4') };
 }
 
 /* ── real Lostalgia imagery for a group (null → emoji fallback) ─ */
@@ -11140,7 +11243,9 @@ function gcImgLayer(url, c1, c2, opts) {
   return `background-image:linear-gradient(135deg,`
        + `color-mix(in srgb, ${c1} ${pct}%, transparent),`
        + `color-mix(in srgb, ${c2} ${pct}%, transparent)),`
-       + `url("${encodeURI(url)}")`;
+       // Single quotes: this string is placed inside style="…", where a
+       // double quote would end the attribute. encodeURI leaves ' alone.
+       + `url('${encodeURI(url).replace(/'/g, '%27')}')`;
 }
 /* square photo chip used wherever an emoji icon used to sit */
 function gcIconHTML(g, cls, c1, c2) {
@@ -11159,20 +11264,20 @@ function gcIconHTML(g, cls, c1, c2) {
 function gcCardHTML(g) {
   const joined = GC_JOINED.has(g.id);
   const { c1, c2 } = gcGrad(g);
-  const tags = (g.tags||[]).slice(0,3).map(t=>`<span class="gc-card-tag">${t}</span>`).join('');
+  const tags = (g.tags||[]).slice(0,3).map(t=>`<span class="gc-card-tag">${faeroEsc(t)}</span>`).join('');
   const img = gcImg(g);
   const banner = img
     ? gcImgLayer(img, c1, c2, { tint: 0.45 })
     : `background:linear-gradient(135deg,${c1},${c2})`;
   return `
-    <div class="gc-card" onclick="gcOpenDetail('${g.id}')">
+    <div class="gc-card" onclick="gcOpenDetail(${faeroJsArg(g.id)})">
       <div class="gc-card-banner${img ? ' has-img' : ''}" style="${banner}">
         <div class="gc-card-banner-pattern"></div>
         ${gcIconHTML(g, 'gc-card-icon', c1, c2)}
       </div>
       <div class="gc-card-body">
-        <div class="gc-card-name">${g.name}</div>
-        <div class="gc-card-desc">${g.description}</div>
+        <div class="gc-card-name">${faeroEsc(g.name)}</div>
+        <div class="gc-card-desc">${faeroEsc(g.description || '')}</div>
         <div class="gc-card-tags">${tags}</div>
         <div class="gc-card-foot">
           <div class="gc-card-members">
@@ -11180,8 +11285,8 @@ function gcCardHTML(g) {
             ${gcMemberCount(g)}
           </div>
           <button class="gc-join-btn ${joined?'joined':''}"
-            onclick="event.stopPropagation();gcJoin('${g.id}',this)"
-            id="gcjoin-${g.id}">
+            onclick="event.stopPropagation();gcJoin(${faeroJsArg(g.id)},this)"
+            id="gcjoin-${faeroEsc(g.id)}">
             ${joined ? 'Joined ✓' : '+ Join'}
           </button>
         </div>
@@ -11199,9 +11304,9 @@ function gcRenderJoinedSidebar() {
     return;
   }
   el.innerHTML = joined.map(g => `
-    <div class="gc-joined-item" onclick="gcOpenDetail('${g.id}')">
+    <div class="gc-joined-item" onclick="gcOpenDetail(${faeroJsArg(g.id)})">
       ${gcIconHTML(g, 'gc-joined-icon', gcGrad(g).c1, gcGrad(g).c2)}
-      <span class="gc-joined-name">${g.name}</span>
+      <span class="gc-joined-name">${faeroEsc(g.name)}</span>
     </div>`).join('');
 }
 
@@ -11224,8 +11329,8 @@ async function gcRenderEvents() {
         <div class="gc-event-item">
           <div class="gc-event-date">${dateStr}</div>
           <div class="gc-event-info">
-            <div class="gc-event-name">${e.title}</div>
-            <div class="gc-event-loc">${e.location||'Online'}</div>
+            <div class="gc-event-name">${faeroEsc(e.title)}</div>
+            <div class="gc-event-loc">${faeroEsc(e.location||'Online')}</div>
           </div>
         </div>`;
     }).join('');
@@ -11689,7 +11794,7 @@ async function gcDetailLoadMembers(groupId) {
       const name = pr.display_name || pr.username || '?';
       const init = gcEsc(name.charAt(0).toUpperCase());
       const av   = faeroSafeUrl(pr.avatar_url)
-        ? `<img src="${faeroSafeUrl(pr.avatar_url)}" alt="${init}" onerror="this.replaceWith(document.createTextNode('${init}'))">`
+        ? `<img src="${faeroSafeUrl(pr.avatar_url)}" alt="${init}" onerror="this.replaceWith(document.createTextNode(${faeroJsArg(name.charAt(0).toUpperCase())}))">`
         : init;
       const me   = FAERO_USER && pr.id === FAERO_USER.id;
       return `<div class="gc-detail-member" onclick="gcCloseDetail();navigate('profile')">
@@ -12007,21 +12112,21 @@ async function exLoadPeople(tag) {
 }
 
 function exPersonCardHTML(p) {
-  const initial = (p.display_name || p.username || '?')[0].toUpperCase();
-  const color   = p.avatar_color || '#1565C0';
+  const initial = faeroEsc((p.display_name || p.username || '?')[0].toUpperCase());
+  const color   = faeroSafeColor(p.avatar_color);
   const avatarInner = p.avatar_url
     ? `<img src="${faeroSafeUrl(p.avatar_url)}" alt="">`
     : initial;
   const isFollowing = EX_FOLLOWING.has(p.id);
-  const tags = (p.tags||[]).slice(0,2).map(t=>`<span class="ex-sr-tag">${t}</span>`).join('');
+  const tags = (p.tags||[]).slice(0,2).map(t=>`<span class="ex-sr-tag">${faeroEsc(t)}</span>`).join('');
   return `
-    <div class="ex-person-card" onclick="navigate('profile');exViewProfile('${p.id}')">
+    <div class="ex-person-card" onclick="navigate('profile');exViewProfile(${faeroJsArg(p.id)})">
       <div class="ex-person-av" style="background:linear-gradient(135deg,${color},${color}99)">${avatarInner}</div>
-      <div class="ex-person-name">${p.display_name || p.username || 'Faero member'}</div>
-      <div class="ex-person-genre">${(p.tags||[]).slice(0,2).join(' / ') || p.bio?.slice(0,40) || ''}</div>
+      <div class="ex-person-name">${faeroEsc(p.display_name || p.username || 'Faero member')}</div>
+      <div class="ex-person-genre">${faeroEsc((p.tags||[]).slice(0,2).join(' / ') || p.bio?.slice(0,40) || '')}</div>
       <button class="mc-follow-btn ${isFollowing?'following':''}"
-        id="exf-${p.id}"
-        onclick="event.stopPropagation();exFollow('${p.id}',this)">
+        id="exf-${faeroEsc(p.id)}"
+        onclick="event.stopPropagation();exFollow(${faeroJsArg(p.id)},this)">
         ${isFollowing ? 'Following' : 'Follow'}
       </button>
     </div>`;
@@ -12074,18 +12179,21 @@ async function exDoSearch() {
   if (peoplEl) peoplEl.innerHTML = `<div class="ex-sr-section">People</div>` + [1,2,3].map(()=>`<div class="ex-post-skel" style="height:56px;margin:6px 0"></div>`).join('');
   if (postsEl)  postsEl.innerHTML = `<div class="ex-sr-section">Posts</div>`  + [1,2,3].map(()=>`<div class="ex-post-skel" style="height:80px;margin:6px 0"></div>`).join('');
 
-  // try full-text RPCs first (phase07 SQL), fall back to ilike
+  // try full-text RPCs first (phase07 SQL), fall back to ilike.
+  // , ( ) are PostgREST .or() syntax and % * are wildcards — strip them so a
+  // search for "a,b" can't split the filter into extra conditions.
+  const qf = q.replace(/[,()*%\\]/g, ' ').trim();
   const [peopleRes, postsRes] = await Promise.all([
     supabase.rpc('search_profiles', { query: q, lim: 8 })
       .then(r => r.error
         ? supabase.from('profiles').select('*')
-            .or(`display_name.ilike.%${q}%,username.ilike.%${q}%,bio.ilike.%${q}%`)
+            .or(`display_name.ilike.%${qf}%,username.ilike.%${qf}%,bio.ilike.%${qf}%`)
             .limit(8)
         : r),
     supabase.rpc('search_posts', { query: q, lim: 20 })
       .then(r => r.error
         ? supabase.from('posts').select('*')
-            .ilike('content', `%${q}%`)
+            .ilike('body', `%${qf}%`)   // the column is body, not content
             .order('created_at', { ascending: false })
             .limit(20)
         : r),
@@ -12106,7 +12214,7 @@ function exRenderResults(people, posts, q) {
     const filtered = people.filter(p => !FAERO_USER || p.id !== FAERO_USER.id);
     peoplEl.innerHTML = `<div class="ex-sr-section">People ${filtered.length ? `· ${filtered.length}` : ''}</div>`;
     if (!filtered.length) {
-      peoplEl.innerHTML += `<div class="ex-empty"><div class="ex-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>No people found for "${q}"</div>`;
+      peoplEl.innerHTML += `<div class="ex-empty"><div class="ex-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>No people found for "${faeroEsc(q)}"</div>`;
     } else {
       peoplEl.innerHTML += `<div class="card" style="padding:0 14px">` + filtered.map(p => exSrPersonHTML(p)).join('') + `</div>`;
     }
@@ -12116,7 +12224,7 @@ function exRenderResults(people, posts, q) {
   if (postsEl && (tab === 'all' || tab === 'posts')) {
     postsEl.innerHTML = `<div class="ex-sr-section">Posts ${posts.length ? `· ${posts.length}` : ''}</div>`;
     if (!posts.length) {
-      postsEl.innerHTML += `<div class="ex-empty"><div class="ex-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>No posts found for "${q}"</div>`;
+      postsEl.innerHTML += `<div class="ex-empty"><div class="ex-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>No posts found for "${faeroEsc(q)}"</div>`;
     } else {
       postsEl.innerHTML += `<div class="card" style="padding:0">` + posts.map(p => exPostResultHTML(p, q)).join('') + `</div>`;
     }
@@ -12125,23 +12233,23 @@ function exRenderResults(people, posts, q) {
 
 /* ── person row in search results ───────────────────────────── */
 function exSrPersonHTML(p) {
-  const initial = (p.display_name || p.username || '?')[0].toUpperCase();
-  const color   = p.avatar_color || '#1565C0';
+  const initial = faeroEsc((p.display_name || p.username || '?')[0].toUpperCase());
+  const color   = faeroSafeColor(p.avatar_color);
   const avatarInner = p.avatar_url ? `<img src="${faeroSafeUrl(p.avatar_url)}" alt="">` : initial;
   const isFollowing = EX_FOLLOWING.has(p.id);
-  const tags = (p.tags||[]).slice(0,3).map(t=>`<span class="ex-sr-tag">${t}</span>`).join('');
+  const tags = (p.tags||[]).slice(0,3).map(t=>`<span class="ex-sr-tag">${faeroEsc(t)}</span>`).join('');
   return `
     <div class="ex-sr-person">
       <div class="ex-sr-av" style="background:linear-gradient(135deg,${color},${color}88)">${avatarInner}</div>
       <div class="ex-sr-info">
-        <div class="ex-sr-name">${p.display_name || p.username || 'Faero member'}</div>
-        <div class="ex-sr-handle">@${p.username || p.id.slice(0,8)}</div>
-        ${p.bio ? `<div class="ex-sr-bio">${p.bio}</div>` : ''}
+        <div class="ex-sr-name">${faeroEsc(p.display_name || p.username || 'Faero member')}</div>
+        <div class="ex-sr-handle">@${faeroEsc(p.username || p.id.slice(0,8))}</div>
+        ${p.bio ? `<div class="ex-sr-bio">${faeroEsc(p.bio)}</div>` : ''}
         ${tags ? `<div class="ex-sr-tags">${tags}</div>` : ''}
       </div>
       <button class="ex-sr-follow ${isFollowing?'following':''}"
-        id="exf-${p.id}"
-        onclick="exFollow('${p.id}',this)">
+        id="exf-${faeroEsc(p.id)}"
+        onclick="exFollow(${faeroJsArg(p.id)},this)">
         ${isFollowing ? 'Following' : 'Follow'}
       </button>
     </div>`;
@@ -12151,19 +12259,19 @@ function exSrPersonHTML(p) {
 function exPostResultHTML(p, q) {
   const name   = p.display_name || p.author_handle || p.user_id?.slice(0,8) || 'member';
   const handle = p.author_handle || '';
-  const color  = p.author_color || '#1565C0';
-  const initial = name[0]?.toUpperCase() || 'F';
+  const color  = faeroSafeColor(p.author_color);
+  const initial = faeroEsc(name[0]?.toUpperCase() || 'F');
   const avatarInner = p.author_avatar ? `<img src="${faeroSafeUrl(p.author_avatar)}" alt="">` : initial;
-  const body = q ? exHighlight(p.body, q) : p.body;
-  const tags = (p.tags||[]).map(t=>`<span class="ex-pr-tag" onclick="exTagFilter(null,'${t}')">#${t}</span>`).join('');
+  const body = exHighlight(p.body, q);   // escapes; safe with or without q
+  const tags = (p.tags||[]).map(t=>`<span class="ex-pr-tag" onclick="exTagFilter(null,${faeroJsArg(t)})">#${faeroEsc(t)}</span>`).join('');
   const ago  = exTimeAgo(p.created_at);
   return `
     <div class="ex-post-result">
       <div class="ex-pr-head">
         <div class="ex-pr-av" style="background:linear-gradient(135deg,${color},${color}88)">${avatarInner}</div>
         <div>
-          <div class="ex-pr-name">${name}</div>
-          ${handle ? `<div class="ex-pr-handle">@${handle} · ${ago}</div>` : `<div class="ex-pr-handle">${ago}</div>`}
+          <div class="ex-pr-name">${faeroEsc(name)}</div>
+          ${handle ? `<div class="ex-pr-handle">@${faeroEsc(handle)} · ${ago}</div>` : `<div class="ex-pr-handle">${ago}</div>`}
         </div>
       </div>
       <div class="ex-pr-body">${body}</div>
@@ -12172,10 +12280,13 @@ function exPostResultHTML(p, q) {
 }
 
 /* ── highlight search term in post body ─────────────────────── */
+// Returns HTML. Escapes the text first, then matches the escaped query
+// against it, so <mark> is the only markup that can come out.
 function exHighlight(text, q) {
-  if (!q || !text) return text || '';
-  const esc = q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-  return text.replace(new RegExp(`(${esc})`, 'gi'), '<mark>$1</mark>');
+  const safeText = faeroEsc(text || '');
+  if (!q || !text) return safeText;
+  const esc = faeroEsc(q).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  return safeText.replace(new RegExp(`(${esc})`, 'gi'), '<mark>$1</mark>');
 }
 
 /* ── relative time ──────────────────────────────────────────── */
@@ -12234,14 +12345,23 @@ async function exFollow(profileId, btn) {
     allBtns.forEach(b => { b.textContent = 'Following'; b.classList.add('following'); });
   }
 
-  if (isFollowing) {
-    await supabase.from('follows')
-      .delete().eq('follower_id', FAERO_USER.id).eq('following_id', profileId);
-  } else {
-    await supabase.from('follows')
-      .insert({ follower_id: FAERO_USER.id, following_id: profileId });
-    faeroToast('ok', 'Following!', 'You\'ll see their posts in your feed 🌱');
+  const { error } = isFollowing
+    ? await supabase.from('follows')
+        .delete().eq('follower_id', FAERO_USER.id).eq('following_id', profileId)
+    : await supabase.from('follows')
+        .insert({ follower_id: FAERO_USER.id, following_id: profileId });
+
+  if (error) {
+    // Blocked, rate-limited, or offline — put the button back.
+    if (isFollowing) EX_FOLLOWING.add(profileId); else EX_FOLLOWING.delete(profileId);
+    allBtns.forEach(b => {
+      b.textContent = isFollowing ? 'Following' : 'Follow';
+      b.classList.toggle('following', isFollowing);
+    });
+    faeroToast('err', 'Could not update', faeroFriendlyDbError(error));
+    return;
   }
+  if (!isFollowing) faeroToast('ok', 'Following!', 'You\'ll see their posts in your feed 🌱');
 }
 
 /* ── view a profile from explore / anywhere ─────────────────── */
@@ -12305,7 +12425,8 @@ async function faeroCheckBan(uid) {
   const { data } = await supabase.rpc('check_ban', { uid });
   if (!data || !data.length) return; // not banned
   const ban = data[0];
-  // Sign out and show ban screen
+  // Sign out and show ban screen (not a reload, which would hide it)
+  window.FAERO_AUTH_HANDOFF = true;
   await supabase.auth.signOut();
   const expiry = ban.expires_at
     ? `Ban expires: ${new Date(ban.expires_at).toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'})}`
@@ -12314,7 +12435,7 @@ async function faeroCheckBan(uid) {
     <div class="faero-banned-screen">
       <div style="font-size:52px">🚫</div>
       <h2>You've been banned</h2>
-      <p>${ban.reason ? `"${ban.reason}"` : 'You have been removed from Faero by a moderator.'}</p>
+      <p>${ban.reason ? `"${faeroEsc(ban.reason)}"` : 'You have been removed from Faero by a moderator.'}</p>
       <small>${expiry}</small>
       <small style="margin-top:8px">If you believe this is a mistake, contact the Faero team.</small>
     </div>`;
@@ -12543,29 +12664,36 @@ function admRenderUsers(users) {
   const el = document.getElementById('adm-user-list');
   if (!users.length) { el.innerHTML = '<div class="adm-empty">No members found</div>'; return; }
   el.innerHTML = users.map(u => {
-    const init = (u.display_name || u.username || '?')[0].toUpperCase();
-    const av   = faeroSafeUrl(u.avatar_url)
-      ? `<img src="${faeroSafeUrl(u.avatar_url)}" alt="${init}" onerror="this.style.display='none';this.parentElement.textContent='${init}'">`
-      : init;
+    const av   = admAvatarHTML(u);
     const isSelf = u.id === FAERO_USER?.id;
     const canAct = !isSelf && !(myRole === 'mod' && u.role !== 'member');
     const banBtn = canAct
-      ? `<button class="adm-action-btn ban" onclick="faeroOpenBanModal('${u.id}','${(u.username||'').replace(/'/g,"\\'")}')">Ban</button>`
+      ? `<button class="adm-action-btn ban" onclick="faeroOpenBanModal(${faeroJsArg(u.id)},${faeroJsArg(u.username||'')})">Ban</button>`
       : '';
     const promoteBtn = myRole === 'admin' && u.role === 'member' && !isSelf
-      ? `<button class="adm-action-btn promote" onclick="admSetRole('${u.id}','mod',this)">Make Mod</button>` : '';
+      ? `<button class="adm-action-btn promote" onclick="admSetRole(${faeroJsArg(u.id)},'mod',this)">Make Mod</button>` : '';
     const demoteBtn = myRole === 'admin' && u.role === 'mod'
-      ? `<button class="adm-action-btn demote" onclick="admSetRole('${u.id}','member',this)">Remove Mod</button>` : '';
+      ? `<button class="adm-action-btn demote" onclick="admSetRole(${faeroJsArg(u.id)},'member',this)">Remove Mod</button>` : '';
     return `
       <div class="adm-user-row">
         <div class="adm-user-av">${av}</div>
         <div class="adm-user-info">
-          <div class="adm-user-name">${u.display_name || u.username}${roleBadgeHTML(u.role)}</div>
-          <div class="adm-user-handle">@${u.username}</div>
+          <div class="adm-user-name">${faeroEsc(u.display_name || u.username)}${roleBadgeHTML(u.role)}</div>
+          <div class="adm-user-handle">@${faeroEsc(u.username)}</div>
         </div>
         <div class="adm-user-actions">${promoteBtn}${demoteBtn}${banBtn}</div>
       </div>`;
   }).join('');
+}
+
+// Staff-facing lists render member-controlled names: an XSS here runs with a
+// moderator's session, so every one of these goes through this helper.
+function admAvatarHTML(u) {
+  const initRaw = (u.display_name || u.username || '?')[0].toUpperCase();
+  const init = faeroEsc(initRaw);
+  return faeroSafeUrl(u.avatar_url)
+    ? `<img src="${faeroSafeUrl(u.avatar_url)}" alt="${init}" onerror="this.style.display='none';if(this.parentElement)this.parentElement.textContent=${faeroJsArg(initRaw)}">`
+    : init;
 }
 
 function admSearchUsers(q) {
@@ -12592,24 +12720,21 @@ async function admLoadBans() {
   if (!data.length) { el.innerHTML = '<div class="adm-empty">✅ No active bans</div>'; return; }
   el.innerHTML = data.map(b => {
     const u    = b.user || {};
-    const init = (u.display_name || u.username || '?')[0].toUpperCase();
-    const av   = faeroSafeUrl(u.avatar_url)
-      ? `<img src="${faeroSafeUrl(u.avatar_url)}" alt="${init}" onerror="this.style.display='none';this.parentElement.textContent='${init}'">`
-      : init;
+    const av   = admAvatarHTML(u);
     const exp  = b.expires_at
       ? `Expires ${new Date(b.expires_at).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}`
       : 'Permanent';
-    const by   = b.banner?.username ? `by @${b.banner.username}` : '';
+    const by   = b.banner?.username ? `by @${faeroEsc(b.banner.username)}` : '';
     return `
       <div class="adm-user-row">
         <div class="adm-user-av">${av}</div>
         <div class="adm-user-info">
-          <div class="adm-user-name">${u.display_name || u.username || 'Unknown'}</div>
-          ${b.reason ? `<div class="adm-ban-reason">"${b.reason}"</div>` : ''}
+          <div class="adm-user-name">${faeroEsc(u.display_name || u.username || 'Unknown')}</div>
+          ${b.reason ? `<div class="adm-ban-reason">"${faeroEsc(b.reason)}"</div>` : ''}
           <span class="adm-ban-expires">${exp} ${by}</span>
         </div>
         <div class="adm-user-actions">
-          <button class="adm-action-btn unban" onclick="admUnban('${b.id}','${(u.username||'').replace(/'/g,"\\'")}',this)">Unban</button>
+          <button class="adm-action-btn unban" onclick="admUnban(${faeroJsArg(b.id)},${faeroJsArg(u.username||'')},this)">Unban</button>
         </div>
       </div>`;
   }).join('');
@@ -12635,19 +12760,16 @@ async function admLoadMods() {
   if (error || !data) { el.innerHTML = `<div class="adm-empty">Error: ${error?.message}</div>`; return; }
   if (!data.length) { el.innerHTML = '<div class="adm-empty">No staff yet</div>'; return; }
   el.innerHTML = data.map(u => {
-    const init = (u.display_name || u.username || '?')[0].toUpperCase();
-    const av   = faeroSafeUrl(u.avatar_url)
-      ? `<img src="${faeroSafeUrl(u.avatar_url)}" alt="${init}" onerror="this.style.display='none';this.parentElement.textContent='${init}'">`
-      : init;
+    const av   = admAvatarHTML(u);
     const isSelf = u.id === FAERO_USER?.id;
     const demoteBtn = u.role === 'mod' && !isSelf
-      ? `<button class="adm-action-btn demote" onclick="admSetRole('${u.id}','member',this)">Remove</button>` : '';
+      ? `<button class="adm-action-btn demote" onclick="admSetRole(${faeroJsArg(u.id)},'member',this)">Remove</button>` : '';
     return `
       <div class="adm-user-row">
         <div class="adm-user-av">${av}</div>
         <div class="adm-user-info">
-          <div class="adm-user-name">${u.display_name || u.username}${roleBadgeHTML(u.role)}</div>
-          <div class="adm-user-handle">@${u.username}</div>
+          <div class="adm-user-name">${faeroEsc(u.display_name || u.username)}${roleBadgeHTML(u.role)}</div>
+          <div class="adm-user-handle">@${faeroEsc(u.username)}</div>
         </div>
         <div class="adm-user-actions">${demoteBtn}</div>
       </div>`;
@@ -12694,11 +12816,13 @@ const REPORT_REASONS = [
   { id: 'other',      label: 'Something else',          hint: 'Tell us in your own words' },
 ];
 
-function faeroReportPost(postId, reportedUserId) {
+// kind: 'post' (default) or 'profile' — a person can be reported for
+// their DMs, guestbook notes or profile, not only for a post.
+function faeroReportPost(postId, reportedUserId, kind = 'post') {
   document.querySelectorAll('.post-mod-drop.open').forEach(d => d.classList.remove('open'));
   if (!FAERO_USER) { faeroOpenAuth(); return; }
 
-  const body = faeroOpenSheet('Report this post', `
+  const body = faeroOpenSheet(kind === 'profile' ? 'Report this person' : 'Report this post', `
     <div class="fs-note" style="margin-bottom:14px">
       Reports go to a human moderator. You'll never be penalised for
       reporting something in good faith.
@@ -12719,7 +12843,7 @@ function faeroReportPost(postId, reportedUserId) {
       <span>Also block this person</span>
     </label>
     <button class="fam-submit" id="report-submit"
-            onclick="faeroSubmitReport('${faeroEsc(postId)}','${faeroEsc(reportedUserId || '')}')">
+            onclick="faeroSubmitReport(${faeroJsArg(postId)},${faeroJsArg(reportedUserId || '')},${faeroJsArg(kind)})">
       Send report
     </button>`);
 
@@ -12734,7 +12858,7 @@ function faeroPickReportReason(btn) {
   if (_reportReason === 'other') document.getElementById('report-detail')?.focus();
 }
 
-async function faeroSubmitReport(postId, reportedUserId) {
+async function faeroSubmitReport(postId, reportedUserId, kind = 'post') {
   const errEl = document.getElementById('report-err');
   const btn   = document.getElementById('report-submit');
   const detail = document.getElementById('report-detail').value.trim();
@@ -12753,8 +12877,8 @@ async function faeroSubmitReport(postId, reportedUserId) {
     reporter_id:      FAERO_USER.id,
     reported_user_id: reportedUserId || null,
     entity_id:        postId,
-    entity_type:      'post',
-    post_id:          postId,      // kept in step with entity_id by a trigger
+    entity_type:      kind,
+    post_id:          kind === 'post' ? postId : null,   // kept in step with entity_id by a trigger
     reason
   });
 
@@ -12830,18 +12954,19 @@ async function loadSidebarActive() {
   }
   el.innerHTML = data.map(p => {
     const name = p.display_name || p.username || 'Unknown';
-    const init = name.charAt(0).toUpperCase();
+    const initRaw = name.charAt(0).toUpperCase();
+    const init = faeroEsc(initRaw);
     const role = p.tags?.[0] || '';
     const av   = faeroSafeUrl(p.avatar_url)
-      ? `<img src="${faeroSafeUrl(p.avatar_url)}" alt="${init}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" onerror="this.style.display='none';this.parentElement.textContent='${init}'">`
+      ? `<img src="${faeroSafeUrl(p.avatar_url)}" alt="${init}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" onerror="this.style.display='none';if(this.parentElement)this.parentElement.textContent=${faeroJsArg(initRaw)}">`
       : init;
     return `
-      <div class="mem-item" onclick="exViewProfile('${p.id}')" style="cursor:pointer">
+      <div class="mem-item" onclick="exViewProfile(${faeroJsArg(p.id)})" style="cursor:pointer">
         <div class="av-wrap size-32">
           <div class="av-inner" style="background:linear-gradient(135deg,#1565C0,#00BCD4);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;overflow:hidden">${av}</div>
           <div class="av-online-pip" style="width:9px;height:9px;top:-1px;left:-1px"></div>
         </div>
-        <div><div class="mem-name">${name}</div>${role ? `<div class="mem-role">${role}</div>` : ''}</div>
+        <div><div class="mem-name">${faeroEsc(name)}</div>${role ? `<div class="mem-role">${faeroEsc(role)}</div>` : ''}</div>
       </div>`;
   }).join('');
 }
@@ -12867,8 +12992,8 @@ async function loadSidebarEvents() {
     const time = d.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
     return `<div class="ev-item">
       <div class="ev-date">${date}</div>
-      <div class="ev-name">${e.title}</div>
-      <div class="ev-loc">${e.location || ''}${e.location ? ' · ' : ''}${time}</div>
+      <div class="ev-name">${faeroEsc(e.title)}</div>
+      <div class="ev-loc">${faeroEsc(e.location || '')}${e.location ? ' · ' : ''}${time}</div>
     </div>`;
   }).join('');
 }
@@ -13743,6 +13868,7 @@ async function fsDeleteAccount() {
   }
 
   faeroToast('info', 'Deleting…', 'Erasing your content.');
+  window.FAERO_AUTH_HANDOFF = true;     // we show our own goodbye, then reload
 
   // Stage 1 — scrub everything reachable under the user's own session.
   const { error: scrubErr } = await supabase.rpc('request_account_deletion');
@@ -14446,7 +14572,7 @@ function faeroOnbPersonHTML(p) {
       <div class="safety-name">${faeroEsc(p.display_name || p.username)}</div>
       <div class="safety-sub">${faeroEsc(p.bio ? String(p.bio).slice(0, 54) : tags || '@' + p.username)}</div>
     </div>
-    <button class="onb-follow" onclick="faeroOnbFollow('${faeroEsc(p.id)}',this)">Follow</button>
+    <button class="onb-follow" onclick="faeroOnbFollow(${faeroJsArg(p.id)},this)">Follow</button>
   </div>`;
 }
 
@@ -14472,6 +14598,10 @@ async function faeroOnbFinish(skipped) {
 
   document.getElementById('faero-onb')?.remove();
   faeroReleaseFocus();
+
+  // Bootstrap shows onboarding OR the terms gate, never both — so a new
+  // account that skipped consent recording would otherwise wait a reload.
+  if (FAERO_PROFILE && FAERO_PROFILE.tos_version !== FAERO_TOS_VERSION) faeroOpenTermsGate();
 
   if (!skipped) {
     faeroToast('ok', 'You\'re all set 🌱', 'Say hello — the commons is listening.');

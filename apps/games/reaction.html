@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Reaction — faero</title>
+<link rel="stylesheet" href="aero.css">
+<style>
+  #zone {
+    width:320px; height:240px; border-radius:20px; z-index:1; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.4rem;
+    background:linear-gradient(160deg, rgba(208,52,44,0.85), rgba(140,20,15,0.85));
+    border:1px solid rgba(255,255,255,0.8);
+    box-shadow: inset 0 2px 0 rgba(255,255,255,0.5), 0 10px 30px rgba(100,20,10,0.4);
+    color:#fff; font-family:'Exo 2',sans-serif;
+  }
+  #zone.go { background:linear-gradient(160deg, rgba(126,232,160,0.9), rgba(30,158,80,0.9)); }
+  #zone.big { font-size:1rem; letter-spacing:0.1em; }
+</style>
+</head>
+<body class="faero">
+<script src="aero.js"></script>
+<h1>REACTION TEST</h1>
+<div class="hud">
+  <div class="panel"><div class="panel-label">Last</div><div class="panel-value" id="last">&ndash;</div></div>
+  <div class="panel"><div class="panel-label">Best</div><div class="panel-value" id="best">&ndash;</div></div>
+</div>
+<div id="zone" class="big">click to start</div>
+<div id="msg" class="gmsg">wait for green&hellip;</div>
+
+<script>
+(() => {
+  const zone = document.getElementById('zone');
+  const lastEl = document.getElementById('last'), bestEl = document.getElementById('best'), msg = document.getElementById('msg');
+  let armed = false, goAt = 0, armTimer;
+
+  const stored = +(localStorage.getItem('faero-reaction-best') || 0);
+  if (stored) { bestEl.textContent = stored + 'ms'; }
+
+  function idle() {
+    zone.classList.remove('go');
+    zone.innerHTML = '<span style="font-size:1rem;">click to start</span>';
+    armed = false;
+  }
+  idle();
+
+  zone.addEventListener('click', () => {
+    if (!armed && !armTimer) return beginWait();
+    if (armed) hit();
+    else tooSoon();
+  });
+
+  function beginWait() {
+    clearTimeout(armTimer);
+    zone.innerHTML = 'wait for it&hellip;';
+    armTimer = setTimeout(() => {
+      armTimer = null;
+      armed = true;
+      zone.classList.add('go');
+      zone.textContent = 'CLICK!';
+      goAt = performance.now();
+    }, 1200 + Math.random()*2600);
+  }
+
+  function hit() {
+    const ms = Math.round(performance.now() - goAt);
+    armed = false;
+    zone.classList.remove('go');
+    lastEl.textContent = ms + 'ms';
+    const best = +(localStorage.getItem('faero-reaction-best') || 0);
+    if (!best || ms < best) {
+      localStorage.setItem('faero-reaction-best', ms);
+      bestEl.textContent = ms + 'ms';
+      msg.textContent = ms + 'ms \u2014 new best!';
+    } else {
+      msg.textContent = ms + 'ms';
+    }
+    zone.innerHTML = '<span style="font-size:1.6rem;font-weight:800;">' + ms + 'ms</span><span style="font-size:0.85rem;opacity:.85;">click to retry</span>';
+    zone.style.pointerEvents = 'auto';
+    setTimeout(() => { if (!armed && !armTimer) {} }, 0);
+  }
+
+  function tooSoon() {
+    clearTimeout(armTimer); armTimer = null;
+    idle();
+    msg.textContent = 'too soon! wait for green';
+  }
+
+  addEventListener('keydown', e => { if (e.code === 'Space') { e.preventDefault(); zone.click(); } });
+})();
+</script>
+</body>
+</html>

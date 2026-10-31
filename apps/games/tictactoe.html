@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tic-Tac-Toe — faero</title>
+<link rel="stylesheet" href="aero.css">
+<style>
+  #grid { display:grid; grid-template-columns:repeat(3,86px); grid-auto-rows:86px; gap:8px; z-index:1; }
+  .cell {
+    border-radius:14px; font-size:2.4rem; display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    background:linear-gradient(180deg, rgba(214,248,228,.92) 0%, rgba(126,214,168,.88) 42%, rgba(46,152,98,.88) 100%);
+    border:1px solid rgba(255,255,255,.65);
+    box-shadow: inset 0 2px 0 rgba(255,255,255,.85), inset 0 -3px 5px rgba(20,110,65,.35);
+    transition:filter .1s, transform .05s;
+  }
+  .cell:hover { filter:brightness(1.1); }
+  .cell.x { color:#0a5fa8; text-shadow:0 1px 0 rgba(255,255,255,.7); }
+  .cell.o { color:#c0392b; text-shadow:0 1px 0 rgba(255,255,255,.7); }
+  .cell.win { outline:3px solid #ffd75e; outline-offset:-3px; }
+</style>
+</head>
+<body class="faero">
+<script src="aero.js"></script>
+<h1>TIC-TAC-TOE</h1>
+<div class="hud">
+  <div class="panel"><div class="panel-label">You</div><div class="panel-value" id="sx">0</div></div>
+  <div class="panel"><div class="panel-label">CPU</div><div class="panel-value" id="so">0</div></div>
+  <button class="btn" onclick="newRound()">New</button>
+</div>
+<div class="bezel"><div id="grid"></div></div>
+<div id="msg" class="gmsg">you are X &middot; your move</div>
+
+<script>
+(() => {
+  const WINS = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  const grid = document.getElementById('grid');
+  const msg = document.getElementById('msg');
+  const sx = document.getElementById('sx'), so = document.getElementById('so');
+  let b, over, tallyX = 0, tallyO = 0;
+
+  function newRound() {
+    b = Array(9).fill(''); over = false;
+    msg.textContent = 'you are X \u00b7 your move';
+    grid.innerHTML = '';
+    for (let i = 0; i < 9; i++) {
+      const c = document.createElement('div');
+      c.className = 'cell';
+      c.addEventListener('click', () => play(i));
+      grid.appendChild(c);
+    }
+  }
+
+  const cells = () => [...grid.children];
+
+  function winner(bd) {
+    for (const w of WINS) if (bd[w[0]] && bd[w[0]] === bd[w[1]] && bd[w[1]] === bd[w[2]]) return w;
+    return null;
+  }
+
+  function mark(i, p) { b[i] = p; cells()[i].textContent = p === 'X' ? '\u2715' : '\u25CB'; cells()[i].classList.add(p.toLowerCase()); }
+
+  function end(w, who) {
+    over = true;
+    if (w) w.forEach(i => cells()[i].classList.add('win'));
+    if (who === 'X') { sx.textContent = ++tallyX; msg.textContent = 'you win!'; }
+    else if (who === 'O') { so.textContent = ++tallyO; msg.textContent = 'cpu wins'; }
+    else msg.textContent = 'draw';
+    setTimeout(newRound, 1600);
+  }
+
+  function checkEnd() {
+    const w = winner(b);
+    if (w) return end(w, b[w[0]]);
+    if (b.every(v => v)) return end(null);
+    return false;
+  }
+
+  function aiMove() {
+    const tryFor = p => {
+      for (const [a, , c] of WINS) {}
+      for (const w of WINS) {
+        const vals = w.map(i => b[i]);
+        if (vals.filter(v => v === p).length === 2 && vals.includes(''))
+          return w[vals.indexOf('')];
+      }
+      return -1;
+    };
+    let m = tryFor('O'); if (m < 0) m = tryFor('X');
+    if (m < 0 && !b[4]) m = 4;
+    if (m < 0) {
+      const corners = [0,2,6,8].filter(i => !b[i]);
+      if (corners.length) m = corners[Math.floor(Math.random()*corners.length)];
+    }
+    if (m < 0) {
+      const free = b.map((v,i) => v ? -1 : i).filter(i => i >= 0);
+      m = free[Math.floor(Math.random()*free.length)];
+    }
+    mark(m, 'O');
+    checkEnd();
+  }
+
+  function play(i) {
+    if (over || b[i]) return;
+    mark(i, 'X');
+    if (!checkEnd()) setTimeout(aiMove, 420);
+  }
+
+  newRound();
+})();
+</script>
+</body>
+</html>

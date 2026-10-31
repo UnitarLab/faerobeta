@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Connect Four — faero</title>
+<link rel="stylesheet" href="aero.css">
+<style>
+  #board { display:grid; grid-template-columns:repeat(7,46px); grid-auto-rows:46px; gap:4px; z-index:1; padding:6px; }
+  .slot {
+    border-radius:50%; cursor:pointer; position:relative;
+    background:linear-gradient(180deg, rgba(255,255,255,0.55), rgba(190,230,250,0.35));
+    box-shadow: inset 0 2px 6px rgba(20,90,140,0.3);
+    border:1px solid rgba(255,255,255,0.6);
+  }
+  .slot:hover { filter:brightness(1.15); }
+  .disc { position:absolute; inset:3px; border-radius:50%; animation: drop 0.25s ease-in; }
+  @keyframes drop { from { transform:translateY(-160%); } }
+  .red { background: radial-gradient(circle at 35% 30%, #ffb0a0 0%, #ef5340 45%, #b02a1a 100%);
+         box-shadow: inset 0 2px 0 rgba(255,255,255,0.5); }
+</style>
+</head>
+<body class="faero">
+<script src="aero.js"></script>
+<h1>CONNECT FOUR</h1>
+<div class="hud">
+  <div class="panel"><div class="panel-label">You</div><div class="panel-value" id="sy">0</div></div>
+  <div class="panel"><div class="panel-label">CPU</div><div class="panel-value" id="sc">0</div></div>
+  <button class="btn" onclick="reset()">New</button>
+</div>
+<div class="bezel"><div id="board"></div></div>
+<div id="msg" class="gmsg">drop reds &middot; get four in a row</div>
+
+<script>
+(() => {
+  const COLS = 7, ROWS = 6;
+  const boardEl = document.getElementById('board');
+  const msg = document.getElementById('msg');
+  let g, over, wy = 0, wc = 0;
+
+  function reset() {
+    g = Array.from({length: ROWS}, () => Array(COLS).fill(null));
+    over = false;
+    msg.textContent = 'your move';
+    boardEl.innerHTML = '';
+    for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
+      const s = document.createElement('div');
+      s.className = 'slot'; s.dataset.r = r; s.dataset.c = c;
+      s.addEventListener('click', () => play(c));
+      boardEl.appendChild(s);
+    }
+  }
+
+  const slot = (r,c) => boardEl.children[r*COLS + c];
+
+  function lowest(c) { for (let r = ROWS-1; r >= 0; r--) if (!g[r][c]) return r; return -1; }
+
+  function drop(c, who) {
+    const r = lowest(c);
+    if (r < 0) return -1;
+    g[r][c] = who;
+    slot(r,c).insertAdjacentHTML('beforeend', `<div class="disc ${who === 'R' ? 'red' : ''}" style="background:${who==='Y' ? 'radial-gradient(circle at 35% 30%, #ffe27a 0%, #f5b81a 45%, #d99e06 100%)' : ''}"></div>`);
+    return r;
+  }
+
+  function wins(gg, who) {
+    for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
+      if (!gg[r][c] || gg[r][c] !== who) continue;
+      for (const [dr,dc] of [[0,1],[1,0],[1,1],[1,-1]]) {
+        let n = 1;
+        while ((gg[r+dr*n]?.[c+dc*n]) === who) n++;
+        if (n >= 4) return true;
+      }
+    }
+    return false;
+  }
+
+  const full = () => g[0].every(v => v);
+
+  function ai() {
+    for (const who of ['Y','R']) for (let c = 0; c < COLS; c++) {
+      const r = lowest(c);
+      if (r < 0) continue;
+      g[r][c] = who;
+      const w = wins(g, who);
+      g[r][c] = null;
+      if (w) return c;
+    }
+    const pref = [3,2,4,1,5,0,6].filter(c => lowest(c) >= 0);
+    return pref[Math.floor(Math.random()*Math.min(2, pref.length))];
+  }
+
+  function play(c) {
+    if (over || drop(c, 'R') < 0) return;
+    if (wins(g, 'R')) return end('R', 'you win!', 'sy', () => ++wy);
+    if (full()) return end(null);
+    msg.textContent = 'cpu thinks\u2026';
+    setTimeout(() => {
+      drop(ai(), 'Y');
+      if (wins(g, 'Y')) return end('Y', 'cpu wins', 'sc', () => ++wc);
+      if (full()) return end(null);
+      msg.textContent = 'your move';
+    }, 450);
+  }
+
+  function end(who, text, elId, bump) {
+    over = true;
+    msg.textContent = text || 'draw';
+    if (who) { document.getElementById(elId).textContent = bump(); }
+    setTimeout(reset, 1800);
+  }
+
+  reset();
+})();
+</script>
+</body>
+</html>

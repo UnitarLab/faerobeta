@@ -11,11 +11,11 @@ that also hosts a set of small standalone apps.
 
 ## Pages
 
-- [Faero](https://faero.net/faero_v1_launch.html): The social app itself — feed, posts, threads, profiles, messages. Requires an account; signed-out visitors see a sign-in pane.
-- [faero OS](https://faero.net/): The desktop shell. Serves the app in a window alongside other small apps.
-- [Closed beta waitlist](https://faero.net/beta): Request access while the beta is closed.
-- [Privacy Policy](https://faero.net/privacy.html)
-- [Terms of Service](https://faero.net/terms.html)
+- [Faero](https://www.faero.net/faero_v1_launch.html): The social app itself — feed, posts, threads, profiles, messages. Requires an account; signed-out visitors see a sign-in pane.
+- [faero OS](https://www.faero.net/): The desktop shell. Serves the app in a window alongside other small apps.
+- [Closed beta waitlist](https://www.faero.net/beta): Request access while the beta is closed.
+- [Privacy Policy](https://www.faero.net/privacy.html)
+- [Terms of Service](https://www.faero.net/terms.html)
 
 ## Contact
 

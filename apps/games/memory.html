@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory — faero</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Exo+2:wght@300;400;600;700;800&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { height:100%; }
+  body {
+    background: linear-gradient(180deg,
+      #1a88d4 0%, #3aa8e8 26%, #7cc8f0 48%,
+      #b8e6f8 64%, #cfeec0 76%, #8ec86a 88%, #56a34a 100%);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    font-family:'Exo 2',sans-serif; overflow:hidden; user-select:none;
+  }
+
+  .bubble {
+    position:fixed; bottom:-70px; border-radius:50%; pointer-events:none; z-index:0;
+    background: radial-gradient(circle at 32% 28%,
+      rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.35) 22%,
+      rgba(190,230,255,0.12) 48%, rgba(140,210,250,0.05) 75%);
+    border:1px solid rgba(255,255,255,0.55);
+    box-shadow: inset -4px -6px 12px rgba(120,190,240,0.25), 0 0 12px rgba(255,255,255,0.25);
+    animation: rise linear infinite;
+  }
+  @keyframes rise {
+    0%   { transform: translate(0,0); opacity:0; }
+    8%   { opacity:1; }
+    50%  { transform: translate(14px,-55vh); }
+    100% { transform: translate(-10px,-112vh); opacity:0.9; }
+  }
+
+  h1 {
+    font-family:'Orbitron',sans-serif; font-size:1.45rem; font-weight:900; letter-spacing:0.3em;
+    color:transparent; z-index:1; margin-bottom:0.75rem;
+    background:linear-gradient(180deg,#ffffff 20%,#d7f1ff 55%,#8fd0f5 100%);
+    -webkit-background-clip:text; background-clip:text;
+    filter:drop-shadow(0 2px 3px rgba(10,60,110,0.55)) drop-shadow(0 0 16px rgba(255,255,255,0.5));
+  }
+
+  .hud { display:flex; gap:0.7rem; align-items:center; margin-bottom:0.75rem; z-index:1; }
+  .panel {
+    background: linear-gradient(160deg, rgba(255,255,255,0.82) 0%, rgba(222,243,255,0.55) 100%);
+    border:1px solid rgba(255,255,255,0.95);
+    border-radius:14px; padding:0.3rem 0.9rem; text-align:center; min-width:72px;
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    box-shadow: inset 0 1px 0 #ffffff, inset 0 -1px 0 rgba(170,215,245,0.6),
+                0 8px 22px rgba(15,80,130,0.28);
+  }
+  .panel-label { font-size:0.52rem; letter-spacing:0.2em; color:#2a7cb0; text-transform:uppercase; font-weight:700; }
+  .panel-value { font-family:'Orbitron',sans-serif; font-size:1.15rem; font-weight:700; color:#0a4d80; text-shadow:0 1px 0 rgba(255,255,255,0.8); }
+
+  .btn {
+    font-family:'Exo 2',sans-serif; font-size:0.66rem; font-weight:800;
+    letter-spacing:0.14em; text-transform:uppercase; padding:0.55rem 1.15rem;
+    border-radius:50px; cursor:pointer; position:relative; transition:all 0.15s;
+    color:#fff; text-shadow:0 1px 2px rgba(10,60,110,0.5);
+    background:linear-gradient(180deg,#6cc6f2 0%,#1a88d4 55%,#1272b8 100%);
+    border:1px solid rgba(255,255,255,0.75);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 4px 12px rgba(15,80,130,0.4);
+  }
+  .btn::before { content:''; position:absolute; left:8%; right:8%; top:6%; height:42%;
+    background:linear-gradient(180deg,rgba(255,255,255,0.75),rgba(255,255,255,0.05));
+    border-radius:50px; pointer-events:none; }
+  .btn:hover { transform:translateY(-1px); filter:brightness(1.08); }
+
+  .bezel {
+    border-radius:22px; padding:12px; z-index:1; position:relative;
+    background:linear-gradient(160deg, rgba(255,255,255,0.7) 0%, rgba(205,236,255,0.38) 100%);
+    border:1px solid rgba(255,255,255,0.9);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    box-shadow: inset 0 1px 0 #fff, 0 18px 44px rgba(12,70,115,0.4);
+  }
+  #board { display:grid; grid-template-columns:repeat(4,74px); grid-auto-rows:74px; gap:9px; }
+
+  .card { perspective:600px; cursor:pointer; }
+  .card-inner {
+    position:relative; width:100%; height:100%;
+    transform-style:preserve-3d; transition:transform 0.4s cubic-bezier(0.34,1.3,0.64,1);
+  }
+  .card.flip .card-inner { transform:rotateY(180deg); }
+  .face {
+    position:absolute; inset:0; border-radius:13px;
+    backface-visibility:hidden; -webkit-backface-visibility:hidden;
+    display:flex; align-items:center; justify-content:center;
+    border:1px solid rgba(255,255,255,0.85);
+  }
+  /* back = glossy bubble tile */
+  .back {
+    background:linear-gradient(180deg, rgba(214,244,255,0.92) 0%, rgba(126,200,240,0.88) 42%, rgba(40,140,205,0.88) 100%);
+    box-shadow: inset 0 2px 0 rgba(255,255,255,0.85), inset 0 -3px 5px rgba(20,90,140,0.35);
+  }
+  .back::before {
+    content:''; width:55%; height:55%; border-radius:50%;
+    background: radial-gradient(circle at 32% 28%,
+      rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.4) 25%,
+      rgba(210,240,255,0.14) 55%, rgba(150,215,250,0.06) 80%);
+    border:1.5px solid rgba(255,255,255,0.75);
+    box-shadow: 0 0 10px rgba(255,255,255,0.5), inset -5px -7px 12px rgba(110,185,235,0.35);
+  }
+  /* front = frosted nature tile */
+  .front {
+    transform:rotateY(180deg);
+    background:linear-gradient(160deg, rgba(255,255,255,0.62) 0%, rgba(222,246,232,0.5) 100%);
+    box-shadow: inset 0 1px 0 #fff, inset 0 0 0 1px rgba(255,255,255,0.5), inset 0 1px 4px rgba(20,90,60,0.15);
+    font-size:2rem;
+  }
+  .card.done .front { outline:2px solid rgba(120,220,150,0.8); outline-offset:-2px; }
+  .card.done { animation: settle 0.35s ease; cursor:default; }
+  @keyframes settle { 40% { transform:scale(1.08); } }
+
+  #msg { min-height:1.3rem; margin-top:0.65rem; z-index:1;
+    font-size:0.68rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase;
+    color:#0a4d80; text-shadow:0 1px 0 rgba(255,255,255,0.7); text-align:center; }
+</style>
+</head>
+<body>
+  <div class="bubble" style="left:7%;  width:26px;height:26px; animation-duration:11s;"></div>
+  <div class="bubble" style="left:23%; width:14px;height:14px; animation-duration:8s;  animation-delay:-3s;"></div>
+  <div class="bubble" style="left:47%; width:34px;height:34px; animation-duration:13s; animation-delay:-6s;"></div>
+  <div class="bubble" style="left:69%; width:16px;height:16px; animation-duration:9s;  animation-delay:-1s;"></div>
+  <div class="bubble" style="left:87%; width:38px;height:38px; animation-duration:14s; animation-delay:-8s;"></div>
+
+  <h1>MEMORY</h1>
+
+  <div class="hud">
+    <div class="panel"><div class="panel-label">Moves</div><div class="panel-value" id="moves">0</div></div>
+    <div class="panel"><div class="panel-label">Best</div><div class="panel-value" id="best">&ndash;</div></div>
+    <button class="btn" onclick="reset()">&#8635;</button>
+  </div>
+
+  <div class="bezel"><div id="board"></div></div>
+  <div id="msg"></div>
+
+<script>
+(() => {
+  // aero/nature pairs: leaf, sun, droplet, fish, blossom, shell, maple, fallen leaf
+  const SET = ['\uD83C\uDF3F','\u2600\uFE0F','\uD83D\uDCA7','\uD83D\uDC20','\uD83C\uDF38','\uD83E\uDEE7','\uD83C\uDF41','\uD83C\uDF43'];
+  const board = document.getElementById('board');
+  const movesEl = document.getElementById('moves');
+  const bestEl = document.getElementById('best');
+  const msg = document.getElementById('msg');
+
+  let deck, first, second, lock, moves, matched;
+
+  const bestKey = 'faero-memory-best';
+  const storedBest = +(localStorage.getItem(bestKey) || 0);
+  if (storedBest) bestEl.textContent = storedBest;
+
+  function reset() {
+    first = null; second = null; lock = false; moves = 0; matched = 0;
+    movesEl.textContent = '0'; msg.textContent = '';
+    deck = [...SET, ...SET].sort(() => Math.random() - 0.5);
+    board.innerHTML = '';
+    deck.forEach(icon => {
+      const c = document.createElement('div');
+      c.className = 'card';
+      c.innerHTML =
+        '<div class="card-inner">' +
+          '<div class="face back"></div>' +
+          '<div class="face front">' + icon + '</div>' +
+        '</div>';
+      c.addEventListener('click', () => tap(c));
+      board.appendChild(c);
+    });
+  }
+
+  function tap(card) {
+    if (lock || card === first || card.classList.contains('done') || card.classList.contains('flip')) return;
+
+    card.classList.add('flip');
+
+    if (!first) { first = card; return; }
+    second = card; lock = true;
+    movesEl.textContent = ++moves;
+
+    const a = first.querySelector('.front').textContent;
+    const b = second.querySelector('.front').textContent;
+
+    if (a === b) {
+      first.classList.add('done'); second.classList.add('done');
+      first = null; second = null; lock = false;
+      matched++;
+      if (matched === SET.length) win();
+    } else {
+      setTimeout(() => {
+        first.classList.remove('flip'); second.classList.remove('flip');
+        first = null; second = null; lock = false;
+      }, 750);
+    }
+  }
+
+  function win() {
+    msg.textContent = 'cleared in ' + moves + ' moves';
+    const best = +(localStorage.getItem(bestKey) || 0);
+    if (!best || moves < best) {
+      localStorage.setItem(bestKey, moves);
+      bestEl.textContent = moves;
+      msg.textContent += ' \u2014 new best!';
+    } else {
+      bestEl.textContent = best;
+    }
+  }
+
+  reset();
+})();
+</script>
+</body>
+</html>

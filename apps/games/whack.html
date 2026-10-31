@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Whack-a-Mole — faero</title>
+<link rel="stylesheet" href="aero.css">
+<style>
+  #grid { display:grid; grid-template-columns:repeat(3,88px); grid-auto-rows:88px; gap:12px; z-index:1; }
+  .hole {
+    border-radius:50% 50% 42% 42%; position:relative; overflow:hidden; cursor:pointer;
+    background:
+      radial-gradient(circle at 50% 18%, rgba(60,140,90,0.0) 34%, rgba(30,90,55,0.55) 36%, rgba(20,70,40,0.75) 100%),
+      linear-gradient(180deg,#8ec86a 0%,#56a34a 100%);
+    box-shadow: inset 0 6px 14px rgba(10,50,25,0.5), inset 0 -2px 0 rgba(255,255,255,0.3);
+  }
+  .mole {
+    position:absolute; left:50%; bottom:-100%; transform:translateX(-50%);
+    width:58px; height:58px; border-radius:50%;
+    background: radial-gradient(circle at 35% 28%, #d8a86a 0%, #a9743c 55%, #6e4522 100%);
+    box-shadow: inset 0 3px 0 rgba(255,255,255,0.4);
+    transition:bottom 0.12s ease-out;
+  }
+  .mole::before, .mole::after {
+    content:''; position:absolute; top:22px; width:9px; height:9px; border-radius:50%;
+    background:#241407;
+  }
+  .mole::before { left:13px; } .mole::after { right:13px; }
+  .hole.up .mole { bottom:6px; }
+  .hole.bonk .mole { filter:brightness(1.5) saturate(0.6); }
+</style>
+</head>
+<body class="faero">
+<script src="aero.js"></script>
+<h1>WHACK-A-MOLE</h1>
+<div class="hud">
+  <div class="panel"><div class="panel-label">Score</div><div class="panel-value" id="score">0</div></div>
+  <div class="panel"><div class="panel-label">Time</div><div class="panel-value" id="time">30</div></div>
+  <button class="btn" id="goBtn" onclick="start()">Start</button>
+</div>
+<div class="bezel"><div id="grid"></div></div>
+<div id="msg" class="gmsg">bonk moles &middot; 30 seconds</div>
+
+<script>
+(() => {
+  const grid = document.getElementById('grid');
+  const scoreEl = document.getElementById('score'), timeEl = document.getElementById('time');
+  const goBtn = document.getElementById('goBtn'), msg = document.getElementById('msg');
+  let score = 0, t = 30, upTimer, tickTimer, playing = false;
+
+  for (let i = 0; i < 9; i++) {
+    const h = document.createElement('div');
+    h.className = 'hole';
+    h.innerHTML = '<div class="mole"></div>';
+    h.addEventListener('pointerdown', () => bonk(h));
+    grid.appendChild(h);
+  }
+  const holes = [...grid.children];
+
+  function start() {
+    if (playing) return;
+    playing = true; score = 0; t = 30;
+    scoreEl.textContent = '0'; timeEl.textContent = '30';
+    goBtn.textContent = 'Go!'; msg.textContent = 'bonk!';
+    pop();
+    tickTimer = setInterval(() => {
+      timeEl.textContent = --t;
+      if (t <= 0) stop();
+    }, 1000);
+  }
+
+  function stop() {
+    playing = false;
+    clearInterval(tickTimer); clearTimeout(upTimer);
+    holes.forEach(h => h.classList.remove('up','bonk'));
+    msg.textContent = 'time! you bonked ' + score;
+    goBtn.textContent = 'Again';
+  }
+
+  function pop() {
+    holes.forEach(h => h.classList.remove('up'));
+    const h = holes[Math.floor(Math.random()*9)];
+    h.classList.add('up');
+    upTimer = setTimeout(pop, Math.max(420, 900 - (30-t)*16) + Math.random()*300);
+  }
+
+  function bonk(h) {
+    if (!playing || !h.classList.contains('up') || h.classList.contains('bonk')) return;
+    score++;
+    scoreEl.textContent = score;
+    h.classList.add('bonk');
+    setTimeout(() => h.classList.remove('bonk'), 120);
+    h.classList.remove('up');
+  }
+
+})();
+</script>
+</body>
+</html>

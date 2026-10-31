@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dino Run — faero</title>
+<link rel="stylesheet" href="aero.css">
+<style>
+  canvas { display:block; border-radius:14px; }
+</style>
+</head>
+<body class="faero">
+<script src="aero.js"></script>
+<h1>DINO RUN</h1>
+<div class="hud">
+  <div class="panel"><div class="panel-label">Distance</div><div class="panel-value" id="dist">0</div></div>
+  <div class="panel"><div class="panel-label">Best</div><div class="panel-value" id="best">0</div></div>
+  <button class="btn" onclick="start()">Run</button>
+</div>
+<div class="bezel"><canvas id="cv" width="440" height="240"></canvas>
+  <div id="overlay"><div id="overlayTitle">READY</div><div id="overlaySub">Space / tap to jump the obstacles.<br>It only gets faster.</div><button class="btn" onclick="start()">Go</button></div>
+</div>
+
+<script>
+(() => {
+  const cv = document.getElementById('cv'), ctx = cv.getContext('2d');
+  const GROUND = 196;
+  let y, vy, speed, dist, best, obs, running, raf, spawnIn;
+
+  best = +(localStorage.getItem('faero-dino-best') || 0);
+  document.getElementById('best').textContent = best;
+
+  function start() {
+    cancelAnimationFrame(raf);
+    y = GROUND; vy = 0; speed = 5.5; dist = 0; obs = []; spawnIn = 60; running = true;
+    document.getElementById('overlay').classList.add('hide');
+    loop();
+  }
+
+  function end() {
+    running = false;
+    if (dist > best) {
+      best = Math.round(dist);
+      localStorage.setItem('faero-dino-best', best);
+      document.getElementById('best').textContent = best;
+    }
+    document.getElementById('overlayTitle').textContent = 'WIPEOUT';
+    document.getElementById('overlaySub').innerHTML = 'Distance: <b>' + Math.round(dist) + '</b>' + (Math.round(dist) >= best ? ' \u2014 new best!' : ' \u00b7 best: ' + best);
+    const ov = document.getElementById('overlay');
+    ov.querySelector('.btn').textContent = 'Again';
+    ov.classList.remove('hide');
+  }
+
+  function jump() { if (running && y >= GROUND) vy = -10.2; }
+
+  addEventListener('keydown', e => {
+    if (e.code === 'Space' || e.code === 'ArrowUp') { e.preventDefault(); running ? jump() : start(); }
+  });
+  cv.addEventListener('pointerdown', () => running ? jump() : start());
+
+  function loop() {
+    step(); draw();
+    raf = requestAnimationFrame(loop);
+  }
+
+  function step() {
+    dist += speed * 0.05; speed += 0.0016;
+    document.getElementById('dist').textContent = Math.round(dist);
+
+    vy += 0.55; y = Math.min(GROUND, y + vy);
+
+    if (--spawnIn <= 0) {
+      obs.push({ x: cv.width + 20, w: 16 + Math.random()*14, h: 26 + Math.random()*22, fly: Math.random() < 0.25 && dist > 120 });
+      spawnIn = 46 + Math.random()*70 - speed;
+    }
+    for (const o of obs) o.x -= speed;
+    obs = obs.filter(o => o.x > -40);
+
+    const px = 44;
+    for (const o of obs) {
+      const oy = o.fly ? GROUND - 52 : GROUND - o.h;
+      if (px+16 > o.x && px-14 < o.x + o.w && y + 30 > oy && y < oy + o.h) return end();
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0,0,cv.width,cv.height);
+    const g = ctx.createLinearGradient(0,0,0,cv.height);
+    g.addColorStop(0,'#d8f3ff'); g.addColorStop(1,'#a8ddf5');
+    ctx.fillStyle = g; ctx.fillRect(0,0,cv.width,cv.height);
+
+    ctx.fillStyle = '#7cc86a';
+    ctx.beginPath(); ctx.moveTo(0,GROUND+34);
+    for (let x = 0; x <= cv.width; x += 20)
+      ctx.lineTo(x, GROUND+34 - ((x/20 % 2) ? 4 : 9));
+    ctx.lineTo(cv.width, cv.height); ctx.lineTo(0, cv.height); ctx.fill();
+
+    ctx.strokeStyle = 'rgba(255,255,255,0.8)';
+    ctx.beginPath(); ctx.moveTo(0, GROUND+34); ctx.lineTo(cv.width, GROUND+34); ctx.stroke();
+
+    ctx.fillStyle = '#2ea05f';
+    ctx.beginPath(); ctx.roundRect(30, y, 28, 30, [12,12,6,6]); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.75)';
+    ctx.beginPath(); ctx.roundRect(34, y+4, 18, 7, 4); ctx.fill();
+    ctx.fillStyle = '#06321c';
+    ctx.beginPath(); ctx.arc(50, y+8, 2.4, 0, 7); ctx.fill();
+
+    for (const o of obs) {
+      const oy = o.fly ? GROUND - 52 : GROUND - o.h;
+      if (o.fly) bubbleShape(o.x + o.w/2, oy + 10);
+      else {
+        ctx.fillStyle = '#56a34a';
+        ctx.beginPath(); ctx.roundRect(o.x, oy, o.w, o.h, 4); ctx.fill();
+        ctx.fillStyle = 'rgba(255,255,255,0.45)';
+        ctx.beginPath(); ctx.roundRect(o.x+2, oy+2, o.w-4, 5, 3); ctx.fill();
+      }
+    }
+  }
+
+  function bubbleShape(x, yy) {
+    const bg = ctx.createRadialGradient(x-3,yy-3,1,x,yy,11);
+    bg.addColorStop(0,'rgba(255,255,255,0.95)'); bg.addColorStop(1,'rgba(140,210,250,0.35)');
+    ctx.fillStyle = bg;
+    ctx.beginPath(); ctx.arc(x, yy, 10, 0, 7); ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.85)'; ctx.stroke();
+  }
+})();
+</script>
+</body>
+</html>

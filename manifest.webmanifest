@@ -1,7 +1,7 @@
 {
   "name": "Faero — Our Promised Future",
   "short_name": "Faero",
-  "description": "A solarpunk social commons. Music, mutual aid, repair, gardening, solar.",
+  "description": "A real internet social OS. Your desktop, your world.",
   "start_url": "faero_v1_launch.html",
   "scope": "./",
   "display": "standalone",

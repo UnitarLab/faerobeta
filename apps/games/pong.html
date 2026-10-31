@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pong — faero</title>
+<link rel="stylesheet" href="aero.css">
+<style>
+  canvas { display:block; border-radius:14px; cursor:none; }
+  .bezel { cursor:none; }
+</style>
+</head>
+<body class="faero">
+<script src="aero.js"></script>
+<h1>PONG</h1>
+<div class="hud">
+  <div class="panel"><div class="panel-label">You</div><div class="panel-value" id="ps">0</div></div>
+  <div class="panel"><div class="panel-label">CPU</div><div class="panel-value" id="cs">0</div></div>
+  <button class="btn" onclick="serve(1)">Serve</button>
+</div>
+<div class="bezel"><canvas id="cv" width="420" height="300"></canvas></div>
+<div id="msg" class="gmsg">first to 7 &middot; move mouse or drag to control</div>
+
+<script>
+(() => {
+  const cv = document.getElementById('cv'), ctx = cv.getContext('2d');
+  const W = cv.width, H = cv.height, PW = 10, PH = 64, R = 7;
+  let py, cy, bx, by, vx, vy, ps = 0, cs = 0, raf;
+
+  function serve(dir) {
+    cancelAnimationFrame(raf);
+    py = cy = H/2 - PH/2;
+    bx = W/2; by = H/2;
+    const a = (Math.random()*0.6 - 0.3);
+    vx = 4.4 * dir * Math.cos(a); vy = 5.2 * Math.sin(a) || 1;
+    loop();
+  }
+
+  function loop() {
+    step(); draw();
+    raf = requestAnimationFrame(loop);
+  }
+
+  function step() {
+    bx += vx; by += vy;
+    if (by < R || by > H-R) { vy = -vy; by = Math.max(R, Math.min(H-R, by)); }
+
+    const target = by - PH/2 + (Math.random()-0.5)*14;
+    cy += Math.max(-4.2, Math.min(4.2, target - cy));
+    cy = Math.max(0, Math.min(H-PH, cy));
+
+    if (vx < 0 && bx-R < 16+PW && bx > 16 && by > py && by < py+PH) {
+      vx = Math.min(9, -vx*1.05); vy += ((by-(py+PH/2))/PH)*4;
+      bubble(bx, by);
+    }
+    if (vx > 0 && bx+R > W-16-PW && bx < W-16 && by > cy && by < cy+PH) {
+      vx = Math.max(-9, -vx*1.05); vy += ((by-(cy+PH/2))/PH)*4;
+      bubble(bx, by);
+    }
+    if (bx < -12) { cs++; sync(); resetAfter(1); }
+    if (bx > W+12) { ps++; sync(); resetAfter(-1); }
+  }
+
+  function resetAfter(dir) {
+    document.getElementById('msg').textContent =
+      ps >= 7 ? 'you take it!' : cs >= 7 ? 'cpu takes it' : `${ps} \u2014 ${cs}`;
+    cancelAnimationFrame(raf);
+    setTimeout(() => { if (ps < 7 && cs < 7) serve(dir); }, 700);
+  }
+
+  function sync() {
+    document.getElementById('ps').textContent = ps;
+    document.getElementById('cs').textContent = cs;
+  }
+
+  const drops = [];
+  function bubble(x, y) {
+    for (let i = 0; i < 6; i++) drops.push({x, y, dx:(Math.random()-.5)*2.4, dy:(Math.random()-.5)*2.4, life:1});
+  }
+
+  function draw() {
+    const g = ctx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0,'#bfe9ff'); g.addColorStop(1,'#63b8dd');
+    ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle = 'rgba(255,255,255,0.55)';
+    ctx.setLineDash([6,8]); ctx.beginPath(); ctx.moveTo(W/2,0); ctx.lineTo(W/2,H); ctx.stroke();
+    ctx.setLineDash([]);
+
+    for (let i = drops.length-1; i >= 0; i--) {
+      const d = drops[i];
+      d.x += d.dx; d.y += d.dy; d.life -= 0.03;
+      if (d.life <= 0) { drops.splice(i,1); continue; }
+      ctx.fillStyle = `rgba(255,255,255,${d.life*0.8})`;
+      ctx.beginPath(); ctx.arc(d.x,d.y,3*d.life,0,7); ctx.fill();
+    }
+
+    const paddle = (x,y) => {
+      const pg = ctx.createLinearGradient(x,y,x,y+PH);
+      pg.addColorStop(0,'rgba(255,255,255,0.95)');
+      pg.addColorStop(1,'rgba(120,200,245,0.65)');
+      ctx.fillStyle = pg;
+      ctx.beginPath(); ctx.roundRect(x,y,PW,PH,5); ctx.fill();
+      ctx.strokeStyle='rgba(255,255,255,0.9)'; ctx.stroke();
+    };
+    paddle(16, py); paddle(W-16-PW, cy);
+
+    const bg = ctx.createRadialGradient(bx-2,by-2,1,bx,by,R+2);
+    bg.addColorStop(0,'#fff'); bg.addColorStop(1,'rgba(190,235,255,0.75)');
+    ctx.fillStyle = bg;
+    ctx.beginPath(); ctx.arc(bx,by,R,0,7); ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.85)'; ctx.stroke();
+  }
+
+  const move = clientY => {
+    const rect = cv.getBoundingClientRect();
+    py = Math.max(0, Math.min(H-PH, (clientY-rect.top)*(H/rect.height) - PH/2));
+  };
+  cv.addEventListener('mousemove', e => move(e.clientY));
+  cv.addEventListener('touchmove', e => { e.preventDefault(); move(e.touches[0].clientY); }, {passive:false});
+
+  serve(Math.random() < 0.5 ? 1 : -1);
+})();
+</script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="frutiger-aero">
 
 <head>
@@ -6,27 +6,26 @@
   <meta name="description" content="A real internet social OS. Your desktop, your world. Glass, gradients and a future we all dreamed of. Join the closed beta now.">
   <meta name="theme-color" content="#1a88d4">
 
-  <!-- Canonical. Without this, the desktop is reachable on both faero.net and
-       faerobeta.vercel.app, and search engines treat two domains serving byte-
-       identical pages as duplicates — splitting ranking between them and
-       picking a winner themselves, often the vercel.app one. This names the
-       brand domain as the real address and makes the preview deploy point home.
+  <!-- Canonical. Without this, the desktop is reachable on multiple origins
+       (faerobeta.vercel.app, www.faero.net) and search engines treat them as
+       duplicates — splitting ranking and picking a winner themselves.
 
-       ⚠ These URLs use the APEX domain, faero.net, matching the app, the legal
-       pages and the Supabase auth redirect allowlist. At time of writing the
-       apex does not serve: it has a stale parking A record (162.255.119.204)
-       alongside the Vercel one (216.198.79.1), so TLS fails. www.faero.net is
-       fine. Removing that one DNS record fixes it. Until it is removed, these
-       tags point at a host that does not answer — see DEPLOY.md. -->
-  <link rel="canonical" href="https://faerobeta.vercel.app/">
+       These URLs use https://www.faero.net/ — the brand host that actually
+       serves. The apex (faero.net) still has a stale parking A record
+       (162.255.119.204) next to the Vercel one (216.198.79.1), so TLS fails on
+       roughly half of apex requests — see DEPLOY.md. Once that record is gone,
+       switch these to the apex only if this origin then 301s to it; otherwise
+       leaving www everywhere is correct. Keep in sync with robots.txt,
+       sitemap.xml, the /beta shell head and the Supabase redirect allowlist. -->
+  <link rel="canonical" href="https://www.faero.net/">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://faerobeta.vercel.app/">
+  <meta property="og:url" content="https://www.faero.net/">
   <meta property="og:site_name" content="faero">
   <meta property="og:title" content="faero — A real internet social OS">
   <meta property="og:description" content="A real internet social OS. Your desktop, your world. Glass, gradients and a future we all dreamed of. Join the closed beta now.">
-  <meta property="og:image" content="https://faerobeta.vercel.app/og-card.jpg">
+  <meta property="og:image" content="https://www.faero.net/og-card.jpg">
   <meta property="og:image:alt" content="The faero OS desktop — a glass-and-gradient social operating system.">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -35,12 +34,15 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="faero — A real internet social OS">
   <meta name="twitter:description" content="A real internet social OS. Your desktop, your world. Glass, gradients and a future we all dreamed of. Join the closed beta now.">
-  <meta name="twitter:image" content="https://faerobeta.vercel.app/og-card.jpg">
+  <meta name="twitter:image" content="https://www.faero.net/og-card.jpg">
   <meta name="twitter:image:alt" content="The faero OS desktop — a glass-and-gradient social operating system.">
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>faero — social OS</title>
   <link rel="icon" type="image/webp" href="favicon.webp">
+  <!-- iOS home-screen icon. The file already shipped in /icons; it was just
+       never declared, so iPhones fell back to a screenshot tile. -->
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <link rel="manifest" href="manifest.webmanifest">
   <!-- A duplicate description meta tag used to sit here. Two of them on one
        page is not additive — crawlers take the first and discard the rest, so
@@ -2954,13 +2956,36 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
         painter: { title: 'Painter', icon: 'icons/painter.svg', file: 'apps/painter.html', w: 1056, h: 696, minW: 600, minH: 420 },
 
         calendar: { title: 'Calendar', icon: '&#128197;', file: 'apps/stampcam.html', w: 860, h: 640, minW: 600, minH: 500 },
-        games: { title: 'Games', icon: '&#127918;', file: 'apps/games.html', w: 600, h: 450, minW: 400, minH: 300 },
+        games: { title: 'Games', icon: '&#127918;', file: 'apps/games.html', w: 640, h: 560, minW: 420, minH: 340 },
         calculator: { title: 'Calculator', icon: '&#128159;', file: 'apps/calculator.html', w: 320, h: 460, minW: 280, minH: 400 },
         radio: { title: 'faeroRadio', icon: '&#128251;', file: 'apps/radio.html', w: 800, h: 600, minW: 600, minH: 400 },
 
-        game_2048: { title: '2048', icon: 'ðŸ”¢', file: 'apps/games/2048.html', w: 400, h: 600, minW: 300, minH: 400 },
-        game_breakout: { title: 'Breakout', icon: 'ðŸ§±', file: 'apps/games/breakout.html', w: 600, h: 500, minW: 400, minH: 400 },
-        game_flappy: { title: 'Flappy Bird', icon: 'ðŸ¦', file: 'apps/games/flappy.html', w: 400, h: 600, minW: 300, minH: 400 }
+        game_2048: { title: '2048', icon: '🔢', file: 'apps/games/2048.html', w: 400, h: 600, minW: 300, minH: 400 },
+        game_breakout: { title: 'Breakout', icon: '🧱', file: 'apps/games/breakout.html', w: 600, h: 500, minW: 400, minH: 400 },
+        game_flappy: { title: 'Flappy Bird', icon: '🐦', file: 'apps/games/flappy.html', w: 400, h: 600, minW: 300, minH: 400 },
+        game_minesweeper: { title: 'Minesweeper', icon: '💣', file: 'apps/games/minesweeper.html', w: 470, h: 620, minW: 380, minH: 500 },
+        game_snake: { title: 'Snake', icon: '🐍', file: 'apps/games/snake.html', w: 450, h: 610, minW: 360, minH: 500 },
+        game_memory: { title: 'Memory', icon: '🃏', file: 'apps/games/memory.html', w: 470, h: 600, minW: 390, minH: 500 },
+        game_tictactoe: { title: 'Tic-Tac-Toe', icon: '⭕', file: 'apps/games/tictactoe.html', w: 420, h: 600, minW: 340, minH: 490 },
+        game_pong: { title: 'Pong', icon: '🏓', file: 'apps/games/pong.html', w: 480, h: 520, minW: 380, minH: 440 },
+        game_whack: { title: 'Whack-a-Mole', icon: '🔨', file: 'apps/games/whack.html', w: 430, h: 590, minW: 350, minH: 480 },
+        game_simon: { title: 'Simon', icon: '🎼', file: 'apps/games/simon.html', w: 420, h: 560, minW: 340, minH: 470 },
+        game_bubbles: { title: 'Bubble Shooter', icon: '🫧', file: 'apps/games/bubbles.html', w: 450, h: 650, minW: 370, minH: 550 },
+        game_blockfall: { title: 'Blockfall', icon: '🟪', file: 'apps/games/blockfall.html', w: 400, h: 650, minW: 330, minH: 550 },
+        game_connect4: { title: 'Connect Four', icon: '🔴', file: 'apps/games/connect4.html', w: 460, h: 560, minW: 390, minH: 470 },
+        game_rps: { title: 'Rock Paper Scissors', icon: '✊', file: 'apps/games/rps.html', w: 460, h: 540, minW: 380, minH: 460 },
+        game_reaction: { title: 'Reaction Test', icon: '⚡', file: 'apps/games/reaction.html', w: 440, h: 550, minW: 360, minH: 460 },
+        game_typerace: { title: 'Type Race', icon: '⌨️', file: 'apps/games/typerace.html', w: 580, h: 500, minW: 440, minH: 430 },
+        game_dinorun: { title: 'Dino Run', icon: '🦖', file: 'apps/games/dinorun.html', w: 520, h: 460, minW: 400, minH: 400 },
+        game_hangman: { title: 'Hangman', icon: '📖', file: 'apps/games/hangman.html', w: 530, h: 580, minW: 420, minH: 480 },
+        game_slide: { title: 'Slide Puzzle', icon: '🔲', file: 'apps/games/slide.html', w: 440, h: 550, minW: 360, minH: 470 },
+        game_dropcatch: { title: 'Drop Catch', icon: '💧', file: 'apps/games/dropcatch.html', w: 500, h: 545, minW: 400, minH: 460 },
+        faerocraft: { title: 'FaeroCraft', icon: '⛏️', file: 'apps/games/faerocraft.html', w: 990, h: 670, minW: 720, minH: 540 },
+        obby: { title: 'Obby Tower', icon: '🧗', file: 'apps/games/obbytower.html', w: 930, h: 650, minW: 700, minH: 510 },
+        gtaero: { title: 'Grand Theft Aero', icon: '🚔', file: 'apps/games/gtaero.html', w: 880, h: 625, minW: 660, minH: 490 },
+        royale: { title: 'Faero Royale', icon: '🏆', file: 'apps/games/royale.html', w: 900, h: 655, minW: 720, minH: 540 }
+
+
       };
 
       /* â”€â”€ UTILITY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
@@ -3333,9 +3358,20 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
           </div>
         `).join('')}
       </div>
-      <div class="start-menu-footer">
-        <button class="sm-footer-btn" id="sm-settings">Settings</button>
-        <button class="sm-footer-btn" id="sm-shutdown">Shut Down</button>
+      <div class="start-menu-footer" style="flex-direction:column;align-items:stretch;">
+        <!-- Row 1: outward-facing links. Beta restores a visible path to the
+             /beta waitlist funnel — previously reachable only by typing
+             /beta or the ?beta=1 easter egg. -->
+        <div style="display:flex;gap:4px;">
+          <a class="sm-footer-btn" href="/beta" title="Join the closed beta waitlist" style="text-decoration:none;text-align:center;">Beta</a>
+          <a class="sm-footer-btn" href="https://www.tiktok.com/@frutigeraerosoftclub" target="_blank" rel="noopener" title="@frutigeraerosoftclub on TikTok" style="text-decoration:none;text-align:center;">TikTok</a>
+          <a class="sm-footer-btn" href="https://discord.com/invite/gf8yYG7FzZ" target="_blank" rel="noopener" title="faero Discord" style="text-decoration:none;text-align:center;">Discord</a>
+        </div>
+        <!-- Row 2: system actions -->
+        <div style="display:flex;gap:4px;margin-top:4px;">
+          <button class="sm-footer-btn" id="sm-settings">Settings</button>
+          <button class="sm-footer-btn" id="sm-shutdown">Shut Down</button>
+        </div>
       </div>
 `;
         $$('[data-sm-open]', menu).forEach(el => {
@@ -3984,8 +4020,10 @@ AERONET OS â€” WINDOW MANAGER & DESKTOP ENGINE
       if (p) { p.classList.add('dismissed'); setTimeout(() => { p.style.display = 'none'; p.classList.remove('dismissed'); }, 420); }
     }
     // The closed-beta splash is HIDDEN BY DEFAULT — it no longer auto-opens.
-    // Nothing about it has been deleted: the markup, the styles, the logo frame
-    // and the waitlist link to faero.net/beta are all still here and still work.
+    // Nothing about it has been deleted: the markup, the styles and the logo
+    // frame are all still here and still work. Its button opens the app.
+    // The standalone waitlist page stays live at /beta and is linked from the
+    // Start menu footer ("Beta"), plus the ?beta=1 share link below.
     // Only the automatic "throw a modal over the desktop on load" behaviour is off,
     // because the app it was gating is now open to visitors from the desktop icon.
     //

@@ -27,13 +27,30 @@ const OS = (() => {
     painter: { title: 'Painter', icon: 'icons/painter.svg', file: 'apps/painter.html', w: 1056, h: 696, minW: 600, minH: 420 },
     ps1: { title: 'PlayStation', icon: '&#128191;', file: 'apps/ps1.html', w: 960, h: 720, minW: 640, minH: 480 },
     calendar: { title: 'Calendar', icon: '&#128197;', file: 'apps/stampcam.html', w: 860, h: 640, minW: 600, minH: 500 },
-    games: { title: 'Games', icon: '&#127918;', file: 'apps/games.html', w: 600, h: 450, minW: 400, minH: 300 },
+    games: { title: 'Games', icon: '&#127918;', file: 'apps/games.html', w: 640, h: 560, minW: 420, minH: 340 },
     calculator: { title: 'Calculator', icon: '&#128159;', file: 'apps/calculator.html', w: 320, h: 460, minW: 280, minH: 400 },
     radio: { title: 'faeroRadio', icon: '&#128251;', file: 'apps/radio.html', w: 800, h: 600, minW: 600, minH: 400 },
     tv: { title: 'TV', icon: '&#128250;', file: 'apps/tv.html', w: 1024, h: 768, minW: 640, minH: 480 },
     game_2048: { title: '2048', icon: '🔢', file: 'apps/games/2048.html', w: 400, h: 600, minW: 300, minH: 400 },
     game_breakout: { title: 'Breakout', icon: '🧱', file: 'apps/games/breakout.html', w: 600, h: 500, minW: 400, minH: 400 },
-    game_flappy: { title: 'Flappy Bird', icon: '🐦', file: 'apps/games/flappy.html', w: 400, h: 600, minW: 300, minH: 400 }
+    game_flappy: { title: 'Flappy Bird', icon: '🐦', file: 'apps/games/flappy.html', w: 400, h: 600, minW: 300, minH: 400 },
+    game_minesweeper: { title: 'Minesweeper', icon: '💣', file: 'apps/games/minesweeper.html', w: 470, h: 620, minW: 380, minH: 500 },
+    game_snake: { title: 'Snake', icon: '🐍', file: 'apps/games/snake.html', w: 450, h: 610, minW: 360, minH: 500 },
+    game_memory: { title: 'Memory', icon: '🃏', file: 'apps/games/memory.html', w: 470, h: 600, minW: 390, minH: 500 },
+    game_tictactoe: { title: 'Tic-Tac-Toe', icon: '⭕', file: 'apps/games/tictactoe.html', w: 420, h: 600, minW: 340, minH: 490 },
+    game_pong: { title: 'Pong', icon: '🏓', file: 'apps/games/pong.html', w: 480, h: 520, minW: 380, minH: 440 },
+    game_whack: { title: 'Whack-a-Mole', icon: '🔨', file: 'apps/games/whack.html', w: 430, h: 590, minW: 350, minH: 480 },
+    game_simon: { title: 'Simon', icon: '🎼', file: 'apps/games/simon.html', w: 420, h: 560, minW: 340, minH: 470 },
+    game_bubbles: { title: 'Bubble Shooter', icon: '🫧', file: 'apps/games/bubbles.html', w: 450, h: 650, minW: 370, minH: 550 },
+    game_blockfall: { title: 'Blockfall', icon: '🟪', file: 'apps/games/blockfall.html', w: 400, h: 650, minW: 330, minH: 550 },
+    game_connect4: { title: 'Connect Four', icon: '🔴', file: 'apps/games/connect4.html', w: 460, h: 560, minW: 390, minH: 470 },
+    game_rps: { title: 'Rock Paper Scissors', icon: '✊', file: 'apps/games/rps.html', w: 460, h: 540, minW: 380, minH: 460 },
+    game_reaction: { title: 'Reaction Test', icon: '⚡', file: 'apps/games/reaction.html', w: 440, h: 550, minW: 360, minH: 460 },
+    game_typerace: { title: 'Type Race', icon: '⌨️', file: 'apps/games/typerace.html', w: 580, h: 500, minW: 440, minH: 430 },
+    game_dinorun: { title: 'Dino Run', icon: '🦖', file: 'apps/games/dinorun.html', w: 520, h: 460, minW: 400, minH: 400 },
+    game_hangman: { title: 'Hangman', icon: '📖', file: 'apps/games/hangman.html', w: 530, h: 580, minW: 420, minH: 480 },
+    game_slide: { title: 'Slide Puzzle', icon: '🔲', file: 'apps/games/slide.html', w: 440, h: 550, minW: 360, minH: 470 },
+    game_dropcatch: { title: 'Drop Catch', icon: '💧', file: 'apps/games/dropcatch.html', w: 500, h: 545, minW: 400, minH: 460 }
   };
 
   /* ── UTILITY ───────────────────────────────────────────── */
