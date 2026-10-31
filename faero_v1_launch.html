@@ -5613,7 +5613,7 @@ body.has-rls-warning { padding-top:72px; }
           <div class="dm-thread-status" id="dm-thread-status">online</div>
         </div>
         <div class="dm-thread-actions">
-          <button class="dm-thread-btn" aria-label="View profile" title="View profile" onclick="(()=>{const o=DM_CONVO_CACHE[dmActiveConvo]?.other_profile;if(o?.id){PF_VIEWING=o.id;navigate('profile');}})()">
+          <button class="dm-thread-btn" aria-label="View profile" title="View profile" onclick="(()=>{const o=DM_CONVO_CACHE[dmActiveConvo]?.other_profile;if(o?.id)exViewProfile(o.id);})()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
             </svg>
@@ -7639,9 +7639,8 @@ async function faeroRouteToProfile(handleOrId) {
     return;
   }
 
-  PF_VIEWING = id;
-  renderPage('profile');
-  pfBoot(id);
+  PF_NEXT = id;
+  renderPage('profile');   // boots PF_NEXT
 }
 
 async function faeroRouteToPost(postId) {
@@ -7684,21 +7683,21 @@ initMusicEmbeds();
 /* ═══════════════════════════════
    CLICK-TO-PROFILE — avatars + names everywhere
 ═══════════════════════════════ */
+// Names and avatars open THAT person's profile. These used to call
+// navigate('profile') with no id, which opened your own profile (or the
+// sign-in message for guests) whoever you clicked. One delegated listener
+// covers posts, replies and anything rendered later.
+const _PROFILE_CLICK = '[data-profile-id], .post-head .av-wrap, .post-head .post-name';
+document.addEventListener('click', e => {
+  const el = e.target.closest(_PROFILE_CLICK);
+  if (!el || e.target.closest('button, a[href]:not([href^="#profile/"])')) return;
+  const id = el.dataset.profileId || el.closest('.post')?.dataset.userId;
+  if (!id) return;
+  e.preventDefault(); e.stopPropagation();
+  exViewProfile(id);
+});
 function wireProfileClicks() {
-  // Post heads: avatar and author name navigate to profile
-  document.querySelectorAll('.post-head .av-wrap, .post-head .post-name, .post-head .post-meta').forEach(el => {
-    if (el.dataset.profileWired) return;
-    el.style.cursor = 'pointer';
-    el.addEventListener('click', e => { e.stopPropagation(); navigate('profile'); });
-    el.dataset.profileWired = '1';
-  });
-  // Right sidebar recently-active user rows
-  document.querySelectorAll('.ra-row, .ra-item, .recently-active .user-row').forEach(el => {
-    if (el.dataset.profileWired) return;
-    el.style.cursor = 'pointer';
-    el.addEventListener('click', () => navigate('profile'));
-    el.dataset.profileWired = '1';
-  });
+  document.querySelectorAll(_PROFILE_CLICK).forEach(el => { el.style.cursor = 'pointer'; });
 }
 wireProfileClicks();
 
@@ -10137,6 +10136,31 @@ function faeroTimeAgo(iso) {
 /* ══════════════════
    BOOTSTRAP
 ══════════════════ */
+/* Visitors can read everything public; acting (post, like, reply, follow,
+   message) asks them to sign up. This bar says so up front, instead of the
+   first prompt arriving as a surprise on their first click. */
+function faeroShowGuestBar() {
+  if (document.getElementById('faero-guest-bar')) return;
+  try { if (sessionStorage.getItem('faero-guest-bar-off')) return; } catch (_) {}
+  const bar = document.createElement('div');
+  bar.id = 'faero-guest-bar';
+  bar.setAttribute('role', 'region');
+  bar.setAttribute('aria-label', 'Join Faero');
+  bar.style.cssText = 'position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:900;' +
+    'display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;max-width:calc(100% - 32px);' +
+    'padding:10px 12px 10px 16px;border-radius:14px;background:var(--glass,#fff);border:1px solid var(--border,#cfe3f7);' +
+    'box-shadow:0 8px 28px rgba(0,40,90,.18);backdrop-filter:blur(12px);font-size:13px;color:var(--font-color,#123)';
+  bar.innerHTML = `
+    <span>🌱 You're looking around Faero. <b>Join</b> to post, like, reply and message.</span>
+    <button class="fam-submit" style="width:auto;margin:0;padding:7px 14px" onclick="faeroOpenAuth('up')">Join Faero</button>
+    <button class="fam-linkbtn" style="margin:0" onclick="faeroOpenAuth('in')">Sign in</button>
+    <button class="fam-linkbtn" style="margin:0;padding:4px 8px" aria-label="Hide" onclick="this.parentElement.remove();try{sessionStorage.setItem('faero-guest-bar-off','1')}catch(_){}">✕</button>`;
+  // sit above the phone tab bar rather than on top of it
+  const mobileNav = document.querySelector('.fmn-item')?.parentElement;
+  if (mobileNav && mobileNav.offsetHeight) bar.style.bottom = (mobileNav.offsetHeight + 12) + 'px';
+  document.body.appendChild(bar);
+}
+
 async function faeroBootstrap() {
   // check existing session. data is null when the SDK failed to load
   // (faeroSdkStub), so don't destructure through it.
@@ -10200,6 +10224,8 @@ async function faeroBootstrap() {
   else if (FAERO_USER && FAERO_PROFILE && FAERO_PROFILE.tos_version !== FAERO_TOS_VERSION) {
     faeroOpenTermsGate();
   }
+
+  if (!FAERO_USER) faeroShowGuestBar();
 
   // wire Follow button to open auth if not logged in
   document.querySelectorAll('.p-actions .btn-primary').forEach(btn => {
@@ -10338,8 +10364,8 @@ faeroBootstrap = async function() {
 
   // if profile page is the landing page, boot it now that auth is resolved
   if (document.getElementById('page-profile')?.classList.contains('active')) {
-    PF_VIEWING = FAERO_USER?.id || null;
-    pfBoot(PF_VIEWING);
+    // keep a deep-linked person (#profile/name) rather than resetting to me
+    pfBoot(PF_VIEWING || FAERO_USER?.id || null);
   }
 
   // keep auth status dot + pill live on every auth change
@@ -10353,8 +10379,7 @@ faeroBootstrap = async function() {
       // re-boot profile page if it's currently visible
       if (document.getElementById('page-profile')?.classList.contains('active')) {
         PF_BOOTED = false;
-        PF_VIEWING = FAERO_USER?.id || null;
-        pfBoot(PF_VIEWING);
+        pfBoot(PF_VIEWING || FAERO_USER?.id || null);
       }
     }, 300);
   });
@@ -10379,6 +10404,7 @@ faeroBootstrap = async function() {
 
 let PF_PROFILE   = null;   // currently displayed profile object
 let PF_VIEWING   = null;   // uid being viewed (null = own profile)
+let PF_NEXT      = null;   // set by exViewProfile: who the next profile render shows
 function _pfViewingId() { return PF_VIEWING || FAERO_USER?.id || null; }
 let PF_BOOTED    = false;
 
@@ -11704,7 +11730,7 @@ function gcDetailRenderPosts() {
       <div class="gc-post-main">
         <div class="gc-post-meta">
           <span class="gc-post-meta-av">${av}</span>
-          <span class="gc-post-author" onclick="gcCloseDetail();navigate('profile')">u/${gcEsc(pr.username || name)}</span>
+          <span class="gc-post-author" onclick="gcCloseDetail();exViewProfile(${faeroJsArg(pr.id || p.user_id || '')})">u/${gcEsc(pr.username || name)}</span>
           <span class="gdp-dot">·</span>
           <span>${gcEsc(gcSlug(g))}</span>
           <span class="gdp-dot">·</span>
@@ -11823,7 +11849,7 @@ async function gcDetailLoadMembers(groupId) {
         ? `<img src="${faeroSafeUrl(pr.avatar_url)}" alt="${init}" onerror="this.replaceWith(document.createTextNode(${faeroJsArg(name.charAt(0).toUpperCase())}))">`
         : init;
       const me   = FAERO_USER && pr.id === FAERO_USER.id;
-      return `<div class="gc-detail-member" onclick="gcCloseDetail();navigate('profile')">
+      return `<div class="gc-detail-member" onclick="gcCloseDetail();exViewProfile(${faeroJsArg(pr.id)})">
         <div class="gc-detail-member-av">${av}</div>
         <div class="gc-member-id">
           <div class="gc-detail-member-name">${gcEsc(name)}${me ? '<span class="gc-member-badge you">you</span>' : ''}${pr._creator ? '<span class="gc-member-badge">creator</span>' : ''}</div>
@@ -12146,7 +12172,7 @@ function exPersonCardHTML(p) {
   const isFollowing = EX_FOLLOWING.has(p.id);
   const tags = (p.tags||[]).slice(0,2).map(t=>`<span class="ex-sr-tag">${faeroEsc(t)}</span>`).join('');
   return `
-    <div class="ex-person-card" onclick="navigate('profile');exViewProfile(${faeroJsArg(p.id)})">
+    <div class="ex-person-card" onclick="exViewProfile(${faeroJsArg(p.id)})">
       <div class="ex-person-av" style="background:linear-gradient(135deg,${color},${color}99)">${avatarInner}</div>
       <div class="ex-person-name">${faeroEsc(p.display_name || p.username || 'Faero member')}</div>
       <div class="ex-person-genre">${faeroEsc((p.tags||[]).slice(0,2).join(' / ') || p.bio?.slice(0,40) || '')}</div>
@@ -12392,8 +12418,8 @@ async function exFollow(profileId, btn) {
 
 /* ── view a profile from explore / anywhere ─────────────────── */
 function exViewProfile(id) {
-  PF_VIEWING = id || null;
-  PF_BOOTED  = false;
+  PF_NEXT   = id || null;
+  PF_BOOTED = false;
   navigate('profile');
 }
 
@@ -12417,7 +12443,10 @@ renderPage = function(slug) {
   if (slug === 'groups')  setTimeout(gcBoot, 60);
   if (slug === 'explore') setTimeout(exBoot, 60);
   if (slug === 'profile') {
-    if (!PF_VIEWING) PF_VIEWING = FAERO_USER?.id || null;
+    // The menu's Profile always means *me*. Opening someone else goes
+    // through exViewProfile(), which leaves their id in PF_NEXT.
+    PF_VIEWING = PF_NEXT || FAERO_USER?.id || null;
+    PF_NEXT = null;
     PF_BOOTED = false;
     pfBoot(PF_VIEWING);
   }
