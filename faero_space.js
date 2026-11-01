@@ -146,7 +146,10 @@
   }
 
   const STN = {};   // id → station, so buttons can carry just an id
-  const FAERO_FM = { id: 'faero-fm', name: 'Faero FM', url: 'https://stream.zeno.fm/f37n1cr6308uv', fav: '', country: 'Faero', tags: 'faero' };
+  // The featured station: the lofi stream the old radio app shipped with. It is
+  // a zeno.fm station, not one Faero runs, so it goes by its own name. (The id
+  // stays 'faero-fm' so spaces that already pinned it keep working.)
+  const FAERO_FM = { id: 'faero-fm', name: 'Lofi Hip Hop', url: 'https://stream.zeno.fm/f37n1cr6308uv', fav: '', country: 'zeno.fm', tags: 'lofi' };
   STN[FAERO_FM.id] = FAERO_FM;
 
   function normStation(s) {
@@ -200,12 +203,12 @@
     root.innerHTML = `
       <section class="fx-stage fx-radio-hero">
         <div>
-          <span class="fx-onair">ON AIR</span>
+          <span class="fx-onair">LIVE</span>
           <h1>Faero Radio</h1>
-          <p>Faero FM plus thousands of stations from everywhere. It keeps playing while you post and browse.</p>
+          <p>Thousands of live stations from everywhere. It keeps playing while you post and browse.</p>
           <div class="fx-row2">
-            <button class="fx-play" data-fx-st="faero-fm" aria-label="Play Faero FM">${IC.play}</button>
-            <b style="font-size:16px;font-weight:800;color:var(--text)">Faero FM</b>
+            <button class="fx-play" data-fx-st="faero-fm" aria-label="Play Lofi Hip Hop">${IC.play}</button>
+            <span style="font-size:12px;color:var(--text3)">Featured<br><b style="font-size:16px;font-weight:800;color:var(--text)">Lofi Hip Hop</b></span>
             <button class="fx-btn fx-btn-sm" data-fx-pin="faero-fm">${IC.plus}Put on my space</button>
           </div>
         </div>
@@ -247,7 +250,7 @@
     } catch (e) {
       if (seq !== loadSeq) return;
       msg.textContent = 'The radio directory is not answering.';
-      box.innerHTML = `<div class="fx-empty" style="grid-column:1/-1">Couldn't reach the station list. Faero FM still works, and you can try again in a moment.</div>`;
+      box.innerHTML = `<div class="fx-empty" style="grid-column:1/-1">Couldn't reach the station list. The featured station still works, and you can try again in a moment.</div>`;
     }
   }
 
@@ -477,6 +480,7 @@
         <span class="fx-kind">${sp.kind === 'artist' ? '✔ ARTIST' : '♥ LISTENER'}</span>
         <span class="fx-hint">${S.own ? (ed ? '' : 'Your space. This is what visitors see.') : `${esc(handle)}'s space`}</span>
         ${S.own && !ed ? `<span class="fx-r"><button class="fx-btn fx-btn-pri fx-btn-sm" data-fx-do="edit">${IC.edit}Edit my space</button></span>` : ''}
+        ${!S.own ? `<span class="fx-r"><button class="fx-btn fx-btn-sm" data-fx-report title="Report something in this space">Report</button></span>` : ''}
       </div>
       ${ed ? `<div class="fx-editbar">
         <p><b>Building your space.</b> Drag blocks to move them, or use ◀ ▶. Tap 🎨 for a style, ⤢ for a size, ✎ to fill it in.</p>
@@ -706,6 +710,10 @@
   }
 
   function onSpaceClick(e) {
+    if (e.target.closest('[data-fx-report]')) {
+      if (typeof faeroReportPost === 'function' && S.p) faeroReportPost(S.p.id, S.p.id, 'profile');
+      return;
+    }
     const t = e.target.closest('[data-fx-bt],[data-fx-do],[data-fx-kind],[data-fx-stage]');
     if (!t || !S.own) return;
     const L = S.space.blocks;
@@ -932,7 +940,17 @@
     else if (slug === 'booth') ensureBooth();
   }
 
-  window.FaeroSpace = { onPage, renderProfile, clear };
+  /* Moderators: wipe a reported profile space. The existing "staff updates"
+     policy on profiles is what allows it; for anyone else RLS refuses. */
+  async function adminClearSpace(uid, reportId) {
+    if (!uid || !confirm("Clear this person's profile space? Their blocks and everything typed into them are removed.")) return;
+    const { error } = await supabase.from('profiles').update({ space: null }).eq('id', uid);
+    if (error) { toast('err', 'Could not clear it', typeof faeroFriendlyDbError === 'function' ? faeroFriendlyDbError(error) : error.message); return; }
+    toast('ok', 'Profile space cleared', 'They see the default layout now.');
+    if (reportId && typeof admResolveReport === 'function') admResolveReport(reportId, 'actioned');
+  }
+
+  window.FaeroSpace = { onPage, renderProfile, clear, adminClearSpace };
 
   // The router may already have shown one of these pages before this file ran.
   const active = $('.page.active');

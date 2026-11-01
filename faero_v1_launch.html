@@ -12682,6 +12682,9 @@ function admReportRowHTML(r, body) {
       ${r.status === 'open' ? `<button class="rep-btn" onclick="admResolveReport('${faeroEsc(r.id)}','reviewing')">Start review</button>` : ''}
       ${r.entity_type === 'post' && r.entity_id
         ? `<button class="rep-btn danger" onclick="admReportDeletePost('${faeroEsc(r.entity_id)}','${faeroEsc(r.id)}')">Delete post</button>` : ''}
+      ${r.entity_type === 'profile' && r.entity_id
+        ? `<a class="rep-btn" href="#profile/${faeroEsc(encodeURIComponent(r.entity_id))}" onclick="faeroCloseAdmin()">View profile</a>
+           <button class="rep-btn danger" onclick="FaeroSpace.adminClearSpace('${faeroEsc(r.entity_id)}','${faeroEsc(r.id)}')">Clear profile space</button>` : ''}
       ${r.reported?.id
         ? `<button class="rep-btn danger" onclick="faeroOpenBanModal('${faeroEsc(r.reported.id)}','${faeroEsc(reported)}')">Ban @${faeroEsc(reported)}</button>` : ''}
       <button class="rep-btn" onclick="admResolveReport('${faeroEsc(r.id)}','actioned')">Mark actioned</button>
