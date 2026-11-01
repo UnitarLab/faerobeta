@@ -730,6 +730,7 @@
         const ctx = canvas.getContext('2d');
 
         let stream = null, facing = 'user', loopId = 0, resumeOnShow = false;
+        let camGen = 0;           // bumps on every start/stop, so a stale start gives up
         let rec = null, recChunks = [], micStream = null;
         let photos = [];          // { blob, url }
         let selected = -1;
@@ -775,17 +776,23 @@
         /* ── camera ── */
         async function startCamera() {
             stopCamera();
+            const gen = ++camGen;
+            let s;
             try {
                 // Video only: the microphone is asked for when you record, not before.
-                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: facing, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false });
+                s = await navigator.mediaDevices.getUserMedia({ video: { facingMode: facing, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false });
             } catch (e) {
-                stream = null;
+                if (gen !== camGen) return;
                 toast('No camera. Allow camera access for this site and try again.');
                 drawIdle();
                 return;
             }
+            // Stopped (page hidden, Stop pressed, Flip) while we waited for permission.
+            if (gen !== camGen) { s.getTracks().forEach(t => t.stop()); return; }
+            stream = s;
             video.srcObject = stream;
             await video.play().catch(() => {});
+            if (gen !== camGen) return;
             // Match the camera's shape, capped so the preview stays smooth.
             const vw = video.videoWidth || 1280, vh = video.videoHeight || 720, scale = Math.min(1, 960 / vw);
             canvas.width = Math.round(vw * scale); canvas.height = Math.round(vh * scale);
@@ -793,6 +800,7 @@
             startLoop();
         }
         function stopCamera() {
+            camGen++;
             cancelAnimationFrame(loopId); loopId = 0;
             if (rec && rec.state !== 'inactive') rec.stop();
             if (stream) stream.getTracks().forEach(t => t.stop());
@@ -904,6 +912,7 @@
             if (stickers.length) {
                 c.save(); c.font = `${32 * u}px "Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif`; c.textBaseline = 'top';
                 c.shadowColor = 'rgba(0,0,0,.45)'; c.shadowBlur = 3 * u;
+                c.fillStyle = '#fff';   // text stickers (★ ♥ ✦) take the fill; emoji keep their own colours
                 stickers.forEach((s, i) => c.fillText(s, 12 * u + (i % 8) * 40 * u, 12 * u + Math.floor(i / 8) * 40 * u));
                 c.restore();
             }
@@ -945,6 +954,10 @@
             el.hidden = true;
         }
         function snapshot() {
+            // Draw the current camera frame now rather than trusting the last
+            // animation frame: right after the camera starts (or while the
+            // page is in the background) the loop may not have drawn yet.
+            drawFrame();
             const c = document.createElement('canvas'); c.width = canvas.width; c.height = canvas.height;
             c.getContext('2d').drawImage(canvas, 0, 0);
             flash();

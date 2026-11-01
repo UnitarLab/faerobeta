@@ -345,7 +345,13 @@
   /* ── sanitising: owner data is stored as typed, checked again here ── */
   const str = (v, max) => String(v == null ? '' : v).replace(/[\u0000-\u001F\u007F]/g, ' ').trim().slice(0, max || 200);
   const okUrl = v => { const s = str(v, 300); return /^https?:\/\/[^\s"'<>]+$/i.test(s) ? s : ''; };
-  const okMusic = v => { const s = okUrl(v); return s && typeof detectMusicPlatform === 'function' && detectMusicPlatform(s) ? s : ''; };
+  // A music link must actually be hosted by one of the players we embed —
+  // checked on the hostname, not anywhere in the text.
+  const MUSIC_HOSTS = /(^|\.)(soundcloud\.com|mixcloud\.com|youtube\.com|youtu\.be|bandcamp\.com)$/i;
+  const okMusic = v => {
+    const s = okUrl(v);
+    try { return s && MUSIC_HOSTS.test(new URL(s).hostname) ? s : ''; } catch (e) { return ''; }
+  };
   const okDate = v => { const s = str(v, 20); return /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2})?$/.test(s) ? s : ''; };
   function cleanField(kind, v, max) {
     if (kind === 'url' || kind === 'image') return okUrl(v);

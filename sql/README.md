@@ -223,6 +223,10 @@ leave the status line, pronouns, links, profile background, pinned post and
 profile space public; this clears them when an account is deleted, and once
 for accounts already deleted.
 
+Then run **`11_fix_account_deletion.sql`**. Without it, deleting an account
+never actually marks it deleted: the protected-columns guard from 06 quietly
+undid `deleted_at`, so the 30-day purge and the cleanup in 10 never ran.
+
 ---
 
 ## What file 01 actually does
