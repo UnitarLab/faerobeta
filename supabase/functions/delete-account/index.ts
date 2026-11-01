@@ -7,7 +7,7 @@
 // tombstones the profile in one transaction), then calls this function to
 // remove the auth.users row so the email is freed and the login dies.
 
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.112.3';   // same version as the app
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
