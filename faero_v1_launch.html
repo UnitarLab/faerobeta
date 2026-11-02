@@ -84,8 +84,7 @@
 /* Collector for the records below. Backed by the log-error Edge Function
    (supabase/functions/log-error) and the client_errors table (sql/07_error_log.sql).
    Deploy with --no-verify-jwt: sendBeacon cannot set an Authorization header.
-   Until it is deployed the beacons 404 silently, which is harmless — sendBeacon
-   ignores the response — and errors still buffer locally for faeroDebugDump().
+   Errors also buffer locally for faeroDebugDump().
    Set to null to disable reporting entirely. */
 var FAERO_ERROR_ENDPOINT = 'https://fifnkgpxtnmjycxkkqhz.supabase.co/functions/v1/log-error';
 var FAERO_BUILD = '2026.08.12-beta.2';
@@ -96,13 +95,16 @@ function faeroLogError(kind, detail) {
     kind, detail: String(detail).slice(0, 2000),
     build: FAERO_BUILD, url: location.hash || location.pathname,
     ua: navigator.userAgent, at: new Date().toISOString(),
-    user: (window.FAERO_USER && window.FAERO_USER.id) || null
+    // FAERO_USER is a top-level let, so it is not on window.
+    user: (typeof FAERO_USER !== 'undefined' && FAERO_USER && FAERO_USER.id) || null
   };
   window.FAERO_ERRORS.push(rec);
   if (window.FAERO_ERRORS.length > 50) window.FAERO_ERRORS.shift();
   if (FAERO_ERROR_ENDPOINT) {
     try {
-      navigator.sendBeacon(FAERO_ERROR_ENDPOINT, new Blob([JSON.stringify(rec)], { type: 'application/json' }));
+      // text/plain: browsers refuse cross-origin beacons with a JSON content
+      // type. The collector parses the body as JSON either way.
+      navigator.sendBeacon(FAERO_ERROR_ENDPOINT, new Blob([JSON.stringify(rec)], { type: 'text/plain;charset=UTF-8' }));
     } catch (_) { /* never let logging throw */ }
   }
 }
@@ -14041,7 +14043,7 @@ async function fsExportData() {
    Set FAERO_VAPID_PUBLIC_KEY to your VAPID public key. Generate a
    pair with:  npx web-push generate-vapid-keys
 ══════════════════════════════════════════════════════════════ */
-var FAERO_VAPID_PUBLIC_KEY = null;   // 'BM...' — paste your public key here
+var FAERO_VAPID_PUBLIC_KEY = 'BEXK9EXmUllHzEdAvWU5T2l_cixinkz_UdhhJxqdIg2kJ8XUgmxL_z5xRspg2xo2AjtUPv0I3nd_8-pqLrWP89A';   // public half; the private key is a Supabase secret
 
 function faeroPushSupported() {
   return 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;

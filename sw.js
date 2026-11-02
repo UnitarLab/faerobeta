@@ -5,7 +5,7 @@
      • Supabase + Cloudinary API → never cached (always network)
    Bump CACHE_VERSION on every deploy to evict old shells. */
 
-const CACHE_VERSION = 'faero-v1.0.0-beta.10';
+const CACHE_VERSION = 'faero-v1.0.0-beta.11';
 const SHELL_CACHE   = `${CACHE_VERSION}-shell`;
 const ASSET_CACHE   = `${CACHE_VERSION}-assets`;
 

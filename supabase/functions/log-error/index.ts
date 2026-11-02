@@ -17,7 +17,7 @@
 // a fixed length, and only the known keys are persisted. Nothing here is ever
 // rendered as HTML.
 
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { createClient } from 'npm:@supabase/supabase-js@2.112.3';   // same version as the app
 
 const admin = createClient(
   Deno.env.get('SUPABASE_URL')!,
@@ -25,6 +25,18 @@ const admin = createClient(
 );
 
 const MAX_BODY_BYTES = 8 * 1024;
+
+// Unauthenticated, so cap how fast one sender can write. Per instance and in
+// memory: not a hard guarantee across instances, but it stops a single loop
+// or script from filling client_errors.
+const PER_MINUTE = 20;
+const seen = new Map<string, { n: number; t: number }>();
+function tooMany(key: string): boolean {
+  const now = Date.now();
+  const e = seen.get(key);
+  if (!e || now - e.t > 60_000) { seen.set(key, { n: 1, t: now }); if (seen.size > 5000) seen.clear(); return false; }
+  return ++e.n > PER_MINUTE;
+}
 
 const cors = {
   'Access-Control-Allow-Origin': '*',
@@ -44,6 +56,9 @@ Deno.serve(async (req) => {
   if (req.method !== 'POST') {
     return new Response('method not allowed', { status: 405, headers: cors });
   }
+
+  const sender = (req.headers.get('x-forwarded-for') ?? '').split(',')[0].trim() || 'unknown';
+  if (tooMany(sender)) return new Response(null, { status: 204, headers: cors });
 
   // Cap before reading. An unauthenticated endpoint should never let a caller
   // decide how much memory it allocates.

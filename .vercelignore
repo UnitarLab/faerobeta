@@ -28,6 +28,7 @@ supabase/
 
 # ── Local build tooling ──────────────────────────────────────────────────
 patch*.py
+scripts/
 build_legal.py
 _devserver.py
 _rasterize.html
