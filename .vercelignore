@@ -46,12 +46,16 @@ faero_liquid_metal_v4.html
 # ── The retired faero OS desktop ─────────────────────────────────────────
 # index.html is now a redirect to the app. The desktop's apps, its games,
 # its old radio and its CSS/JS are no longer linked from anywhere, so they
-# come off the public site. Two files in apps/ are still used by the app:
+# come off the public site. These in apps/ are still used by the app:
 #   apps/photobooth.html     the Booth page
 #   apps/faero-profiles.html the profile styles
+#   apps/studio.html         Studio, under Apps
+#   apps/games/              the games, under Apps
 apps/*
 !apps/photobooth.html
 !apps/faero-profiles.html
+!apps/studio.html
+!apps/games/
 css/
 js/
 

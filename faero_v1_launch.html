@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>FAERO — Our Promised Future</title>
-<meta name="description" content="Faero is a solarpunk social commons — music, mutual aid, repair, gardening and solar. No algorithms, no engagement traps. Our promised future.">
+<title>Faero: your corner of the internet</title>
+<meta name="description" content="Faero is a social space for music. Make a profile with your favourite song, listen to radio from around the world, take booth photos and post with friends.">
 <meta name="theme-color" content="#1565C0" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0D1B2A" media="(prefers-color-scheme: dark)">
 <meta name="color-scheme" content="light dark">
@@ -17,8 +17,8 @@
      the Supabase redirect URL list. -->
 <meta property="og:type"         content="website">
 <meta property="og:site_name"    content="Faero">
-<meta property="og:title"        content="FAERO — Our Promised Future">
-<meta property="og:description"  content="A solarpunk social commons. Music, mutual aid, repair, gardening, solar.">
+<meta property="og:title"        content="Faero: your corner of the internet">
+<meta property="og:description"  content="A social space for music. Your profile, your song, and radio from around the world.">
 <!-- og:url is the app's OWN address, not the bare domain. It used to be
      "https://faero.net/" and that was correct when a rewrite made / serve this
      file. It no longer does: / is the faero OS desktop, a different page. Left
@@ -30,25 +30,20 @@
 <meta property="og:image:type"   content="image/jpeg">
 <meta property="og:image:width"  content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt"    content="FAERO — Our Promised Future">
+<meta property="og:image:alt"    content="Faero">
 <meta name="twitter:card"        content="summary_large_image">
-<meta name="twitter:title"       content="FAERO — Our Promised Future">
-<meta name="twitter:description" content="A solarpunk social commons. Music, mutual aid, repair, gardening, solar.">
+<meta name="twitter:title"       content="Faero: your corner of the internet">
+<meta name="twitter:description" content="A social space for music. Your profile, your song, and radio from around the world.">
 <meta name="twitter:image"       content="https://www.faero.net/og-card.jpg">
-<meta name="twitter:image:alt"   content="FAERO — Our Promised Future">
+<meta name="twitter:image:alt"   content="Faero">
 
-<!-- Favicon — the real Faero mark, generated from the same paths as the
-     topbar logo so the tab icon and the app can never drift apart.
-     The tiny inline fallback is the mark reduced to its silhouette: at
-     16px the full curve detail turns to mush anyway, and it means the
-     tab is branded on the very first paint, before icons/ is fetched. -->
-<link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
-<link rel="alternate icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231565C0'/%3E%3Ccircle cx='32' cy='20' r='7' fill='%23fff'/%3E%3Cpath d='M12 27c3-4 9-3 12 1 3 3 5 5 8 5s5-2 8-5c3-4 9-5 12-1 2 3 1 7-3 8-8 1-13 5-13 12 0 6 4 10 9 13 4 2 5 7 2 10-3 2-7 1-9-3-2-5-5-8-9-8s-7 3-9 8c-2 4-6 5-9 3-3-3-2-8 2-10 5-3 9-7 9-13 0-7-5-11-13-12-4-1-5-5-3-8z' fill='%23fff'/%3E%3C/svg%3E">
+<!-- Favicon — the glossy green-and-blue Faero mark (favicon.webp), the one
+     the site launched with. It is the only tab icon: an SVG or PNG listed
+     alongside it wins in most browsers and puts the flat blue tile back. -->
+<link rel="icon" type="image/webp" href="favicon.webp">
 <!-- iOS Safari ignores SVG apple-touch-icons, so this must be a PNG or the
      home-screen tile falls back to a grey screenshot of the page. -->
 <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
-<link rel="mask-icon" href="icons/favicon.svg" color="#1565C0">
 <link rel="manifest" href="manifest.webmanifest">
 
 <!-- Fonts load without blocking first paint -->
@@ -980,7 +975,7 @@ body::after {
 .fs-nav-pills-prev { display: flex; gap: 3px; align-items: center; flex: 1; overflow: hidden; }
 .fs-nav-pill-prev { height: 16px; padding: 0 7px; font-size: 5.5px; font-weight: 700; display: flex; align-items: center; white-space: nowrap; }
 .fs-nav-meta { padding: 5px 9px 7px; display: flex; align-items: baseline; gap: 5px; }
-.fs-nav-yr { font-size: 9.5px; font-family: var(--mono, monospace); color: var(--leaf); letter-spacing: 0.06em; }
+.fs-nav-yr { font-size: 9.5px; font-family: var(--mono, monospace); color: var(--leaf-text, var(--leaf)); letter-spacing: 0.06em; }
 .fs-nav-name { font-size: 11px; font-weight: 600; color: var(--text); }
 .fs-nav-check { position: absolute; top: 4px; right: 4px; width: 16px; height: 16px; border-radius: 50%; background: var(--leaf); color: #fff; font-size: 9px; display: none; align-items: center; justify-content: center; }
 .fs-nav-card.active .fs-nav-check { display: flex; }
@@ -1024,7 +1019,7 @@ body::after {
   width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
   background: linear-gradient(135deg,var(--sun),var(--sun2));
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-body); font-size: 15px; font-weight: 700; color: var(--leaf);
+  font-family: var(--font-body); font-size: 15px; font-weight: 700; color: var(--leaf-text, var(--leaf));
   overflow: hidden;
 }
 .tup-hav img { width:100%;height:100%;object-fit:cover;border-radius:50%; }
@@ -1250,8 +1245,11 @@ body::after {
 .fs-modal {
   width: min(900px, 96vw); height: min(620px, 92vh);
   display: flex; border-radius: 20px; overflow: hidden;
-  background: var(--paper); border: 1px solid var(--border);
-  box-shadow: 0 24px 80px rgba(0,0,0,0.28);
+  background:
+    radial-gradient(900px 400px at 100% -10%, rgba(255,255,255,.9), rgba(255,255,255,0) 60%),
+    linear-gradient(180deg, #EAF6FF 0%, #D6EEFF 55%, #E4F6EC 100%);
+  border: 1px solid rgba(144,202,249,.8);
+  box-shadow: 0 24px 80px rgba(13,71,161,0.32), inset 0 1px 0 rgba(255,255,255,.9);
   animation: fs-in 0.22s cubic-bezier(0.4,0,0.2,1);
 }
 @keyframes fs-in { from{opacity:0;scale:0.95} to{opacity:1;scale:1} }
@@ -1259,33 +1257,33 @@ body::after {
 /* sidebar */
 .fs-sidebar {
   width: 200px; flex-shrink: 0;
-  background: linear-gradient(175deg, #0a1628 0%, #0d1e3a 100%);
+  background: linear-gradient(180deg, #1E88E5 0%, #1565C0 55%, #0D47A1 100%);
   display: flex; flex-direction: column; padding: 20px 0;
   border-right: 1px solid rgba(255,255,255,0.07);
 }
 .fs-sidebar-logo {
   padding: 0 18px 18px; font-family: var(--font-body);
   font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
-  color: rgba(255,255,255,0.35); border-bottom: 1px solid rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.75); border-bottom: 1px solid rgba(255,255,255,0.18);
   margin-bottom: 8px;
 }
 .fs-tab {
   display: flex; align-items: center; gap: 9px; padding: 9px 18px;
-  font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.5);
+  font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.82);
   cursor: pointer; transition: all 0.14s; border-left: 2.5px solid transparent;
   margin: 1px 0;
 }
-.fs-tab svg { opacity: 0.5; flex-shrink: 0; }
+.fs-tab svg { opacity: 0.8; flex-shrink: 0; }
 .fs-tab:hover { color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.05); }
 .fs-tab.active {
-  color: #fff; background: rgba(100,181,246,0.14);
-  border-left-color: var(--leaf3);
+  color: #fff; background: rgba(255,255,255,0.2);
+  border-left-color: #fff;
 }
 .fs-tab.active svg { opacity: 1; }
 .fs-sidebar-spacer { flex: 1; }
 .fs-sidebar-close {
   margin: 0 12px; padding: 8px 14px; border-radius: 10px; border: none;
-  background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.16); color: #fff;
   font-family: inherit; font-size: 12px; cursor: pointer; transition: all 0.14s;
 }
 .fs-sidebar-close:hover { background: rgba(239,68,68,0.2); color: #f87171; }
@@ -1436,6 +1434,20 @@ body::after {
 
 /* vibes extras */
 .fs-vibe-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+/* Design Studio was a second, half-saved copy of these settings. */
+#customizer-toggle, #customizer-panel { display: none !important; }
+.fs-font-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 8px; }
+.fs-font { display: flex; flex-direction: column; gap: 3px; padding: 10px 12px; border-radius: 12px; text-align: left;
+  border: 1.5px solid var(--border); background: var(--glass); color: var(--text); font-size: 12.5px; font-weight: 700; cursor: pointer; }
+.fs-font span { font-size: 15px; font-weight: 400; color: var(--text3); }
+.fs-font:hover { border-color: var(--leaf3); }
+.fs-font.on { border-color: var(--leaf); box-shadow: 0 0 0 2px var(--leaf3); }
+.fs-seg { display: inline-flex; flex-shrink: 0; padding: 3px; border-radius: 12px; background: var(--bg2); border: 1px solid var(--border); }
+.fs-seg button { border: 0; background: none; padding: 6px 10px; border-radius: 9px; font: inherit; font-size: 12px; font-weight: 700; color: var(--text3); cursor: pointer; }
+.fs-seg button.on { background: var(--paper); color: var(--leaf-text, var(--leaf)); box-shadow: 0 1px 4px rgba(0,0,0,.12); }
+.faero-sparkle { position: fixed; z-index: 99999; pointer-events: none; font-size: 14px; line-height: 1; transform: translate(-50%,-50%);
+  text-shadow: 0 0 6px currentColor; animation: faero-sparkle .8s ease-out forwards; }
+@keyframes faero-sparkle { to { opacity: 0; transform: translate(-50%, 10px) scale(.4) rotate(90deg); } }
 
 /* guest state (not logged in) */
 .tup-guest { padding: 16px; text-align: center; }
@@ -1457,7 +1469,7 @@ body::after {
   width: 20px; height: 20px; border-radius: 50%;
   background: linear-gradient(135deg, var(--sun), var(--sun2));
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-body); font-size: 10px; font-weight: 700; color: var(--leaf);
+  font-family: var(--font-body); font-size: 10px; font-weight: 700; color: var(--leaf-text, var(--leaf));
   overflow: hidden;
 }
 .user-av-sm img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
@@ -1549,11 +1561,13 @@ body::after {
   .fs-tab, .adm-tab { white-space: nowrap; flex-shrink: 0; }
   .fs-sidebar-logo, .adm-sidebar-title, .fs-sidebar-spacer, .fs-sidebar-close { display: none; }
 
-  .gc-create-box, .onb-box, .sheet-box, .fam-box {
+  .gc-create-box, .onb-box, .sheet-box {
     width: 100vw; max-width: 100vw; max-height: 92dvh;
     border-radius: 16px 16px 0 0; margin-top: auto;
   }
-  .adm-overlay, #faero-auth-modal { align-items: flex-end; }
+  .adm-overlay { align-items: flex-end; }
+  /* sign-in stays a centred card on phones, not a bottom sheet */
+  .fam-box { max-height: 92dvh; overflow-y: auto; }
 }
 
 /* ── Small phone ──────────────────────────────────────────── */
@@ -1728,7 +1742,7 @@ body::after {
   background: rgba(255,255,255,0.7);
   backdrop-filter: blur(10px);
   display: flex; align-items: center; justify-content: center;
-  cursor: pointer; transition: all 0.18s; color: var(--leaf);
+  cursor: pointer; transition: all 0.18s; color: var(--leaf-text, var(--leaf));
 }
 .dm-compose-btn:hover {
   background: var(--leaf); color: #fff;
@@ -1905,7 +1919,7 @@ body::after {
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; transition: all 0.18s; color: var(--text2);
 }
-.dm-thread-btn:hover { background: rgba(100,181,246,0.2); color: var(--leaf); }
+.dm-thread-btn:hover { background: rgba(100,181,246,0.2); color: var(--leaf-text, var(--leaf)); }
 
 /* ── Messages scroll ── */
 .dm-messages {
@@ -2195,7 +2209,7 @@ body::after {
   letter-spacing: 0.4px; text-transform: uppercase;
 }
 .pbadge-og  { background: linear-gradient(135deg, #ffd600, #ffab00); color: #4a2800; box-shadow: 0 0 8px rgba(255,214,0,0.4); }
-.pbadge-art { background: linear-gradient(135deg, var(--sun), var(--sun2)); color: var(--leaf); }
+.pbadge-art { background: linear-gradient(135deg, var(--sun), var(--sun2)); color: var(--leaf-text, var(--leaf)); }
 
 .p-name   { font-family: var(--font-body); font-size: 16px; font-weight: 700; color: var(--font-color); margin-bottom: 1px; }
 .p-handle { font-size: 10.5px; color: var(--text3); font-family: var(--font-body); margin-bottom: 9px; }
@@ -2208,7 +2222,7 @@ body::after {
 }
 .pm-info { flex: 1; min-width: 0; }
 .pm-label { font-size: 8.5px; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; }
-.pm-track { font-size: 11.5px; font-weight: 600; color: var(--leaf); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pm-track { font-size: 11.5px; font-weight: 600; color: var(--leaf-text, var(--leaf)); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .pm-bars { display: flex; gap: 2px; align-items: flex-end; height: 14px; flex-shrink: 0; }
 .pm-bar  { width: 3px; background: var(--sun); border-radius: 2px; animation: barUp 0.8s ease-in-out infinite alternate; }
 .pm-bar:nth-child(2) { animation-delay: 0.13s; }
@@ -2222,11 +2236,11 @@ body::after {
   border: 1px solid var(--border); border-radius: 12px; padding: 3px 9px;
   cursor: pointer; transition: all 0.14s;
 }
-.ptag:hover { background: var(--bg3); color: var(--leaf); }
+.ptag:hover { background: var(--bg3); color: var(--leaf-text, var(--leaf)); }
 
 .p-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; margin-bottom: 13px; }
 .pstat { text-align: center; background: var(--bg2); border-radius: 9px; padding: 7px 3px; border: 1px solid var(--border); }
-.pstat-n { font-family: var(--font-body); font-size: 15px; font-weight: 700; color: var(--leaf); display: block; }
+.pstat-n { font-family: var(--font-body); font-size: 15px; font-weight: 700; color: var(--leaf-text, var(--leaf)); display: block; }
 .pstat-l { font-size: 8.5px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.4px; }
 
 .p-actions { display: flex; gap: 8px; }
@@ -2283,7 +2297,7 @@ body::after {
   background: linear-gradient(135deg, rgba(240,248,255,0.6), rgba(187,222,251,0.4));
   backdrop-filter: blur(10px) saturate(1.2);
   -webkit-backdrop-filter: blur(10px) saturate(1.2);
-  color: var(--leaf);
+  color: var(--leaf-text, var(--leaf));
   box-shadow:
     -2px -6px 12px rgba(255,255,255,0.6),
     2px 6px 10px rgba(21,101,192,0.1),
@@ -2318,8 +2332,8 @@ body::after {
   font-size: 13px; font-weight: 500; color: var(--text2);
   cursor: pointer; transition: all 0.14s; margin-bottom: 1px; text-decoration: none;
 }
-.nav-item:hover { background: var(--bg2); color: var(--leaf); transform: translateX(2px); }
-.nav-item.active { background: linear-gradient(90deg, rgba(21,101,192,0.12), transparent); color: var(--leaf); font-weight: 700; border-left: 3px solid var(--leaf3); }
+.nav-item:hover { background: var(--bg2); color: var(--leaf-text, var(--leaf)); transform: translateX(2px); }
+.nav-item.active { background: linear-gradient(90deg, rgba(21,101,192,0.12), transparent); color: var(--leaf-text, var(--leaf)); font-weight: 700; border-left: 3px solid var(--leaf3); }
 .nav-ic {
   width: 28px; height: 28px; border-radius: 8px;
   background: var(--bg3); border: 1px solid var(--border);
@@ -2343,7 +2357,7 @@ body::after {
   border: 1.5px solid transparent; background: transparent;
   font-family: inherit;
 }
-.filter-btn:hover { background: var(--bg2); color: var(--leaf); border-color: var(--border); }
+.filter-btn:hover { background: var(--bg2); color: var(--leaf-text, var(--leaf)); border-color: var(--border); }
 .filter-btn.on { background: var(--leaf); color: #fff; border-color: var(--leaf); box-shadow: 0 2px 8px rgba(21,101,192,0.25); }
 .filter-sep { width: 1px; height: 20px; background: var(--border); margin: 0 4px; flex-shrink: 0; }
 .layout-toggle { margin-left: auto; display: flex; gap: 3px; }
@@ -2352,7 +2366,7 @@ body::after {
   background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center;
   color: var(--text3); transition: all 0.14s;
 }
-.lt-btn:hover { background: var(--bg2); color: var(--leaf); }
+.lt-btn:hover { background: var(--bg2); color: var(--leaf-text, var(--leaf)); }
 .lt-btn.on { background: var(--leaf); color: #fff; border-color: var(--leaf); }
 
 /* COMPOSE */
@@ -2391,7 +2405,7 @@ body::after {
   border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.14s;
   background: transparent; font-family: inherit;
 }
-.ctool:hover { background: var(--bg2); color: var(--leaf); border-color: var(--leaf3); }
+.ctool:hover { background: var(--bg2); color: var(--leaf-text, var(--leaf)); border-color: var(--leaf3); }
 .compose-post {
   margin-left: auto; padding: 7px 18px; border-radius: 10px;
   border: 2px solid rgba(21,101,192,0.45); cursor: pointer;
@@ -2494,7 +2508,7 @@ body::after {
   border-radius: 8px; padding: 2px 8px; cursor: pointer; transition: all 0.14s;
   font-family: var(--font-body);
 }
-.ptg:hover { background: var(--bg3); color: var(--leaf); }
+.ptg:hover { background: var(--bg3); color: var(--leaf-text, var(--leaf)); }
 
 .post-foot {
   padding: 9px 15px 12px; border-top: 1px solid var(--border);
@@ -2505,7 +2519,7 @@ body::after {
   font-size: 12px; font-weight: 600; color: var(--text3);
   padding: 5px 9px; border-radius: 8px; cursor: pointer; transition: all 0.14s;
 }
-.pact:hover { background: var(--bg2); color: var(--leaf); }
+.pact:hover { background: var(--bg2); color: var(--leaf-text, var(--leaf)); }
 .pact.liked { color: var(--red); }
 .pact.liked:hover { background: rgba(229,57,53,0.08); color: #c62828; }
 .pact-spacer { flex: 1; }
@@ -2531,7 +2545,7 @@ body::after {
 
 .trend-item { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid rgba(144,202,249,0.28); cursor: pointer; transition: all 0.14s; }
 .trend-item:last-child { border-bottom: none; }
-.trend-item:hover .tname { color: var(--leaf); }
+.trend-item:hover .tname { color: var(--leaf-text, var(--leaf)); }
 .trank { font-family: var(--font-body); font-size: 9.5px; color: var(--text3); width: 14px; flex-shrink: 0; }
 .tname { font-size: 12px; font-weight: 700; color: var(--clay); flex: 1; }
 .tcnt  { font-size: 9.5px; color: var(--text3); font-family: var(--font-body); }
@@ -2542,14 +2556,14 @@ body::after {
   border: 1px solid rgba(0,188,212,0.28); border-radius: 14px; padding: 16px; text-align: center;
 }
 .pw-icon { font-size: 26px; margin-bottom: 7px; }
-.pw-title { font-family: var(--font-body); font-size: 13px; font-weight: 700; color: var(--leaf); margin-bottom: 4px; }
+.pw-title { font-family: var(--font-body); font-size: 13px; font-weight: 700; color: var(--leaf-text, var(--leaf)); margin-bottom: 4px; }
 .pw-desc  { font-size: 11px; color: var(--text3); line-height: 1.55; margin-bottom: 12px; }
 .pw-btn {
   display: block; padding: 8px; border-radius: 10px; cursor: pointer;
   border: 2px solid rgba(21,101,192,0.5);
   background: linear-gradient(135deg, rgba(21,101,192,0.3), rgba(0,188,212,0.2));
   backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-  color: var(--leaf); font-size: 11.5px; font-weight: 700; text-align: center;
+  color: var(--leaf-text, var(--leaf)); font-size: 11.5px; font-weight: 700; text-align: center;
   transition: all 0.2s; font-family: inherit; width: 100%;
   box-shadow: -2px -5px 10px rgba(255,255,255,0.45), 2px 5px 8px rgba(21,101,192,0.15), inset 0 -3px 0 rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3);
   position: relative;
@@ -2584,7 +2598,7 @@ body::after {
 .eh-input::placeholder { color: rgba(255,255,255,0.5); }
 .eh-search-btn {
   padding: 11px 20px; border-radius: 12px; border: none; cursor: pointer;
-  background: rgba(255,255,255,0.95); color: var(--leaf); font-family: inherit; font-size: 13px; font-weight: 700;
+  background: rgba(255,255,255,0.95); color: var(--leaf-text, var(--leaf)); font-family: inherit; font-size: 13px; font-weight: 700;
   transition: all 0.2s; display: flex; align-items: center; gap: 6px;
 }
 .explore-cats { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
@@ -2629,7 +2643,7 @@ body::after {
   backdrop-filter: blur(6px); transition: all 0.15s;
 }
 .ex-rtab:hover  { background: rgba(255,255,255,0.22); color: #fff; }
-.ex-rtab.active { background: rgba(255,255,255,0.9); color: var(--leaf); border-color: transparent; }
+.ex-rtab.active { background: rgba(255,255,255,0.9); color: var(--leaf-text, var(--leaf)); border-color: transparent; }
 
 /* wrapper divs — transparent to grid so children participate directly */
 .ex-sr-wrap, #ex-discovery-wrap { display: contents; }
@@ -2665,7 +2679,7 @@ body::after {
 .ex-sr-tag { font-size: 10px; padding: 2px 7px; border-radius: 8px; background: var(--bg2); color: var(--clay); border: 1px solid var(--border); }
 .ex-sr-follow {
   flex-shrink: 0; padding: 5px 14px; border-radius: 20px;
-  border: 1.5px solid var(--leaf); background: transparent; color: var(--leaf);
+  border: 1.5px solid var(--leaf); background: transparent; color: var(--leaf-text, var(--leaf));
   font-family: inherit; font-size: 11.5px; font-weight: 700; cursor: pointer; transition: all 0.13s;
 }
 .ex-sr-follow:hover { background: var(--leaf); color: #fff; }
@@ -2712,7 +2726,7 @@ body::after {
 .ex-pr-name { font-weight: 700; font-size: 12.5px; color: var(--text); }
 .ex-pr-handle { font-size: 11px; color: var(--text3); }
 .ex-pr-body { font-size: 13px; color: var(--text); line-height: 1.5; }
-.ex-pr-body mark { background: rgba(21,101,192,0.15); color: var(--leaf); border-radius: 3px; padding: 0 2px; }
+.ex-pr-body mark { background: rgba(21,101,192,0.15); color: var(--leaf-text, var(--leaf)); border-radius: 3px; padding: 0 2px; }
 .ex-pr-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
 .ex-pr-tag { font-size: 10.5px; color: var(--clay); cursor: pointer; }
 .ex-pr-tag:hover { text-decoration: underline; }
@@ -2732,7 +2746,7 @@ body::after {
   backdrop-filter: blur(12px);
   transition: all 0.15s;
 }
-.ex-tag-btn:hover { border-color: var(--leaf3); color: var(--leaf); }
+.ex-tag-btn:hover { border-color: var(--leaf3); color: var(--leaf-text, var(--leaf)); }
 .ex-tag-btn.active {
   background: linear-gradient(135deg, var(--leaf), var(--clay));
   color: #fff; border-color: transparent;
@@ -2813,7 +2827,7 @@ body::after {
 }
 .ex-mix-play {
   width: 28px; height: 28px; border-radius: 50%;
-  background: rgba(255,255,255,0.92); color: var(--leaf);
+  background: rgba(255,255,255,0.92); color: var(--leaf-text, var(--leaf));
   display: flex; align-items: center; justify-content: center;
   position: absolute; bottom: 9px; right: 9px; z-index: 1;
   box-shadow: 0 2px 8px rgba(0,0,0,0.22); transition: transform 0.15s;
@@ -2885,7 +2899,7 @@ body::after {
   display: flex; align-items: center; gap: 16px;
 }
 .ch-stat { text-align: center; flex: 1; }
-.ch-stat-n { font-family: var(--font-body); font-size: 22px; font-weight: 700; color: var(--leaf); display: block; }
+.ch-stat-n { font-family: var(--font-body); font-size: 22px; font-weight: 700; color: var(--leaf-text, var(--leaf)); display: block; }
 .ch-stat-l { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; }
 .ch-divider { width: 1px; height: 40px; background: var(--border); }
 .member-card {
@@ -2906,11 +2920,11 @@ body::after {
 .mc-tags { display: flex; gap: 4px; flex-wrap: wrap; }
 .mc-tag { font-size: 10px; color: var(--clay); background: var(--bg2); border-radius: 10px; padding: 2px 7px; border: 1px solid var(--border); }
 .mc-stats { text-align: right; flex-shrink: 0; }
-.mc-stat-n { font-family: var(--font-body); font-size: 14px; font-weight: 700; color: var(--leaf); display: block; }
+.mc-stat-n { font-family: var(--font-body); font-size: 14px; font-weight: 700; color: var(--leaf-text, var(--leaf)); display: block; }
 .mc-stat-l { font-size: 9.5px; color: var(--text3); }
 .mc-follow-btn {
   padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--leaf3);
-  background: transparent; color: var(--leaf); font-family: inherit; font-size: 11.5px; font-weight: 700;
+  background: transparent; color: var(--leaf-text, var(--leaf)); font-family: inherit; font-size: 11.5px; font-weight: 700;
   cursor: pointer; transition: all 0.15s; white-space: nowrap;
 }
 .mc-follow-btn:hover { background: var(--leaf); color: #fff; border-color: var(--leaf); }
@@ -3030,12 +3044,12 @@ body::after {
 .fam-overlay { position:absolute; inset:0; background:rgba(8,18,35,0.65); backdrop-filter:blur(8px); }
 .fam-box { position:relative; z-index:1; background:var(--paper); border:1px solid var(--border); border-radius:20px; padding:28px; width:340px; max-width:calc(100vw - 32px); box-shadow:0 24px 80px rgba(0,0,0,0.3); }
 .fam-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
-.fam-logo { font-family:var(--font-body); font-size:20px; font-weight:700; color:var(--leaf); letter-spacing:-0.5px; }
+.fam-logo { font-family:var(--font-body); font-size:20px; font-weight:700; color:var(--leaf-text, var(--leaf)); letter-spacing:-0.5px; }
 .fam-close { background:none; border:none; font-size:16px; color:var(--text3); cursor:pointer; padding:4px 8px; border-radius:6px; transition:background 0.12s; }
 .fam-close:hover { background:var(--bg2); }
 .fam-tabs { display:flex; gap:4px; margin-bottom:20px; background:var(--bg2); border-radius:10px; padding:3px; }
 .fam-tab { flex:1; padding:8px; border:none; border-radius:8px; background:transparent; color:var(--text3); font-family:inherit; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.15s; }
-.fam-tab.active { background:var(--glass); color:var(--leaf); box-shadow:0 1px 4px rgba(0,0,0,0.1); }
+.fam-tab.active { background:var(--glass); color:var(--leaf-text, var(--leaf)); box-shadow:0 1px 4px rgba(0,0,0,0.1); }
 .fam-input { display:block; width:100%; padding:11px 14px; border:1.5px solid var(--border); border-radius:10px; background:var(--glass); color:var(--text); font-family:inherit; font-size:14px; margin-bottom:10px; outline:none; transition:border-color 0.15s; }
 .fam-input:focus { border-color:var(--leaf3); }
 .fam-submit { width:100%; padding:12px; border:none; border-radius:10px; background:var(--leaf); color:#fff; font-family:inherit; font-size:14px; font-weight:700; cursor:pointer; margin-top:4px; transition:all 0.15s; }
@@ -3043,10 +3057,10 @@ body::after {
 .fam-submit:disabled { opacity:0.6; cursor:not-allowed; }
 .fam-err { font-size:12.5px; color:var(--red); margin-top:8px; min-height:18px; line-height:1.4; }
 .fam-hint { font-size:12px; color:var(--text3); margin-top:14px; text-align:center; }
-.fam-hint a { color:var(--leaf); }
+.fam-hint a { color:var(--leaf-text, var(--leaf)); }
 .fam-linkbtn {
   display:block; width:100%; margin-top:10px; padding:6px; background:none; border:none;
-  color:var(--leaf); font-family:inherit; font-size:12.5px; cursor:pointer; text-align:center;
+  color:var(--leaf-text, var(--leaf)); font-family:inherit; font-size:12.5px; cursor:pointer; text-align:center;
   border-radius:6px;
 }
 .fam-linkbtn:hover { text-decoration:underline; background:rgba(21,101,192,0.06); }
@@ -3055,7 +3069,7 @@ body::after {
   font-size:12.5px; color:var(--text2); line-height:1.45; cursor:pointer;
 }
 .fam-check input { margin-top:2px; accent-color:var(--leaf); width:15px; height:15px; flex-shrink:0; cursor:pointer; }
-.fam-check a { color:var(--leaf); }
+.fam-check a { color:var(--leaf-text, var(--leaf)); }
 .fam-note { font-size:13px; color:var(--text2); line-height:1.55; margin-bottom:12px; }
 .fam-note-big { font-size:16px; font-weight:700; color:var(--text); text-align:center; margin-bottom:8px; }
 
@@ -3107,7 +3121,7 @@ body::after {
   color:var(--text2); font-family:inherit; font-size:13px; font-weight:600; cursor:pointer;
   backdrop-filter:blur(8px);
 }
-.feed-more-btn:hover { background:var(--paper); color:var(--leaf); }
+.feed-more-btn:hover { background:var(--paper); color:var(--leaf-text, var(--leaf)); }
 
 /* ── "N new posts" pill ─────────────────────────────────────── */
 .feed-new-pill {
@@ -3130,7 +3144,7 @@ body::after {
   font-weight:600; cursor:pointer; transition:all .15s;
 }
 .feed-scope-btn.active { background:var(--leaf); border-color:var(--leaf); color:#fff; }
-.feed-scope-btn:hover:not(.active) { color:var(--leaf); border-color:var(--leaf3); }
+.feed-scope-btn:hover:not(.active) { color:var(--leaf-text, var(--leaf)); border-color:var(--leaf3); }
 
 /* ── post actions ───────────────────────────────────────────── */
 .post-foot .pact {
@@ -3138,15 +3152,15 @@ body::after {
   display:inline-flex; align-items:center; gap:5px; padding:5px 8px; border-radius:8px;
   color:var(--text3); font-size:12px; transition:color .15s, background .15s;
 }
-.post-foot .pact:hover  { background:rgba(21,101,192,0.07); color:var(--leaf); }
+.post-foot .pact:hover  { background:rgba(21,101,192,0.07); color:var(--leaf-text, var(--leaf)); }
 .post-foot .pact.liked  { color:var(--red, #E53935); }
 .post-foot .pact.marked { color:var(--sun, #00BCD4); }
-.post-foot .pact.active { color:var(--leaf); }
+.post-foot .pact.active { color:var(--leaf-text, var(--leaf)); }
 .pact-pop { animation:pact-pop .26s ease; }
 @keyframes pact-pop { 40% { transform:scale(1.28); } 100% { transform:scale(1); } }
 
 .post-body a.post-mention, .post-body a.post-hashtag,
-.reply-body a.post-mention, .reply-body a.post-hashtag { color:var(--leaf); text-decoration:none; font-weight:600; }
+.reply-body a.post-mention, .reply-body a.post-hashtag { color:var(--leaf-text, var(--leaf)); text-decoration:none; font-weight:600; }
 .post-body a:hover, .reply-body a:hover { text-decoration:underline; }
 .post-body a.post-link, .reply-body a.post-link { color:var(--clay); word-break:break-all; }
 
@@ -3154,7 +3168,7 @@ body::after {
   border:1px solid var(--border); background:transparent;
   font-family:inherit; cursor:pointer; transition:all .15s;
 }
-.post-tags .ptg:hover { border-color:var(--leaf); color:var(--leaf); background:rgba(21,101,192,0.06); }
+.post-tags .ptg:hover { border-color:var(--leaf); color:var(--leaf-text, var(--leaf)); background:rgba(21,101,192,0.06); }
 
 /* ── threads ────────────────────────────────────────────────── */
 .post-thread {
@@ -3276,7 +3290,7 @@ body::after {
   background:transparent; color:var(--text2); font-family:inherit; font-size:12px;
   font-weight:600; cursor:pointer;
 }
-.safety-undo:hover { border-color:var(--leaf); color:var(--leaf); }
+.safety-undo:hover { border-color:var(--leaf); color:var(--leaf-text, var(--leaf)); }
 .fs-note { font-size:12.5px; color:var(--text3); line-height:1.55; }
 
 /* ── report queue (admin) ───────────────────────────────────── */
@@ -3305,7 +3319,7 @@ body::after {
   background:transparent; color:var(--text2); font-family:inherit;
   font-size:12px; font-weight:600; cursor:pointer;
 }
-.rep-btn:hover  { border-color:var(--leaf); color:var(--leaf); }
+.rep-btn:hover  { border-color:var(--leaf); color:var(--leaf-text, var(--leaf)); }
 .rep-btn.danger:hover { border-color:var(--red,#E53935); color:var(--red,#E53935); }
 .adm-tab-pip {
   display:inline-block; min-width:17px; height:17px; line-height:17px; padding:0 5px;
@@ -3334,7 +3348,7 @@ body::after {
   padding:5px 11px; border-radius:999px; border:1px solid var(--border);
   background:transparent; color:var(--text3); font-family:inherit; font-size:12px; cursor:pointer; transition:all .15s;
 }
-.gc-tagopt:hover { border-color:var(--leaf3); color:var(--leaf); }
+.gc-tagopt:hover { border-color:var(--leaf3); color:var(--leaf-text, var(--leaf)); }
 .gc-tagopt.on { background:var(--leaf); border-color:var(--leaf); color:#fff; font-weight:600; }
 .gc-create-err { font-size:12.5px; color:var(--red,#E53935); min-height:18px; margin:12px 0 6px; }
 
@@ -3391,7 +3405,7 @@ body.has-rls-warning { padding-top:72px; }
 .report-reason.on { border-color:var(--leaf); background:rgba(21,101,192,.09); }
 .report-reason-label { font-size:13.5px; font-weight:600; color:var(--text); }
 .report-reason-hint  { font-size:11.5px; color:var(--text3); }
-.report-reason.on .report-reason-label { color:var(--leaf); }
+.report-reason.on .report-reason-label { color:var(--leaf-text, var(--leaf)); }
 
 /* ── repost / quote ─────────────────────────────────────────── */
 .repost-wrap { margin-bottom:2px; }
@@ -3400,9 +3414,9 @@ body.has-rls-warning { padding-top:72px; }
   font-size:11.5px; color:var(--text3); font-weight:600;
 }
 .repost-by .post-name-link { color:var(--text2); cursor:pointer; }
-.repost-by .post-name-link:hover { color:var(--leaf); text-decoration:underline; }
+.repost-by .post-name-link:hover { color:var(--leaf-text, var(--leaf)); text-decoration:underline; }
 .repost-undo {
-  margin-left:4px; background:none; border:none; color:var(--leaf);
+  margin-left:4px; background:none; border:none; color:var(--leaf-text, var(--leaf));
   font-family:inherit; font-size:11.5px; font-weight:600; cursor:pointer; padding:2px 4px; border-radius:5px;
 }
 .repost-undo:hover { text-decoration:underline; }
@@ -3414,7 +3428,7 @@ body.has-rls-warning { padding-top:72px; }
   border:1px solid var(--border); border-radius:12px;
   background:color-mix(in srgb, var(--paper) 60%, transparent);
 }
-.post-foot .pact.reposted { color:var(--leaf); }
+.post-foot .pact.reposted { color:var(--leaf-text, var(--leaf)); }
 .repost-embed .post { transform:scale(.96); transform-origin:top left; pointer-events:none; opacity:.85; }
 
 .repost-menu {
@@ -3427,7 +3441,7 @@ body.has-rls-warning { padding-top:72px; }
   background:none; border:none; border-radius:7px; cursor:pointer;
   font-family:inherit; font-size:12.5px; font-weight:600; color:var(--text2); text-align:left;
 }
-.repost-menu-item:hover { background:var(--bg2); color:var(--leaf); }
+.repost-menu-item:hover { background:var(--bg2); color:var(--leaf-text, var(--leaf)); }
 
 /* ── generic sheet (Saved, Followers, Following) ────────────── */
 .sheet-box {
@@ -3467,7 +3481,7 @@ body.has-rls-warning { padding-top:72px; }
 .onb-person { display:flex; align-items:center; gap:11px; padding:9px 11px; border:1px solid var(--border); border-radius:11px; }
 .onb-follow {
   padding:6px 14px; border-radius:999px; border:1px solid var(--leaf);
-  background:transparent; color:var(--leaf); font-family:inherit;
+  background:transparent; color:var(--leaf-text, var(--leaf)); font-family:inherit;
   font-size:12px; font-weight:700; cursor:pointer; flex-shrink:0;
 }
 .onb-follow.on { background:var(--leaf); color:#fff; }
@@ -3489,7 +3503,7 @@ body.has-rls-warning { padding-top:72px; }
     color:var(--text3); font-family:inherit; font-size:10px; font-weight:600;
     border-radius:9px; position:relative; transition:color .15s;
   }
-  .fmn-item.active { color:var(--leaf); }
+  .fmn-item.active { color:var(--leaf-text, var(--leaf)); }
   .fmn-item:active { background:rgba(21,101,192,.08); }
   .fmn-item svg { width:21px; height:21px; }
   .fmn-pip {
@@ -3516,7 +3530,7 @@ body.has-rls-warning { padding-top:72px; }
 }
 .fss-input:focus { outline:none; border-color:var(--leaf); }
 .fss-cancel {
-  background:none; border:none; color:var(--leaf); font-family:inherit;
+  background:none; border:none; color:var(--leaf-text, var(--leaf)); font-family:inherit;
   font-size:14px; font-weight:600; cursor:pointer; padding:6px;
 }
 
@@ -3689,12 +3703,12 @@ body.has-rls-warning { padding-top:72px; }
   display: flex; align-items: center; gap: 5px;
   padding: 3px 10px 3px 12px; border-radius: 20px;
   background: rgba(21,101,192,0.12); border: 1.5px solid var(--leaf3);
-  color: var(--leaf); font-size: 12px; font-weight: 700;
+  color: var(--leaf-text, var(--leaf)); font-size: 12px; font-weight: 700;
   white-space: nowrap; user-select: none;
 }
 .ep-tag-token button {
   background: none; border: none; cursor: pointer;
-  color: var(--leaf); opacity: 0.6; padding: 0; line-height:1;
+  color: var(--leaf-text, var(--leaf)); opacity: 0.6; padding: 0; line-height:1;
   font-size: 14px; display:flex; align-items:center;
   transition: opacity 0.1s;
 }
@@ -3716,7 +3730,7 @@ body.has-rls-warning { padding-top:72px; }
   font-size: 11.5px; font-weight: 600; cursor: pointer;
   transition: all 0.13s; user-select: none;
 }
-.ep-tag-sug:hover { border-color: var(--leaf3); color: var(--leaf); background: rgba(21,101,192,0.07); }
+.ep-tag-sug:hover { border-color: var(--leaf3); color: var(--leaf-text, var(--leaf)); background: rgba(21,101,192,0.07); }
 .ep-tag-sug.used { opacity: 0.35; pointer-events: none; }
 
 /* error row */
@@ -3900,7 +3914,7 @@ body.has-rls-warning { padding-top:72px; }
 }
 .gc-fpill[data-aest="all"].active,
 .gc-fpill[data-aest="all"]:hover {
-  border-color: var(--leaf); color: var(--leaf);
+  border-color: var(--leaf); color: var(--leaf-text, var(--leaf));
 }
 .gc-fpill[data-aest="all"].active {
   background: color-mix(in srgb, var(--leaf) 12%, transparent);
@@ -4011,7 +4025,7 @@ body.has-rls-warning { padding-top:72px; }
 .gc-join-btn {
   padding: 5px 14px; border-radius: 20px; font-family: inherit;
   font-size: 11.5px; font-weight: 700; cursor: pointer; transition: all 0.13s;
-  border: 1.5px solid var(--leaf); background: transparent; color: var(--leaf);
+  border: 1.5px solid var(--leaf); background: transparent; color: var(--leaf-text, var(--leaf));
 }
 .gc-join-btn:hover  { background: var(--leaf); color: #fff; }
 .gc-join-btn.joined { background: var(--bg2); border-color: var(--border); color: var(--text3); }
@@ -4022,7 +4036,7 @@ body.has-rls-warning { padding-top:72px; }
   flex-shrink: 0; margin-left: auto;
   padding: 4px 11px; border-radius: 20px; font-family: inherit;
   font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.13s;
-  border: 1.5px solid var(--leaf3); background: rgba(100,181,246,0.10); color: var(--leaf);
+  border: 1.5px solid var(--leaf3); background: rgba(100,181,246,0.10); color: var(--leaf-text, var(--leaf));
   white-space: nowrap;
 }
 .gc-sb-join-btn:hover  { background: var(--leaf); color: #fff; border-color: var(--leaf); box-shadow: 0 2px 8px rgba(21,101,192,0.25); }
@@ -4065,7 +4079,7 @@ body.has-rls-warning { padding-top:72px; }
 /* events sidebar */
 .gc-event-item { padding: 8px 0; border-bottom: 1px solid var(--border); }
 .gc-event-item:last-child { border-bottom: none; }
-.gc-event-date { font-family: var(--font-body); font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--leaf); margin-bottom: 2px; }
+.gc-event-date { font-family: var(--font-body); font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--leaf-text, var(--leaf)); margin-bottom: 2px; }
 .gc-event-title { font-weight: 700; font-size: 13px; color: var(--text); }
 .gc-event-loc { font-size: 11.5px; color: var(--text3); margin-top: 1px; }
 
@@ -4085,7 +4099,7 @@ body.has-rls-warning { padding-top:72px; }
   background: transparent; color: var(--text3); font-family: inherit;
   font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.14s;
 }
-.gc-create-btn:hover { border-color: var(--leaf3); color: var(--leaf); background: rgba(100,181,246,0.07); }
+.gc-create-btn:hover { border-color: var(--leaf3); color: var(--leaf-text, var(--leaf)); background: rgba(100,181,246,0.07); }
 .gc-empty-joined { text-align: center; padding: 16px 8px; }
 
 /* ── COMMONS DETAIL — reddit-style community page ── */
@@ -4216,7 +4230,7 @@ body.has-rls-warning { padding-top:72px; }
   color: var(--text3); transition: all 0.14s; white-space: nowrap;
 }
 .gc-detail-tab svg { opacity: 0.75; }
-.gc-detail-tab.active { color: var(--leaf); background: rgba(100,181,246,0.14); }
+.gc-detail-tab.active { color: var(--leaf-text, var(--leaf)); background: rgba(100,181,246,0.14); }
 .gc-detail-tab:hover:not(.active) { color: var(--text2); background: var(--bg2); }
 .gc-detail-tab-sep { width: 1px; align-self: stretch; background: var(--border); margin: 2px 8px; flex-shrink: 0; }
 
@@ -4321,15 +4335,15 @@ body.has-rls-warning { padding-top:72px; }
   color: var(--text3); cursor: pointer; display: flex; align-items: center; justify-content: center;
   transition: all 0.12s; padding: 0;
 }
-.gc-vote-btn:hover { background: rgba(100,181,246,0.16); color: var(--leaf); }
+.gc-vote-btn:hover { background: rgba(100,181,246,0.16); color: var(--leaf-text, var(--leaf)); }
 .gc-vote-btn.dn:hover { background: rgba(229,57,53,0.13); color: var(--red); }
-.gc-vote-btn.on { color: var(--leaf); }
+.gc-vote-btn.on { color: var(--leaf-text, var(--leaf)); }
 .gc-vote-btn.dn.on { color: var(--red); }
 .gc-vote-score {
   font-family: var(--font-body); font-size: 12.5px; font-weight: 700;
   color: var(--text2); line-height: 1;
 }
-.gc-vote-score.up { color: var(--leaf); }
+.gc-vote-score.up { color: var(--leaf-text, var(--leaf)); }
 .gc-vote-score.dn { color: var(--red); }
 
 .gc-post-main { flex: 1; min-width: 0; padding: 10px 14px 8px; }
@@ -4348,7 +4362,7 @@ body.has-rls-warning { padding-top:72px; }
   font-weight: 700; color: var(--text2); cursor: pointer;
   font-family: var(--font-body); font-size: 11.5px;
 }
-.gc-post-author:hover { color: var(--leaf); text-decoration: underline; }
+.gc-post-author:hover { color: var(--leaf-text, var(--leaf)); text-decoration: underline; }
 .gc-post-meta .gdp-dot { opacity: 0.55; }
 .gc-post-body { font-size: 13.5px; color: var(--text2); line-height: 1.6; word-break: break-word; }
 .gc-post-foot { display: flex; align-items: center; gap: 4px; margin-top: 8px; flex-wrap: wrap; }
@@ -4358,7 +4372,7 @@ body.has-rls-warning { padding-top:72px; }
   font-size: 11.5px; font-weight: 700; color: var(--text3); cursor: pointer;
   transition: all 0.13s; user-select: none;
 }
-.gc-detail-post-act:hover { background: var(--bg2); color: var(--leaf); }
+.gc-detail-post-act:hover { background: var(--bg2); color: var(--leaf-text, var(--leaf)); }
 .gc-detail-post-act svg { opacity: 0.8; }
 
 /* ── members list (reddit-ish rows) ── */
@@ -4387,7 +4401,7 @@ body.has-rls-warning { padding-top:72px; }
   padding: 2px 7px; border-radius: 10px;
   background: var(--bg2); color: var(--text3); border: 1px solid var(--border);
 }
-.gc-member-badge.you { background: rgba(100,181,246,0.16); color: var(--leaf); border-color: transparent; }
+.gc-member-badge.you { background: rgba(100,181,246,0.16); color: var(--leaf-text, var(--leaf)); border-color: transparent; }
 .gc-members-count {
   display: flex; align-items: center; gap: 8px;
   font-family: var(--font-body); font-size: 10.5px; font-weight: 700;
@@ -4412,7 +4426,7 @@ body.has-rls-warning { padding-top:72px; }
   background: var(--bg2); color: var(--text3); border: 1px solid var(--border);
   font-family: var(--font-body); cursor: default;
 }
-.gc-detail-tag:hover { border-color: var(--leaf3); color: var(--leaf); }
+.gc-detail-tag:hover { border-color: var(--leaf3); color: var(--leaf-text, var(--leaf)); }
 .gc-about-h {
   font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
   color: var(--text3); font-family: var(--font-body); margin: 0 0 9px;
@@ -4559,7 +4573,7 @@ body.has-rls-warning { padding-top:72px; }
   background: var(--glass); border: 1.5px solid var(--border); color: var(--text2);
   backdrop-filter: blur(8px);
 }
-.pf-btn-dm:hover, .pf-btn-edit:hover { border-color: var(--leaf3); color: var(--leaf); }
+.pf-btn-dm:hover, .pf-btn-edit:hover { border-color: var(--leaf3); color: var(--leaf-text, var(--leaf)); }
 .pf-btn-ban {
   padding: 7px 14px; border-radius: 20px; font-size: 12px; font-weight: 700;
   border: 1.5px solid rgba(239,68,68,0.35); background: transparent; color: #ef4444;
@@ -4609,7 +4623,7 @@ body.has-rls-warning { padding-top:72px; }
   font-size: 11px; font-weight: 600; color: var(--text2); cursor: pointer;
   text-decoration: none; transition: all 0.13s;
 }
-.pf-link-chip:hover { border-color: var(--leaf3); color: var(--leaf); }
+.pf-link-chip:hover { border-color: var(--leaf3); color: var(--leaf-text, var(--leaf)); }
 
 /* commons badges in left col */
 .pf-commons-wrap { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -4620,7 +4634,7 @@ body.has-rls-warning { padding-top:72px; }
   font-size: 11px; font-weight: 600; color: var(--text2); cursor: pointer;
   transition: all 0.13s;
 }
-.pf-commons-pill:hover { border-color: var(--leaf3); color: var(--leaf); }
+.pf-commons-pill:hover { border-color: var(--leaf3); color: var(--leaf-text, var(--leaf)); }
 
 /* pinned post */
 .pf-pinned-inner {
@@ -4729,7 +4743,7 @@ body.has-rls-warning { padding-top:72px; }
   font-size: 11px; color: var(--leaf3); cursor: pointer; font-family: var(--font-body);
   background: none; border: none; padding: 0;
 }
-.notif-mark-read:hover { color: var(--leaf); text-decoration: underline; }
+.notif-mark-read:hover { color: var(--leaf-text, var(--leaf)); text-decoration: underline; }
 
 .notif-list {
   overflow-y: auto; flex: 1;
@@ -4814,14 +4828,14 @@ body.has-rls-warning { padding-top:72px; }
 .vpc-controls { display: flex; align-items: center; gap: 12px; justify-content: center; }
 .vpc-btn { width: 36px; height: 36px; border-radius: 50%; border: none; cursor: pointer; background: rgba(255,255,255,0.12); color: #fff; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
 .vpc-btn:hover { background: rgba(255,255,255,0.22); transform: scale(1.08); }
-.vpc-btn.main { width: 48px; height: 48px; background: rgba(255,255,255,0.95); color: var(--leaf); }
+.vpc-btn.main { width: 48px; height: 48px; background: rgba(255,255,255,0.95); color: var(--leaf-text, var(--leaf)); }
 .vpc-btn.main:hover { transform: scale(1.1); background: #fff; }
 .vpc-btn.is-disabled { opacity: 0.55; pointer-events: none; }
 .vpc-hidden-player { position: absolute; width: 0; height: 0; opacity: 0; pointer-events: none; overflow: hidden; }
 .track-item { display: flex; align-items: center; gap: 11px; padding: 9px 0; border-bottom: 1px solid rgba(144,202,249,0.3); cursor: pointer; transition: all 0.14s; }
 .track-item:last-child { border-bottom: none; }
 .track-item:hover { padding-left: 4px; }
-.track-item.playing .tr-title { color: var(--leaf); }
+.track-item.playing .tr-title { color: var(--leaf-text, var(--leaf)); }
 .track-item.playing .tr-art { box-shadow: 0 0 0 1px var(--leaf3), 0 6px 18px rgba(21,101,192,0.18); }
 .tr-num { font-family: var(--font-body); font-size: 11px; color: var(--text3); width: 18px; text-align: right; flex-shrink: 0; }
 .tr-art { width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0; background: linear-gradient(135deg, var(--bg2), var(--bg3)); display: flex; align-items: center; justify-content: center; }
@@ -4859,7 +4873,7 @@ body.has-rls-warning { padding-top:72px; }
 .spn-badge{padding:4px 10px;border-radius:var(--ui-chip-radius);font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase}.spn-badge.live{background:rgba(229,57,53,.92);color:#fff}.spn-badge.rec{background:rgba(0,188,212,.18);color:var(--sun2);border:1px solid rgba(0,188,212,.32)}
 .spn-count{font-size:12px;color:rgba(255,255,255,.78);display:flex;align-items:center;gap:6px}.spn-actions{display:flex;gap:10px;align-items:center}
 .spn-listen,.spn-stage{border:0;cursor:pointer;display:inline-flex;align-items:center;gap:7px;padding:9px 16px;font-size:12px;font-weight:700;border-radius:var(--ui-radius)}
-.spn-listen{background:rgba(255,255,255,.12);color:rgba(255,255,255,.92);border:1px solid rgba(255,255,255,.25)}.spn-stage{background:var(--sun2);color:var(--leaf);box-shadow:0 4px 12px rgba(128,222,234,.35)}
+.spn-listen{background:rgba(255,255,255,.12);color:rgba(255,255,255,.92);border:1px solid rgba(255,255,255,.25)}.spn-stage{background:var(--sun2);color:var(--leaf-text, var(--leaf));box-shadow:0 4px 12px rgba(128,222,234,.35)}
 .spn-ticker{display:flex;align-items:center;gap:14px;padding:6px 18px;background:rgba(21,101,192,.08);border-bottom:1px solid var(--border);color:var(--text3);overflow:hidden}
 .spn-ticker-label{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;font-family:var(--font-body)}.spn-ticker-scroll{display:flex;gap:14px;align-items:center;min-width:0;white-space:nowrap;font-family:var(--font-body);font-size:10.5px}.spn-ticker-sep{width:1px;height:12px;background:var(--border);flex-shrink:0}
 .spn-body{display:grid;grid-template-columns:240px minmax(0,1fr) 228px;min-height:0;flex:1}
@@ -4870,18 +4884,18 @@ body.has-rls-warning { padding-top:72px; }
 .spn-row-main{flex:1;min-width:0}.spn-row-title{font-size:12px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.spn-row-sub{font-size:10px;color:var(--text3)}.spn-row-count{font-size:10px;font-family:var(--font-body);color:var(--text3);font-weight:700}
 .spn-dm-av,.spn-member-av,.spn-avatar{width:28px;height:28px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;flex-shrink:0;position:relative}.spn-status{width:9px;height:9px;border-radius:50%;border:2px solid var(--bg);position:absolute;right:-2px;bottom:-2px}.spn-status.online{background:#4caf50}.spn-status.away{background:#ffc107}
 .spn-me{display:flex;align-items:center;gap:9px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}.spn-me-info{flex:1}.spn-me-name{font-size:12px;font-weight:700}.spn-me-sub{font-size:10px;color:var(--text3)}
-.spn-mic{width:28px;height:28px;border-radius:var(--ui-radius);border:1px solid var(--border);background:transparent;color:var(--text3);display:flex;align-items:center;justify-content:center;cursor:pointer}.spn-mic.on{background:var(--sun);color:var(--leaf);border-color:var(--sun)}
-.spn-center{display:flex;flex-direction:column;min-width:0;min-height:0}.spn-tabs{display:flex;align-items:center;gap:2px;padding:0 14px;background:rgba(240,248,255,.7);border-bottom:1px solid var(--border)}.spn-tab{padding:11px 14px;font-size:12px;font-weight:700;color:var(--text3);display:flex;align-items:center;gap:6px;border-bottom:2px solid transparent}.spn-tab.active{color:var(--leaf);border-bottom-color:var(--sun)}.spn-tab-actions{margin-left:auto;display:flex;gap:6px}
+.spn-mic{width:28px;height:28px;border-radius:var(--ui-radius);border:1px solid var(--border);background:transparent;color:var(--text3);display:flex;align-items:center;justify-content:center;cursor:pointer}.spn-mic.on{background:var(--sun);color:var(--leaf-text, var(--leaf));border-color:var(--sun)}
+.spn-center{display:flex;flex-direction:column;min-width:0;min-height:0}.spn-tabs{display:flex;align-items:center;gap:2px;padding:0 14px;background:rgba(240,248,255,.7);border-bottom:1px solid var(--border)}.spn-tab{padding:11px 14px;font-size:12px;font-weight:700;color:var(--text3);display:flex;align-items:center;gap:6px;border-bottom:2px solid transparent}.spn-tab.active{color:var(--leaf-text, var(--leaf));border-bottom-color:var(--sun)}.spn-tab-actions{margin-left:auto;display:flex;gap:6px}
 .spn-icon-btn{width:30px;height:30px;border-radius:var(--ui-radius);border:1px solid var(--border);background:transparent;color:var(--text3);display:flex;align-items:center;justify-content:center}
 .spn-messages{flex:1;overflow:auto;padding:14px 16px}.spn-date{display:flex;align-items:center;gap:10px;margin-bottom:10px}.spn-date::before,.spn-date::after{content:'';flex:1;height:1px;background:var(--border)}.spn-date span{padding:2px 8px;border-radius:var(--ui-chip-radius);background:var(--bg2);border:1px solid var(--border);font-size:10px;font-family:var(--font-body);color:var(--text3);font-weight:700;letter-spacing:.8px;text-transform:uppercase}
-.spn-msg{display:flex;gap:10px;padding:4px 6px;border-radius:12px;margin-bottom:2px}.spn-msg:hover,.spn-msg-cont:hover{background:rgba(100,181,246,.06)}.spn-msg-main{flex:1;min-width:0}.spn-msg-meta{display:flex;align-items:baseline;gap:7px;margin-bottom:2px}.spn-msg-name{font-size:12.5px;font-weight:700;color:var(--leaf)}.spn-msg-time{font-size:9.5px;color:var(--text3);font-family:var(--font-body)}.spn-msg-text,.spn-msg-cont-text{font-size:13px;line-height:1.6;color:var(--text2)}.spn-msg-cont{padding:2px 6px 2px 44px;border-radius:12px}
+.spn-msg{display:flex;gap:10px;padding:4px 6px;border-radius:12px;margin-bottom:2px}.spn-msg:hover,.spn-msg-cont:hover{background:rgba(100,181,246,.06)}.spn-msg-main{flex:1;min-width:0}.spn-msg-meta{display:flex;align-items:baseline;gap:7px;margin-bottom:2px}.spn-msg-name{font-size:12.5px;font-weight:700;color:var(--leaf-text, var(--leaf))}.spn-msg-time{font-size:9.5px;color:var(--text3);font-family:var(--font-body)}.spn-msg-text,.spn-msg-cont-text{font-size:13px;line-height:1.6;color:var(--text2)}.spn-msg-cont{padding:2px 6px 2px 44px;border-radius:12px}
 .spn-badge-mini{font-size:8px;font-weight:800;text-transform:uppercase;padding:1px 5px;border-radius:5px}.spn-badge-mini.mod{background:rgba(0,188,212,.15);color:var(--clay);border:1px solid rgba(0,188,212,.25)}.spn-badge-mini.og{background:linear-gradient(135deg,rgba(255,215,0,.2),rgba(255,179,0,.12));color:#7a5800;border:1px solid rgba(255,215,0,.3)}
-.spn-reactions{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}.spn-rxn{padding:2px 7px;border-radius:var(--ui-chip-radius);border:1px solid var(--border);background:var(--bg2);font-size:11px;font-weight:700;color:var(--text2)}.spn-rxn.me{color:var(--leaf);background:rgba(21,101,192,.08);border-color:var(--leaf3)}
+.spn-reactions{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}.spn-rxn{padding:2px 7px;border-radius:var(--ui-chip-radius);border:1px solid var(--border);background:var(--bg2);font-size:11px;font-weight:700;color:var(--text2)}.spn-rxn.me{color:var(--leaf-text, var(--leaf));background:rgba(21,101,192,.08);border-color:var(--leaf3)}
 .spn-card{background:rgba(21,101,192,.06);border:1px solid var(--border);border-radius:12px;overflow:hidden}.spn-audio{display:flex;align-items:center;gap:10px;padding:10px 12px;width:320px}.spn-audio-play{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--leaf),var(--clay));color:#fff;display:flex;align-items:center;justify-content:center}.spn-audio-title{font-size:11.5px;font-weight:700;color:var(--text)}.spn-audio-meta{font-size:9.5px;color:var(--text3);font-family:var(--font-body);margin-top:2px}.spn-wave{display:flex;align-items:flex-end;gap:2px;height:20px;margin-top:5px}.spn-wave span{width:3px;border-radius:2px;background:var(--leaf3)}.spn-wave span.played{background:var(--leaf)}
 .spn-poll{width:300px;padding:12px}.spn-poll-title{font-size:12.5px;font-weight:700;margin-bottom:10px}.spn-poll-row{margin-bottom:7px}.spn-poll-meta{display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:3px}.spn-poll-track{height:6px;background:var(--bg3);border-radius:4px;overflow:hidden}.spn-poll-fill{height:100%;background:linear-gradient(90deg,var(--leaf),var(--sun))}
 .spn-video{width:260px}.spn-video-thumb{height:120px;background:linear-gradient(135deg,var(--bg2),var(--bg3));position:relative;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-family:var(--font-body)}.spn-video-play{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.9);position:absolute;display:flex;align-items:center;justify-content:center}.spn-video-dur{position:absolute;bottom:6px;right:8px;font-size:9px;color:#fff;background:rgba(0,0,0,.45);border-radius:4px;padding:1px 5px;font-family:var(--font-body)}.spn-video-meta{padding:8px 10px}.spn-video-title{font-size:11px;font-weight:700;color:var(--text)}.spn-video-sub{font-size:10px;color:var(--text3)}
 .spn-system{display:flex;align-items:center;gap:8px;color:var(--text3);font-size:10px;margin:12px 0}.spn-system::before,.spn-system::after{content:'';flex:1;height:1px;background:var(--border)}
-.spn-compose{padding:10px 16px 14px;border-top:1px solid var(--border);background:rgba(240,248,255,.72)}.spn-compose-wrap{background:var(--paper);border:1.5px solid var(--border);border-radius:14px;overflow:hidden}.spn-compose-textarea{width:100%;min-height:44px;max-height:110px;resize:none;border:0;outline:0;background:transparent;padding:11px 14px;font-size:13px;color:var(--text);line-height:1.6}.spn-compose-bar{display:flex;align-items:center;gap:5px;padding:6px 10px;border-top:1px solid var(--border);background:rgba(21,101,192,.03)}.spn-compose-mini{width:26px;height:26px;border-radius:var(--ui-radius);border:0;background:transparent;color:var(--text3);display:flex;align-items:center;justify-content:center}.spn-compose-pill{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:var(--ui-chip-radius);background:var(--bg2);border:1px solid var(--border);font-size:10.5px;font-weight:700;color:var(--text3)}.spn-compose-pill.active{background:rgba(21,101,192,.1);color:var(--leaf);border-color:var(--leaf)}.spn-send{margin-left:auto;padding:7px 16px;border:0;border-radius:var(--ui-radius);background:linear-gradient(135deg,var(--leaf),var(--clay));color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px}
+.spn-compose{padding:10px 16px 14px;border-top:1px solid var(--border);background:rgba(240,248,255,.72)}.spn-compose-wrap{background:var(--paper);border:1.5px solid var(--border);border-radius:14px;overflow:hidden}.spn-compose-textarea{width:100%;min-height:44px;max-height:110px;resize:none;border:0;outline:0;background:transparent;padding:11px 14px;font-size:13px;color:var(--text);line-height:1.6}.spn-compose-bar{display:flex;align-items:center;gap:5px;padding:6px 10px;border-top:1px solid var(--border);background:rgba(21,101,192,.03)}.spn-compose-mini{width:26px;height:26px;border-radius:var(--ui-radius);border:0;background:transparent;color:var(--text3);display:flex;align-items:center;justify-content:center}.spn-compose-pill{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:var(--ui-chip-radius);background:var(--bg2);border:1px solid var(--border);font-size:10.5px;font-weight:700;color:var(--text3)}.spn-compose-pill.active{background:rgba(21,101,192,.1);color:var(--leaf-text, var(--leaf));border-color:var(--leaf)}.spn-send{margin-left:auto;padding:7px 16px;border:0;border-radius:var(--ui-radius);background:linear-gradient(135deg,var(--leaf),var(--clay));color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px}
 .spn-now{margin-bottom:12px;padding:12px;border-radius:14px;overflow:hidden;background:linear-gradient(135deg,var(--leaf),var(--clay));color:#fff;position:relative}.spn-now::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(255,255,255,.04) 8px,rgba(255,255,255,.04) 9px)}.spn-now>*{position:relative;z-index:1}.spn-now-label{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.64);margin-bottom:8px}.spn-vinyl{width:52px;height:52px;border-radius:50%;margin-bottom:10px;background:conic-gradient(#0d1b2a 0deg,#1565C0 90deg,#0d1b2a 180deg,#00BCD4 270deg,#0d1b2a 360deg);border:4px solid rgba(255,255,255,.15);position:relative;animation:spin 8s linear infinite}.spn-vinyl::after{content:'';width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,.9);position:absolute;inset:0;margin:auto}.spn-now-track{font-size:22px;font-weight:800}.spn-now-artist{font-size:12px;color:rgba(255,255,255,.72);margin-top:2px}.spn-scrub{height:4px;background:rgba(255,255,255,.18);border-radius:3px;margin:10px 0 6px;overflow:hidden}.spn-scrub-fill{width:38%;height:100%;background:var(--sun2)}.spn-time{display:flex;justify-content:space-between;font-size:9px;color:rgba(255,255,255,.6);font-family:var(--font-body)}
 .spn-pin{margin-bottom:12px;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:var(--paper)}.spn-pin-head{padding:5px 10px;background:var(--bg2);border-bottom:1px solid var(--border);font-size:9px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--text3);display:flex;align-items:center;gap:5px}.spn-pin-body{padding:10px}.spn-pin-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px}.spn-pin-text{font-size:11px;line-height:1.55;color:var(--text3)}
 @keyframes spin { 100% { transform: rotate(360deg); } }
@@ -4902,7 +4916,7 @@ body.has-rls-warning { padding-top:72px; }
 .group-desc { font-size: 12px; color: var(--text2); line-height: 1.6; margin-bottom: 10px; }
 .group-meta { display: flex; align-items: center; gap: 14px; }
 .gm-stat { display: flex; align-items: center; gap: 4px; font-size: 11.5px; color: var(--text3); }
-.gm-join-btn { margin-left: auto; padding: 7px 16px; border-radius: 20px; border: 1.5px solid var(--leaf3); background: transparent; color: var(--leaf); font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.15s; }
+.gm-join-btn { margin-left: auto; padding: 7px 16px; border-radius: 20px; border: 1.5px solid var(--leaf3); background: transparent; color: var(--leaf-text, var(--leaf)); font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.15s; }
 .gm-join-btn:hover { background: var(--leaf); color: #fff; border-color: var(--leaf); }
 .gm-join-btn.joined { background: var(--bg3); color: var(--clay); border-color: transparent; }
 
@@ -4998,13 +5012,13 @@ body.has-rls-warning { padding-top:72px; }
   color: var(--text2); transition: all 0.14s; text-align: left;
 }
 .font-btn:hover { border-color: var(--leaf3); background: var(--bg2); }
-.font-btn.active { border-color: var(--leaf); background: rgba(21,101,192,0.08); color: var(--leaf); }
+.font-btn.active { border-color: var(--leaf); background: rgba(21,101,192,0.08); color: var(--leaf-text, var(--leaf)); }
 .font-btn .font-preview { font-size: 8.5px; color: var(--text3); margin-top: 1px; }
 
 /* Sliders */
 .cust-slider-row { display: flex; flex-direction: column; gap: 5px; }
 .cust-slider-label { display: flex; justify-content: space-between; font-size: 11.5px; font-weight: 600; color: var(--text2); }
-.cust-slider-val { font-family: var(--font-body); font-size: 10px; color: var(--leaf); font-weight: 700; }
+.cust-slider-val { font-family: var(--font-body); font-size: 10px; color: var(--leaf-text, var(--leaf)); font-weight: 700; }
 .cust-slider {
   -webkit-appearance: none; appearance: none;
   width: 100%; height: 6px; border-radius: 3px; outline: none;
@@ -5277,6 +5291,7 @@ body.has-rls-warning { padding-top:72px; }
   margin-top: 4px;
 }
 /* live preview: a real profile page, scaled down */
+.fs-ptheme-live[hidden] { display: none !important; }
 .fs-ptheme-live {
   border: 1.5px solid var(--border);
   border-radius: 12px;
@@ -5400,6 +5415,7 @@ body.has-rls-warning { padding-top:72px; }
 .fs-ptheme-open-btn svg { flex-shrink: 0; }
 
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Faero","alternateName":["faero.net","Faero social"],"url":"https://www.faero.net/"}</script>
 </head>
 <body>
 <a href="#feed-list" class="faero-skip-link">Skip to content</a>
@@ -5419,8 +5435,7 @@ body.has-rls-warning { padding-top:72px; }
     <a class="tn" data-page="groups" onclick="navigate('groups')"><span class="tn-icon icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Groups</a>
     <a class="tn" data-page="explore" onclick="navigate('explore')"><span class="tn-icon icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>Explore</a>
     <a class="tn" data-page="chat" onclick="navigate('chat')"><span class="tn-icon icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>Messages<span class="nav-msg-badge nav-badge" style="display:none"></span></a>
-    <a class="tn" data-page="radio" onclick="navigate('radio')"><span class="tn-icon icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M7 8l10-5"/><circle cx="15" cy="14" r="3"/><path d="M6 12h3M6 16h3"/></svg></span>Radio</a>
-    <a class="tn" data-page="booth" onclick="navigate('booth')"><span class="tn-icon icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg></span>Booth</a>
+    <a class="tn" data-page="apps" onclick="navigate('apps')"><span class="tn-icon icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.6"/></svg></span>Apps</a>
   </nav>
   <div class="top-right">
     <div class="top-search-wrap">
@@ -5490,8 +5505,7 @@ body.has-rls-warning { padding-top:72px; }
         <div class="nav-item" data-page="groups" onclick="navigate('groups')"><div class="nav-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>Groups</div>
         <div class="nav-item" data-page="explore" onclick="navigate('explore')"><div class="nav-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>Explore</div>
         <div class="nav-item" data-page="chat" onclick="navigate('chat')"><div class="nav-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>Messages<span class="nav-msg-badge nav-badge" style="display:none"></span></div>
-        <div class="nav-item" data-page="radio" onclick="navigate('radio')"><div class="nav-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M7 8l10-5"/><circle cx="15" cy="14" r="3"/><path d="M6 12h3M6 16h3"/></svg></div>Radio</div>
-        <div class="nav-item" data-page="booth" onclick="navigate('booth')"><div class="nav-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg></div>Booth</div>
+        <div class="nav-item" data-page="apps" onclick="navigate('apps')"><div class="nav-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.6"/></svg></div>Apps</div>
       </div>
     </div>
   </div>
@@ -5688,8 +5702,7 @@ body.has-rls-warning { padding-top:72px; }
         <div class="nav-item active" data-page="groups" onclick="navigate('groups')"><div class="nav-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>Groups</div>
         <div class="nav-item" data-page="explore" onclick="navigate('explore')"><div class="nav-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>Explore</div>
         <div class="nav-item" data-page="chat"    onclick="navigate('chat')"><div class="nav-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>Messages<span class="nav-msg-badge nav-badge" style="display:none"></span></div>
-        <div class="nav-item" data-page="radio" onclick="navigate('radio')"><div class="nav-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M7 8l10-5"/><circle cx="15" cy="14" r="3"/><path d="M6 12h3M6 16h3"/></svg></div>Radio</div>
-        <div class="nav-item" data-page="booth" onclick="navigate('booth')"><div class="nav-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg></div>Booth</div>
+        <div class="nav-item" data-page="apps" onclick="navigate('apps')"><div class="nav-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.6"/></svg></div>Apps</div>
       </div>
     </div>
   </div>
@@ -5894,8 +5907,7 @@ body.has-rls-warning { padding-top:72px; }
         <div class="nav-item" data-page="groups"  onclick="navigate('groups')"><div class="nav-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>Groups</div>
         <div class="nav-item" data-page="explore" onclick="navigate('explore')"><div class="nav-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>Explore</div>
         <div class="nav-item" data-page="chat"    onclick="navigate('chat')"><div class="nav-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>Messages<span class="nav-msg-badge nav-badge" style="display:none"></span></div>
-        <div class="nav-item" data-page="radio" onclick="navigate('radio')"><div class="nav-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M7 8l10-5"/><circle cx="15" cy="14" r="3"/><path d="M6 12h3M6 16h3"/></svg></div>Radio</div>
-        <div class="nav-item" data-page="booth" onclick="navigate('booth')"><div class="nav-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg></div>Booth</div>
+        <div class="nav-item" data-page="apps" onclick="navigate('apps')"><div class="nav-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.6"/></svg></div>Apps</div>
       </div>
     </div>
   </div>
@@ -5966,8 +5978,11 @@ body.has-rls-warning { padding-top:72px; }
 <!-- ════ PAGES: RADIO, BOOTH ════
      Built by faero_space.js on first visit. These used to be faero OS
      desktop apps; now they are ordinary pages of the site. -->
+<div class="page" id="page-apps"><div class="fx-full" id="fx-apps"></div></div>
 <div class="page" id="page-radio"><div class="fx-full" id="fx-radio"></div></div>
 <div class="page" id="page-booth"><div class="fx-full" id="fx-booth"></div></div>
+<div class="page" id="page-studio"><div class="fx-full" id="fx-studio"></div></div>
+<div class="page" id="page-games"><div class="fx-full" id="fx-games"></div></div>
 
 </div><!-- end page-wrap -->
 </div><!-- end root -->
@@ -6462,8 +6477,7 @@ const SHARED_PROFILE_COLUMN_HTML = `
       <div class="nav-item" data-page="profile" onclick="navigate('profile')"><div class="nav-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>Profile</div>
       <div class="nav-item" data-page="explore" onclick="navigate('explore')"><div class="nav-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>Explore</div>
       <div class="nav-item" data-page="chat" onclick="navigate('chat')"><div class="nav-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>Messages<span class="nav-msg-badge nav-badge" style="display:none"></span></div>
-      <div class="nav-item" data-page="radio" onclick="navigate('radio')"><div class="nav-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M7 8l10-5"/><circle cx="15" cy="14" r="3"/><path d="M6 12h3M6 16h3"/></svg></div>Radio</div>
-      <div class="nav-item" data-page="booth" onclick="navigate('booth')"><div class="nav-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg></div>Booth</div>
+      <div class="nav-item" data-page="apps" onclick="navigate('apps')"><div class="nav-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.6"/></svg></div>Apps</div>
     </div>
   </div>
 `;
@@ -6959,16 +6973,20 @@ function toggleCustomizer() {
 /* ═══════════════════════════════
    ROUTING
 ═══════════════════════════════ */
-const PAGES = ['feed','groups','explore','chat','profile','radio','booth'];
+const PAGES = ['feed','groups','explore','chat','profile','apps','radio','booth','studio','games'];
+// Radio, Booth, Studio and Games live under the one Apps entry in the nav.
+const APP_PAGES = ['radio','booth','studio','games'];
+const navSlugFor = slug => APP_PAGES.includes(slug) ? 'apps' : slug;
 function renderPage(slug) {
   const pageWrap = document.querySelector('.page-wrap');
   PAGES.forEach(p=>{const el=document.getElementById('page-'+p);if(el)el.classList.remove('active');});
   const target=document.getElementById('page-'+slug);
   if(target) target.classList.add('active');
   if(pageWrap) pageWrap.classList.toggle('profile-expanded', slug === 'profile');
-  document.querySelectorAll('.tn').forEach(el=>{el.classList.remove('active');if(el.dataset.page===slug)el.classList.add('active');});
-  setSidebarActiveNav(slug);
-  if (typeof faeroSyncMobileNav === 'function') faeroSyncMobileNav(slug);
+  const navSlug = navSlugFor(slug);
+  document.querySelectorAll('.tn').forEach(el=>{el.classList.remove('active');if(el.dataset.page===navSlug)el.classList.add('active');});
+  setSidebarActiveNav(navSlug);
+  if (typeof faeroSyncMobileNav === 'function') faeroSyncMobileNav(navSlug);
   if(slug === 'profile') { try { pfApplyProfileTheme(); } catch(e) { console.warn('profile theme:', e); } }
   // The takeover drops .page-wrap out of its 3-column grid. It belongs to the
   // profile route only — leaving it on while the user reads the feed collapsed
@@ -7205,6 +7223,17 @@ let DM_CONVO_CACHE = {};    // conversation_id → {otherProfile, unread}
       background-size:200% 100%; animation:gc-shimmer 1.4s ease-in-out infinite; }
     .dm-no-convos { text-align:center; padding:32px 16px; color:var(--text3); font-size:13px; }
     .dm-no-convos svg { opacity:.35; margin-bottom:8px; }
+    .dm-guest { display:flex; flex-direction:column; align-items:center; gap:8px; padding:28px 18px; }
+    .dm-guest b { color:var(--text); font-size:14px; font-weight:800; }
+    .dm-guest p { margin:0 0 6px; line-height:1.45; max-width:220px; }
+    .dm-guest .btn-primary { padding:8px 22px; font-size:13px; color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.25);
+      background:linear-gradient(180deg,var(--leaf2) 0%,var(--leaf) 54%,var(--clay) 100%); border:1px solid rgba(255,255,255,.5); }
+    .dm-guest-alt { background:none; border:0; color:var(--leaf-text, var(--leaf)); font:inherit; font-size:12px; font-weight:700; cursor:pointer; }
+    .dm-guest-avs { display:flex; margin-bottom:4px; }
+    .dm-guest-avs span { width:34px; height:34px; border-radius:50%; border:2px solid var(--paper,#fff); margin-left:-9px;
+      background:linear-gradient(135deg,#64B5F6,#1565C0); box-shadow:0 2px 6px rgba(0,0,0,.12); }
+    .dm-guest-avs span:first-child { margin-left:0; background:linear-gradient(135deg,#A5D6A7,#2E7D32); }
+    .dm-guest-avs span:last-child { background:linear-gradient(135deg,#F8BBD0,#C2185B); }
   `;
   document.head.appendChild(s);
 })();
@@ -7257,8 +7286,22 @@ function dmConvoRowHTML(c) {
 
 /* ── boot: load conversations from Supabase ──────────────────── */
 async function dmBoot() {
-  if (!FAERO_USER) return;
   const list = document.getElementById('dm-convo-list');
+  // Signed out there is nothing to load — say what the list is for instead
+  // of leaving the loading skeleton up forever. dmBooted goes back to false
+  // so the real list loads the first time they open Messages signed in.
+  if (!FAERO_USER) {
+    dmBooted = false;
+    if (list) list.innerHTML = `
+      <div class="dm-no-convos dm-guest">
+        <div class="dm-guest-avs" aria-hidden="true"><span></span><span></span><span></span></div>
+        <b>Your friends appear here</b>
+        <p>Sign in to message the people you follow and pick up where you left off.</p>
+        <button class="btn-primary" onclick="faeroOpenAuth()">Sign in</button>
+        <button class="dm-guest-alt" onclick="faeroOpenAuth('up')">New here? Create an account</button>
+      </div>`;
+    return;
+  }
 
   const { data, error } = await supabase
     .from('conversations')
@@ -7611,9 +7654,25 @@ function navigate(slug, replaceState = false) {
 ══════════════════════════════════════════════════════════════ */
 const ENTITY_ROUTES = ['profile', 'post', 'tag'];
 
+/* faero.net/janedoe and faero.net/@janedoe are rewritten to this page by
+   vercel.json; the name comes back out of the path here. A hash always wins,
+   so moving around the app from a profile URL behaves as before. */
+const FAERO_RESERVED_NAMES = ['admin', 'api', 'apps', 'assets', 'beta', 'booth', 'chat', 'explore', 'faero', 'feed', 'games',
+  'groups', 'hello', 'help', 'icons', 'login', 'messages', 'mod', 'post', 'privacy', 'profile', 'radio', 'settings', 'signin',
+  'signup', 'studio', 'support', 'tag', 'terms', 'www'];
+function faeroPathHandle() {
+  const m = /^\/@?([a-z0-9_][a-z0-9._]{1,29})\/?$/i.exec(decodeURIComponent(location.pathname));
+  if (!m || /\.(html?|js|css|json|xml|txt|webmanifest|png|jpe?g|gif|webp|svg|ico)$/i.test(m[1])) return null;
+  return FAERO_RESERVED_NAMES.includes(m[1].toLowerCase()) ? null : m[1];
+}
+// the address to give out for someone's profile
+function faeroProfileUrl(username) {
+  return `https://www.faero.net/${encodeURIComponent(username)}`;
+}
+
 function faeroParseHash() {
   const raw = location.hash.replace(/^#\/?/, '');
-  if (!raw) return { kind: 'page', slug: 'feed' };
+  if (!raw) { const h = faeroPathHandle(); return h ? { kind: 'profile', arg: h } : { kind: 'page', slug: 'feed' }; }
 
   const [head, ...rest] = raw.split('/');
   const arg = decodeURIComponent(rest.join('/') || '');
@@ -7647,11 +7706,16 @@ async function faeroRouteToProfile(handleOrId) {
   let id = _UUID_RE.test(handleOrId) ? handleOrId : null;
 
   if (!id) {
+    // ilike, for case; but _ and % are wildcards there, so "river_oak"
+    // could otherwise land on "riverXoak". Escape them.
     const { data } = await supabase
-      .from('profiles').select('id')
-      .ilike('username', handleOrId.replace(/^@/, ''))
+      .from('profiles').select('id, username')
+      .ilike('username', handleOrId.replace(/^@/, '').replace(/[\\%_]/g, '\\$&'))
       .maybeSingle();
     id = data?.id;
+    // On the real site, show the clean address for this person: faero.net/name
+    if (data?.username && /(^|\.)faero\.net$/.test(location.hostname) && !location.hash.startsWith('#post'))
+      history.replaceState(null, '', '/' + encodeURIComponent(data.username));
   }
 
   if (!id) {
@@ -7771,7 +7835,7 @@ setTimeout(()=>{
   initAllCanvases();
   installButtonPressFeedback();
   globalLoop();
-  setSidebarActiveNav(_initRoute.kind === 'page' ? _initRoute.slug : 'feed');
+  setSidebarActiveNav(navSlugFor(_initRoute.kind === 'page' ? _initRoute.slug : 'feed'));
 }, 150);
 
 /* ═══════════════════════════════════════════════════════════
@@ -7845,7 +7909,7 @@ function faeroReleaseFocus() {
 
 /* Legal version — bump this string when the terms change and every user
    is asked to re-accept on next sign-in. */
-var FAERO_TOS_VERSION = '2026-10-31';
+var FAERO_TOS_VERSION = '2026-11-04';
 /* Rendered pages, not the raw .md — browsers serve markdown as plain text.
    Regenerate with `python build_legal.py` after editing either document. */
 var FAERO_TOS_URL     = 'terms.html';
@@ -7853,7 +7917,7 @@ var FAERO_PRIVACY_URL = 'privacy.html';
 // Kept next to the legal URLs, and identical to the address named in
 // privacy.html and terms.html. If it changes it must change in all three, or
 // the policy promises a contact route that does not reach anyone.
-var FAERO_CONTACT_EMAIL = 'contact@unitar.app';
+var FAERO_CONTACT_EMAIL = 'hello@faero.net';
 var FAERO_OPERATOR    = 'Unitar LLC';
 
 function faeroInjectAuthModal() {
@@ -8085,7 +8149,8 @@ async function faeroEnsureProfile(user, preferredName) {
     || user.user_metadata?.display_name
     || (user.email || 'seedling').split('@')[0];
 
-  const base = name.toLowerCase().replace(/\s+/g, '.').replace(/[^a-z0-9._]/g, '').slice(0, 24) || 'seedling';
+  let base = name.toLowerCase().replace(/\s+/g, '.').replace(/[^a-z0-9._]/g, '').replace(/^\.+/, '').slice(0, 24) || 'seedling';
+  if (base.length < 2 || FAERO_RESERVED_NAMES.includes(base)) base = (base + '.fan').slice(0, 24);
 
   for (let attempt = 0; attempt < 5; attempt++) {
     const username = attempt === 0 ? base : `${base}.${Math.floor(Math.random() * 9000 + 1000)}`;
@@ -8384,7 +8449,7 @@ function tupRender() {
         <div class="tup-divider"></div>
         <div class="tup-item vibes" onclick="faeroOpenSettings('vibes')">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
-          Themes &amp; Vibes
+          Themes
         </div>
         <div class="tup-item" onclick="faeroOpenSettings('account')">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -8413,6 +8478,11 @@ function tupRender() {
         <div class="tup-guest-sub">Sign in to post, follow people,<br>and listen together.</div>
         <button class="tup-signin-btn" onclick="tupSignIn()">Sign in</button>
         <button class="tup-signup-btn" onclick="tupSignUp()">Create account</button>
+      </div>
+      <div class="tup-divider"></div>
+      <div class="tup-item vibes" onclick="faeroOpenSettings('vibes')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        Settings
       </div>`;
   }
 }
@@ -8797,6 +8867,11 @@ async function epSave() {
   if (!username) { epShowErr('Username is required.'); return; }
   if (!/^[a-z0-9._]{2,24}$/.test(username)) {
     epShowErr('Usernames are 2–24 characters: lowercase letters, numbers, dots and underscores.'); return;
+  }
+  // a username is also a web address (faero.net/name), so it can't start with
+  // a dot or be one of the site's own pages
+  if (username.startsWith('.') || FAERO_RESERVED_NAMES.includes(username)) {
+    epShowErr(`@${username} is reserved. Try another.`); return;
   }
   if (website && !/^https?:\/\//i.test(website)) {
     epShowErr('Website needs to start with https://'); return;
@@ -11095,38 +11170,38 @@ let GC_ACTIVE_AEST = null; // current aesthetic pill id (null = All)
 
 const GC_AESTHETICS = [
   { id: 'all',          label: 'All Groups',   emoji: '◉',  c1: null,      c2: null,      tags: null },
-  { id: 'frutiger-aero',label: 'Frutiger Aero', emoji: '🌊', c1: '#1565C0', c2: '#00BCD4', tags: ['design','digital','2000s','futuristic','glossy','nature-tech'], img: 'assets/aesthetics/frutiger-aero.webp' },
-  { id: 'solarpunk',    label: 'Solarpunk',     emoji: '🌱', c1: '#2E7D32', c2: '#00ACC1', tags: ['solarpunk','environmentalism','community','futurism','mutual aid','solar'], img: 'assets/aesthetics/solarpunk.webp' },
-  { id: 'cottagecore',  label: 'Cottagecore',   emoji: '🌸', c1: '#7B4F9E', c2: '#A8D5A2', tags: ['cottagecore','rural','nature','baking','gardening','escapism'], img: 'assets/aesthetics/cottagecore.webp' },
-  { id: 'lofi-art',     label: 'Lo-fi Art',     emoji: '🎵', c1: '#37474F', c2: '#607D8B', tags: ['lo-fi','music','ambient','anime','nostalgia','art'], img: 'assets/aesthetics/lofi-art.webp' },
-  { id: 'goblincore',   label: 'Goblincore',    emoji: '🍄', c1: '#33691E', c2: '#8D6E63', tags: ['goblincore','nature','foraging','mushrooms','collecting','folk'], img: 'assets/aesthetics/goblincore.webp' },
-  { id: 'vaporwave',    label: 'Vaporwave',     emoji: '🌆', c1: '#880E4F', c2: '#7C4DFF', tags: ['vaporwave','retro','glitch art','music','nostalgia','80s'], img: 'assets/aesthetics/vaporwave.webp' },
-  { id: 'dark-academia',label: 'Dark Academia', emoji: '📚', c1: '#4E342E', c2: '#795548', tags: ['dark academia','literature','gothic','academia','books','mystery'], img: 'assets/aesthetics/dark-academia.webp' },
-  { id: 'seapunk',      label: 'Seapunk',       emoji: '🐚', c1: '#006064', c2: '#26C6DA', tags: ['seapunk','ocean','1990s','glitch art','music','aquatic'], img: 'assets/aesthetics/seapunk.webp' },
+  { id: 'frutiger-aero',label: 'Frutiger Aero', emoji: '🌊', c1: '#1565C0', c2: '#00BCD4', tags: ['design','digital','2000s','futuristic','glossy','nature-tech'] },
+  { id: 'solarpunk',    label: 'Solarpunk',     emoji: '🌱', c1: '#2E7D32', c2: '#00ACC1', tags: ['solarpunk','environmentalism','community','futurism','mutual aid','solar'] },
+  { id: 'cottagecore',  label: 'Cottagecore',   emoji: '🌸', c1: '#7B4F9E', c2: '#A8D5A2', tags: ['cottagecore','rural','nature','baking','gardening','escapism'] },
+  { id: 'lofi-art',     label: 'Lo-fi Art',     emoji: '🎵', c1: '#37474F', c2: '#607D8B', tags: ['lo-fi','music','ambient','anime','nostalgia','art'] },
+  { id: 'goblincore',   label: 'Goblincore',    emoji: '🍄', c1: '#33691E', c2: '#8D6E63', tags: ['goblincore','nature','foraging','mushrooms','collecting','folk'] },
+  { id: 'vaporwave',    label: 'Vaporwave',     emoji: '🌆', c1: '#880E4F', c2: '#7C4DFF', tags: ['vaporwave','retro','glitch art','music','nostalgia','80s'] },
+  { id: 'dark-academia',label: 'Dark Academia', emoji: '📚', c1: '#4E342E', c2: '#795548', tags: ['dark academia','literature','gothic','academia','books','mystery'] },
+  { id: 'seapunk',      label: 'Seapunk',       emoji: '🐚', c1: '#006064', c2: '#26C6DA', tags: ['seapunk','ocean','1990s','glitch art','music','aquatic'] },
   { id: 'y2k',          label: 'Y2K',           emoji: '💿', c1: '#AD1457', c2: '#F06292', tags: ['y2k','futurism','fashion','technology','2000s','pop culture'], img: 'assets/aesthetics/y2k.webp' },
-  { id: 'dreamcore',    label: 'Dreamcore',     emoji: '☁️', c1: '#283593', c2: '#9C27B0', tags: ['dreamcore','surrealism','liminal spaces','nostalgia','anemoia','dreams'], img: 'assets/aesthetics/dreamcore.webp' },
-  { id: 'glitchcore',        label: 'Glitchcore',        emoji: '⚡', c1: '#6A1B9A', c2: '#E040FB', tags: ['glitchcore','glitch art','anime','digital','maximalism','tiktok'], img: 'assets/aesthetics/glitchcore.webp' },
-  { id: 'weirdcore',         label: 'Weirdcore',         emoji: '👁', c1: '#1A237E', c2: '#37474F', tags: ['weirdcore','surrealism','lo-fi','internet culture','horror','nostalgia'], img: 'assets/aesthetics/weirdcore.webp' },
-  { id: 'cyberpunk',         label: 'Cyberpunk',         emoji: '🤖', c1: '#00FFAA', c2: '#1A0033', tags: ['cyberpunk','neon','dystopia','tech-noir','urban','futurism'], img: 'assets/aesthetics/cyberpunk.webp' },
-  { id: 'naturecore',        label: 'Naturecore',        emoji: '🌿', c1: '#3B6E2A', c2: '#A8C97F', tags: ['naturecore','forest','wilderness','ecology','green','tranquility'], img: 'assets/aesthetics/naturecore.webp' },
-  { id: 'liminal-space',     label: 'Liminal Space',     emoji: '🚪', c1: '#7BA7BC', c2: '#F5EFB8', tags: ['liminal space','nostalgia','uncanny','empty','eerie','dreamlike'], img: 'assets/aesthetics/liminal-space.webp' },
-  { id: 'gorpcore',          label: 'Gorpcore',          emoji: '🏔️', c1: '#5B6B3A', c2: '#E8820C', tags: ['gorpcore','hiking','outdoor','utility','earth-tones','technical'], img: 'assets/aesthetics/gorpcore.webp' },
-  { id: 'steampunk',         label: 'Steampunk',         emoji: '⚙️', c1: '#8B5E2A', c2: '#C9A84C', tags: ['steampunk','victorian','brass','retro-futurism','industrial','gears'], img: 'assets/aesthetics/steampunk.webp' },
-  { id: 'fairycore',         label: 'Fairycore',         emoji: '🧚', c1: '#D4A7E8', c2: '#B8E8C2', tags: ['fairycore','magical','fairy','mushrooms','ethereal','enchanted'], img: 'assets/aesthetics/fairycore.webp' },
-  { id: 'angelcore',         label: 'Angelcore',         emoji: '👼', c1: '#D4AF6A', c2: '#F5EEE0', tags: ['angelcore','divine','celestial','baroque','spiritual','white-and-gold'], img: 'assets/aesthetics/angelcore.webp' },
-  { id: 'cryptidcore',       label: 'Cryptidcore',       emoji: '👣', c1: '#2E4A2A', c2: '#7B5EA7', tags: ['cryptidcore','cryptids','paranormal','folk-horror','rural','mystery'], img: 'assets/aesthetics/cryptidcore.webp' },
-  { id: 'signalwave',        label: 'Signalwave',        emoji: '📺', c1: '#1A2A4A', c2: '#7FCFB8', tags: ['signalwave','lo-fi','broadcast','late-night','hauntology','VHS'], img: 'assets/aesthetics/signalwave.webp' },
-  { id: 'old-web',           label: 'Old Web',           emoji: '🖥️', c1: '#000033', c2: '#00CC66', tags: ['old web','geocities','web 1.0','nostalgia','retro-internet','DIY'], img: 'assets/aesthetics/old-web.webp' },
-  { id: 'indie-kid',         label: 'Indie Kid',         emoji: '📸', c1: '#FF4FCB', c2: '#FFD600', tags: ['indie kid','2000s','youth','lo-fi photo','tumblr','DIY'], img: 'assets/aesthetics/indie-kid.webp' },
-  { id: 'poolcore',          label: 'Poolcore',          emoji: '🏊', c1: '#5EC8D8', c2: '#E8F4F8', tags: ['poolcore','liminal','aquatic','architecture','uncanny','ceramic'], img: 'assets/aesthetics/poolcore.webp' },
-  { id: 'soft-grunge',       label: 'Soft Grunge',       emoji: '🌙', c1: '#4A4A5A', c2: '#C8A8C8', tags: ['soft grunge','tumblr','pastel','grunge','melancholy','2010s'], img: 'assets/aesthetics/soft-grunge.webp' },
-  { id: 'surf-crush',        label: 'Surf Crush',        emoji: '🏄', c1: '#4AACCC', c2: '#F5C87A', tags: ['surf crush','surf','beach','y2k','ocean','nostalgia'], img: 'assets/aesthetics/surf-crush.webp' },
-  { id: 'silicon-dreams',    label: 'Silicon Dreams',    emoji: '💎', c1: '#7B00CC', c2: '#00EEFF', tags: ['silicon dreams','cgi','low-poly','retro-tech','80s','digital-sublime'], img: 'assets/aesthetics/silicon-dreams.webp' },
+  { id: 'dreamcore',    label: 'Dreamcore',     emoji: '☁️', c1: '#283593', c2: '#9C27B0', tags: ['dreamcore','surrealism','liminal spaces','nostalgia','anemoia','dreams'] },
+  { id: 'glitchcore',        label: 'Glitchcore',        emoji: '⚡', c1: '#6A1B9A', c2: '#E040FB', tags: ['glitchcore','glitch art','anime','digital','maximalism','tiktok'] },
+  { id: 'weirdcore',         label: 'Weirdcore',         emoji: '👁', c1: '#1A237E', c2: '#37474F', tags: ['weirdcore','surrealism','lo-fi','internet culture','horror','nostalgia'] },
+  { id: 'cyberpunk',         label: 'Cyberpunk',         emoji: '🤖', c1: '#00FFAA', c2: '#1A0033', tags: ['cyberpunk','neon','dystopia','tech-noir','urban','futurism'] },
+  { id: 'naturecore',        label: 'Naturecore',        emoji: '🌿', c1: '#3B6E2A', c2: '#A8C97F', tags: ['naturecore','forest','wilderness','ecology','green','tranquility'] },
+  { id: 'liminal-space',     label: 'Liminal Space',     emoji: '🚪', c1: '#7BA7BC', c2: '#F5EFB8', tags: ['liminal space','nostalgia','uncanny','empty','eerie','dreamlike'] },
+  { id: 'gorpcore',          label: 'Gorpcore',          emoji: '🏔️', c1: '#5B6B3A', c2: '#E8820C', tags: ['gorpcore','hiking','outdoor','utility','earth-tones','technical'] },
+  { id: 'steampunk',         label: 'Steampunk',         emoji: '⚙️', c1: '#8B5E2A', c2: '#C9A84C', tags: ['steampunk','victorian','brass','retro-futurism','industrial','gears'] },
+  { id: 'fairycore',         label: 'Fairycore',         emoji: '🧚', c1: '#D4A7E8', c2: '#B8E8C2', tags: ['fairycore','magical','fairy','mushrooms','ethereal','enchanted'] },
+  { id: 'angelcore',         label: 'Angelcore',         emoji: '👼', c1: '#D4AF6A', c2: '#F5EEE0', tags: ['angelcore','divine','celestial','baroque','spiritual','white-and-gold'] },
+  { id: 'cryptidcore',       label: 'Cryptidcore',       emoji: '👣', c1: '#2E4A2A', c2: '#7B5EA7', tags: ['cryptidcore','cryptids','paranormal','folk-horror','rural','mystery'] },
+  { id: 'signalwave',        label: 'Signalwave',        emoji: '📺', c1: '#1A2A4A', c2: '#7FCFB8', tags: ['signalwave','lo-fi','broadcast','late-night','hauntology','VHS'] },
+  { id: 'old-web',           label: 'Old Web',           emoji: '🖥️', c1: '#000033', c2: '#00CC66', tags: ['old web','geocities','web 1.0','nostalgia','retro-internet','DIY'] },
+  { id: 'indie-kid',         label: 'Indie Kid',         emoji: '📸', c1: '#FF4FCB', c2: '#FFD600', tags: ['indie kid','2000s','youth','lo-fi photo','tumblr','DIY'] },
+  { id: 'poolcore',          label: 'Poolcore',          emoji: '🏊', c1: '#5EC8D8', c2: '#E8F4F8', tags: ['poolcore','liminal','aquatic','architecture','uncanny','ceramic'] },
+  { id: 'soft-grunge',       label: 'Soft Grunge',       emoji: '🌙', c1: '#4A4A5A', c2: '#C8A8C8', tags: ['soft grunge','tumblr','pastel','grunge','melancholy','2010s'] },
+  { id: 'surf-crush',        label: 'Surf Crush',        emoji: '🏄', c1: '#4AACCC', c2: '#F5C87A', tags: ['surf crush','surf','beach','y2k','ocean','nostalgia'] },
+  { id: 'silicon-dreams',    label: 'Silicon Dreams',    emoji: '💎', c1: '#7B00CC', c2: '#00EEFF', tags: ['silicon dreams','cgi','low-poly','retro-tech','80s','digital-sublime'] },
   { id: 'frutiger-aurora',   label: 'Frutiger Aurora',   emoji: '🌌', c1: '#00C8FF', c2: '#A020F0', tags: ['frutiger aurora','gradient','bioluminescent','digital-nature','aurora','y2k-gloss'], img: null },
-  { id: 'vectordelia',       label: 'Vectordelia',       emoji: '🎨', c1: '#FF2D78', c2: '#1A1A2E', tags: ['vectordelia','vector art','graphic design','mid-2000s','illustrator-era','urban'], img: 'assets/aesthetics/vectordelia.webp' },
-  { id: 'barbiecore',        label: 'Barbiecore',        emoji: '💅', c1: '#FF1493', c2: '#FFB6C1', tags: ['barbiecore','pink','maximalism','retro-glam','camp','toy aesthetic'], img: 'assets/aesthetics/barbiecore.webp' },
-  { id: 'cybergoth',         label: 'Cybergoth',         emoji: '🦇', c1: '#00FF66', c2: '#1A0022', tags: ['cybergoth','industrial','rave','goth','neon','subculture'], img: 'assets/aesthetics/cybergoth.webp' },
-  { id: 'utopian-scholastic',label: 'Utopian Scholastic',emoji: '📖', c1: '#D44000', c2: '#F5F5F5', tags: ['utopian scholastic','educational','90s design','encyclopedic','modernist','serif'], img: 'assets/aesthetics/utopian-scholastic.webp' },
+  { id: 'vectordelia',       label: 'Vectordelia',       emoji: '🎨', c1: '#FF2D78', c2: '#1A1A2E', tags: ['vectordelia','vector art','graphic design','mid-2000s','illustrator-era','urban'] },
+  { id: 'barbiecore',        label: 'Barbiecore',        emoji: '💅', c1: '#FF1493', c2: '#FFB6C1', tags: ['barbiecore','pink','maximalism','retro-glam','camp','toy aesthetic'] },
+  { id: 'cybergoth',         label: 'Cybergoth',         emoji: '🦇', c1: '#00FF66', c2: '#1A0022', tags: ['cybergoth','industrial','rave','goth','neon','subculture'] },
+  { id: 'utopian-scholastic',label: 'Utopian Scholastic',emoji: '📖', c1: '#D44000', c2: '#F5F5F5', tags: ['utopian scholastic','educational','90s design','encyclopedic','modernist','serif'] },
 ];
 
 /* ── boot: called by navigation ──────────────────────────────── */
@@ -13146,17 +13221,6 @@ const FAERO_THEMES = {
       '--text':'#0A1F0A','--text2':'#1B3320','--text3':'#4A7A50','--border':'#A5D6A7',
     }
   },
-  midnight: {
-    name: 'Midnight Garden', emoji: '🌙',
-    bg: 'linear-gradient(135deg,#1a0e2e,#6A1B9A)',
-    swatches: ['#9C27B0','#7C4DFF','#CE93D8'],
-    vars: {
-      '--leaf':'#AB47BC','--leaf2':'#CE93D8','--leaf3':'#E1BEE7',
-      '--sun':'#7C4DFF','--sun2':'#B39DDB','--clay':'#6A1B9A',
-      '--bg':'#1A0E2E','--bg2':'#251545','--bg3':'#2D1B5E','--paper':'#1D1030',
-      '--text':'#EDE7F6','--text2':'#B39DDB','--text3':'#9575CD','--border':'#4A2080',
-    }
-  },
   rose: {
     name: 'Rose Tide', emoji: '🌸',
     bg: 'linear-gradient(135deg,#C2185B,#FF6F00)',
@@ -13185,9 +13249,9 @@ const FAERO_PATTERNS = {
   none:     { name: 'Clean', css: 'none' },
   dots:     { name: 'Dots',    css: 'radial-gradient(circle,rgba(0,0,0,0.08) 1px,transparent 1px)',    size:'20px 20px' },
   grid:     { name: 'Grid',    css: 'linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px)', size:'24px 24px' },
-  stars:    { name: '★ Stars', css: 'radial-gradient(circle,rgba(0,0,0,0.12) 1.5px,transparent 1.5px)', size:'30px 30px' },
+  stars:    { name: 'Stars', css: 'radial-gradient(circle,rgba(0,0,0,0.12) 1.5px,transparent 1.5px)', size:'30px 30px' },
   diagonal: { name: 'Stripes', css: 'repeating-linear-gradient(-45deg,transparent,transparent 8px,rgba(0,0,0,0.04) 8px,rgba(0,0,0,0.04) 9px)', size:'auto' },
-  leaves:   { name: '🌿 Leaves', css: 'radial-gradient(ellipse 4px 6px at 50% 0%,rgba(0,0,0,0.07) 100%,transparent 100%)', size:'18px 22px' },
+  leaves:   { name: 'Leaves', css: 'radial-gradient(ellipse 4px 6px at 50% 0%,rgba(0,0,0,0.07) 100%,transparent 100%)', size:'18px 22px' },
 };
 
 let _fsActiveTab = 'vibes';
@@ -13198,11 +13262,6 @@ function faeroOpenSettings(tab) {
   _fsActiveTab = tab || 'vibes';
   _fsVibes = {
     sparkle:      localStorage.getItem('faero-sparkle') === '1',
-    construction: localStorage.getItem('faero-construction') === '1',
-    counter:      localStorage.getItem('faero-counter') === '1',
-    blink:        localStorage.getItem('faero-blink') === '1',
-    compact:      localStorage.getItem('faero-compact') === '1',
-    bigtext:      localStorage.getItem('faero-bigtext') === '1',
     nomotion:     localStorage.getItem('faero-nomotion') === '1',
     notif_likes:  localStorage.getItem('faero-notif-likes') !== '0',
     notif_follows:localStorage.getItem('faero-notif-follows') !== '0',
@@ -13489,9 +13548,9 @@ function fsRender() {
   const glassVal = parseFloat(localStorage.getItem('faero-glass') || '0');
 
   _fsSidebar.innerHTML = `
-    <div class="fs-sidebar-logo">⚙ Faero Settings</div>
+    <div class="fs-sidebar-logo">Settings</div>
     ${[
-      ['vibes',   'Themes & Vibes', '<circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/>'],
+      ['vibes',   'Themes', '<circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/>'],
       ['account', 'Account',        '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>'],
       ['privacy', 'Privacy',        '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>'],
       ['safety',  'Safety',         '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>'],
@@ -13512,7 +13571,7 @@ function fsRender() {
          style="background:${t.bg}" onclick="fsApplyTheme('${id}')">
       <div class="fs-theme-card-check">✓</div>
       <div class="fs-theme-swatch">${t.swatches.map(c=>`<span style="background:${c}"></span>`).join('')}</div>
-      <div class="fs-theme-name">${t.emoji} ${t.name}</div>
+      <div class="fs-theme-name">${t.name}</div>
     </div>`).join('');
 
   const patternCards = Object.entries(FAERO_PATTERNS).map(([id, p]) => {
@@ -13668,39 +13727,36 @@ function fsRender() {
       <div class="fs-pane-title">Accessibility</div>
       <div class="fs-pane-sub">Make Faero work better for you.</div>
       <div class="fs-section">Display</div>
-      ${vibeToggle('compact','Compact mode','Tighter spacing throughout the UI')}
-      ${vibeToggle('bigtext','Larger text','Increase base font size')}
-      ${vibeToggle('nomotion','Reduce motion','Disable transitions and animations')}
+      <div class="fs-toggle-row">
+        <div><div class="fs-toggle-label">Text size</div><div class="fs-toggle-sub">Scales text and spacing together, everywhere</div></div>
+        <div class="fs-seg" role="radiogroup" aria-label="Text size">
+          ${[['small','Smaller'],['normal','Default'],['large','Larger'],['xl','Largest']].map(([v,n]) =>
+            `<button role="radio" aria-checked="${fsTextSize()===v}" class="${fsTextSize()===v?'on':''}" onclick="fsSetTextSize('${v}')">${n}</button>`).join('')}
+        </div>
+      </div>
+      ${vibeToggle('nomotion','Reduce motion','Turn off animations and transitions')}
     </div>`;
 
   document.getElementById('fs-content').innerHTML = `
     <div class="fs-pane ${_fsActiveTab==='vibes'?'active':''}" data-pane="vibes">
-      <div class="fs-pane-title">Themes & Vibes</div>
-      <div class="fs-pane-sub">Make Faero yours. Changes apply instantly.</div>
-      <div class="fs-toggle-row" style="cursor:pointer" onclick="faeroCloseSettingsForce();toggleCustomizer()">
-        <div><div class="fs-toggle-label">🎨 Design Studio</div><div class="fs-toggle-sub">Live theme editor — colors, fonts, glass</div></div>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-      </div>
-      <div class="fs-section">Color theme</div>
+      <div class="fs-pane-title">Themes</div>
+      <div class="fs-pane-sub">Make Faero yours. Changes apply instantly and are saved in this browser.</div>
+      <div class="fs-section">Colour</div>
       <div class="fs-theme-grid">${themeCards}</div>
-      <div class="fs-section">Background pattern</div>
+      <div class="fs-section">Font</div>
+      <div class="fs-font-grid">${FONTS.map((f, i) => `<button class="fs-font ${(localStorage.getItem('faero-font') || 'Exo 2') === f.name ? 'on' : ''}" style="font-family:${f.css.replace(/"/g, "'")}" onclick="fsPickFont(${i})">${f.name}<span>Aa Bb 123</span></button>`).join('')}</div>
+      <div class="fs-section">Background</div>
       <div class="fs-pattern-grid">${patternCards}</div>
       ${fsCustomBgCard()}
-      <div class="fs-section">Old internet ✨</div>
-      <div class="fs-vibe-grid">
-        ${vibeToggle('sparkle','✨ Sparkle cursor','Stars follow your mouse')}
-        ${vibeToggle('construction','🚧 Under construction','Classic footer badge')}
-        ${vibeToggle('counter','👁 Hit counter','Visitor count in the corner')}
-      </div>
 
-      <div class="fs-section">Nav bar style</div>
+      <div class="fs-section">Top bar style</div>
       <div class="fs-nav-grid">${FS_NAV_THEMES.map(t => _navCard(t, currentNav)).join('')}</div>
 
-      <div class="fs-section">Glass Effect</div>
+      <div class="fs-section">Glass</div>
       <div class="fs-glass-wrap">
         <div class="fs-glass-header">
           <div class="fs-glass-header-left">
-            <div class="fs-glass-icon">&#x1F52E;</div>
+            <div class="fs-glass-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/><path d="M9.5 14.5a2.5 2.5 0 0 0 2.5 2.5"/></svg></div>
             <div>
               <div class="fs-glass-title">Frosted Glass</div>
               <div class="fs-glass-sub">Blur + transparency across the UI</div>
@@ -13738,11 +13794,16 @@ function fsRender() {
           ${_glassChip('compose','Compose')}
           ${_glassChip('topbar','Top bar')}
           ${_glassChip('menus','Menus')}
+          ${_glassChip('apps','Apps &amp; radio')}
         </div>
       </div>
 
+      <div class="fs-section">Extras</div>
+      ${vibeToggle('sparkle','Sparkle trail','Little stars follow your cursor (mouse only)')}
+
       <div class="fs-section">Profile page style</div>
-      <div class="fs-ptheme-live">
+      ${FAERO_USER ? `
+      <div class="fs-ptheme-live" ${fsGetProfileTheme() ? '' : 'hidden'}>
         <div class="fs-ptheme-live-bar">
           <span class="fs-ptheme-live-dot"></span>
           Live preview · <b id="fs-ptheme-current">${
@@ -13759,12 +13820,13 @@ function fsRender() {
       <button class="fs-ptheme-open-btn" onclick="fsOpenProfilePage()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
         Preview my profile page
-      </button>
+      </button>` : `<div class="fs-note">Sign in to pick how your profile page looks to visitors.</div>`}
     </div>
     ${accountPane}${privacyPane}${safetyPane}${notifsPane}${accessPane}
   `;
 
   // the markup above was just replaced, so the preview iframe is fresh
+  fsApplyGlass(glassVal);   // paints the preview card with the current formula
   try { fsMountProfilePreview(); } catch (e) { console.warn('profile preview:', e); }
   // fsMountProfilePreview() returns early for style "Faero" and for a profile
   // row that has not loaded yet; the stage still has to be measured either way
@@ -13773,13 +13835,65 @@ function fsRender() {
 }
 
 function fsApplyTheme(id) {
-  const t = FAERO_THEMES[id];
-  if (!t) return;
+  const t = FAERO_THEMES[id] || FAERO_THEMES.polar;   // a removed theme falls back to the default
+  id = FAERO_THEMES[id] ? id : 'polar';
   const root = document.documentElement;
   Object.entries(t.vars).forEach(([k,v]) => root.style.setProperty(k,v));
+  // Readable whatever the palette: text colours are darkened (or lightened on
+  // a dark paper) just until they reach WCAG AA against the theme's cards.
+  // --leaf is used as text on buttons and links too, so it gets the same check.
+  // Targets sit a little above 4.5 because cards are translucent.
+  const R = (k, need, against) => faeroReadable(t.vars[k], t.vars[against || '--paper'], need);
+  root.style.setProperty('--text2', R('--text2', 7));
+  // muted text also sits on the --bg2 header strips, the darker of the two
+  root.style.setProperty('--text3', faeroReadable(R('--text3', 5), t.vars['--bg2'], 4.6));
+  root.style.setProperty('--clay',  R('--clay', 4.8));
+  // the accent stays itself as a fill; as text it must also read on --bg2,
+  // the darkest light surface (chips, hover rows, header strips)
+  root.style.setProperty('--leaf-text', faeroReadable(R('--leaf', 4.8), t.vars['--bg2'], 4.5));
+  // Cards are --glass. It was a fixed ice blue, so every theme kept blue-white
+  // cards; tint it from the theme's own paper colour instead.
+  const hex = t.vars['--paper'].replace('#', '');
+  const [r, g, b] = [0, 2, 4].map(i => parseInt(hex.slice(i, i + 2), 16));
+  root.style.setProperty('--glass', `rgba(${r},${g},${b},var(--glass-alpha))`);
+  fsThemeChrome(id === 'polar' ? null : t.vars);
   localStorage.setItem('faero-theme', id);
+  // glass is tinted from the theme's colours, so it follows a theme change
+  const gv = parseFloat(localStorage.getItem('faero-glass') || '0');
+  if (gv > 0 && typeof fsApplyGlass === 'function') fsApplyGlass(gv);
   document.querySelectorAll('.fs-theme-card').forEach(c => c.classList.toggle('active', c.onclick?.toString().includes(`'${id}'`)));
   fsRender();
+}
+
+/* The glossy buttons, nav pills and chips are drawn in fixed Faero blue. For any
+   other theme, repaint them in the theme's own colours (same gloss, new hue). */
+function faeroReadable(fg, bg, need) {
+  const rgb = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const lum = c => { const f = x => { x /= 255; return x <= .03928 ? x / 12.92 : Math.pow((x + .055) / 1.055, 2.4); }; return .2126 * f(c[0]) + .7152 * f(c[1]) + .0722 * f(c[2]); };
+  const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); };
+  if (!/^#[0-9a-f]{6}$/i.test(fg || '') || !/^#[0-9a-f]{6}$/i.test(bg || '')) return fg;
+  const b = rgb(bg), toward = lum(b) > .4 ? 0 : 255;
+  let c = rgb(fg);
+  for (let i = 0; i < 40 && ratio(c, b) < need; i++) c = c.map(v => Math.round(v + (toward - v) * .06));
+  return '#' + c.map(v => v.toString(16).padStart(2, '0')).join('');
+}
+
+function fsThemeChrome(v) {
+  let st = document.getElementById('faero-theme-chrome');
+  if (!st) { st = document.createElement('style'); st.id = 'faero-theme-chrome'; document.head.appendChild(st); }
+  if (!v) { st.textContent = ''; return; }
+  const W = '#ffffff';
+  const a = faeroReadable(v['--leaf2'], W, 3.6), b = faeroReadable(v['--leaf'], W, 4.6), c = faeroReadable(v['--clay'], W, 5.5);
+  const glossy = `linear-gradient(180deg, ${a} 0%, ${b} 54%, ${c} 100%) !important`;
+  st.textContent = `
+    .btn-primary, .fx-btn-pri, .fx-chip.on, .tn.active, .tup-signin-btn, .compose-post, .fmn-item.active::before,
+    .fam-btn, .dm-send-btn { background: ${glossy}; border-color: ${v['--leaf3']} !important;
+      color: #fff !important; text-shadow: 0 1px 2px rgba(0,0,0,.3) !important; }
+    .fx-play { background: radial-gradient(circle at 35% 28%, rgba(255,255,255,.85) 0 9%, rgba(255,255,255,0) 34%), linear-gradient(180deg, ${v['--leaf3']} 0%, ${b} 55%, ${c} 100%) !important; }
+    .btn-secondary, .fx-btn:not(.fx-btn-pri) { color: var(--leaf-text) !important; border-color: ${v['--border']} !important; }
+    .btn-primary, .fx-btn-pri, .tup-signin-btn, .compose-post { color: #fff !important; text-shadow: 0 1px 2px rgba(0,0,0,.3) !important; }
+    .fx-chip { color: var(--leaf-text) !important; }
+    .fx-chip.on, .tn.active { color: #fff !important; }`;
 }
 
 function fsCustomBgCard() {
@@ -13791,7 +13905,7 @@ function fsCustomBgCard() {
     <input type="file" id="fs-bg-file" accept="image/jpeg,image/png,image/webp,image/gif" style="display:none" onchange="fsPickCustomBg(this)">
     ${hasImg
       ? `<img class="fs-custom-bg-preview visible" src="${dataURL}" alt="custom bg">`
-      : `<div class="fs-custom-bg-placeholder">🖼️</div>`}
+      : `<div class="fs-custom-bg-placeholder"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg></div>`}
     <div class="fs-custom-bg-info">
       <strong>Custom image</strong>
       <span>Your own photo, texture, or gif.<br>Max 2 MB · JPG PNG WebP GIF · private to you, stored in your browser</span>
@@ -13864,58 +13978,67 @@ function fsToggleVibe(key, btn) {
   btn.classList.toggle('on', _fsVibes[key]);
   const val = _fsVibes[key] ? '1' : '0';
   const storageKey = {
-    sparkle:'faero-sparkle', construction:'faero-construction',
-    counter:'faero-counter', blink:'faero-blink',
-    compact:'faero-compact', bigtext:'faero-bigtext', nomotion:'faero-nomotion',
+    sparkle:'faero-sparkle', nomotion:'faero-nomotion',
     notif_likes:'faero-notif-likes', notif_follows:'faero-notif-follows', notif_replies:'faero-notif-replies',
   }[key];
   if (storageKey) localStorage.setItem(storageKey, val);
 
   // live-apply effects
   if (key === 'sparkle')      fsApplySparkle(_fsVibes.sparkle);
-  if (key === 'construction') fsApplyConstruction(_fsVibes.construction);
-  if (key === 'counter')      fsApplyCounter(_fsVibes.counter);
-  if (key === 'compact')      document.documentElement.style.setProperty('--ui-density', _fsVibes.compact ? '0.82' : '1');
-  if (key === 'bigtext')      document.body.style.fontSize = _fsVibes.bigtext ? '16px' : '';
   if (key === 'nomotion') {
     let s = document.getElementById('faero-nomotion-style');
     if (!s) { s = document.createElement('style'); s.id='faero-nomotion-style'; document.head.appendChild(s); }
     s.textContent = _fsVibes.nomotion ? '*{transition:none!important;animation:none!important}' : '';
+    if (_fsVibes.nomotion) fsApplySparkle(false); else if (localStorage.getItem('faero-sparkle') === '1') fsApplySparkle(true);
   }
 }
 
+let _sparkleOn = false, _sparkleLast = 0;
+function _sparkleMove(e) {
+  if (e.pointerType && e.pointerType !== 'mouse') return;
+  const now = performance.now();
+  if (now - _sparkleLast < 28) return;
+  _sparkleLast = now;
+  const el = document.createElement('span');
+  el.className = 'faero-sparkle';
+  el.textContent = ['✦', '✧', '⋆', '✨'][Math.floor(Math.random() * 4)];
+  el.style.left = (e.clientX + (Math.random() - .5) * 14) + 'px';
+  el.style.top = (e.clientY + (Math.random() - .5) * 14) + 'px';
+  el.style.color = ['#FFD54F', '#64B5F6', '#F48FB1', '#ffffff'][Math.floor(Math.random() * 4)];
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 800);
+}
 function fsApplySparkle(on) {
-  let s = document.getElementById('faero-sparkle-style');
-  if (on) {
-    if (!s) { s = document.createElement('style'); s.id='faero-sparkle-style'; document.head.appendChild(s); }
-    s.textContent = `* { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ctext y='16' font-size='16'%3E✨%3C/text%3E%3C/svg%3E") 10 10, auto !important; }`;
-  } else {
-    s?.remove();
-  }
+  // Respect "reduce motion", whether it's set here or in the OS.
+  if (on && (localStorage.getItem('faero-nomotion') === '1' || matchMedia('(prefers-reduced-motion: reduce)').matches)) on = false;
+  if (on === _sparkleOn) return;
+  _sparkleOn = on;
+  document[on ? 'addEventListener' : 'removeEventListener']('pointermove', _sparkleMove, { passive: true });
 }
 
-function fsApplyConstruction(on) {
-  let el = document.getElementById('faero-construction-bar');
-  if (on && !el) {
-    el = document.createElement('div');
-    el.id = 'faero-construction-bar';
-    el.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:9999;background:repeating-linear-gradient(-45deg,#FFD600,#FFD600 10px,#111 10px,#111 20px);padding:6px 12px;display:flex;align-items:center;justify-content:center;gap:10px;font-family:monospace;font-size:12px;font-weight:700;color:#fff;text-shadow:0 1px 3px #000;letter-spacing:1px';
-    el.innerHTML = '🚧 &nbsp; THIS SITE IS UNDER CONSTRUCTION — PLEASE PARDON OUR DUST &nbsp; 🚧 &nbsp; <span style="opacity:0.5;font-weight:400">Best viewed at 1024×768 in Internet Explorer 6</span>';
-    document.body.appendChild(el);
-  } else if (!on && el) el.remove();
+/* Text size: zoom scales the whole UI, which px-sized rules otherwise ignore. */
+const FS_TEXT_SIZES = { small: 0.9, normal: 1, large: 1.12, xl: 1.25 };
+function fsTextSize() {
+  const v = localStorage.getItem('faero-text-size');
+  if (v && FS_TEXT_SIZES[v]) return v;
+  // the two old toggles this replaced
+  if (localStorage.getItem('faero-bigtext') === '1') return 'large';
+  if (localStorage.getItem('faero-compact') === '1') return 'small';
+  return 'normal';
+}
+function fsSetTextSize(v) {
+  if (!FS_TEXT_SIZES[v]) v = 'normal';
+  localStorage.setItem('faero-text-size', v);
+  localStorage.removeItem('faero-bigtext'); localStorage.removeItem('faero-compact');
+  document.body.style.zoom = v === 'normal' ? '' : FS_TEXT_SIZES[v];
+  if (document.getElementById('fs-overlay')?.classList.contains('open')) fsRender();
 }
 
-function fsApplyCounter(on) {
-  let el = document.getElementById('faero-hit-counter');
-  if (on && !el) {
-    const hits = parseInt(localStorage.getItem('faero-hits') || '0') + 1;
-    localStorage.setItem('faero-hits', hits);
-    el = document.createElement('div');
-    el.id = 'faero-hit-counter';
-    el.style.cssText = 'position:fixed;bottom:12px;right:12px;z-index:9998;background:#000;border:2px solid #0f0;color:#0f0;font-family:monospace;font-size:11px;padding:4px 8px;border-radius:4px;letter-spacing:2px;box-shadow:0 0 8px rgba(0,255,0,0.4)';
-    el.innerHTML = `👁 VISITORS: <b>${String(hits).padStart(6,'0')}</b>`;
-    document.body.appendChild(el);
-  } else if (!on && el) el.remove();
+function fsPickFont(i) {
+  const f = FONTS[i];
+  if (!f) return;
+  faeroApplyFont(f, null);
+  document.querySelectorAll('.fs-font').forEach((b, j) => b.classList.toggle('on', j === i));
 }
 
 async function fsChangePassword() {
@@ -13957,7 +14080,7 @@ async function fsDeleteAccount() {
   if (scrubErr) {
     faeroLogError('deleteAccount.scrub', scrubErr.message);
     faeroToast('err', 'Could not delete', faeroFriendlyDbError(scrubErr) +
-      ' Email contact@unitar.app and we\'ll do it by hand.');
+      ' Email hello@faero.net and we\'ll do it by hand.');
     return;
   }
 
@@ -13985,7 +14108,7 @@ async function fsDeleteAccount() {
   alert(authGone
     ? 'Your account and everything in it has been deleted. Thanks for having been here.'
     : 'Your content has been erased and your profile anonymised. The login record ' +
-      'will be removed within 30 days. If you need it gone sooner, email contact@unitar.app.');
+      'will be removed within 30 days. If you need it gone sooner, email hello@faero.net.');
 
   location.reload();
 }
@@ -13996,15 +14119,24 @@ async function fsExportData() {
   faeroToast('info', 'Gathering…', 'Building your export.');
 
   const uid = FAERO_USER.id;
-  const [profile, posts, replies, likes, follows, messages, bookmarks, groups] = await Promise.all([
+  // Conversations first, so the export holds both sides of your chats and
+  // not only the messages you sent.
+  const convos = await supabase.from('conversation_members').select('conversation_id').eq('user_id', uid);
+  const convoIds = (convos.data || []).map(c => c.conversation_id);
+  const [profile, posts, replies, likes, follows, messages, bookmarks, groups, gbWritten, gbReceived, blocks] = await Promise.all([
     supabase.from('profiles').select('*').eq('id', uid).maybeSingle(),
     supabase.from('posts').select('*').eq('user_id', uid),
     supabase.from('replies').select('*').eq('user_id', uid),
     supabase.from('likes').select('*').eq('user_id', uid),
     supabase.from('follows').select('*').or(`follower_id.eq.${uid},following_id.eq.${uid}`),
-    supabase.from('messages').select('*').eq('sender_id', uid),
+    convoIds.length
+      ? supabase.from('messages').select('*').in('conversation_id', convoIds).order('created_at')
+      : supabase.from('messages').select('*').eq('sender_id', uid),
     supabase.from('bookmarks').select('*').eq('user_id', uid),
-    supabase.from('group_members').select('*').eq('user_id', uid)
+    supabase.from('group_members').select('*').eq('user_id', uid),
+    supabase.from('guestbook').select('*').eq('author_id', uid),
+    supabase.from('guestbook').select('*').eq('profile_id', uid),
+    supabase.from('blocks').select('*').eq('blocker_id', uid)
   ]);
 
   const payload = {
@@ -14018,7 +14150,10 @@ async function fsExportData() {
     follows:   follows.data   || [],
     messages:  messages.data  || [],
     bookmarks: bookmarks.data || [],
-    commons:   groups.data    || []
+    commons:   groups.data    || [],
+    guestbook_notes_you_wrote:     gbWritten.data  || [],
+    guestbook_notes_on_your_page:  gbReceived.data || [],
+    blocks_and_mutes:              blocks.data     || []
   };
 
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
@@ -14267,7 +14402,7 @@ async function faeroCopyRlsFix(btn) {
 ══════════════════════════════════════════════════════════════ */
 function faeroMobileNav(slug) {
   navigate(slug);
-  faeroSyncMobileNav(slug);
+  faeroSyncMobileNav(navSlugFor(slug));
 }
 
 function faeroSyncMobileNav(slug) {
@@ -14774,15 +14909,13 @@ function fsRestoreVibes() {
     fsApplyPattern(pattern);
   }
   if (localStorage.getItem('faero-sparkle')==='1')      fsApplySparkle(true);
-  if (localStorage.getItem('faero-construction')==='1') fsApplyConstruction(true);
-  if (localStorage.getItem('faero-counter')==='1')      fsApplyCounter(true);
-  if (localStorage.getItem('faero-bigtext')==='1')      document.body.style.fontSize = '16px';
+  ['faero-construction', 'faero-counter', 'faero-hits', 'faero-blink'].forEach(k => localStorage.removeItem(k));
+  if (fsTextSize() !== 'normal') fsSetTextSize(fsTextSize());
   if (localStorage.getItem('faero-nomotion')==='1') {
     let s = document.createElement('style'); s.id='faero-nomotion-style';
     s.textContent='*{transition:none!important;animation:none!important}';
     document.head.appendChild(s);
   }
-  if (localStorage.getItem('faero-compact')==='1') document.documentElement.style.setProperty('--ui-density','0.82');
 }
 try { fsRestoreVibes(); } catch (e) { console.warn('fsRestoreVibes failed:', e); }
 
@@ -15091,13 +15224,23 @@ const GLASS_ZONES = {
   right:   { sel: '.col-right>.card' },
   posts:   { sel: '.post' },
   compose: { sel: '.compose-card' },
-  topbar:  { sel: '.topbar,.gc-topbar' },
-  menus:   { sel: '.tup-dropdown,.pf-stats-card,.notif-panel,.dm-sidebar' },
+  // each zone says what its surfaces are: light panels (dark text), coloured
+  // bars and dark menus (white text). Glass thins each in its own colour.
+  topbar:  { sel: '.topbar', bar: '.topbar' },
+  menus:   { sel: '.pf-stats-card,.notif-panel,.dm-sidebar,.dm-thread,.fam-box,.gc-topbar', dark: '.tup-dropdown' },
+  apps:    { sel: '.fx-stage,.fx-card,.fx-st,.fx-game,.fx-dock,.fx-empty' },
 };
+GLASS_ZONES.posts.sel = '.post,.col-main>.card';
 
+// Every zone is on until someone turns it off.
 function _glassZoneOn(id) {
   const v = localStorage.getItem('faero-glass-zone-' + id);
-  return v !== null ? v === '1' : id !== 'posts';
+  return v !== null ? v === '1' : true;
+}
+function _glassRgb(name, fallback) {
+  const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const m = /^#([0-9a-f]{6})$/i.exec(v);
+  return m ? [0, 2, 4].map(i => parseInt(m[1].slice(i, i + 2), 16)).join(',') : fallback;
 }
 
 function _glassChip(id, label) {
@@ -15108,29 +15251,49 @@ function _glassChip(id, label) {
 
 function fsApplyGlass(v) {
   v = Math.max(0, Math.min(1, parseFloat(v) || 0));
-  const blur = Math.round(v * 9);
-  const bgA = (v * 0.27).toFixed(3);
-  const bA  = (v * 0.30).toFixed(3);
-  const sA  = (v * 0.10).toFixed(3);
+  /* Glass used to swap each surface's colour for near-invisible white
+     (5% on the slider was 1% opacity), so it jumped straight to see-through
+     and white text on the blue bar vanished. Now every surface keeps its own
+     colour and only gets thinner as the slider moves, while the blur grows
+     to keep whatever shows through soft enough to read over:
+       light panels  paper colour, 92% → 30% opaque, blur 0 → 22px
+       coloured bars theme colour, 97% → 55% opaque, so white text stays white */
+  const ease = v * v * (3 - 2 * v);                     // smoothstep: gentle at both ends
+  const a    = (0.92 - ease * 0.62).toFixed(3);
+  const ab   = (0.97 - ease * 0.42).toFixed(3);
+  const blur = Math.round(ease * 22);
+  const sat  = (1 + ease * 0.5).toFixed(2);
+  const edge = (0.3 + ease * 0.4).toFixed(2);
+  const paper = _glassRgb('--paper', '240,248,255'), leaf = _glassRgb('--leaf', '21,101,192'), clay = _glassRgb('--clay', '13,71,161');
+  const bf = `backdrop-filter:blur(${blur}px) saturate(${sat})!important;-webkit-backdrop-filter:blur(${blur}px) saturate(${sat})!important;`;
   let st = document.getElementById('faero-glass-style');
   if (!st) { st = document.createElement('style'); st.id = 'faero-glass-style'; document.head.appendChild(st); }
   if (v === 0) {
     st.textContent = '';
   } else {
-    const rule = '{background:rgba(255,255,255,' + bgA + ')!important;backdrop-filter:blur(' + blur + 'px)!important;-webkit-backdrop-filter:blur(' + blur + 'px)!important;border:1px solid rgba(255,255,255,' + bA + ')!important;box-shadow:0 4px 30px rgba(0,0,0,' + sA + ')!important;}';
-    const sel = Object.entries(GLASS_ZONES).filter(([id]) => _glassZoneOn(id)).map(([,z]) => z.sel).join(',');
-    st.textContent = sel ? sel + rule : '';
+    const zones = Object.entries(GLASS_ZONES).filter(([id]) => _glassZoneOn(id)).map(([, z]) => z);
+    const light = zones.filter(z => !z.bar).map(z => z.sel).join(',');
+    const bars  = zones.filter(z => z.bar).map(z => z.bar).join(',');
+    const darks = zones.filter(z => z.dark).map(z => z.dark).join(',');
+    // dark menus: their navy, never thinner than 82%. They sit inside the
+    // blurred top bar, and a browser can't blur again inside a blurred
+    // element, so what's behind them shows through sharp — keep it faint.
+    const ad = (0.97 - ease * 0.15).toFixed(3);
+    st.textContent =
+      (darks ? `${darks}{background:rgba(10,18,32,${ad})!important;${bf}border-color:rgba(255,255,255,.14)!important}` : '') +
+      (light ? `${light}{background:rgba(${paper},${a})!important;${bf}border-color:rgba(255,255,255,${edge})!important;box-shadow:0 8px 30px rgba(13,40,80,${(0.05 + ease * 0.08).toFixed(3)}),inset 0 1px 0 rgba(255,255,255,${edge})!important}` : '') +
+      (bars ? `${bars}{background:linear-gradient(180deg,rgba(${leaf},${ab}),rgba(${clay},${ab}))!important;${bf}}` : '');
   }
   document.querySelectorAll('.fs-glass-slider').forEach(s => { s.value = v; s.style.setProperty('--gl-pct', (v*100)+'%'); });
   const valEl = document.getElementById('fs-glass-val');
   if (valEl) valEl.textContent = Math.round(v*100) + '%';
   const demo = document.getElementById('fs-glass-demo');
   if (demo) {
-    demo.style.background = v > 0 ? 'rgba(255,255,255,' + bgA + ')' : 'rgba(0,0,0,0.15)';
-    demo.style.backdropFilter = v > 0 ? 'blur(' + blur + 'px) saturate(1.5)' : 'none';
+    demo.style.background = `rgba(${paper},${a})`;
+    demo.style.backdropFilter = `blur(${blur}px) saturate(${sat})`;
     demo.style.webkitBackdropFilter = demo.style.backdropFilter;
-    demo.style.border = '1px solid rgba(255,255,255,' + (v > 0 ? (parseFloat(bA)*1.4).toFixed(3) : '0.10') + ')';
-    demo.style.boxShadow = v > 0 ? '0 8px 32px rgba(0,0,0,' + sA + '), inset 0 1px 0 rgba(255,255,255,' + bA + ')' : 'none';
+    demo.style.border = `1px solid rgba(255,255,255,${edge})`;
+    demo.style.boxShadow = `0 8px 32px rgba(13,40,80,.1), inset 0 1px 0 rgba(255,255,255,${edge})`;
   }
   localStorage.setItem('faero-glass', v);
 }
@@ -15182,13 +15345,9 @@ function fsToggleGlassZone(id) {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
     Post
   </button>
-  <button class="fmn-item" data-page="radio" onclick="faeroMobileNav('radio')" aria-label="Radio">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M7 8l10-5"/><circle cx="15" cy="14" r="3"/><path d="M6 12h3M6 16h3"/></svg>
-    Radio
-  </button>
-  <button class="fmn-item" data-page="booth" onclick="faeroMobileNav('booth')" aria-label="Booth">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg>
-    Booth
+  <button class="fmn-item" data-page="apps" onclick="faeroMobileNav(\'apps\')" aria-label="Apps">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.6"/></svg>
+    Apps
   </button>
   <button class="fmn-item" data-page="chat" onclick="faeroMobileNav('chat')" aria-label="Messages">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>

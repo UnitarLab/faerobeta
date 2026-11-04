@@ -31,7 +31,7 @@ SHELL = """<!doctype html>
 <meta name="theme-color" content="#0D1B2A" media="(prefers-color-scheme: dark)">
 <meta name="color-scheme" content="light dark">
 <meta name="robots" content="index,follow">
-<link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+<link rel="icon" type="image/webp" href="favicon.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -159,7 +159,7 @@ footer a {{ color:var(--text3); }}
   Faero is operated by <strong>Unitar LLC</strong> &middot;
   <a href="terms.html">Terms</a> &middot;
   <a href="privacy.html">Privacy</a> &middot;
-  <a href="mailto:contact@unitar.app">Contact</a>
+  <a href="mailto:hello@faero.net">Contact</a>
 </footer>
 </body>
 </html>

@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#0D1B2A" media="(prefers-color-scheme: dark)">
 <meta name="color-scheme" content="light dark">
 <meta name="robots" content="index,follow">
-<link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+<link rel="icon" type="image/webp" href="favicon.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -131,7 +131,7 @@ footer a { color:var(--text3); }
 <main>
   <article class="doc">
 <h1 id="faero-terms-of-service">Faero Terms of Service</h1>
-<p><strong>Effective Date:</strong> August 9, 2026 <strong>Last Updated:</strong> October 31, 2026 <strong>Version:</strong> 2026-10-31 (Beta)</p>
+<p><strong>Effective Date:</strong> August 9, 2026 <strong>Last Updated:</strong> November 4, 2026 <strong>Version:</strong> 2026-11-04 (Beta)</p>
 <hr>
 <blockquote><p><strong>Beta Notice:</strong> Faero is currently in active beta development. Features, functionality, and these Terms may change as the platform evolves. Continued use after any update constitutes acceptance of the revised Terms.</p></blockquote>
 <hr>
@@ -164,7 +164,7 @@ footer a { color:var(--text3); }
 <h2 id="2-eligibility">2. Eligibility</h2>
 <h3 id="21-age-requirements">2.1 Age Requirements</h3>
 <p>You must be at least <strong>13 years of age</strong> to use Faero. If you are between 13 and 18 years old (or the applicable age of majority in your jurisdiction), you may only use the Platform with the consent and supervision of a parent or legal guardian who agrees to be bound by these Terms on your behalf.</p>
-<p><strong>We do not knowingly collect or solicit personal information from children under 13.</strong> If we discover that a child under 13 has provided personal information, we will promptly delete such information. If you believe a child under 13 has used our Platform, please contact us immediately at contact@unitar.app.</p>
+<p><strong>We do not knowingly collect or solicit personal information from children under 13.</strong> If we discover that a child under 13 has provided personal information, we will promptly delete such information. If you believe a child under 13 has used our Platform, please contact us immediately at hello@faero.net.</p>
 <h3 id="22-capacity">2.2 Capacity</h3>
 <p>By using Faero, you represent and warrant that:</p>
 <ul>
@@ -177,12 +177,15 @@ footer a { color:var(--text3); }
 <p>Faero is a social media platform that allows users to:</p>
 <ul>
 <li>Create and customize personal profiles with avatars, badges, and seasonal cosmetics</li>
-<li>Build a profile space from blocks: a profile song, music, shows, links, a Top 8, a guestbook and more</li>
+<li>Build a profile space from blocks: a profile song, music, shows, links, friends, a guestbook and more</li>
 <li>Post content including status updates, images, videos, music, and links</li>
 <li>Interact with other users' content via reactions and comments</li>
 <li>Browse a chronological feed and discover people, posts and groups in Explore</li>
 <li>Listen to live radio stations from around the world</li>
+<li>Find stations on a list or a world map</li>
 <li>Take photos and short videos in Booth, Faero's in-browser photo booth</li>
+<li>Make images and GIFs in Studio, Faero's in-browser paint program</li>
+<li>Play small browser games</li>
 <li>Customize their experience through themes and visual settings</li>
 </ul>
 <h3 id="31-beta-status">3.1 Beta Status</h3>
@@ -194,34 +197,35 @@ footer a { color:var(--text3); }
 <li>We offer no guarantee of uptime, data retention, or feature continuity during the beta period</li>
 </ul>
 <h3 id="32-how-your-data-is-stored">3.2 How Your Data Is Stored</h3>
-<p>Faero stores your account and content <strong>on our servers</strong>. Specifically:</p>
+<p>Faero stores your account and content online, so it follows you to every device. We don't run our own server hardware; like most websites, we use service providers that host it for us under contract and only on our instructions. Specifically:</p>
 <ul>
 <li>Your account, profile, profile space, posts, replies, messages, commons</li>
 </ul>
-<p>memberships and moderation records are stored in our hosted database (Supabase).</p>
+<p>memberships and moderation records are stored in our hosted database.</p>
 <ul>
-<li>Images you upload are stored and delivered by our image host (Cloudinary).</li>
+<li>Images you upload are stored and delivered by our image hosting provider.</li>
 <li>Only your <strong>display preferences</strong> — theme, palette, font, glass level, and</li>
 </ul>
 <p>accessibility toggles — plus your recently played radio stations and a working copy of your profile-space layout are stored locally in your browser.</p>
 <ul>
-<li>Photos and videos you take in Booth stay on your device unless you post or</li>
+<li>Photos and videos you take in Booth, and anything you make in Studio, stay</li>
 </ul>
-<p>download them. Clearing your browser storage resets those preferences and signs you out; it does <strong>not</strong> delete your account or your content.</p>
+<p>on your device unless you post or download them. Clearing your browser storage resets those preferences and signs you out; it does <strong>not</strong> delete your account or your content.</p>
 <ul>
 <li>Your content is synced across every device you sign in on.</li>
 </ul>
-<p>Because Faero is in beta, we offer <strong>no guarantee of uptime, backup, or data retention</strong>. Keep your own copy of anything you would be upset to lose — <em>Settings → Account → Download my data</em> exports everything as JSON at any time.</p>
+<p>Because Faero is in beta, we offer <strong>no guarantee of uptime, backup, or data retention</strong>. Keep your own copy of anything you would be upset to lose — <em>Settings → Account → Download my data</em> downloads a copy of your account at any time, as a JSON file: your profile, posts, replies, likes, follows, bookmarks, commons, your conversations, guestbook notes and blocks. Images you posted are listed by their link.</p>
 <p>For the full detail of what we collect and why, see the <a href="privacy.html">Privacy Policy</a>.</p>
 <hr>
 <h2 id="4-user-accounts">4. User Accounts</h2>
 <h3 id="41-account-creation">4.1 Account Creation</h3>
-<p>Currently, Faero operates as a local-profile system. You are responsible for:</p>
+<p>You sign up with an email address and a password. You are responsible for:</p>
 <ul>
 <li>The accuracy of any profile information you provide</li>
-<li>Maintaining the security of your local device and browser</li>
-<li>All activity that occurs under your profile</li>
+<li>Keeping your password secret and your email account secure</li>
+<li>All activity that occurs under your account</li>
 </ul>
+<p>One person, one account for personal use. Don't create accounts by automated means or to get around a suspension.</p>
 <h3 id="42-username-identity">4.2 Username &amp; Identity</h3>
 <ul>
 <li>You may not impersonate any real person, organization, or other Faero user</li>
@@ -229,7 +233,7 @@ footer a { color:var(--text3); }
 <li>We reserve the right to require you to change a username or handle at our discretion</li>
 </ul>
 <h3 id="43-account-security">4.3 Account Security</h3>
-<p>You are solely responsible for maintaining the confidentiality of any credentials or access to your local profile. Notify us immediately if you suspect unauthorized use of your account.</p>
+<p>You are responsible for keeping your login details confidential. If you think someone else has access to your account, change your password straight away and tell us at hello@faero.net.</p>
 <hr>
 <h2 id="5-user-content">5. User Content</h2>
 <h3 id="51-your-content">5.1 Your Content</h3>
@@ -256,6 +260,9 @@ footer a { color:var(--text3); }
 <li><strong>Links.</strong> Links in your space lead to sites we don't control. Don't use them to send people to malware, phishing, scams, or anything this section would not allow on Faero itself.</li>
 <li><strong>Shows and releases.</strong> Keep dates, venues and ticket links accurate. Don't use them to sell tickets you don't have or to impersonate an artist or venue.</li>
 </ul>
+<h3 id="57-studio-booth-and-the-gif-library">5.7 Studio, Booth and the GIF library</h3>
+<p>What you make in Studio or Booth is yours, and it becomes User Content when you post it. Only use photos of other people with their permission.</p>
+<p>Studio's sticker library is a selection of animated GIFs from the GeoCities web archive, found through GifCities, a project of the Internet Archive. They were published on personal homepages in the 1990s and 2000s, and most have no known author. They are offered for personal, non-commercial fun. If you made one of them and want it removed or credited, email hello@faero.net and we will act promptly.</p>
 <hr>
 <h2 id="6-prohibited-conduct">6. Prohibited Conduct</h2>
 <p>You agree not to use Faero to:</p>
@@ -314,20 +321,20 @@ footer a { color:var(--text3); }
 <h3 id="82-current-data-practices">8.2 Current Data Practices</h3>
 <p>As described in Section 3.2:</p>
 <ul>
-<li><strong>Your account and content are stored on our servers</strong>, not only in your browser</li>
+<li><strong>Your account and content are stored online</strong> by our hosting providers on our behalf, not only in your browser</li>
 <li>We collect the minimum needed to operate the Platform — see the Privacy Policy</li>
 <li>We do <strong>not</strong> use cookies or tags for advertising, tracking, or analytics</li>
 <li>We do <strong>not</strong> sell, rent, or trade your data to third parties</li>
 <li>We do <strong>not</strong> read your direct messages for advertising, training, or profiling</li>
 </ul>
 <h3 id="83-third-party-services">8.3 Third-Party Services</h3>
-<p>Some parts of the Platform load directly from other services: fonts from Google Fonts, the radio station directory from Radio Browser, audio from the radio stations themselves, and music players from SoundCloud, Mixcloud, YouTube and Bandcamp. Those services see your IP address and browser, and their own terms and privacy policies apply. The Privacy Policy lists them and what each one sees.</p>
+<p>Some parts of the Platform load directly from other services: web fonts and code libraries from public content delivery networks, map images on the Radio map from a map provider, the radio station directory from Radio Browser, audio from the radio stations themselves, and music players from SoundCloud, Mixcloud, YouTube and Bandcamp. Those services see your IP address and browser, and their own terms and privacy policies apply. The Privacy Policy lists them and what each one sees.</p>
 <h3 id="84-changes-to-data-practices">8.4 Changes to Data Practices</h3>
 <p>If we start collecting a new kind of personal data, or share it with a new kind of service, we will update the Privacy Policy first and ask you to review it the next time you sign in.</p>
 <h3 id="85-gdpr-european-users">8.5 GDPR (European Users)</h3>
-<p>If you are located in the European Economic Area (EEA), UK, or Switzerland, you have rights under applicable data protection laws including the right to access, correct, delete, restrict processing of, and port your personal data. Most of these you can exercise yourself, immediately, inside the app: <em>Settings → Account → Download my data</em> for access and portability, the profile editor for correction, and <em>Settings → Account → Delete my account</em> for erasure. For anything else, contact us at contact@unitar.app and we will respond within 30 days.</p>
+<p>If you are located in the European Economic Area (EEA), UK, or Switzerland, you have rights under applicable data protection laws including the right to access, correct, delete, restrict processing of, and port your personal data. Most of these you can exercise yourself, immediately, inside the app: <em>Settings → Account → Download my data</em> for access and portability, the profile editor for correction, and <em>Settings → Account → Delete my account</em> for erasure. For anything else, contact us at hello@faero.net and we will respond within 30 days.</p>
 <h3 id="86-ccpa-california-users">8.6 CCPA (California Users)</h3>
-<p>If you are a California resident, you have rights under the California Consumer Privacy Act. In the current beta, we do not collect personal information on our servers. For any questions about your rights under CCPA, contact us at contact@unitar.app.</p>
+<p>If you are a California resident, you have rights under the California Consumer Privacy Act, including the right to know, delete and correct your personal information. We do not sell or share personal information as the CCPA defines those terms. The Privacy Policy explains what we collect; for any request, contact us at hello@faero.net.</p>
 <hr>
 <h2 id="9-digital-millennium-copyright-act-dmca">9. Digital Millennium Copyright Act (DMCA)</h2>
 <p>We respect intellectual property rights and comply with the Digital Millennium Copyright Act (17 U.S.C. § 512).</p>
@@ -341,7 +348,7 @@ footer a { color:var(--text3); }
 <li>A statement that you have a good-faith belief the use is not authorized by the copyright owner, its agent, or law</li>
 <li>A statement, under penalty of perjury, that the information in your notice is accurate and you are authorized to act on behalf of the copyright owner</li>
 </ol>
-<p><strong>DMCA Contact:</strong> contact@unitar.app <strong>Subject Line:</strong> DMCA Takedown Notice</p>
+<p><strong>DMCA Contact:</strong> hello@faero.net <strong>Subject Line:</strong> DMCA Takedown Notice</p>
 <h3 id="92-counter-notifications">9.2 Counter-Notifications</h3>
 <p>If you believe content was removed due to a mistaken or misidentified claim, you may file a counter-notification with the information required by 17 U.S.C. § 512(g)(3).</p>
 <h3 id="93-repeat-infringers">9.3 Repeat Infringers</h3>
@@ -360,7 +367,7 @@ footer a { color:var(--text3); }
 <p>We do not endorse, guarantee, or take responsibility for the accuracy, completeness, or reliability of any User Content posted on the Platform. You access and rely on User Content at your own risk.</p>
 <hr>
 <h2 id="12-limitation-of-liability">12. Limitation of Liability</h2>
-<p><strong>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, ANTIGRAVITY KODE AND ITS OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, AND LICENSORS SHALL NOT BE LIABLE FOR ANY:</strong></p>
+<p><strong>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, UNITAR LLC AND ITS OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, AND LICENSORS SHALL NOT BE LIABLE FOR ANY:</strong></p>
 <ul>
 <li><strong>INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, PUNITIVE, OR EXEMPLARY DAMAGES</strong></li>
 <li><strong>LOSS OF PROFITS, REVENUE, DATA, GOODWILL, OR OTHER INTANGIBLE LOSSES</strong></li>
@@ -399,7 +406,7 @@ footer a { color:var(--text3); }
 <h3 id="151-governing-law">15.1 Governing Law</h3>
 <p>These Terms shall be governed by and construed in accordance with the laws of the jurisdiction in which Unitar LLC operates, without regard to its conflict of law provisions.</p>
 <h3 id="152-informal-resolution">15.2 Informal Resolution</h3>
-<p>Before initiating any formal legal proceeding, you agree to first contact us at contact@unitar.app and attempt to resolve the dispute informally. We will attempt to resolve the dispute within 30 days of receiving your notice.</p>
+<p>Before initiating any formal legal proceeding, you agree to first contact us at hello@faero.net and attempt to resolve the dispute informally. We will attempt to resolve the dispute within 30 days of receiving your notice.</p>
 <h3 id="153-dispute-resolution">15.3 Dispute Resolution</h3>
 <p>If informal resolution fails, disputes arising out of or relating to these Terms or the Platform shall be resolved through binding arbitration, except that either party may bring claims in small claims court if applicable. <strong>You waive any right to participate in class-action lawsuits or class-wide arbitration.</strong></p>
 <h3 id="154-exceptions">15.4 Exceptions</h3>
@@ -430,7 +437,7 @@ footer a { color:var(--text3); }
 <hr>
 <h2 id="18-contact-information">18. Contact Information</h2>
 <p>For questions, concerns, DMCA notices, or any other inquiries regarding these Terms:</p>
-<p><strong>Unitar LLC — Faero Platform</strong> <strong>Email:</strong> contact@unitar.app <strong>Subject:</strong> Faero ToS Inquiry</p>
+<p><strong>Unitar LLC — Faero Platform</strong> <strong>Email:</strong> hello@faero.net <strong>Subject:</strong> Faero ToS Inquiry</p>
 <p>We aim to respond to all inquiries within <strong>5 business days</strong>.</p>
 <hr>
 <p><em>© 2026 Unitar LLC. All rights reserved.</em> <em>Faero is a trademark of Unitar LLC.</em></p>
@@ -440,7 +447,7 @@ footer a { color:var(--text3); }
   Faero is operated by <strong>Unitar LLC</strong> &middot;
   <a href="terms.html">Terms</a> &middot;
   <a href="privacy.html">Privacy</a> &middot;
-  <a href="mailto:contact@unitar.app">Contact</a>
+  <a href="mailto:hello@faero.net">Contact</a>
 </footer>
 </body>
 </html>

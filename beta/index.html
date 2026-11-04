@@ -3,7 +3,7 @@
 <head>
 
 <meta charset="UTF-8">
-  <meta name="description" content="A real internet social OS. Your desktop, your world. Glass, gradients and a future we all dreamed of. Join the closed beta now.">
+  <meta name="description" content="Faero is a social space for music, opening soon. Your profile, your song, and radio from around the world. Join the beta.">
   <meta name="theme-color" content="#1a88d4">
 
   <!-- Open Graph / Facebook -->
@@ -13,19 +13,20 @@
        this origin 301s to it. -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.faero.net/beta">
-  <meta property="og:title" content="faero OS — Our Promised Future">
-  <meta property="og:description" content="A real internet social OS. Your desktop, your world. Glass, gradients and a future we all dreamed of. Join the closed beta now.">
+  <meta property="og:title" content="Faero beta: your corner of the internet">
+  <meta property="og:site_name" content="Faero">
+  <meta property="og:description" content="Faero is a social space for music, opening soon. Your profile, your song, and radio from around the world. Join the beta.">
   <meta property="og:image" content="https://www.faero.net/preview.png">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://www.faero.net/beta">
-  <meta property="twitter:title" content="faero OS — Our Promised Future">
-  <meta property="twitter:description" content="A real internet social OS. Your desktop, your world. Glass, gradients and a future we all dreamed of. Join the closed beta now.">
+  <meta property="twitter:title" content="Faero beta: your corner of the internet">
+  <meta property="twitter:description" content="Faero is a social space for music, opening soon. Your profile, your song, and radio from around the world. Join the beta.">
   <meta property="twitter:image" content="https://www.faero.net/preview.png">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>FAERO — Our Promised Future</title>
+<title>Faero beta: your corner of the internet</title>
 <link rel="icon" type="image/webp" href="../favicon.webp">
 <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -489,6 +490,7 @@ body {
 </style>
 <script async src="https://unpkg.com/es-module-shims@1.8.0/dist/es-module-shims.js"></script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Faero","alternateName":["faero.net","Faero social"],"url":"https://www.faero.net/"}</script>
 </head>
 <body>
 
@@ -556,7 +558,7 @@ body {
   <div class="window">
     <div class="window-titlebar">
       <div class="title-icon"><img src="assets/faero-logo.webp" alt=""></div>
-      <div class="window-title-text">faero.net — early access</div>
+      <div class="window-title-text">faero.net · early access</div>
       <div class="window-buttons">
         <div class="wb wb-min">&#8211;</div>
         <div class="wb wb-max">&#9633;</div>
@@ -982,7 +984,7 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
 
   <div class="footer-win">
     <div class="footer-win-logo">FAERO</div>
-    <p>Our Promised Future &mdash; Early Access Open</p>
+    <p>Your corner of the internet · early access open</p>
   </div>
 </div>
 
@@ -1013,7 +1015,7 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
 <div class="popup-overlay" id="tosOverlay" style="z-index:2100;">
   <div class="popup-box" style="max-width:420px;">
     <div class="popup-titlebar">
-      <div class="popup-title-text">Terms of Service &amp; Privacy Policy — FAERO</div>
+      <div class="popup-title-text">Faero Terms of Service &amp; Privacy Policy</div>
       <div class="window-buttons">
         <div class="wb wb-close" onclick="document.getElementById('tosOverlay').classList.remove('show')">&#215;</div>
       </div>
@@ -1024,7 +1026,7 @@ var isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 
       <p style="font-size:0.76rem;color:#1a2a3a;font-weight:700;margin-bottom:4px;">1. What we collect</p>
       <p style="font-size:0.74rem;color:#3a5a7a;line-height:1.65;margin-bottom:10px;">We collect your email address, and optionally your name and TikTok handle. This is used solely to contact you about FAERO's launch and updates.</p>
       <p style="font-size:0.76rem;color:#1a2a3a;font-weight:700;margin-bottom:4px;">2. How we use it</p>
-      <p style="font-size:0.74rem;color:#3a5a7a;line-height:1.65;margin-bottom:10px;">We will send you communications about FAERO — including launch announcements, platform news, and relevant updates. You can unsubscribe at any time by clicking the unsubscribe link in any email.</p>
+      <p style="font-size:0.74rem;color:#3a5a7a;line-height:1.65;margin-bottom:10px;">We will email you about Faero: launch news, platform updates and other relevant news. You can unsubscribe at any time by clicking the unsubscribe link in any email.</p>
       <p style="font-size:0.76rem;color:#1a2a3a;font-weight:700;margin-bottom:4px;">3. What we don't do</p>
       <p style="font-size:0.74rem;color:#3a5a7a;line-height:1.65;margin-bottom:16px;">We do not sell, rent, or share your information with third parties for advertising purposes. We do not use your data for AI training.</p>
       <button class="popup-close" onclick="document.getElementById('tosOverlay').classList.remove('show')" style="width:100%;">Got it</button>
@@ -1440,7 +1442,7 @@ async function submitXP() {
     if (e.message && e.message.toLowerCase().includes('duplicate')) {
       showNotif('That email is already on the list');
     } else {
-      showNotif('Something went wrong — please try again');
+      showNotif('Something went wrong. Please try again.');
     }
   }
 }
@@ -1470,7 +1472,7 @@ document.getElementById('xpEmail').addEventListener('input', function () {
           <!-- Titlebar -->
           <div style="background:linear-gradient(180deg,#4c9be8 0%,#1a5faa 50%,#1a5faa 95%,#1058a7 100%);padding:7px 10px 8px;display:flex;align-items:center;gap:8px;user-select:none;">
             <img src="assets/faero-logo.webp" style="width:15px;height:15px;border-radius:50%;object-fit:cover;" alt="">
-            <span style="font-family:'Exo 2',sans-serif;font-size:0.73rem;font-weight:600;color:white;text-shadow:1px 1px 3px rgba(0,0,0,0.5);flex:1;">Avatar Preview — Frutiger Aero Badge</span>
+            <span style="font-family:'Exo 2',sans-serif;font-size:0.73rem;font-weight:600;color:white;text-shadow:1px 1px 3px rgba(0,0,0,0.5);flex:1;">Avatar preview · Frutiger Aero badge</span>
             <div style="display:flex;gap:3px;">
               <div style="width:18px;height:18px;border-radius:4px;background:linear-gradient(180deg,#7ec8fc,#3a80d2);border:1px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(255,255,255,0.9);cursor:pointer;font-weight:700;">&#8211;</div>
               <div style="width:18px;height:18px;border-radius:4px;background:linear-gradient(180deg,#7ec8fc,#3a80d2);border:1px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(255,255,255,0.9);cursor:pointer;font-weight:700;">&#9633;</div>

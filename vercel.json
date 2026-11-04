@@ -1,6 +1,11 @@
 {
   "cleanUrls": false,
 
+  "rewrites": [
+    { "source": "/@:handle([A-Za-z0-9_][A-Za-z0-9._]{1,29})", "destination": "/faero_v1_launch.html" },
+    { "source": "/:handle((?!(?:admin|api|apps|assets|beta|icons|privacy|terms|www)$)(?![^/]*\\.(?:html?|js|css|json|xml|txt|webmanifest|png|jpe?g|gif|webp|svg|ico)$)[A-Za-z0-9_][A-Za-z0-9._]{1,29})", "destination": "/faero_v1_launch.html" }
+  ],
+
   "headers": [
     {
       "source": "/(.*)",

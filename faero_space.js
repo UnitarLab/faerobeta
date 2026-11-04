@@ -41,7 +41,8 @@
     plus:  svg('<path d="M12 5v14M5 12h14"/>'),
     edit:  svg('<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>'),
     full:  svg('<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>'),
-    stop:  svg('<rect x="6" y="6" width="12" height="12" rx="2"/>', 'fx-fill')
+    stop:  svg('<rect x="6" y="6" width="12" height="12" rx="2"/>', 'fx-fill'),
+    share: svg('<path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M12 3v12M7 8l5-5 5 5"/>')
   };
   const ARTS = ['fx-art1', 'fx-art2', 'fx-art3', 'fx-art4', 'fx-art5', 'fx-art6', 'fx-art7', 'fx-art8'];
   const artFor = s => ARTS[[...String(s || '')].reduce((a, c) => a + c.charCodeAt(0), 0) % ARTS.length];
@@ -61,6 +62,7 @@
       <div class="fx-dk-now"><div class="fx-dk-art" id="fx-dk-art"></div>
         <div style="min-width:0"><b id="fx-dk-t"></b><span><span class="fx-eq" aria-hidden="true"><i></i><i></i><i></i></span><span id="fx-dk-s"></span></span></div></div>
       <div class="fx-dk-ctl">
+        <button class="fx-ib" data-fx-dock="share" aria-label="Share what you're listening to" title="Share">${IC.share}</button>
         <button class="fx-play" data-fx-dock="toggle" aria-label="Play">${IC.play}</button>
         <button class="fx-ib" data-fx-dock="stop" aria-label="Stop and close">${IC.x}</button>
       </div>
@@ -177,7 +179,8 @@
       <div class="fx-a ${artFor(st.name)}">${fav ? `<img src="${fav}" alt="" loading="lazy" onerror="this.outerHTML='<span class=&quot;fx-ini&quot;>${esc((st.name || '?')[0])}</span>'">` : `<span class="fx-ini">${esc((st.name || '?')[0])}</span>`}
         <button class="fx-play" data-fx-st="${esc(st.id)}" aria-label="Play ${esc(st.name)}">${IC.play}</button></div>
       <div class="fx-t"><b>${esc(st.name)}</b><span>${esc([st.country, st.tags].filter(Boolean).join(' · ') || 'Live radio')}</span></div>
-      <button class="fx-btn fx-btn-sm fx-pin" data-fx-pin="${esc(st.id)}">${IC.plus}Put on my space</button>
+      <div class="fx-st-acts"><button class="fx-btn fx-btn-sm fx-pin" data-fx-pin="${esc(st.id)}">${IC.plus}Put on my space</button>
+      <button class="fx-btn fx-btn-sm" data-fx-share="${esc(st.id)}" aria-label="Share ${esc(st.name)}">${IC.share}</button></div>
     </article>`;
   }
 
@@ -200,7 +203,7 @@
     const root = $('#fx-radio');
     if (!root || radioBuilt) { paintDock(); return; }
     radioBuilt = true;
-    root.innerHTML = `
+    root.innerHTML = `${appBar('radio')}
       <section class="fx-stage fx-radio-hero">
         <div>
           <span class="fx-onair">LIVE</span>
@@ -210,16 +213,28 @@
             <button class="fx-play" data-fx-st="faero-fm" aria-label="Play Lofi Hip Hop">${IC.play}</button>
             <span style="font-size:12px;color:var(--text3)">Featured<br><b style="font-size:16px;font-weight:800;color:var(--text)">Lofi Hip Hop</b></span>
             <button class="fx-btn fx-btn-sm" data-fx-pin="faero-fm">${IC.plus}Put on my space</button>
+            <button class="fx-btn fx-btn-sm" data-fx-share="faero-fm">${IC.share}Share</button>
           </div>
         </div>
         <div class="fx-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
       </section>
+      <div class="fx-rview" role="tablist" aria-label="Radio view">
+        <button class="fx-chip" data-fx-rview="list" role="tab">☰ List</button>
+        <button class="fx-chip" data-fx-rview="map" role="tab">🌍 Map</button>
+      </div>
+      <div id="fx-rmap-wrap" hidden>
+        <div class="fx-h2"><div><h2>Radio around the world</h2><p id="fx-rmap-note">Loading the map…</p></div>
+          <button class="fx-btn fx-btn-pri fx-btn-sm fx-r" data-fx-spin>🎲 Spin the globe</button></div>
+        <div class="fx-rmap" id="fx-rmap"></div>
+      </div>
+      <div id="fx-rlist">
       <div id="fx-recent"></div>
       <div class="fx-h2"><div><h2>Find a station</h2><p id="fx-rmsg">Pick a sound or a country.</p></div>
         <form class="fx-search fx-r" id="fx-rsearch"><input type="search" placeholder="Search stations by name" aria-label="Search stations" maxlength="60"><button class="fx-btn fx-btn-pri fx-btn-sm">Search</button></form></div>
       <div class="fx-chips" role="group" aria-label="Genres">${GENRES.map(([t, n]) => `<button class="fx-chip" data-fx-tag="${esc(t)}">${n}</button>`).join('')}</div>
       <div class="fx-chips" role="group" aria-label="Countries" style="margin-top:8px">${COUNTRIES.map(([c, f, n]) => `<button class="fx-chip" data-fx-cc="${c}">${f} ${n}</button>`).join('')}</div>
-      <div class="fx-stations" id="fx-stations" style="margin-top:18px"></div>`;
+      <div class="fx-stations" id="fx-stations" style="margin-top:18px"></div>
+      </div>`;
     paintRecent();
     $('#fx-rsearch').addEventListener('submit', e => {
       e.preventDefault();
@@ -227,6 +242,7 @@
       if (q) loadStations('name=' + encodeURIComponent(q), `“${q}”`, null);
     });
     loadStations('tag=' + encodeURIComponent('lofi'), 'Lofi', $('[data-fx-tag="lofi"]'));
+    setRadioView(lsGet('faero-radio-view') === 'map' ? 'map' : 'list');
   }
   function paintRecent() {
     const r = recent(), el = $('#fx-recent');
@@ -261,7 +277,7 @@
     const root = $('#fx-booth');
     if (!root || root.dataset.built) return;
     root.dataset.built = '1';
-    root.innerHTML = `<div class="fx-booth">
+    root.innerHTML = `${appBar('booth')}<div class="fx-booth">
       <section class="fx-card"><h3>Booth</h3>
         <p style="margin:0;padding:10px 15px 12px;font-size:13px;color:var(--text2)">A disposable camera in your browser. Nothing leaves your device unless you download it or post it.</p>
       </section>
@@ -275,6 +291,10 @@
     if (!frame || ev.source !== frame.contentWindow || ev.origin !== location.origin || !ev.data) return;
     const m = ev.data;
     if (m.type === 'TOAST' && typeof m.text === 'string') { toast('info', m.text.slice(0, 80)); return; }
+    if (m.type === 'FAERO_BOOTH_STUDIO') {
+      if (m.blob instanceof Blob && /^image\/(jpeg|png)$/.test(m.blob.type)) sendToStudio({ type: 'FAERO_STUDIO_LOAD', kind: 'photo', blob: m.blob });
+      return;
+    }
     if (m.type !== 'FAERO_BOOTH_POST') return;
     if (!me()) { faeroOpenAuth(); return; }
     const blob = m.blob;
@@ -296,6 +316,238 @@
   }
 
   /* ═══════════════════════════════════════════════════════════════
+     APPS — Radio, Booth, Studio and Games behind one nav entry
+  ═══════════════════════════════════════════════════════════════ */
+  const APPS = [
+    { id: 'radio',  n: 'Radio',  d: 'Live stations from everywhere, on a list or a map of the world.', art: 'fx-app-radio',
+      ic: '<rect x="3" y="8" width="18" height="12" rx="2"/><path d="M7 8l10-5"/><circle cx="15" cy="14" r="3"/><path d="M6 12h3M6 16h3"/>' },
+    { id: 'booth',  n: 'Booth',  d: 'A disposable camera with filters, strips and stickers.', art: 'fx-app-booth',
+      ic: '<path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/>' },
+    { id: 'studio', n: 'Studio', d: 'Paint, layer old-web GIFs and make a status out of what you hear or shoot.', art: 'fx-app-studio',
+      ic: '<path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.6-.8 1.6-1.6 0-.5-.2-.8-.4-1.1-.3-.3-.4-.6-.4-1 0-.9.7-1.6 1.6-1.6H16a5 5 0 0 0 5-5C21 6.4 17 3 12 3z"/><circle cx="7.5" cy="11" r="1.2"/><circle cx="10" cy="7" r="1.2"/><circle cx="15" cy="7.5" r="1.2"/>' },
+    { id: 'games',  n: 'Games',  d: 'Two dozen little games, from Snake to Faero Royale.', art: 'fx-app-games',
+      ic: '<rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 11v3M5.5 12.5h3"/><circle cx="15.5" cy="11.5" r="1"/><circle cx="18" cy="13.5" r="1"/>' }
+  ];
+  const appIcon = a => `<svg class="fx-svg" viewBox="0 0 24 24" aria-hidden="true">${a.ic}</svg>`;
+
+  // A slim bar on every app page: back to Apps, and the others one tap away.
+  function appBar(cur) {
+    return `<nav class="fx-appbar" aria-label="Apps">
+      <button class="fx-chip" data-fx-go="apps">‹ Apps</button>
+      ${APPS.map(a => `<button class="fx-chip ${a.id === cur ? 'on' : ''}" data-fx-go="${a.id}" ${a.id === cur ? 'aria-current="page"' : ''}>${appIcon(a)}${a.n}</button>`).join('')}
+    </nav>`;
+  }
+
+  function ensureApps() {
+    const root = $('#fx-apps');
+    if (!root) return;
+    const st = P.st;
+    root.innerHTML = `
+      <section class="fx-apps-hero">
+        <h1>Apps</h1>
+        <p>Make something, listen to something, play something. Everything here works signed out; posting needs an account.</p>
+      </section>
+      <div class="fx-apps-grid">
+        ${APPS.map(a => `<button class="fx-app ${a.art}" data-fx-go="${a.id}">
+          <span class="fx-app-ic">${appIcon(a)}</span>
+          <span class="fx-app-t"><b>${a.n}</b><span>${a.d}</span></span>
+          ${a.id === 'radio' && st ? `<span class="fx-app-live"><span class="fx-eq" aria-hidden="true"><i></i><i></i><i></i></span>${esc(st.name)}</span>` : ''}
+        </button>`).join('')}
+      </div>`;
+  }
+
+  /* ── Games: the bundled ones in apps/games, each in a frame ── */
+  const GAMES = [['snake', 'Snake', '🐍'], ['minesweeper', 'Minesweeper', '💣'], ['blockfall', 'Blockfall', '🟪'], ['2048', '2048', '🔢'],
+    ['memory', 'Memory', '🃏'], ['tictactoe', 'Tic-Tac-Toe', '⭕'], ['connect4', 'Connect Four', '🔴'], ['pong', 'Pong', '🏓'],
+    ['breakout', 'Breakout', '🧱'], ['flappy', 'Flappy', '🐦'], ['bubbles', 'Bubble Shooter', '🫧'], ['whack', 'Whack-a-Mole', '🔨'],
+    ['simon', 'Simon', '🎼'], ['rps', 'Rock Paper Scissors', '✊'], ['reaction', 'Reaction Test', '⚡'], ['typerace', 'Type Race', '⌨️'],
+    ['dinorun', 'Dino Run', '🦖'], ['hangman', 'Hangman', '📖'], ['slide', 'Slide Puzzle', '🔲'], ['dropcatch', 'Drop Catch', '💧'],
+    ['faerocraft', 'FaeroCraft', '⛏️'], ['obbytower', 'Obby Tower', '🧗'], ['gtaero', 'Grand Theft Aero', '🚔'], ['royale', 'Faero Royale', '🏆']];
+  function ensureGames() {
+    const root = $('#fx-games');
+    if (!root || root.dataset.built) return;
+    root.dataset.built = '1';
+    root.innerHTML = `${appBar('games')}
+      <div class="fx-games" id="fx-games-grid">${GAMES.map(([id, n, e]) =>
+        `<button class="fx-game" data-fx-game="${id}"><span>${e}</span><b>${esc(n)}</b></button>`).join('')}</div>
+      <div class="fx-game-stage" id="fx-game-stage" hidden>
+        <div class="fx-game-top"><button class="fx-btn fx-btn-sm" data-fx-game-close>‹ All games</button><b id="fx-game-name"></b></div>
+        <div class="fx-booth-frame fx-game-frame"><iframe title="Game" id="fx-game-frame"></iframe></div>
+      </div>`;
+  }
+  function openGame(id) {
+    const g = GAMES.find(x => x[0] === id);
+    if (!g) return;
+    $('#fx-games-grid').hidden = true;
+    $('#fx-game-stage').hidden = false;
+    $('#fx-game-name').textContent = g[2] + ' ' + g[1];
+    $('#fx-game-frame').src = `apps/games/${g[0]}.html`;
+  }
+  function closeGame() {
+    const f = $('#fx-game-frame');
+    if (f) f.src = 'about:blank';
+    $('#fx-game-stage').hidden = true;
+    $('#fx-games-grid').hidden = false;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     STUDIO — apps/studio.html, a paint program for statuses
+     Radio and Booth hand it a station or a photo; it hands back a
+     finished PNG or GIF for the post box, the same way Booth does.
+  ═══════════════════════════════════════════════════════════════ */
+  let studioQueue = null;   // what to load once the frame says it is ready
+  let studioReady = false;
+  function ensureStudio() {
+    const root = $('#fx-studio');
+    if (!root || root.dataset.built) return;
+    root.dataset.built = '1';
+    root.innerHTML = `${appBar('studio')}
+      <div class="fx-booth-frame fx-studio-frame"><iframe src="apps/studio.html" title="Studio" allow="fullscreen"></iframe></div>`;
+  }
+  function sendToStudio(msg) {
+    studioQueue = msg;
+    navigate('studio');
+    flushStudio();
+  }
+  function flushStudio() {
+    const f = $('#fx-studio iframe');
+    if (!studioReady || !studioQueue || !f || !f.contentWindow) return;
+    f.contentWindow.postMessage(studioQueue, location.origin);
+    studioQueue = null;
+  }
+  // "Share" on a station: Studio opens with a Now Listening card for it.
+  function shareStation(st) {
+    if (!st) return;
+    const me_ = myProfile();
+    sendToStudio({ type: 'FAERO_STUDIO_LOAD', kind: 'station',
+      station: { name: st.name, country: st.country || '', tags: st.tags || '', fav: httpUrl(st.fav) || '' },
+      who: me_ ? (me_.display_name || me_.username || '') : '' });
+  }
+
+  window.addEventListener('message', ev => {
+    const frame = $('#fx-studio iframe');
+    if (!frame || ev.source !== frame.contentWindow || ev.origin !== location.origin || !ev.data) return;
+    const m = ev.data;
+    if (m.type === 'FAERO_STUDIO_READY') { studioReady = true; flushStudio(); return; }
+    if (m.type === 'TOAST' && typeof m.text === 'string') { toast('info', m.text.slice(0, 80)); return; }
+    if (m.type !== 'FAERO_STUDIO_POST') return;
+    if (!me()) { faeroOpenAuth(); return; }
+    const blob = m.blob;
+    if (!(blob instanceof Blob) || !/^image\/(png|gif|jpeg)$/.test(blob.type) || blob.size > 10e6) { toast('err', 'Could not use that image', 'Try exporting it again.'); return; }
+    const ext = { 'image/png': 'png', 'image/gif': 'gif', 'image/jpeg': 'jpg' }[blob.type];
+    const file = new File([blob], `studio-${Date.now()}.${ext}`, { type: blob.type });
+    navigate('feed');
+    if (typeof composePickPhoto === 'function') composePickPhoto({ files: [file] });
+    const ta = $('.compose-ta');
+    if (ta) { if (!ta.value) ta.value = str(m.text, 200) || 'Made in Faero Studio 🎨'; ta.dispatchEvent(new Event('input')); ta.focus(); ta.scrollIntoView({ block: 'center' }); }
+    toast('ok', 'Added to your post', 'Add a caption and press Post.');
+  });
+
+  /* ═══════════════════════════════════════════════════════════════
+     RADIO MAP — every station Radio Browser has coordinates for,
+     on a world map. Leaflet + marker clustering, loaded on first use.
+  ═══════════════════════════════════════════════════════════════ */
+  const radioMap = { map: null, layer: null, loading: null, pts: [] };
+  const LEAFLET = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/';
+  const CLUSTER = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/';
+  function loadCss(href) {
+    if ($(`link[href="${href}"]`)) return;
+    const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = href; document.head.appendChild(l);
+  }
+  function loadJs(src) {
+    return new Promise((ok, no) => {
+      if ($(`script[src="${src}"]`)) { const t = setInterval(() => { if (window.L) { clearInterval(t); ok(); } }, 50); return; }
+      const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = () => no(new Error('map library')); document.head.appendChild(s);
+    });
+  }
+  function loadLeaflet() {
+    if (radioMap.loading) return radioMap.loading;
+    loadCss(LEAFLET + 'leaflet.min.css');
+    loadCss(CLUSTER + 'MarkerCluster.min.css');
+    radioMap.loading = loadJs(LEAFLET + 'leaflet.min.js').then(() => loadJs(CLUSTER + 'leaflet.markercluster.min.js'));
+    return radioMap.loading;
+  }
+
+  async function showRadioMap() {
+    const box = $('#fx-rmap');
+    if (!box) return;
+    if (radioMap.map) { setTimeout(() => radioMap.map.invalidateSize(), 30); return; }
+    const note = $('#fx-rmap-note');
+    note.textContent = 'Loading the map…';
+    try { await loadLeaflet(); } catch (e) { note.textContent = 'The map could not load. The list still works.'; return; }
+    const L = window.L;
+    const map = L.map(box, { worldCopyJump: true, minZoom: 2, maxZoom: 12, zoomControl: true, attributionControl: true }).setView([30, 10], 2);
+    // Satellite earth with country and city names on top, the Radio Garden
+    // look. Esri's public tiles need no key, only the attribution.
+    const ESRI = 'https://server.arcgisonline.com/ArcGIS/rest/services/';
+    L.tileLayer(ESRI + 'World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 18, attribution: 'Imagery &copy; Esri, Maxar, Earthstar Geographics'
+    }).addTo(map);
+    L.tileLayer(ESRI + 'Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', { maxZoom: 18, opacity: .85 }).addTo(map);
+    radioMap.map = map;
+    radioMap.layer = L.markerClusterGroup({
+      showCoverageOnHover: false, maxClusterRadius: 42, chunkedLoading: true,
+      iconCreateFunction: c => {
+        const n = c.getChildCount();
+        return L.divIcon({ html: `<span>${n > 999 ? Math.round(n / 100) / 10 + 'k' : n}</span>`, className: 'fx-mclu' + (n > 60 ? ' big' : n > 12 ? ' mid' : ''), iconSize: [34, 34] });
+      }
+    }).addTo(map);
+    const dot = L.divIcon({ className: 'fx-mdot', iconSize: [14, 14] });
+    note.textContent = 'Finding stations…';
+    try {
+      const data = await rb('/stations/search?has_geo_info=true&is_https=true&hidebroken=true&order=clickcount&reverse=true&limit=4000');
+      const markers = [];
+      (data || []).forEach(s => {
+        const lat = +s.geo_lat, lng = +s.geo_long;
+        if (!isFinite(lat) || !isFinite(lng) || (!lat && !lng)) return;
+        const st = normStation(s);
+        if (!st) return;
+        radioMap.pts.push({ st, lat, lng });
+        const mk = L.marker([lat, lng], { icon: dot, title: st.name });
+        mk.bindPopup(() => mapPopup(st), { className: 'fx-mpop', closeButton: false, minWidth: 220 });
+        markers.push(mk);
+      });
+      radioMap.layer.addLayers(markers);
+      note.textContent = `${markers.length.toLocaleString()} stations. Zoom in, tap a dot, listen.`;
+    } catch (e) {
+      note.textContent = 'The radio directory is not answering. Try again in a moment.';
+    }
+    setTimeout(() => map.invalidateSize(), 50);
+  }
+  function mapPopup(st) {
+    const on = P.st && P.st.id === st.id && P.playing;
+    const fav = httpUrl(st.fav);
+    return `<div class="fx-mp">
+      <div class="fx-a ${artFor(st.name)}">${fav ? `<img src="${fav}" alt="" onerror="this.remove()">` : `<span class="fx-ini">${esc((st.name || '?')[0])}</span>`}</div>
+      <div class="fx-mp-t"><b>${esc(st.name)}</b><span>${esc([st.country, st.tags].filter(Boolean).join(' · ') || 'Live radio')}</span></div>
+      <div class="fx-mp-b">
+        <button class="fx-play fx-play-s" data-fx-st="${esc(st.id)}" aria-label="Play ${esc(st.name)}">${on ? IC.pause : IC.play}</button>
+        <button class="fx-btn fx-btn-sm" data-fx-share="${esc(st.id)}">Share</button>
+        <button class="fx-btn fx-btn-sm" data-fx-pin="${esc(st.id)}">${IC.plus}Space</button>
+      </div></div>`;
+  }
+  // Spin the globe: somewhere random, and start playing it.
+  function spinRadio() {
+    const pts = radioMap.pts;
+    if (!pts.length || !radioMap.map) return;
+    const p = pts[Math.floor(Math.random() * Math.min(pts.length, 2500))];
+    radioMap.map.flyTo([p.lat, p.lng], 7, { duration: 1.6 });
+    playStation(p.st);
+    setTimeout(() => {
+      const mk = radioMap.layer.getLayers().find(m => m.options.title === p.st.name && m.getLatLng().lat === p.lat);
+      if (mk) radioMap.layer.zoomToShowLayer(mk, () => mk.openPopup());
+    }, 1700);
+  }
+  function setRadioView(v) {
+    lsSet('faero-radio-view', v);
+    $$('[data-fx-rview]').forEach(b => b.classList.toggle('on', b.dataset.fxRview === v));
+    const list = $('#fx-rlist'), mapW = $('#fx-rmap-wrap');
+    if (list) list.hidden = v === 'map';
+    if (mapW) mapW.hidden = v !== 'map';
+    if (v === 'map') showRadioMap();
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
      PROFILE SPACE — the block system
   ═══════════════════════════════════════════════════════════════ */
   const TYPES = {
@@ -307,7 +559,7 @@
     countdown: { n: 'Countdown', e: '⏳', d: 'To a drop, a show, anything', sz: ['s', 'm', 'w'] },
     now:       { n: 'Right now', e: '💭', d: 'Status, mood, listening to', sz: ['m', 'l', 's'] },
     about:     { n: 'About', e: '👋', d: 'Bio, location and tags', sz: ['m', 't', 'l', 's'] },
-    top8:      { n: 'Top 8', e: '⭐', d: 'People you follow', sz: ['l', 'm', 'w', 's'] },
+    top8:      { n: 'Friends', e: '⭐', d: 'People you follow', sz: ['l', 'm', 'w', 's'] },
     guestbook: { n: 'Guestbook', e: '✍️', d: 'Visitors leave you notes', sz: ['l', 't', 'm'] },
     posts:     { n: 'Latest posts', e: '📝', d: 'Your newest posts', sz: ['m', 't', 'l', 'w'] },
     photos:    { n: 'Photos', e: '📸', d: 'Pictures from your posts', sz: ['m', 'l', 's', 't'] },
@@ -442,11 +694,11 @@
     page.classList.add('fx-guestpage');
     const el = document.createElement('section');
     el.id = 'fx-guest-profile'; el.className = 'fx-card fx-guest-profile';
-    el.innerHTML = `<h3>Your space</h3>
+    el.innerHTML = `<h3>Your profile</h3>
       <div class="fx-gp-body">
         <div class="fx-gp-art" aria-hidden="true">${IC.play}</div>
-        <div><b>This is where your Faero space lives.</b>
-        <p>Your profile song, your Top 8, your music, a guestbook people sign. Build it from blocks once you're in.</p>
+        <div><b>Make a profile page that's all you.</b>
+        <p>Pick a song that plays when people visit, show off your friends, share your music and let people leave you notes. Sign up and arrange it however you like.</p>
         <div class="fx-gp-cta"><button class="fx-btn fx-btn-pri" onclick="faeroOpenAuth()">Join Faero</button>
         <button class="fx-btn" onclick="faeroOpenAuth()">Sign in</button></div></div>
       </div>`;
@@ -682,7 +934,7 @@
       if (html) { el.innerHTML = html; return; }
       if (S.own) el.innerHTML = `<div class="fx-blank">${esc({
         song: 'Tap ✎ to pick your song, or post some music.', tracks: 'Post music, or tap ✎ to add tracks.', posts: 'Your posts land here.',
-        photos: 'Post a photo and it shows here.', top8: 'Follow people and your Top 8 fills up.', groups: 'Join a group and it shows here.'
+        photos: 'Post a photo and it shows here.', top8: 'Follow people and they show up here.', groups: 'Join a group and it shows here.'
       }[b.t] || 'Nothing here yet.')}</div>`;
       else el.closest('.fx-blk').style.display = 'none';
     }));
@@ -917,7 +1169,13 @@
   document.addEventListener('click', e => {
     let el;
     if ((el = e.target.closest('[data-fx-st]'))) { if (S.editing && el.closest('#fx-space')) return; playStation(STN[el.dataset.fxSt]); return; }
-    if ((el = e.target.closest('[data-fx-dock]'))) { el.dataset.fxDock === 'stop' ? stopRadio() : togglePlay(); return; }
+    if ((el = e.target.closest('[data-fx-dock]'))) { const a = el.dataset.fxDock; a === 'stop' ? stopRadio() : a === 'share' ? shareStation(P.st) : togglePlay(); return; }
+    if ((el = e.target.closest('[data-fx-go]'))) { navigate(el.dataset.fxGo); return; }
+    if ((el = e.target.closest('[data-fx-share]'))) { shareStation(STN[el.dataset.fxShare]); return; }
+    if ((el = e.target.closest('[data-fx-rview]'))) { setRadioView(el.dataset.fxRview); return; }
+    if ((el = e.target.closest('[data-fx-spin]'))) { spinRadio(); return; }
+    if ((el = e.target.closest('[data-fx-game]'))) { openGame(el.dataset.fxGame); return; }
+    if ((el = e.target.closest('[data-fx-game-close]'))) { closeGame(); return; }
     if ((el = e.target.closest('[data-fx-listen]'))) {
       if (S.editing) return;
       const blk = el.closest('.fx-blk');
@@ -942,8 +1200,14 @@
   function onPage(slug) {
     boothVisible(slug === 'booth');
     if (slug === 'profile' && guest && !/^#profile\//.test(location.hash)) showGuestProfile();
-    if (slug === 'radio') ensureRadio();
+    if (slug === 'apps') ensureApps();
+    else if (slug === 'radio') ensureRadio();
     else if (slug === 'booth') ensureBooth();
+    else if (slug === 'studio') ensureStudio();
+    else if (slug === 'games') ensureGames();
+    // a game left running in a hidden frame keeps its sound and timers going
+    if (slug !== 'games' && $('#fx-game-stage') && !$('#fx-game-stage').hidden) closeGame();
+    if (slug === 'radio' && radioMap.map) setTimeout(() => radioMap.map.invalidateSize(), 30);
   }
 
   /* Moderators: wipe a reported profile space. The existing "staff updates"

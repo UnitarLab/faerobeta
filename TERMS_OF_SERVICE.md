@@ -1,8 +1,8 @@
 # Faero Terms of Service
 
 **Effective Date:** August 9, 2026  
-**Last Updated:** October 31, 2026  
-**Version:** 2026-10-31 (Beta)
+**Last Updated:** November 4, 2026  
+**Version:** 2026-11-04 (Beta)
 
 ---
 
@@ -49,7 +49,7 @@ These Terms constitute a legally binding agreement between you and Unitar LLC. Y
 
 You must be at least **13 years of age** to use Faero. If you are between 13 and 18 years old (or the applicable age of majority in your jurisdiction), you may only use the Platform with the consent and supervision of a parent or legal guardian who agrees to be bound by these Terms on your behalf.
 
-**We do not knowingly collect or solicit personal information from children under 13.** If we discover that a child under 13 has provided personal information, we will promptly delete such information. If you believe a child under 13 has used our Platform, please contact us immediately at contact@unitar.app.
+**We do not knowingly collect or solicit personal information from children under 13.** If we discover that a child under 13 has provided personal information, we will promptly delete such information. If you believe a child under 13 has used our Platform, please contact us immediately at hello@faero.net.
 
 ### 2.2 Capacity
 
@@ -64,12 +64,15 @@ By using Faero, you represent and warrant that:
 
 Faero is a social media platform that allows users to:
 - Create and customize personal profiles with avatars, badges, and seasonal cosmetics
-- Build a profile space from blocks: a profile song, music, shows, links, a Top 8, a guestbook and more
+- Build a profile space from blocks: a profile song, music, shows, links, friends, a guestbook and more
 - Post content including status updates, images, videos, music, and links
 - Interact with other users' content via reactions and comments
 - Browse a chronological feed and discover people, posts and groups in Explore
 - Listen to live radio stations from around the world
+- Find stations on a list or a world map
 - Take photos and short videos in Booth, Faero's in-browser photo booth
+- Make images and GIFs in Studio, Faero's in-browser paint program
+- Play small browser games
 - Customize their experience through themes and visual settings
 
 ### 3.1 Beta Status
@@ -82,24 +85,29 @@ Faero is currently in **beta**. This means:
 
 ### 3.2 How Your Data Is Stored
 
-Faero stores your account and content **on our servers**. Specifically:
+Faero stores your account and content online, so it follows you to every
+device. We don't run our own server hardware; like most websites, we use
+service providers that host it for us under contract and only on our
+instructions. Specifically:
 
 - Your account, profile, profile space, posts, replies, messages, commons
-  memberships and moderation records are stored in our hosted database
-  (Supabase).
-- Images you upload are stored and delivered by our image host (Cloudinary).
+  memberships and moderation records are stored in our hosted database.
+- Images you upload are stored and delivered by our image hosting provider.
 - Only your **display preferences** — theme, palette, font, glass level, and
   accessibility toggles — plus your recently played radio stations and a
   working copy of your profile-space layout are stored locally in your browser.
-- Photos and videos you take in Booth stay on your device unless you post or
-  download them. Clearing your
+- Photos and videos you take in Booth, and anything you make in Studio, stay
+  on your device unless you post or download them. Clearing your
   browser storage resets those preferences and signs you out; it does **not**
   delete your account or your content.
 - Your content is synced across every device you sign in on.
 
 Because Faero is in beta, we offer **no guarantee of uptime, backup, or data
 retention**. Keep your own copy of anything you would be upset to lose —
-*Settings → Account → Download my data* exports everything as JSON at any time.
+*Settings → Account → Download my data* downloads a copy of your account at any
+time, as a JSON file: your profile, posts, replies, likes, follows, bookmarks,
+commons, your conversations, guestbook notes and blocks. Images you posted are
+listed by their link.
 
 For the full detail of what we collect and why, see the
 [Privacy Policy](PRIVACY_POLICY.md).
@@ -110,10 +118,13 @@ For the full detail of what we collect and why, see the
 
 ### 4.1 Account Creation
 
-Currently, Faero operates as a local-profile system. You are responsible for:
+You sign up with an email address and a password. You are responsible for:
 - The accuracy of any profile information you provide
-- Maintaining the security of your local device and browser
-- All activity that occurs under your profile
+- Keeping your password secret and your email account secure
+- All activity that occurs under your account
+
+One person, one account for personal use. Don't create accounts by automated
+means or to get around a suspension.
 
 ### 4.2 Username & Identity
 
@@ -123,7 +134,7 @@ Currently, Faero operates as a local-profile system. You are responsible for:
 
 ### 4.3 Account Security
 
-You are solely responsible for maintaining the confidentiality of any credentials or access to your local profile. Notify us immediately if you suspect unauthorized use of your account.
+You are responsible for keeping your login details confidential. If you think someone else has access to your account, change your password straight away and tell us at hello@faero.net.
 
 ---
 
@@ -162,6 +173,18 @@ Everything you put in your profile space — notes, links, shows, release detail
 - **Music.** Only add songs and tracks you have the right to share, using the official players of the services that host them (SoundCloud, Mixcloud, YouTube or Bandcamp). Faero shows those players; it does not host or copy the audio.
 - **Links.** Links in your space lead to sites we don't control. Don't use them to send people to malware, phishing, scams, or anything this section would not allow on Faero itself.
 - **Shows and releases.** Keep dates, venues and ticket links accurate. Don't use them to sell tickets you don't have or to impersonate an artist or venue.
+
+### 5.7 Studio, Booth and the GIF library
+
+What you make in Studio or Booth is yours, and it becomes User Content when you
+post it. Only use photos of other people with their permission.
+
+Studio's sticker library is a selection of animated GIFs from the GeoCities
+web archive, found through GifCities, a project of the Internet Archive. They
+were published on personal homepages in the 1990s and 2000s, and most have no
+known author. They are offered for personal, non-commercial fun. If you made one
+of them and want it removed or credited, email hello@faero.net and we will act
+promptly.
 
 ---
 
@@ -231,7 +254,7 @@ Your use of Faero is also governed by our Privacy Policy, which is incorporated 
 ### 8.2 Current Data Practices
 
 As described in Section 3.2:
-- **Your account and content are stored on our servers**, not only in your browser
+- **Your account and content are stored online** by our hosting providers on our behalf, not only in your browser
 - We collect the minimum needed to operate the Platform — see the Privacy Policy
 - We do **not** use cookies or tags for advertising, tracking, or analytics
 - We do **not** sell, rent, or trade your data to third parties
@@ -239,7 +262,7 @@ As described in Section 3.2:
 
 ### 8.3 Third-Party Services
 
-Some parts of the Platform load directly from other services: fonts from Google Fonts, the radio station directory from Radio Browser, audio from the radio stations themselves, and music players from SoundCloud, Mixcloud, YouTube and Bandcamp. Those services see your IP address and browser, and their own terms and privacy policies apply. The Privacy Policy lists them and what each one sees.
+Some parts of the Platform load directly from other services: web fonts and code libraries from public content delivery networks, map images on the Radio map from a map provider, the radio station directory from Radio Browser, audio from the radio stations themselves, and music players from SoundCloud, Mixcloud, YouTube and Bandcamp. Those services see your IP address and browser, and their own terms and privacy policies apply. The Privacy Policy lists them and what each one sees.
 
 ### 8.4 Changes to Data Practices
 
@@ -247,11 +270,11 @@ If we start collecting a new kind of personal data, or share it with a new kind 
 
 ### 8.5 GDPR (European Users)
 
-If you are located in the European Economic Area (EEA), UK, or Switzerland, you have rights under applicable data protection laws including the right to access, correct, delete, restrict processing of, and port your personal data. Most of these you can exercise yourself, immediately, inside the app: *Settings → Account → Download my data* for access and portability, the profile editor for correction, and *Settings → Account → Delete my account* for erasure. For anything else, contact us at contact@unitar.app and we will respond within 30 days.
+If you are located in the European Economic Area (EEA), UK, or Switzerland, you have rights under applicable data protection laws including the right to access, correct, delete, restrict processing of, and port your personal data. Most of these you can exercise yourself, immediately, inside the app: *Settings → Account → Download my data* for access and portability, the profile editor for correction, and *Settings → Account → Delete my account* for erasure. For anything else, contact us at hello@faero.net and we will respond within 30 days.
 
 ### 8.6 CCPA (California Users)
 
-If you are a California resident, you have rights under the California Consumer Privacy Act. In the current beta, we do not collect personal information on our servers. For any questions about your rights under CCPA, contact us at contact@unitar.app.
+If you are a California resident, you have rights under the California Consumer Privacy Act, including the right to know, delete and correct your personal information. We do not sell or share personal information as the CCPA defines those terms. The Privacy Policy explains what we collect; for any request, contact us at hello@faero.net.
 
 ---
 
@@ -270,7 +293,7 @@ If you believe content on Faero infringes your copyright, send a written notice 
 5. A statement that you have a good-faith belief the use is not authorized by the copyright owner, its agent, or law
 6. A statement, under penalty of perjury, that the information in your notice is accurate and you are authorized to act on behalf of the copyright owner
 
-**DMCA Contact:** contact@unitar.app  
+**DMCA Contact:** hello@faero.net  
 **Subject Line:** DMCA Takedown Notice
 
 ### 9.2 Counter-Notifications
@@ -309,7 +332,7 @@ We do not endorse, guarantee, or take responsibility for the accuracy, completen
 
 ## 12. Limitation of Liability
 
-**TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, ANTIGRAVITY KODE AND ITS OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, AND LICENSORS SHALL NOT BE LIABLE FOR ANY:**
+**TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, UNITAR LLC AND ITS OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, AND LICENSORS SHALL NOT BE LIABLE FOR ANY:**
 
 - **INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, PUNITIVE, OR EXEMPLARY DAMAGES**
 - **LOSS OF PROFITS, REVENUE, DATA, GOODWILL, OR OTHER INTANGIBLE LOSSES**
@@ -370,7 +393,7 @@ These Terms shall be governed by and construed in accordance with the laws of th
 
 ### 15.2 Informal Resolution
 
-Before initiating any formal legal proceeding, you agree to first contact us at contact@unitar.app and attempt to resolve the dispute informally. We will attempt to resolve the dispute within 30 days of receiving your notice.
+Before initiating any formal legal proceeding, you agree to first contact us at hello@faero.net and attempt to resolve the dispute informally. We will attempt to resolve the dispute within 30 days of receiving your notice.
 
 ### 15.3 Dispute Resolution
 
@@ -426,7 +449,7 @@ These Terms do not create any third-party beneficiary rights.
 For questions, concerns, DMCA notices, or any other inquiries regarding these Terms:
 
 **Unitar LLC — Faero Platform**  
-**Email:** contact@unitar.app  
+**Email:** hello@faero.net  
 **Subject:** Faero ToS Inquiry
 
 We aim to respond to all inquiries within **5 business days**.

@@ -1,10 +1,10 @@
 # Faero Privacy Policy
 
 **Effective Date:** August 9, 2026
-**Last Updated:** October 31, 2026
-**Version:** 1.1 (Beta)
+**Last Updated:** November 4, 2026
+**Version:** 1.2 (Beta)
 
-**Contact:** contact@unitar.app
+**Contact:** hello@faero.net
 
 ---
 
@@ -42,8 +42,8 @@
   behavioural profile being built about you.
 - There is no algorithmic feed ranking your friends by engagement. Posts are
   shown newest-first.
-- You can export everything you've made as JSON, and you can delete your
-  account yourself from Settings → Account.
+- You can download a copy of your data, and you can delete your account
+  yourself, from Settings → Account.
 
 ---
 
@@ -53,7 +53,7 @@ Faero is an independent, small-scale social platform operated by **Unitar LLC**.
 UK GDPR and EU GDPR, Unitar LLC is the **data controller** for
 personal data processed on the platform.
 
-Questions, requests, or complaints: **contact@unitar.app**
+Questions, requests, or complaints: **hello@faero.net**
 
 ---
 
@@ -103,6 +103,14 @@ sent to us unless you choose to post a photo, in which case it is uploaded like
 any other image you post. Downloading a photo or video saves it to your device
 only.
 
+### 3.5 Studio
+
+Studio, Faero's paint program, runs entirely in your browser. Pictures you add
+to it and images you make stay on your device unless you post them, in which
+case they are uploaded like any other image. Its GIF stickers are served from
+Faero itself. If you put a station's logo into a picture, your browser fetches
+that logo from the station's own website.
+
 ---
 
 ## 4. What we do *not* collect
@@ -146,17 +154,21 @@ memberships, and guestbook entries are **public** — visible to anyone on the i
 messages are visible to the participants in that conversation. Blocks and mutes
 are private to you; the other person is not notified.
 
-### 6.2 Processors we use
+### 6.2 Service providers we use
 
-| Provider | What it handles | Where |
+We don't run our own server hardware. Like most websites, Faero is hosted by
+service providers who process data **only on our instructions**, under
+contracts that require them to keep it secure and not use it for themselves.
+
+| Type of provider | What it handles | Where |
 |---|---|---|
-| **Supabase** | Database, authentication, realtime, transactional email | EU/US datacentres |
-| **Cloudinary** | Image hosting and delivery | Global CDN |
-| **Google Fonts** | Web font files | Global CDN — your IP is visible to Google when fonts load |
-| **jsDelivr** | The Supabase JavaScript client library | Global CDN |
+| **Website hosting** | Serving Faero's pages and files; request logs | Global network |
+| **Database and sign-in** | Your account, password hash, profile, posts, messages and everything else you create; sign-in and account emails | EU/US datacentres |
+| **Image hosting** | Images you upload, and delivering them quickly | Global network |
+| **Font and code delivery** | Web fonts and open-source code libraries your browser downloads | Global network — these see your IP address, as any download does |
 
-These are processors acting on our instructions, except Google Fonts and
-jsDelivr, which are simple asset requests made by your browser.
+We name the specific companies to anyone who asks at **hello@faero.net**, and we
+will tell you before adding a new kind of provider.
 
 ### 6.3 Services your browser contacts directly
 
@@ -167,6 +179,7 @@ browser, and their own privacy policies apply.
 | Service | When | What it sees |
 |---|---|---|
 | **Radio Browser** (radio-browser.info) | When you open Radio, search for stations, or play one | Your search or genre, and which station you play (it uses plays to rank stations) |
+| **Map provider** | When you open the Radio map | Which part of the world you're looking at, as map images load |
 | **Radio stations** | While you listen to one | The station's own server streams the audio to you. Each station is run by a third party, not by Faero |
 | **SoundCloud, Mixcloud, YouTube, Bandcamp** | When a post or profile shows one of their music players | These players load from their own sites and may set their own cookies. YouTube players use YouTube's privacy-enhanced mode (youtube-nocookie.com) |
 
@@ -220,7 +233,10 @@ right to:
 
 - **Access** the personal data we hold about you.
 - **Portability** — receive it in a machine-readable format.
-  *Settings → Account → Download my data* gives you a JSON export instantly.
+  *Settings → Account → Download my data* gives you a JSON file straight away:
+  your profile and profile space, posts, replies, likes, follows, bookmarks,
+  commons, your conversations, guestbook notes and blocks. Images are included
+  as links. For anything it leaves out, such as moderation records, email us.
 - **Rectification** — correct anything wrong, via the profile editor.
 - **Erasure** — delete your account and content.
   *Settings → Account → Delete my account.*
@@ -230,7 +246,7 @@ right to:
   (ico.org.uk); in the EU, your national supervisory authority.
 
 Most of these you can exercise yourself in the app, immediately, without asking
-us. For anything else, email **contact@unitar.app** — we'll respond
+us. For anything else, email **hello@faero.net** — we'll respond
 within 30 days.
 
 California residents have equivalent rights under the CCPA/CPRA, including the
@@ -274,7 +290,7 @@ Deletion is irreversible. Export your data first if you want a copy.
 
 No system is perfectly secure. Faero is a small beta project run by a small
 team — please don't store anything on it that would be catastrophic to leak. If
-you find a vulnerability, email **contact@unitar.app** and we'll credit
+you find a vulnerability, email **hello@faero.net** and we'll credit
 you if you'd like.
 
 ---
@@ -286,7 +302,7 @@ their data. In the EU and UK, where the digital age of consent is 16 in some
 member states, users under that age need a parent or guardian's consent.
 
 If you believe a child under 13 has an account, email
-**contact@unitar.app** and we will delete it promptly.
+**hello@faero.net** and we will delete it promptly.
 
 ---
 

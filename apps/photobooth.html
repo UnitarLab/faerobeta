@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Booth — Faero</title>
+    <title>Booth · Faero</title>
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
@@ -712,6 +712,7 @@
                 <button class="action-btn secondary" id="recordBtn">&#9679; Record</button>
                 <span style="flex:1"></span>
                 <button class="action-btn secondary" id="saveOneBtn">Download</button>
+                <button class="action-btn secondary" id="studioBtn" title="Open this photo in Studio to paint on it and add GIFs">Edit in Studio</button>
                 <button class="action-btn primary" id="postOneBtn">Post to Faero</button>
             </div>
         </div>
@@ -1035,6 +1036,7 @@
         document.addEventListener('keydown', e => { if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'BUTTON') { e.preventDefault(); capture(); } });
         $('saveOneBtn').addEventListener('click', withPhoto(p => download(p.blob, `faero-booth-${Date.now()}.jpg`)));
         $('postOneBtn').addEventListener('click', withPhoto(p => post(p.blob)));
+        $('studioBtn').addEventListener('click', withPhoto(p => parent.postMessage({ type: 'FAERO_BOOTH_STUDIO', blob: p.blob }, location.origin)));
         $('postAllBtn').addEventListener('click', withPhoto(p => post(p.blob)));
         $('saveAllBtn').addEventListener('click', () => {
             if (!photos.length) { toast('No photos yet'); return; }
