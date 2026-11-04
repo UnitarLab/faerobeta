@@ -1,0 +1,557 @@
+{
+ "neudiverge": {
+  "display_name": "Neudiverge",
+  "bio": "Independent music label. A collective of artists who are architects of new genres. Home of Opal Aura, Wril and Xermes.",
+  "status": "New music from the collective",
+  "website": "https://www.neudiverge.com",
+  "tags": [
+   "label",
+   "new genres",
+   "frutiger aero"
+  ],
+  "avatar_color": "#0d3346",
+  "avatar_url": "https://www.neudiverge.com/brands/neudiverge/brandkit/files/08-frutiger-aero/bliss-hill/logo-only/neudiverge-bliss-hill-logo-square-2048.jpg",
+  "banner_url": "https://www.neudiverge.com/brands/neudiverge/brandkit/files/06-social/neudiverge-x-twitter-header-1500x500.png",
+  "profile_bg_url": null,
+  "space": {
+   "v": 1,
+   "kind": "artist",
+   "stage": "bliss",
+   "look": {
+    "accent": "#6fe3ff",
+    "font": "Orbitron",
+    "corners": "round",
+    "title": "NEUDIVERGE",
+    "bg": "https://www.neudiverge.com/brands/neudiverge/brandkit/files/08-frutiger-aero/bliss-hill/logo-only/neudiverge-bliss-hill-logo-wide-1920x1080-blur.jpg",
+    "bgMode": "fixed"
+   },
+   "blocks": [
+    {
+     "t": "custom",
+     "s": "l",
+     "y": "holo",
+     "d": {
+      "title": "Architects of new genres",
+      "layout": "picture-full",
+      "effect": "holo",
+      "font": "Orbitron",
+      "image": "https://www.neudiverge.com/brands/neudiverge/brandkit/files/08-frutiger-aero/bliss-hill/logo-only/neudiverge-bliss-hill-logo-square-2048.jpg",
+      "text": "An independent label and a collective. New music, visuals, shows and drops from Opal Aura, Wril and Xermes.",
+      "link": "https://www.neudiverge.com",
+      "linkLabel": "Enter neudiverge.com"
+     }
+    },
+    {
+     "t": "song",
+     "s": "m",
+     "y": "holo",
+     "d": {
+      "url": "https://www.youtube.com/watch?v=IF6_XK2sOaE"
+     }
+    },
+    {
+     "t": "custom",
+     "s": "s",
+     "y": "holo",
+     "d": {
+      "title": "Opal Aura",
+      "layout": "picture-top",
+      "image": "https://www.neudiverge.com/brands/neudiverge/media/aquacrush-cover.jpg",
+      "link": "https://www.faero.net/opalaura",
+      "linkLabel": "Visit",
+      "font": "Comfortaa"
+     }
+    },
+    {
+     "t": "custom",
+     "s": "s",
+     "y": "camo",
+     "d": {
+      "title": "Wril",
+      "layout": "logo",
+      "image": "https://www.faero.net/assets/artists/wril-logo.png",
+      "bg": "#ffffff",
+      "link": "https://www.faero.net/wril",
+      "linkLabel": "Visit",
+      "font": "Silkscreen"
+     }
+    },
+    {
+     "t": "tracks",
+     "s": "w",
+     "y": "holo",
+     "d": {
+      "items": [
+       {
+        "title": "Opal Aura · Aqua Crush",
+        "url": "https://www.youtube.com/watch?v=IF6_XK2sOaE"
+       },
+       {
+        "title": "Opal Aura · Tastemaker",
+        "url": "https://www.youtube.com/watch?v=-J-qvsScGJ4"
+       },
+       {
+        "title": "Opal Aura · Love at First Sight",
+        "url": "https://www.youtube.com/watch?v=7TLVRjtlprQ"
+       },
+       {
+        "title": "Wril · Ancient Wave",
+        "url": "https://www.youtube.com/watch?v=rldF9oYVUB4"
+       }
+      ]
+     }
+    },
+    {
+     "t": "custom",
+     "s": "s",
+     "y": "holo",
+     "d": {
+      "title": "Xermes",
+      "layout": "big-title",
+      "effect": "scanlines",
+      "font": "Major Mono Display",
+      "bg": "#0a0a0a",
+      "ink": "#e6dcff",
+      "text": "Coming soon.",
+      "link": "https://www.faero.net/xermes",
+      "linkLabel": "Visit"
+     }
+    },
+    {
+     "t": "links",
+     "s": "m",
+     "y": "holo",
+     "d": {
+      "items": [
+       {
+        "label": "neudiverge.com",
+        "url": "https://www.neudiverge.com"
+       },
+       {
+        "label": "YouTube",
+        "url": "https://www.youtube.com/@neudiverge"
+       },
+       {
+        "label": "Instagram",
+        "url": "https://www.instagram.com/neudiverge/"
+       }
+      ]
+     }
+    },
+    {
+     "t": "top8",
+     "s": "m",
+     "y": "holo",
+     "d": {}
+    },
+    {
+     "t": "guestbook",
+     "s": "l",
+     "y": "aero",
+     "d": {}
+    },
+    {
+     "t": "posts",
+     "s": "m",
+     "y": "holo",
+     "d": {}
+    },
+    {
+     "t": "stats",
+     "s": "s",
+     "y": "holo",
+     "d": {}
+    }
+   ]
+  },
+  "username": "neudiverge",
+  "id": "00000000-0000-0000-0000-000000000001"
+ },
+ "opalaura": {
+  "display_name": "Opal Aura",
+  "bio": "Neudiverge artist. Ambient, glassy and bright. New single Aqua Crush is out now everywhere.",
+  "status": "Aqua Crush out now 🫧",
+  "website": "https://smartlinks.artistcamp.com/9008798788156/",
+  "tags": [
+   "ambient",
+   "neudiverge",
+   "aqua crush"
+  ],
+  "avatar_color": "#6fe3ff",
+  "avatar_url": "https://www.neudiverge.com/brands/neudiverge/media/aquacrush-cover.jpg",
+  "banner_url": "https://www.neudiverge.com/brands/neudiverge/media/aquacrush-mv.jpg",
+  "profile_bg_url": null,
+  "space": {
+   "v": 1,
+   "kind": "artist",
+   "stage": "aqua",
+   "look": {
+    "accent": "#00a6c8",
+    "font": "Comfortaa",
+    "corners": "round",
+    "title": "opal aura"
+   },
+   "blocks": [
+    {
+     "t": "custom",
+     "s": "l",
+     "y": "opal",
+     "d": {
+      "title": "Aqua Crush",
+      "layout": "picture-full",
+      "effect": "glitter",
+      "font": "Comfortaa",
+      "image": "https://www.neudiverge.com/brands/neudiverge/media/aquacrush-cover.jpg",
+      "text": "Out now on Spotify, Apple Music, Tidal and YouTube.",
+      "link": "https://smartlinks.artistcamp.com/9008798788156/",
+      "linkLabel": "Listen everywhere"
+     }
+    },
+    {
+     "t": "song",
+     "s": "m",
+     "y": "opal",
+     "d": {
+      "url": "https://www.youtube.com/watch?v=IF6_XK2sOaE"
+     }
+    },
+    {
+     "t": "custom",
+     "s": "m",
+     "y": "opal",
+     "d": {
+      "title": "Love at First Sight",
+      "layout": "picture-left",
+      "effect": "glow",
+      "font": "Pacifico",
+      "image": "https://www.neudiverge.com/brands/neudiverge/media/yt7TLVRjtlprQ.jpg",
+      "bg": "#ff3fa4",
+      "bg2": "#6a1b9a",
+      "ink": "#ffffff",
+      "text": "Pink lightning. The video plays right here on my space.",
+      "link": "https://www.youtube.com/watch?v=7TLVRjtlprQ",
+      "linkLabel": "Watch"
+     }
+    },
+    {
+     "t": "release",
+     "s": "m",
+     "y": "aurora",
+     "d": {
+      "title": "Aqua Crush",
+      "date": "2026-10-09",
+      "url": "https://smartlinks.artistcamp.com/9008798788156/",
+      "cover": "https://www.neudiverge.com/brands/neudiverge/media/aquacrush-cover.jpg"
+     }
+    },
+    {
+     "t": "tracks",
+     "s": "w",
+     "y": "opal",
+     "d": {
+      "items": [
+       {
+        "title": "Aqua Crush",
+        "url": "https://www.youtube.com/watch?v=IF6_XK2sOaE"
+       },
+       {
+        "title": "Tastemaker",
+        "url": "https://www.youtube.com/watch?v=-J-qvsScGJ4"
+       },
+       {
+        "title": "Love at First Sight",
+        "url": "https://www.youtube.com/watch?v=7TLVRjtlprQ"
+       }
+      ]
+     }
+    },
+    {
+     "t": "custom",
+     "s": "s",
+     "y": "opal",
+     "d": {
+      "title": "Tastemaker",
+      "layout": "picture-top",
+      "effect": "holo",
+      "font": "Comfortaa",
+      "image": "https://www.neudiverge.com/brands/neudiverge/media/yt-J-qvsScGJ4.jpg",
+      "link": "https://www.youtube.com/watch?v=-J-qvsScGJ4",
+      "linkLabel": "Watch"
+     }
+    },
+    {
+     "t": "links",
+     "s": "m",
+     "y": "aurora",
+     "d": {
+      "items": [
+       {
+        "label": "Spotify",
+        "url": "https://open.spotify.com/artist/1YvqzzkOpIO60oBJYqAzYU"
+       },
+       {
+        "label": "Apple Music",
+        "url": "https://music.apple.com/us/album/aqua-crush/6824748134?i=6824748321"
+       },
+       {
+        "label": "Tidal",
+        "url": "https://tidal.com/album/571419589"
+       },
+       {
+        "label": "YouTube Music",
+        "url": "https://music.youtube.com/browse/MPREb_v8EH4W2pzCD"
+       },
+       {
+        "label": "All platforms",
+        "url": "https://smartlinks.artistcamp.com/9008798788156/"
+       }
+      ]
+     }
+    },
+    {
+     "t": "about",
+     "s": "m",
+     "y": "opal",
+     "d": {}
+    },
+    {
+     "t": "guestbook",
+     "s": "l",
+     "y": "opal",
+     "d": {}
+    },
+    {
+     "t": "top8",
+     "s": "m",
+     "y": "opal",
+     "d": {}
+    },
+    {
+     "t": "stats",
+     "s": "s",
+     "y": "aurora",
+     "d": {}
+    }
+   ]
+  },
+  "username": "opalaura",
+  "id": "00000000-0000-0000-0000-000000000002"
+ },
+ "wril": {
+  "display_name": "Wril",
+  "bio": "Neudiverge artist. Ancient Wave out now, and Jestermaxxing, a rhythm dance-off you can play on neudiverge.com.",
+  "status": "Ancient Wave out now",
+  "website": "https://www.neudiverge.com/games/jestermaxxing/",
+  "tags": [
+   "neudiverge",
+   "ancient wave",
+   "jestermaxxing"
+  ],
+  "avatar_color": "#0a0a0a",
+  "avatar_url": "https://www.faero.net/assets/artists/wril-logo.png",
+  "banner_url": "https://www.neudiverge.com/brands/neudiverge/media/ytrldF9oYVUB4.jpg",
+  "profile_bg_url": null,
+  "space": {
+   "v": 1,
+   "kind": "artist",
+   "stage": "paper",
+   "look": {
+    "accent": "#0a0a0a",
+    "font": "Silkscreen",
+    "corners": "sharp"
+   },
+   "blocks": [
+    {
+     "t": "custom",
+     "s": "l",
+     "y": "camo",
+     "d": {
+      "layout": "logo",
+      "image": "https://www.faero.net/assets/artists/wril-logo.png",
+      "bg": "#ffffff"
+     }
+    },
+    {
+     "t": "song",
+     "s": "m",
+     "y": "camo",
+     "d": {
+      "url": "https://www.youtube.com/watch?v=rldF9oYVUB4"
+     }
+    },
+    {
+     "t": "custom",
+     "s": "w",
+     "y": "camo",
+     "d": {
+      "title": "ANCIENT WAVE  ✦  JESTERMAXXING  ✦  NEUDIVERGE",
+      "effect": "marquee",
+      "font": "Silkscreen",
+      "bg": "#0a0a0a",
+      "ink": "#ffffff"
+     }
+    },
+    {
+     "t": "custom",
+     "s": "m",
+     "y": "camo",
+     "d": {
+      "title": "Jestermaxxing",
+      "layout": "picture-left",
+      "font": "Silkscreen",
+      "image": "https://www.neudiverge.com/brands/neudiverge/media/jestermaxxing.jpg",
+      "text": "An arrow-key rhythm dance-off. Play it free and post your score.",
+      "link": "https://www.neudiverge.com/games/jestermaxxing/",
+      "linkLabel": "Play"
+     }
+    },
+    {
+     "t": "about",
+     "s": "m",
+     "y": "camo",
+     "d": {}
+    },
+    {
+     "t": "links",
+     "s": "m",
+     "y": "camo",
+     "d": {
+      "items": [
+       {
+        "label": "Play Jestermaxxing",
+        "url": "https://www.neudiverge.com/games/jestermaxxing/"
+       },
+       {
+        "label": "Ancient Wave video",
+        "url": "https://www.youtube.com/watch?v=rldF9oYVUB4"
+       },
+       {
+        "label": "Neudiverge",
+        "url": "https://www.neudiverge.com"
+       }
+      ]
+     }
+    },
+    {
+     "t": "guestbook",
+     "s": "l",
+     "y": "camo",
+     "d": {}
+    },
+    {
+     "t": "top8",
+     "s": "m",
+     "y": "camo",
+     "d": {}
+    },
+    {
+     "t": "posts",
+     "s": "m",
+     "y": "camo",
+     "d": {}
+    },
+    {
+     "t": "stats",
+     "s": "s",
+     "y": "camo",
+     "d": {}
+    }
+   ]
+  },
+  "username": "wril",
+  "id": "00000000-0000-0000-0000-000000000003"
+ },
+ "xermes": {
+  "display_name": "Xermes",
+  "bio": "Neudiverge artist. New music is on the way. Follow to hear it first.",
+  "status": "Something is coming",
+  "website": "https://www.neudiverge.com",
+  "tags": [
+   "neudiverge"
+  ],
+  "avatar_color": "#1b1b1b",
+  "avatar_url": null,
+  "banner_url": null,
+  "profile_bg_url": null,
+  "space": {
+   "v": 1,
+   "kind": "artist",
+   "stage": "ink",
+   "look": {
+    "accent": "#9b7bff",
+    "font": "Major Mono Display",
+    "corners": "soft",
+    "title": "xermes"
+   },
+   "blocks": [
+    {
+     "t": "custom",
+     "s": "l",
+     "y": "aurora",
+     "d": {
+      "title": "X",
+      "layout": "big-title",
+      "effect": "scanlines",
+      "font": "Major Mono Display",
+      "align": "center",
+      "bg": "#05030d",
+      "bg2": "#241046",
+      "ink": "#e6dcff",
+      "text": "new music is on the way.\nfollow and it lands in your feed the day it drops."
+     }
+    },
+    {
+     "t": "custom",
+     "s": "m",
+     "y": "aurora",
+     "d": {
+      "title": "SIGNAL INCOMING",
+      "effect": "marquee",
+      "font": "Major Mono Display",
+      "bg": "#0a0a0a",
+      "ink": "#5ef2d0"
+     }
+    },
+    {
+     "t": "about",
+     "s": "m",
+     "y": "aurora",
+     "d": {}
+    },
+    {
+     "t": "links",
+     "s": "m",
+     "y": "aurora",
+     "d": {
+      "items": [
+       {
+        "label": "Neudiverge",
+        "url": "https://www.neudiverge.com"
+       }
+      ]
+     }
+    },
+    {
+     "t": "guestbook",
+     "s": "l",
+     "y": "aurora",
+     "d": {}
+    },
+    {
+     "t": "top8",
+     "s": "m",
+     "y": "aurora",
+     "d": {}
+    },
+    {
+     "t": "stats",
+     "s": "s",
+     "y": "aurora",
+     "d": {}
+    }
+   ]
+  },
+  "username": "xermes",
+  "id": "00000000-0000-0000-0000-000000000004"
+ }
+}

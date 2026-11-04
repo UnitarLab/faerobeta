@@ -566,14 +566,35 @@
     stats:     { n: 'Stats', e: '📊', d: 'Followers, following, posts, views', sz: ['s', 'm', 'w'] },
     groups:    { n: 'Groups', e: '🫂', d: 'Groups you are in', sz: ['m', 's', 't'] },
     note:      { n: 'Note', e: '🗒️', d: 'Write anything', sz: ['m', 't', 'l', 's', 'w'] },
-    station:   { n: 'My station', e: '📻', d: 'A station visitors can tune into', sz: ['m', 's', 'l'] }
+    station:   { n: 'My station', e: '📻', d: 'A station visitors can tune into', sz: ['m', 's', 'l'] },
+    custom:    { n: 'Custom', e: '✨', d: 'Design it yourself: colours, font, picture, text, a button', sz: ['m', 'l', 'w', 't', 's'] }
   };
-  const STYLES = ['glass', 'paper', 'aero', 'night', 'classic', 'mono'];
+  /* Fonts a profile can use. A fixed list (not free text) so a font name can
+     never smuggle CSS in; each is loaded from Google Fonts only when used. */
+  const FX_FONTS = ['Exo 2', 'Bungee', 'Monoton', 'Orbitron', 'Press Start 2P', 'VT323', 'Pacifico', 'Caveat', 'Abril Fatface',
+    'Syne', 'Space Grotesk', 'Rubik Glitch', 'Silkscreen', 'Major Mono Display', 'Comfortaa', 'Fredoka'];
+  // Display fonts like Monoton have one weight, and asking Google for weights
+  // a family doesn't have fails the whole request, so ask for the family only.
+  const loadFont = f => {
+    if (!f || f === 'Exo 2' || !FX_FONTS.includes(f) || document.querySelector(`link[data-fx-font="${f}"]`)) return;
+    const l = document.createElement('link');
+    l.rel = 'stylesheet'; l.dataset.fxFont = f;
+    l.href = 'https://fonts.googleapis.com/css2?family=' + encodeURIComponent(f).replace(/%20/g, '+') + '&display=swap';
+    document.head.appendChild(l);
+  };
+  const CUSTOM_LAYOUTS = ['text', 'picture-top', 'picture-left', 'picture-full', 'logo', 'big-title'];
+  const CUSTOM_FX = ['none', 'glow', 'glitter', 'scanlines', 'marquee', 'holo'];
+  const ALIGN = ['left', 'center', 'right'];
+  const STYLES = ['glass', 'paper', 'aero', 'night', 'classic', 'mono', 'frost', 'aurora', 'ember', 'opal', 'camo', 'holo'];
   const OLD_STYLE = { sticker: 'glass', clean: 'paper', pixel: 'mono' };   // first-draft names
-  const STYLE_N = { glass: 'Glass', paper: 'Paper', aero: 'Aero', night: 'Night', classic: 'Classic', mono: 'Notebook' };
+  const STYLE_N = { glass: 'Glass', paper: 'Paper', aero: 'Aero', night: 'Night', classic: 'Classic', mono: 'Notebook', frost: 'Frost', aurora: 'Aurora', ember: 'Ember', opal: 'Opal', camo: 'Pixel camo', holo: 'Holo' };
   const SIZE_N = { s: 'Small', m: 'Wide', t: 'Tall', l: 'Big', w: 'Banner' };
-  const STAGES = { sky: '#BBDEFB', lime: '#C8E6C9', peach: '#FFE0B2', lilac: '#E1BEE7', night: '#123A63' };
-  const STAGE_N = { sky: 'Sky', lime: 'Mint', peach: 'Peach', lilac: 'Lilac', night: 'Night' };
+  // The last four come from the Neudiverge label's palettes; dark stages pair
+  // with the dark block styles of the same name.
+  const STAGES = { sky: '#BBDEFB', lime: '#C8E6C9', peach: '#FFE0B2', lilac: '#E1BEE7', night: '#123A63',
+    aqua: '#9FE6F5', frost: '#0d3346', aurora: '#241046', ember: '#3d1408', paper: '#F4F1EA', ink: '#0a0a0a', bliss: '#5FB2F0' };
+  const STAGE_N = { sky: 'Sky', lime: 'Mint', peach: 'Peach', lilac: 'Lilac', night: 'Night', aqua: 'Aqua', frost: 'Frost', aurora: 'Aurora', ember: 'Ember',
+    paper: 'Paper white', ink: 'Ink black', bliss: 'Bliss hill' };
   const DEFAULTS = {
     artist: [['song', 'l', 'glass'], ['about', 'm', 'paper'], ['release', 'm', 'night'], ['tracks', 'w', 'glass'], ['shows', 'm', 'glass'],
       ['top8', 'm', 'classic'], ['guestbook', 'l', 'aero'], ['links', 'm', 'paper'], ['posts', 'm', 'glass'], ['stats', 's', 'mono'], ['countdown', 's', 'glass']],
@@ -590,8 +611,17 @@
     countdown: { f: [['label', 'Counting down to', 'text', 50], ['date', 'Date and time', 'datetime-local']] },
     now:       { f: [['mood', 'Mood', 'text', 40], ['listening', 'Listening to', 'text', 60]], note: 'Your status line comes from Edit profile.' },
     note:      { f: [['title', 'Title', 'text', 40], ['text', 'Text', 'textarea', 600]] },
-    station:   { f: [], note: 'Open Radio, find a station and press “Put on my space”.' }
+    station:   { f: [], note: 'Open Radio, find a station and press “Put on my space”.' },
+    custom:    { f: [['title', 'Title', 'text', 60], ['text', 'Text', 'textarea', 800], ['image', 'Picture or GIF', 'image'],
+      ['link', 'Button link', 'url'], ['linkLabel', 'Button text', 'text', 30],
+      ['layout', 'Layout', 'select', CUSTOM_LAYOUTS], ['effect', 'Effect', 'select', CUSTOM_FX], ['align', 'Text align', 'select', ALIGN],
+      ['font', 'Font', 'select', FX_FONTS], ['bg', 'Background colour', 'color'], ['bg2', 'Second colour (gradient)', 'color'], ['ink', 'Text colour', 'color']],
+      note: 'Leave the colours as they are to use the block style you pick with 🎨.' }
   };
+  /* The whole space's look: what someone changes to make the page theirs. */
+  const LOOK_FIELDS = [['accent', 'Accent colour', 'color'], ['font', 'Heading font', 'select', FX_FONTS],
+    ['bg', 'Page background picture', 'image'], ['bgMode', 'Background', 'select', ['cover', 'tile', 'fixed']],
+    ['corners', 'Corners', 'select', ['round', 'soft', 'sharp']], ['title', 'Big title on top (optional)', 'text', 40]];
   const SPACE_KEY = uid => 'faero-space-' + uid;
 
   /* ── sanitising: owner data is stored as typed, checked again here ── */
@@ -605,7 +635,10 @@
     try { return s && MUSIC_HOSTS.test(new URL(s).hostname) ? s : ''; } catch (e) { return ''; }
   };
   const okDate = v => { const s = str(v, 20); return /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2})?$/.test(s) ? s : ''; };
+  const okColor = v => { const s = str(v, 7); return /^#[0-9a-f]{6}$/i.test(s) ? s.toLowerCase() : ''; };
   function cleanField(kind, v, max) {
+    if (kind === 'color') return okColor(v);
+    if (kind === 'select') return Array.isArray(max) && max.includes(String(v)) ? String(v) : '';
     if (kind === 'url' || kind === 'image') return okUrl(v);
     if (kind === 'music') return okMusic(v);
     if (kind === 'date' || kind === 'datetime-local') return okDate(v);
@@ -630,10 +663,13 @@
   }
   function normSpace(s) {
     if (!s || typeof s !== 'object' || !Array.isArray(s.blocks)) return null;
+    const look = {};
+    if (s.look && typeof s.look === 'object') for (const [k, , kind, opt] of LOOK_FIELDS) { const v = cleanField(kind, s.look[k], opt); if (v) look[k] = v; }
     return {
       v: 1,
       kind: s.kind === 'artist' ? 'artist' : 'listener',
       stage: STAGES[s.stage] ? s.stage : 'sky',
+      look,
       blocks: s.blocks.slice(0, 40).filter(b => b && TYPES[b.t]).map(b => ({
         t: b.t,
         s: TYPES[b.t].sz.includes(b.s) ? b.s : TYPES[b.t].sz[0],
@@ -732,8 +768,10 @@
     const r = root(), sp = S.space, p = S.p, ed = S.editing;
     r.dataset.stage = sp.stage;
     r.classList.toggle('fx-editing', ed);
+    applyLook(r, sp.look || {});
     const handle = p.username ? '@' + p.username : (p.display_name || 'this person');
     r.innerHTML = `
+      ${sp.look && sp.look.title ? `<h1 class="fx-ltitle">${esc(sp.look.title)}</h1>` : ''}
       <div class="fx-sbar">
         <span class="fx-kind">${sp.kind === 'artist' ? '✔ ARTIST' : '♥ LISTENER'}</span>
         <span class="fx-hint">${S.own ? (ed ? '' : 'Your space. This is what visitors see.') : `${esc(handle)}'s space`}</span>
@@ -747,6 +785,7 @@
           <button data-fx-kind="listener" class="${sp.kind === 'listener' ? 'on' : ''}">I listen</button></div>
         <div class="fx-sws" role="group" aria-label="Stage colour">${Object.entries(STAGES).map(([k, c]) =>
           `<button class="fx-sw ${sp.stage === k ? 'on' : ''}" data-fx-stage="${k}" style="background:${c}" aria-label="${STAGE_N[k]}" title="${STAGE_N[k]}"></button>`).join('')}</div>
+        <button class="fx-btn fx-btn-sm" data-fx-do="look">${IC.edit}Look</button>
         <button class="fx-btn fx-btn-sm" data-fx-do="add">${IC.plus}Add block</button>
         <button class="fx-btn fx-btn-sm" data-fx-do="reset">Start over</button>
         <button class="fx-btn fx-btn-sm" data-fx-do="cancel">Cancel</button>
@@ -755,6 +794,17 @@
       <div class="fx-grid">${sp.blocks.map(blockHTML).join('')}${ed ? `<button class="fx-addtile" data-fx-do="add">${IC.plus}<span>Add a block</span></button>` : ''}</div>`;
     hydrate(r);
     tickCountdowns();
+  }
+
+  function applyLook(r, L) {
+    r.style.setProperty('--fx-acc', L.accent || '');
+    if (!L.accent) r.style.removeProperty('--fx-acc');
+    r.style.setProperty('--fx-hfont', L.font ? `'${L.font}', var(--font-body)` : 'var(--font-body)');
+    loadFont(L.font);
+    r.dataset.corners = L.corners || 'round';
+    const bg = httpUrl(L.bg);
+    r.style.backgroundImage = bg ? `url("${bg.replace(/"/g, '%22')}"), var(--fx-stage)` : '';
+    r.dataset.bgmode = bg ? (L.bgMode || 'cover') : '';
   }
 
   function blockHTML(b, i) {
@@ -767,6 +817,21 @@
       <button class="fx-bt fx-del" data-fx-bt="del" aria-label="Remove block">✕</button></div>` : '';
     return `<article class="fx-blk fx-${b.s}" data-y="${b.y}" data-i="${i}" ${ed ? 'draggable="true"' : ''} aria-label="${esc(TYPES[b.t].n)}">
       <div class="fx-bin">${body(b, i)}</div>${tools}</article>`;
+  }
+
+  function customBody(b, i) {
+    const d = b.d;
+    if (!d.title && !d.text && !d.image) return head(b) + blank(b, i, 'Tap ✎ to design this block: colours, font, picture and text.');
+    loadFont(d.font);
+    const img = httpUrl(d.image), link = httpUrl(d.link);
+    const lay = d.layout || (img ? 'picture-top' : 'text'), fx = d.effect || 'none';
+    const style = [d.font ? `--cb-font:'${d.font}'` : '', d.ink ? `--cb-ink:${d.ink}` : '',
+      d.bg ? `--cb-bg:${d.bg2 ? `linear-gradient(160deg,${d.bg},${d.bg2})` : d.bg}` : '', `--cb-align:${d.align || 'left'}`].filter(Boolean).join(';');
+    const title = d.title ? (fx === 'marquee' ? `<div class="fx-cb-mq"><span>${esc(d.title)}&nbsp;&nbsp;✦&nbsp;&nbsp;${esc(d.title)}&nbsp;&nbsp;✦&nbsp;&nbsp;</span></div>` : `<div class="fx-cb-t">${esc(d.title)}</div>`) : '';
+    return `<div class="fx-cb" data-lay="${lay}" data-fx="${fx}" ${d.bg ? 'data-own-bg' : ''} style="${style}">
+      ${img ? `<div class="fx-cb-img"><img src="${img}" alt="" loading="lazy"></div>` : ''}
+      <div class="fx-cb-body">${title}${d.text ? `<p class="fx-cb-p">${esc(d.text)}</p>` : ''}
+      ${link ? `<a class="fx-btn fx-btn-pri fx-btn-sm fx-cb-btn" href="${link}" target="_blank" rel="noopener nofollow">${esc(d.linkLabel || 'Open')} ↗</a>` : ''}</div></div>`;
   }
 
   const head = (b, extra) => `<div class="fx-bh"><span class="fx-dot" aria-hidden="true"></span>${esc(b.d.title && b.t === 'note' ? b.d.title : TYPES[b.t].n)}${extra ? `<span class="fx-r">${extra}</span>` : ''}</div>`;
@@ -823,6 +888,7 @@
       case 'countdown':
         if (!d.date) return head(b) + blank(b, i, 'Tap ✎ to count down to something.');
         return head(b) + `<div class="fx-cd"><div class="fx-big" data-fx-cd="${esc(d.date)}">–</div><div class="fx-mut">until ${esc(d.label || 'the big day')}</div></div>`;
+      case 'custom': return customBody(b, i);
       case 'note':
         if (!d.text) return head(b) + blank(b, i, 'Tap ✎ to write something.');
         return head(b) + `<p class="fx-txt">${esc(d.text)}</p>`;
@@ -994,6 +1060,7 @@
       case 'cancel': S.space = clone(S.saved); S.editing = false; draw(); break;
       case 'reset': if (confirm('Start over with the default blocks? Your text in blocks will be cleared.')) { S.space = defaultSpace(S.space.kind); draw(); } break;
       case 'add': openAdd(); break;
+      case 'look': openLook(); break;
       case 'save': saveSpace(); break;
     }
   }
@@ -1097,6 +1164,10 @@
   const inputFor = (kind, k, label, v, max, rowI) => {
     const name = rowI == null ? k : `${k}.${rowI}`;
     if (kind === 'textarea') return `<label class="fx-field">${label}<textarea name="${name}" maxlength="${max}">${esc(v || '')}</textarea></label>`;
+    if (kind === 'color') return `<label class="fx-field fx-field-c">${label}<span><input type="color" name="${name}" value="${esc(v || '#000000')}" data-set="${v ? 1 : ''}" oninput="this.dataset.set=1">
+      <button type="button" class="fx-btn fx-btn-sm" onclick="const i=this.previousElementSibling;i.dataset.set='';i.value='#000000'">Clear</button></span></label>`;
+    if (kind === 'select') return `<label class="fx-field">${label}<select name="${name}"><option value="">Default</option>${(max || []).map(o =>
+      `<option value="${esc(o)}" ${o === v ? 'selected' : ''} ${kind === 'select' && FX_FONTS.includes(o) ? `style="font-family:'${o}'"` : ''}>${esc(o)}</option>`).join('')}</select></label>`;
     if (kind === 'image') return `<label class="fx-field">${label}${httpUrl(v) ? `<img src="${httpUrl(v)}" alt="" style="width:90px;height:90px;object-fit:cover;border-radius:10px;border:2px solid #081B36">` : ''}
       <input type="file" name="${name}" accept="image/*"><input type="hidden" name="${name}.keep" value="${esc(v || '')}"></label>`;
     const type = kind === 'music' || kind === 'url' ? 'url' : kind === 'date' ? 'date' : kind === 'datetime-local' ? 'datetime-local' : 'text';
@@ -1130,6 +1201,7 @@
       const f = $('#fx-fill', s), d = {};
       const bad = [];
       for (const [k, l, kind] of spec.f || []) {
+        if (kind === 'color') { d[k] = f.elements[k].dataset.set ? f.elements[k].value : ''; continue; }
         if (kind === 'image') {
           const file = f.elements[k].files[0];
           d[k] = f.elements[k + '.keep'].value;
@@ -1140,7 +1212,7 @@
           continue;
         }
         d[k] = f.elements[k].value;
-        if (d[k] && !cleanField(kind, d[k])) bad.push(l);
+        if (d[k] && kind !== 'select' && !cleanField(kind, d[k])) bad.push(l);
       }
       if (spec.rows) {
         readRows();
@@ -1151,8 +1223,35 @@
         toast('err', 'Check the links', `${[...new Set(bad)].join(', ')}: links must start with https://${spec.f && spec.f.some(x => x[2] === 'music') || (spec.cols || []).some(x => x[2] === 'music') ? ' and music links must be SoundCloud, Mixcloud, YouTube or Bandcamp' : ''}.`);
         return;
       }
-      b.d = Object.assign({}, b.d, cleanData(b.t, d));
+      // replace, not merge, so clearing a field (a colour, a picture) really clears it
+      b.d = Object.assign(spec.rows ? { items: b.d.items } : {}, cleanData(b.t, d));
       if (spec.rows && !b.d.items) b.d.items = [];
+      closeModal(); draw();
+    });
+  }
+
+  function openLook() {
+    const L = S.space.look || {};
+    const s = modal('Look of your space', `<p class="fx-note-p">These change the whole space. Each block's own style (🎨) still applies inside it.</p>
+      <form id="fx-fill" style="display:flex;flex-direction:column;gap:12px">${LOOK_FIELDS.map(([k, l, kind, opt]) => inputFor(kind, k, l, L[k], opt)).join('')}</form>`,
+      `<button class="fx-btn" data-fx-close>Cancel</button><button class="fx-btn fx-btn-pri" data-fx-apply>Done</button>`);
+    s.addEventListener('click', async e => {
+      if (!e.target.closest('[data-fx-apply]')) return;
+      const f = $('#fx-fill', s), out = {};
+      for (const [k, , kind, opt] of LOOK_FIELDS) {
+        let v;
+        if (kind === 'color') v = f.elements[k].dataset.set ? f.elements[k].value : '';
+        else if (kind === 'image') {
+          v = f.elements[k + '.keep'].value;
+          const file = f.elements[k].files[0];
+          if (file) {
+            try { e.target.disabled = true; e.target.textContent = 'Uploading…'; v = await cloudinaryUpload(file, 'faero/space'); }
+            catch (err) { toast('err', 'Upload failed', err.message || 'Try a smaller image.'); e.target.disabled = false; e.target.textContent = 'Done'; return; }
+          }
+        } else v = f.elements[k].value;
+        const c = cleanField(kind, v, opt); if (c) out[k] = c;
+      }
+      S.space.look = out;
       closeModal(); draw();
     });
   }
